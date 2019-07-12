@@ -1,0 +1,6 @@
+spring.output.ansi.enabled: ALWAYS
+
+# mongo3.x仅支持uri方式
+spring.data.mongodb:
+  uri: mongodb://localhost:27017
+  database: test

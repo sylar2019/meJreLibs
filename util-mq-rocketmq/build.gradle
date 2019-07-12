@@ -1,0 +1,6 @@
+dependencies {
+    compile project(":util-mq")
+    compile("org.apache.rocketmq:rocketmq-client:4.2.0")
+
+    testCompile("junit:junit:+")
+}

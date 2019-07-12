@@ -1,0 +1,9 @@
+ext {
+    isJavaProject = this.&isJavaProject
+}
+
+def isJavaProject() {
+    return subprojects.findAll {
+        it.childProjects.size() == 0 && new File(it.projectDir, "src").exists()
+    }
+}

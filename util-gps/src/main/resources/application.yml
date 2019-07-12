@@ -1,0 +1,4 @@
+bmap:
+  geoconv:
+    url: http://api.map.baidu.com/geoconv/v1/?
+  ak: N5a2Y46RBqygy7IXpvtXlGH6q1vmSelC

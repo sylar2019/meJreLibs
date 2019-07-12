@@ -1,0 +1,32 @@
+Properties localProperties = new Properties()
+localProperties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+ext {
+    //定义maven 私服账号
+    repoSnapshots = localProperties.getProperty("nexus_snapshots")
+    repoReleases = localProperties.getProperty("nexus_releases")
+    repoUser = localProperties.getProperty("nexus_user")
+    repoPwd = localProperties.getProperty("nexus_pwd")
+}
+
+ext {
+    //
+    gradlesPath = rootProject.rootDir.getAbsolutePath() + "/gradles/"
+    //
+    projectGroup = "me.util"
+    projectVersion = "1.0.0-SNAPSHOT"
+}
+
+ext {
+    resourcesPath = "src/main/resources"
+}
+
+ext {
+    //
+    dubboVersion = "2.5.3"
+    fastjsonVersion = "1.2.8"
+    jacksonVersion = "2.9.7"
+    guavaVersion = "19.0"
+    rxjavaVersion = "2.0.8"
+    jodatimeVersion = "2.9.9"
+}

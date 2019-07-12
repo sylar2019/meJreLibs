@@ -1,0 +1,14 @@
+apply from: gradlesPath + "springboot-web.gradle"
+
+dependencies {
+    compile project(":util-pojo")
+    //security
+    compile("org.springframework.boot:spring-boot-starter-security")
+    //thymeleaf
+//    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+//    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4")
+
+    //test
+    testCompile("org.springframework.security:spring-security-test")
+
+}

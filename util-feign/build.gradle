@@ -1,0 +1,22 @@
+configurations {
+    all*.exclude group: "org.springframework"
+    all*.exclude group: "org.springframework.boot"
+    all*.exclude group: "org.springframework.cloud"
+}
+
+dependencies {
+    //替换原生feign ribbon 中的 原生 httpclient
+    compile("io.jmnarloch:feign-okhttp-spring-cloud-starter:+")
+    compile("com.netflix.feign:feign-core:+")
+    compile("com.netflix.feign:feign-okhttp:+")
+
+    //feign.builder 的 encoder decoder替换
+    compile("com.netflix.feign:feign-gson:+")
+    compile("com.netflix.feign:feign-jackson:+")
+            {
+                //排除spring 自带的jackson
+                exclude group: "com.fasterxml.jackson.core"
+            }
+
+}
+

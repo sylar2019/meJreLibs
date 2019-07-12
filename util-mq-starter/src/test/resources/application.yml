@@ -1,0 +1,3 @@
+spring.output.ansi.enabled: ALWAYS
+me.mq.provider: rocketmq
+me.mq.brokers: localhost:9876

@@ -1,0 +1,5 @@
+spring.output.ansi.enabled: ALWAYS
+spring.redis:
+  host: localhost
+  port: 6379
+

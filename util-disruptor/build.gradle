@@ -1,0 +1,7 @@
+dependencies {
+    compile("com.lmax:disruptor:3.4.2")
+
+    testCompile("junit:junit:+")
+}
+
+

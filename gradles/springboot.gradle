@@ -1,0 +1,27 @@
+apply plugin: "java"
+apply plugin: "org.springframework.boot"
+
+configurations {
+    //排除log4j
+    all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+    all*.exclude group: "log4j", module: "log4j"
+}
+
+dependencies {
+    //boot
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+            {
+                //排除spring 自带的jackson
+                exclude group: "com.fasterxml.jackson.core"
+            }
+
+    //使用新版jackson
+    compile("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
+    compile("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
+    compile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+
+    //test
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+

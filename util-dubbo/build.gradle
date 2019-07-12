@@ -1,0 +1,32 @@
+/**
+ * dubbo    说明参见:https://github.com/alibaba/dubbo
+ * dubbox   说明参见:https://github.com/dangdangdotcom/dubbox
+ 参数及返回值类型约定:
+ 1\原生值类型,String 及其数组
+ 2\Serializable接口类型
+ 3\List\Set\Map\Collection\ 的参数类型须满足上述两类之一
+ */
+
+
+configurations {
+    all*.exclude group: "com.caucho", module: "hessian"
+    all*.exclude group: "org.springframework", module: "spring"
+}
+
+dependencies {
+
+    compile("com.google.guava:guava:${guavaVersion}")
+
+    //dubbo
+    compile("com.alibaba:dubbo:${dubboVersion}")
+    compile("com.caucho:hessian:4.0.38")
+
+    //zookeeper
+    compile("org.apache.zookeeper:zookeeper:3.4.8")
+    compile("com.github.sgroschupf:zkclient:0.1")
+
+}
+
+
+
+

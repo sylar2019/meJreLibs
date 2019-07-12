@@ -1,0 +1,38 @@
+apply plugin: "java"
+
+//JVM 版本号要求
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+//java编译的时候缺省状态下会因为中文字符而失败
+[compileJava, compileTestJava, javadoc]*.options*.encoding = "UTF-8"
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+dependencies {
+    compile fileTree(dir: "libs", include: ["*.jar"])
+}
+
+//上传到maven私服
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${repoReleases}") {
+                authentication(userName: "${repoUser}", password: "${repoPwd}")
+            }
+            snapshotRepository(url: "${repoSnapshots}") {
+                authentication(userName: "${repoUser}", password: "${repoPwd}")
+            }
+
+            pom.groupId = "${project.group}"
+            pom.version = "${project.version}"
+            pom.packaging = "jar"
+        }
+    }
+}
+
+task deleteOut(type: Delete) {
+    delete 'out'
+}
