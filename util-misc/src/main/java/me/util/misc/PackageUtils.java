@@ -81,7 +81,6 @@ public class PackageUtils {
         return result;
     }
 
-
     /**
      * 递归获取所有class文件的名字
      *
@@ -94,20 +93,10 @@ public class PackageUtils {
         if (!file.exists()) {
             return result;
         }
-        if (file.isFile()) {
-            String path = file.getPath();
-            // 注意：这里替换文件分割符要用replace。因为replaceAll里面的参数是正则表达式,而windows环境中File.separator="\\"的,因此会有问题
-            if (path.endsWith(CLASS_SUFFIX)) {
-                path = path.replace(CLASS_SUFFIX, "");
-                // 从"/classes/"后面开始截取
-                String clazzName = path.substring(path.indexOf(CLASS_FILE_PREFIX) + CLASS_FILE_PREFIX.length())
-                        .replace(File.separator, PACKAGE_SEPARATOR);
-                if (-1 == clazzName.indexOf("$")) {
-                    result.add(clazzName);
-                }
-            }
-            return result;
 
+        if (file.isFile()) {
+            addClassName(result, file.getPath());
+            return result;
         } else {
             File[] listFiles = file.listFiles();
             if (listFiles != null && listFiles.length > 0) {
@@ -116,21 +105,25 @@ public class PackageUtils {
                         result.addAll(getAllClassNameByFile(f, flag));
                     } else {
                         if (f.isFile()) {
-                            String path = f.getPath();
-                            if (path.endsWith(CLASS_SUFFIX)) {
-                                path = path.replace(CLASS_SUFFIX, "");
-                                // 从"/classes/"后面开始截取
-                                String clazzName = path.substring(path.indexOf(CLASS_FILE_PREFIX) + CLASS_FILE_PREFIX.length())
-                                        .replace(File.separator, PACKAGE_SEPARATOR);
-                                if (-1 == clazzName.indexOf("$")) {
-                                    result.add(clazzName);
-                                }
-                            }
+                            addClassName(result, file.getPath());
                         }
                     }
                 }
             }
             return result;
+        }
+    }
+
+    private static void addClassName(List<String> result, String path) {
+        // 注意：这里替换文件分割符要用replace。因为replaceAll里面的参数是正则表达式,而windows环境中File.separator="\\"的,因此会有问题
+        if (path.endsWith(CLASS_SUFFIX)) {
+            path = path.replace(CLASS_SUFFIX, "");
+            // 从"/classes/"后面开始截取
+            String clazzName = path.substring(path.indexOf(CLASS_FILE_PREFIX) + CLASS_FILE_PREFIX.length())
+                    .replace(File.separator, PACKAGE_SEPARATOR);
+            if (!clazzName.contains("$")) {
+                result.add(clazzName);
+            }
         }
     }
 
@@ -154,12 +147,12 @@ public class PackageUtils {
                 name = name.replace(CLASS_SUFFIX, "").replace("/", ".");
                 if (flag) {
                     // 如果要子包的文件,那么就只要开头相同且不是内部类就ok
-                    if (name.startsWith(packageName) && -1 == name.indexOf("$")) {
+                    if (name.startsWith(packageName) && !name.contains("$")) {
                         result.add(name);
                     }
                 } else {
                     // 如果不要子包的文件,那么就必须保证最后一个"."之前的字符串和包名一样且不是内部类
-                    if (packageName.equals(name.substring(0, name.lastIndexOf("."))) && -1 == name.indexOf("$")) {
+                    if (packageName.equals(name.substring(0, name.lastIndexOf("."))) && !name.contains("$")) {
                         result.add(name);
                     }
                 }
