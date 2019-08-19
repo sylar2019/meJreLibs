@@ -1,7 +1,9 @@
 package me.util.acl.core;
 
+import me.util.acl.AclService;
 import me.util.acl.AclUtils;
 import me.util.pojo.dto.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -28,9 +30,12 @@ import java.io.IOException;
  */
 @Component
 public class AclAccessDeniedHandler implements AccessDeniedHandler {
+
+    @Autowired
+    AclService service;
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        //认证过的用户访问无权限资源时的异常
-        AclUtils.output(response, Result.newFaild("权限不足，请联系管理员!"));
+        service.getEventHandler().onAccessDenied(request, response, AclUtils.getLoginUser());
     }
 }

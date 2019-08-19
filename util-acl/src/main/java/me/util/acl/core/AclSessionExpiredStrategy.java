@@ -1,7 +1,9 @@
 package me.util.acl.core;
 
+import me.util.acl.AclService;
 import me.util.acl.AclUtils;
 import me.util.pojo.dto.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.stereotype.Component;
@@ -27,9 +29,12 @@ import java.io.IOException;
 @Component
 public class AclSessionExpiredStrategy implements SessionInformationExpiredStrategy {
 
+    @Autowired
+    AclService service;
+
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException, ServletException {
         //定制session超时的响应
-        AclUtils.output(event.getResponse(), Result.newFaild(-1, "并发登录，当前登录中止"));
+        service.getEventHandler().onExpiredSession(event.getRequest(), event.getResponse(), AclUtils.getLoginUser());
     }
 }

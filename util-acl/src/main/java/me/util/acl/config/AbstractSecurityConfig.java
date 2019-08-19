@@ -60,9 +60,8 @@ public abstract class AbstractSecurityConfig extends WebSecurityConfigurerAdapte
     protected AclAuthenticationEntryPoint aclAuthenticationEntryPoint;
     @Autowired
     protected AclSessionExpiredStrategy aclSessionExpiredStrategy;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -80,13 +79,13 @@ public abstract class AbstractSecurityConfig extends WebSecurityConfigurerAdapte
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(aclService);
-        //authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return aclService.getPasswordEncoder();
     }
 
     @Override

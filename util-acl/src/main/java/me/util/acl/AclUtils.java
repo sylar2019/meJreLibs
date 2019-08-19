@@ -3,12 +3,13 @@ package me.util.acl;
 import com.google.common.base.Strings;
 import me.util.acl.model.AclUser;
 import me.util.pojo.dto.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * File Name             :  AclUtils
@@ -26,6 +27,7 @@ import java.io.IOException;
  * *******************************************************************************************
  */
 public class AclUtils {
+    private static Logger log = LoggerFactory.getLogger(AclUtils.class);
 
     public static AclUser getLoginUser() {
         SecurityContext ctx = SecurityContextHolder.getContext();
@@ -55,15 +57,19 @@ public class AclUtils {
         return url;
     }
 
-    public static void output(HttpServletResponse response, Result<?> result) throws IOException {
+    public static void output(HttpServletResponse response, Result<?> result) {
         output(response, result, HttpServletResponse.SC_OK);
     }
 
-    public static void output(HttpServletResponse response, Result<?> result, int httpStatus) throws IOException {
-        response.setStatus(httpStatus);
-        response.setContentType(AclConst.CONTENT_TYPE);
-        response.getWriter().write(result.toString());
-        response.getWriter().flush();
-        response.getWriter().close();
+    public static void output(HttpServletResponse response, Result<?> result, int httpStatus) {
+        try {
+            response.setStatus(httpStatus);
+            response.setContentType(AclConst.CONTENT_TYPE);
+            response.getWriter().write(result.toString());
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 }

@@ -1,9 +1,14 @@
 package me.util.acl;
 
+import me.util.acl.event.AclEventHandler;
+import me.util.acl.event.DefaultAclEventHandler;
 import me.util.acl.model.AclResource;
 import me.util.acl.model.AclRole;
 import me.util.acl.model.AclUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -29,22 +34,42 @@ public interface AclService extends UserDetailsService {
      *
      * @return
      */
-    AclMode getAclMode();
+    default AclMode getAclMode() {
+        return AclMode.ByRole;
+    }
 
     /**
-     * 获取所有角色
+     * 默认加密算法
      *
      * @return
      */
-    List<AclRole> getAllRoles();
+    default PasswordAlgorithm getDefaulAlgorithm() {
+        return PasswordAlgorithm.bcrypt;
+    }
+
+    default PasswordEncoder getPasswordEncoder() {
+        DelegatingPasswordEncoder encoder = (DelegatingPasswordEncoder) PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        encoder.setDefaultPasswordEncoderForMatches(getDefaulAlgorithm().getEncoder());
+        return encoder;
+    }
 
     /**
-     * 获取用户的角色列表
+     * ACL事件处理器
      *
-     * @param userId 用户ID
-     * @return 角色列表
+     * @return
      */
-    List<AclRole> findRolesByUser(Long userId);
+    default AclEventHandler getEventHandler() {
+        return new DefaultAclEventHandler();
+    }
+
+    /**
+     * 获取当前登录用户
+     *
+     * @return 当前登录用户
+     */
+    default AclUser getLoginUser() {
+        return AclUtils.getLoginUser();
+    }
 
     /**
      * 获取对资源有权限的角色列表
@@ -61,34 +86,6 @@ public interface AclService extends UserDetailsService {
      */
     List<AclResource> findAllByOrderByUrlDesc();
 
-    /**
-     * 获取角色拥有权限的资源列表
-     *
-     * @param roleId 角色ID
-     * @return 资源列表
-     */
-    List<AclResource> getResourcesByRole(Long roleId);
 
-    /**
-     * 获取角色对应的用户列表
-     *
-     * @param roleId 角色列表
-     * @return 用户列表
-     */
-    List<AclUser> getUsersByRole(Long roleId);
-
-    /**
-     * 获取当前登录用户
-     *
-     * @return 当前登录用户
-     */
-    AclUser getLoginUser();
-
-    /**
-     * 通过登录名(username)查找用户
-     *
-     * @return 用户
-     */
-    AclUser findByUsername(String username);
 
 }

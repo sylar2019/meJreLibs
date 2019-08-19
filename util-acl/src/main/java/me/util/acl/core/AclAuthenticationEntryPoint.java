@@ -1,7 +1,9 @@
 package me.util.acl.core;
 
+import me.util.acl.AclService;
 import me.util.acl.AclUtils;
 import me.util.pojo.dto.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -28,9 +30,13 @@ import java.io.IOException;
  */
 @Component
 public class AclAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    @Autowired
+    AclService service;
+
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         //匿名用户访问无权限资源时的异常
-        AclUtils.output(response, Result.newFaild(-1, "未登录"));
+        service.getEventHandler().onAccessDeniedWithAnonymous(request, response);
     }
 }

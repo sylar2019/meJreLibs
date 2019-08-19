@@ -34,14 +34,11 @@ import java.io.IOException;
 @Component
 public class AclSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
-    AclService userService;
-    private Logger log = LoggerFactory.getLogger(getClass());
+    AclService service;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
-        log.info("登录成功:" + authentication.getPrincipal());
-        AclUser user = userService.getLoginUser();
-        AclUtils.output(response, Result.newSuccess(user.toString()));
+                                        Authentication authentication) {
+        service.getEventHandler().onLogin(request, response, AclUtils.getLoginUser());
     }
 }

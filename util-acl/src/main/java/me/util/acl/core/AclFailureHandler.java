@@ -1,9 +1,11 @@
 package me.util.acl.core;
 
+import me.util.acl.AclService;
 import me.util.acl.AclUtils;
 import me.util.pojo.dto.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,26 +35,12 @@ import java.io.IOException;
 @Component
 public class AclFailureHandler implements AuthenticationFailureHandler {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
+    @Autowired
+    AclService service;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
-        log.info("登陆失败");
-        String errMsg = "登录失败!";
-        if (exception instanceof BadCredentialsException ||
-                exception instanceof UsernameNotFoundException) {
-            errMsg = "账户名或者密码输入错误!";
-        } else if (exception instanceof LockedException) {
-            errMsg = "账户被锁定，请联系管理员!";
-        } else if (exception instanceof CredentialsExpiredException) {
-            errMsg = "密码过期，请联系管理员!";
-        } else if (exception instanceof AccountExpiredException) {
-            errMsg = "账户过期，请联系管理员!";
-        } else if (exception instanceof DisabledException) {
-            errMsg = "账户被禁用，请联系管理员!";
-        }
-
-        AclUtils.output(response, Result.newFaild(errMsg));
+                                        AuthenticationException exception) {
+        service.getEventHandler().onAuthenticationFailure(request, response, exception);
     }
 }
