@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=me.java.library.mq.starter.MqAutoConfiguration

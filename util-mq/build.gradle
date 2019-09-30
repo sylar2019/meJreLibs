@@ -1,6 +1,0 @@
-dependencies {
-    compile project(":util-misc")
-
-    //test
-    testCompile("junit:junit:+")
-}

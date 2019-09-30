@@ -1,0 +1,7 @@
+apply from: gradlesPath + "springboot.gradle"
+
+dependencies {
+    compile project(":mq:mq-kafka")
+    compile project(":mq:mq-ons")
+    compile project(":mq:mq-rocketmq")
+}

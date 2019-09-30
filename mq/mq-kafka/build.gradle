@@ -1,0 +1,8 @@
+dependencies {
+    compile project(":mq:mq-base")
+
+    compile("org.apache.kafka:kafka-clients:1.1.0")
+
+    //test
+    testCompile("junit:junit:+")
+}

@@ -1,0 +1,18 @@
+apply from: gradlesPath + "springboot.gradle"
+
+ext {
+    oracleJdbc6Version = "11.2.0.3"
+}
+
+repositories {
+    flatDir { dirs 'libs' }
+}
+
+
+dependencies {
+    compile project(":db:db-jpa")
+
+    //oracle jdbc
+    //ojdbc6 jar 须先手动安装到本地maven库
+    compile("com.oracle:ojdbc6:${oracleJdbc6Version}")
+}

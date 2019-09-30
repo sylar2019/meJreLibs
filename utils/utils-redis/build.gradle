@@ -1,0 +1,6 @@
+apply from: gradlesPath + "springboot.gradle"
+
+dependencies {
+    compile project(":utils:utils-base")
+    compile("org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}")
+}

@@ -1,0 +1,7 @@
+apply from: gradlesPath + "springboot.gradle"
+
+dependencies {
+    compile project(":common")
+    //data
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+}
