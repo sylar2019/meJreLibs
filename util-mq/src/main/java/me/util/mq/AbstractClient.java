@@ -1,7 +1,7 @@
 package me.util.mq;
 
 import com.google.common.base.Preconditions;
-import me.util.misc.NetUtils;
+import me.util.misc.NetworkUtils;
 
 import java.util.Properties;
 
@@ -23,7 +23,7 @@ public abstract class AbstractClient extends Properties implements IClient {
 
     protected String brokers;
     protected String groupId = "DEFAULT";
-    protected String clientId = NetUtils.getHostMac();
+    protected String clientId = NetworkUtils.getHostMac();
 
     @Override
     public String getBrokers() {

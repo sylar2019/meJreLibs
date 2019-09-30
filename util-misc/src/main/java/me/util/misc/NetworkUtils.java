@@ -8,7 +8,7 @@ import java.util.Enumeration;
 
 /**
  * @author :  sylar
- * @FileName :  NetUtils
+ * @FileName :  NetworkUtils
  * @CreateDate :  2017/11/08
  * @Description :
  * @ReviewedBy :
@@ -20,7 +20,7 @@ import java.util.Enumeration;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
-public class NetUtils {
+public class NetworkUtils {
 
     public static String getHostName() {
         try {
@@ -29,7 +29,6 @@ public class NetUtils {
             return null;
         }
     }
-
 
     public static String getHostIP() {
         try {

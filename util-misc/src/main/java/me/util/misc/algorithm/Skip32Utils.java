@@ -1,4 +1,4 @@
-package me.util.misc;
+package me.util.misc.algorithm;
 
 /**
  * 32-bit block cipher based on Skipjack, written in Java
@@ -114,18 +114,7 @@ public class Skip32Utils {
      * @return The encrypted value
      */
     public static int encrypt(int value, byte[] key) {
-        int[] buf = new int[4];
-        buf[0] = ((value >> 24) & 0xff);
-        buf[1] = ((value >> 16) & 0xff);
-        buf[2] = ((value >> 8) & 0xff);
-        buf[3] = ((value >> 0) & 0xff);
-
-        skip32(key, buf, true);
-
-        int out = ((buf[0]) << 24) | ((buf[1]) << 16) | ((buf[2]) << 8)
-                | (buf[3]);
-
-        return out;
+        return skip32(value, key, true);
     }
 
     /**
@@ -138,6 +127,10 @@ public class Skip32Utils {
      * @return The decrypted value
      */
     public static int decrypt(int value, byte[] key) {
+        return skip32(value, key, false);
+    }
+
+    private static int skip32(int value, byte[] key, boolean encrypt) {
         int[] buf = new int[4];
 
         buf[0] = ((value >> 24) & 0xff);
@@ -145,11 +138,8 @@ public class Skip32Utils {
         buf[2] = ((value >> 8) & 0xff);
         buf[3] = ((value >> 0) & 0xff);
 
-        skip32(key, buf, false);
+        skip32(key, buf, encrypt);
 
-        int out = ((buf[0]) << 24) | ((buf[1]) << 16) | ((buf[2]) << 8)
-                | (buf[3]);
-
-        return out;
+        return ((buf[0]) << 24) | ((buf[1]) << 16) | ((buf[2]) << 8) | (buf[3]);
     }
 }

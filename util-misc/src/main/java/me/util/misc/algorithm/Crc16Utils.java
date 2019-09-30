@@ -1,4 +1,4 @@
-package me.util.misc;
+package me.util.misc.algorithm;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

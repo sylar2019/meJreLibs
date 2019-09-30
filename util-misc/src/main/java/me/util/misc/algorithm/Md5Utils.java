@@ -1,4 +1,4 @@
-package me.util.misc;
+package me.util.misc.algorithm;
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;

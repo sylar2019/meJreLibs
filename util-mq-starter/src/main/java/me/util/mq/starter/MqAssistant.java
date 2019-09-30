@@ -1,6 +1,6 @@
 package me.util.mq.starter;
 
-import me.util.misc.NetUtils;
+import me.util.misc.NetworkUtils;
 import me.util.mq.IConsumer;
 import me.util.mq.IFactory;
 import me.util.mq.IProducer;
@@ -32,7 +32,7 @@ public class MqAssistant {
     private IFactory factory;
 
     public IProducer createPrducer(String groupId) {
-        return createPrducer(groupId, NetUtils.getHostMac());
+        return createPrducer(groupId, NetworkUtils.getHostMac());
     }
 
     public IProducer createPrducer(String groupId, String clientId) {
@@ -40,7 +40,7 @@ public class MqAssistant {
     }
 
     public IConsumer createConsumer(String groupId) {
-        return createConsumer(groupId, NetUtils.getHostMac());
+        return createConsumer(groupId, NetworkUtils.getHostMac());
     }
 
     public IConsumer createConsumer(String groupId, String clientId) {
