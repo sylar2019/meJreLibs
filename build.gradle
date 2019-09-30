@@ -34,9 +34,5 @@ subprojects {
 configure(isLib()) {
     apply from: gradlesPath + "java.gradle"
 }
-configure(isApp()) {
-//    apply from: gradlesPath + "springboot.gradle"
-}
+
 /** ******************************************************************************************/
-//project(":utils:base").group = "utils:base"
-//project(":mq:base").group = "mq:base"
