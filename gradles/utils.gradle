@@ -1,5 +1,42 @@
+
 ext {
+    isLib = this.&isLib
+    isApp = this.&isApp
     isJavaProject = this.&isJavaProject
+    isParentEquals = this.&isParentEquals
+    isProjectEndsWith = this.&isProjectEndsWith
+    isProjectEquals = this.&isProjectEquals
+}
+
+def isLib() {
+    Set result = isJavaProject()
+    result.removeAll(isApp())
+    return result
+}
+
+def isApp() {
+    Set result = isJavaProject()
+    result.retainAll(isParentEquals("app"))
+    result.retainAll(isProjectEndsWith("app"))
+    return result
+}
+
+def isParentEquals(parentName) {
+    return subprojects.findAll {
+        it.parent != null && it.parent.name == parentName
+    }
+}
+
+def isProjectEndsWith(suffix) {
+    return subprojects.findAll {
+        it.name.endsWith(suffix)
+    }
+}
+
+def isProjectEquals(projectName) {
+    return subprojects.findAll {
+        it.name == projectName
+    }
 }
 
 def isJavaProject() {

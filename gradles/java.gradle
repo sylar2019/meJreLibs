@@ -1,4 +1,5 @@
-apply plugin: "java"
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
 
 //JVM 版本号要求
 sourceCompatibility = 1.8
@@ -15,24 +16,42 @@ dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
 }
 
-//上传到maven私服
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "${repoReleases}") {
-                authentication(userName: "${repoUser}", password: "${repoPwd}")
-            }
-            snapshotRepository(url: "${repoSnapshots}") {
-                authentication(userName: "${repoUser}", password: "${repoPwd}")
-            }
+// 上传source
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier = 'sources'
+}
 
-            pom.groupId = "${project.group}"
-            pom.version = "${project.version}"
-            pom.packaging = "jar"
-        }
-    }
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
 }
 
 task deleteOut(type: Delete) {
     delete 'out'
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = "$project.group"
+            artifactId = "$project.name"
+            version = "$project.version"
+            from components.java
+
+            artifact sourcesJar
+//            artifact javadocJar
+        }
+    }
+
+    repositories {
+        maven {
+            url = version.endsWith('SNAPSHOT') ? SNAPSHOT_REPOSITORY_URL : RELEASE_REPOSITORY_URL
+            credentials {
+                username = NEXUS_USERNAME
+                password = NEXUS_PASSWORD
+            }
+        }
+    }
+}
+

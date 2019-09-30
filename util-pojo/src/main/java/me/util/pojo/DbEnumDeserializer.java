@@ -35,7 +35,6 @@ public class DbEnumDeserializer extends JsonDeserializer<IBaseDbEnum> {
 
         @SuppressWarnings("rawtypes")
         Class enumType = null;
-//        Class enumType = BeanUtils.findPropertyType(currentName, currentValue.getClass());
 
         try {
             PropertyDescriptor propertyDescriptor = new PropertyDescriptor(currentName, currentValue.getClass());

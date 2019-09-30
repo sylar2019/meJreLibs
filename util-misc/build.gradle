@@ -1,8 +1,5 @@
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-logging:${springBootVersion}")
-
     compile("com.google.guava:guava:${guavaVersion}")
-    compile("io.reactivex.rxjava2:rxjava:${rxjavaVersion}")
     compile("joda-time:joda-time:${jodatimeVersion}")
 
     compile("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
