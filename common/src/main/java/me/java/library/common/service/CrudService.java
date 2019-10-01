@@ -20,7 +20,7 @@ import java.util.List;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface CrudService<DTO extends IDPojo<ID>, ID extends Serializable> {
+public interface CrudService<DTO extends IDPojo<ID>, ID extends Serializable> extends IService {
 
     String getNameById(ID id);
 

@@ -5,8 +5,8 @@ package me.java.library.common.service;
  *
  * @author sylar
  */
-public interface Initialization<T> {
+public interface Initialization<Context> {
 
-    void init(T t, Object... params);
+    void init(Context context, Object... params);
 
 }
