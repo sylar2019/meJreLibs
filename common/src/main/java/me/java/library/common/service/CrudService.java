@@ -1,4 +1,6 @@
-package me.java.library.common;
+package me.java.library.common.service;
+
+import me.java.library.common.IDPojo;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,6 +1,6 @@
 package me.java.library.component.acl;
 
-import me.java.library.common.IBaseDbEnum;
+import me.java.library.common.po.IBaseDbEnum;
 
 /**
  * File Name             :

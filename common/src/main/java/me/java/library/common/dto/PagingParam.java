@@ -28,16 +28,15 @@ public class PagingParam extends AbstractPojo {
     private Integer pageSize;
 
     public PagingParam(Integer pageIndex, Integer pageSize) {
-        //前端pageIndex是从1开始计算
-        if (pageIndex == null || pageIndex < 1) {
-            pageIndex = 1;
+        if (pageIndex == null || pageIndex < 0) {
+            pageIndex = 0;
         }
         if (pageSize == null || pageSize <= 0) {
             pageSize = Integer.MAX_VALUE;
         }
 
         //后端pageIndex 是从0开始
-        this.pageIndex = pageIndex - 1;
+        this.pageIndex = pageIndex;
         this.pageSize = pageSize;
     }
 

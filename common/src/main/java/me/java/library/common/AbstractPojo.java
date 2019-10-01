@@ -20,7 +20,6 @@ import java.io.Serializable;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-//@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class AbstractPojo implements Serializable {
 
     @Override

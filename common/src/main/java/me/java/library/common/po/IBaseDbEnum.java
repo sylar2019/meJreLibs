@@ -1,4 +1,4 @@
-package me.java.library.common;
+package me.java.library.common.po;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

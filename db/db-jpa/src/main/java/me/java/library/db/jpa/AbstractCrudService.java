@@ -2,10 +2,10 @@ package me.java.library.db.jpa;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import me.java.library.common.CrudService;
 import me.java.library.common.IDNamePojo;
 import me.java.library.common.IDPojo;
 import me.java.library.common.INamePojo;
+import me.java.library.common.service.CrudService;
 import me.java.library.db.jpa.annotation.ReadTransactional;
 import me.java.library.db.jpa.annotation.WriteTransactional;
 import me.java.library.utils.base.JsonUtils;
