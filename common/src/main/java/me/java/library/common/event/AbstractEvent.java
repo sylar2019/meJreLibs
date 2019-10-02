@@ -15,7 +15,7 @@ package me.java.library.common.event;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class AbstractEvent<Source, Content> {
+public class AbstractEvent<Source, Content> implements IEvent {
     protected Source source;
     protected Content content;
 
