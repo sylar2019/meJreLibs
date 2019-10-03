@@ -1,5 +1,7 @@
 package me.java.library.common.event;
 
+import me.java.library.common.AbstractPojo;
+
 /**
  * File Name             :  AbstractEvent
  *
@@ -15,7 +17,7 @@ package me.java.library.common.event;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class AbstractEvent<Source, Content> implements IEvent {
+public class AbstractEvent<Source, Content> extends AbstractPojo implements IEvent {
     protected Source source;
     protected Content content;
 
