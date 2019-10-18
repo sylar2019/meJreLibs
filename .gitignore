@@ -27,7 +27,7 @@ node_modules/
 
 
 # Local configuration file (cloud path, etc)
-#local.properties
+#local.attributes
 
 # built native files (uncomment if you build your own)
 # *.o

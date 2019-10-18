@@ -15,5 +15,6 @@ package me.java.library.common;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface IDNamePojo<ID> extends IDPojo<ID>, INamePojo {
+public interface IDNamePojo<ID> extends IDPojo<ID>, Namable {
+
 }

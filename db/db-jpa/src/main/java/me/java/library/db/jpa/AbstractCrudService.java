@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import me.java.library.common.IDNamePojo;
 import me.java.library.common.IDPojo;
-import me.java.library.common.INamePojo;
+import me.java.library.common.Namable;
 import me.java.library.common.service.CrudService;
 import me.java.library.db.jpa.annotation.ReadTransactional;
 import me.java.library.db.jpa.annotation.WriteTransactional;
@@ -190,8 +190,8 @@ public abstract class AbstractCrudService<
      * @param dto
      */
     protected void checkRequiredProperty(DTO dto) {
-        if (dto instanceof INamePojo) {
-            INamePojo namePojo = (INamePojo) dto;
+        if (dto instanceof Namable) {
+            Namable namePojo = (Namable) dto;
             Preconditions.checkState(!Strings.isNullOrEmpty(namePojo.getName()), "名称不可为空");
         }
     }

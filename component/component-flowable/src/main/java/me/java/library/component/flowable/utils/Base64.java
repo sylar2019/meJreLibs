@@ -22,8 +22,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-//TODO Use Alfresco Base 64 ???
-
 /**
  * <p>
  * Encodes and decodes to and from Base64 notation.

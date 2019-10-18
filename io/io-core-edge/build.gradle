@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":io:io-core")
+    compile project(":utils:utils-event")
+}

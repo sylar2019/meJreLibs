@@ -17,28 +17,28 @@ import com.google.common.cache.CacheBuilder;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class LocalCache<T> {
+public class LocalCache<K, V> {
 
-    private Cache<String, T> cache = CacheBuilder.newBuilder()
+    private Cache<K, V> cache = CacheBuilder.newBuilder()
             .maximumSize(1000000L)
             .concurrencyLevel(16)
             .build();
 
-    public T get(String key) {
-        return cache.getIfPresent(key);
+    public V get(K k) {
+        return cache.getIfPresent(k);
     }
 
-    public void put(String key, T value) {
+    public void put(K key, V value) {
         if (value != cache.getIfPresent(key)) {
             cache.put(key, value);
         }
     }
 
-    public void remove(String key) {
+    public void remove(K key) {
         cache.invalidate(key);
     }
 
-    public boolean containsKey(String key) {
+    public boolean containsKey(K key) {
         return cache.getIfPresent(key) != null;
     }
 

@@ -1,5 +1,7 @@
 package me.java.library.common;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * File Name             :  AbstractIdPojo
  *
@@ -17,27 +19,9 @@ package me.java.library.common;
  */
 public abstract class AbstractIdPojo<ID> extends AbstractPojo implements IDPojo<ID> {
 
+    protected static final AtomicLong uniqueIdGenerator = new AtomicLong();
+    protected final long uniquifier = uniqueIdGenerator.getAndIncrement();
     protected ID id;
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-
-        if (!obj.getClass().equals(this.getClass())) {
-            return false;
-        }
-
-        AbstractIdPojo<ID> other = (AbstractIdPojo<ID>) obj;
-        return id.equals(other.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
 
     @Override
     public ID getId() {
@@ -46,5 +30,41 @@ public abstract class AbstractIdPojo<ID> extends AbstractPojo implements IDPojo<
 
     public void setId(ID id) {
         this.id = id;
+    }
+
+    @Override
+    public final int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int compareTo(IDPojo<ID> o) {
+
+        if (this == o) {
+            return 0;
+        }
+
+        @SuppressWarnings("unchecked")
+        AbstractIdPojo<ID> other = (AbstractIdPojo) o;
+        int returnCode;
+
+        returnCode = hashCode() - other.hashCode();
+        if (returnCode != 0) {
+            return returnCode;
+        }
+
+        if (uniquifier < other.uniquifier) {
+            return -1;
+        }
+        if (uniquifier > other.uniquifier) {
+            return 1;
+        }
+
+        throw new Error("failed to compare two different pojo");
     }
 }

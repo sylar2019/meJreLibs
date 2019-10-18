@@ -1,8 +1,9 @@
 package me.java.library.common;
 
+import com.google.common.collect.Maps;
 import me.java.library.utils.base.JsonUtils;
 
-import java.io.Serializable;
+import java.util.Map;
 
 /**
  * File Name             :  AbstractPojo
@@ -20,7 +21,19 @@ import java.io.Serializable;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractPojo implements Serializable {
+public abstract class AbstractPojo implements Attributable<String, Object> {
+
+    protected Map<String, Object> attrs = Maps.newHashMap();
+
+    @Override
+    public Map<String, Object> getAttrs() {
+        return attrs;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <V> V getOrDefault(String attrKey, V defaultValue) {
+        return (V) attrs.getOrDefault(attrKey, defaultValue);
+    }
 
     @Override
     public String toString() {

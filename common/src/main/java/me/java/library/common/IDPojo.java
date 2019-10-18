@@ -17,6 +17,6 @@ import java.io.Serializable;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface IDPojo<ID> extends Serializable {
+public interface IDPojo<ID> extends Serializable, Comparable<IDPojo<ID>> {
     ID getId();
 }
