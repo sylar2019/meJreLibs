@@ -1,7 +1,6 @@
 package me.java.library.io.core.codec;
 
 import com.google.common.base.Preconditions;
-import me.java.library.io.core.Constants;
 
 /**
  * File Name             : AbstractSimpleStreamCodec

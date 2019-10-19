@@ -1,6 +1,7 @@
 package me.java.library.io.core.pipe;
 
 import me.java.library.io.base.Cmd;
+import me.java.library.io.base.Host;
 import me.java.library.io.base.Terminal;
 
 /**
@@ -24,5 +25,5 @@ public interface PipeWatcher {
 
     void onConnectionChanged(Pipe pipe, Terminal terminal, boolean isConnected);
 
-    void onHostStateChanged(Pipe pipe, boolean isRunning);
+    void onHostStateChanged(Host host, boolean isRunning);
 }

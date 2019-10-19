@@ -22,10 +22,6 @@ import java.util.LinkedHashMap;
  */
 public interface Codec extends IDPojo<String> {
 
-    LinkedHashMap<String, ChannelHandler> getChannelHandlers();
-
-    <V> V getHandlerAttr(String handlerKey, String attrKey, V defaultValue);
-
     String HANDLER_NAME_IDLE_STATE = "idleStateHandler";
     String HANDLER_NAME_LOG = "logHandler";
     String HANDLER_NAME_INBOUND_CMD = "inboundCmdHandler";
@@ -34,9 +30,12 @@ public interface Codec extends IDPojo<String> {
     String HANDLER_NAME_SIMPLE_ENCODER = "simpleEncoderHandler";
     String HANDLER_NAME_SIMPLE_DECODER = "simpleDecoderHandler";
     String HANDLER_NAME_FRAME_DECODER = "frameDecoderHandler";
-
     String HANDLER_ATTR_LOG_LEVEL = "logLevel";
     String HANDLER_ATTR_READ_IDLE_TIME = "readerIdleTimeSeconds";
     String HANDLER_ATTR_WRITE_IDLE_TIME = "writerIdleTimeSeconds";
     String HANDLER_ATTR_ALL_IDLE_TIME = "allIdleTimeSeconds";
+
+    LinkedHashMap<String, ChannelHandler> getChannelHandlers();
+
+    <V> V getHandlerAttr(String handlerKey, String attrKey, V defaultValue);
 }

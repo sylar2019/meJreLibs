@@ -20,8 +20,6 @@ import me.java.library.common.Attributable;
  */
 public interface Bus extends Attributable<String, Object> {
 
-    BusType getBusType();
-
     String BUS_ATTR_SOCKET_HOST = "host";
     String BUS_ATTR_SOCKET_PORT = "port";
     String BUS_ATTR_SOCKET_NETWORK_INTERFACE = "interface";
@@ -32,5 +30,7 @@ public interface Bus extends Attributable<String, Object> {
     String BUS_ATTR_RXTX_PARITYBIT = "Paritybit";
     String BUS_ATTR_RXTX_DTR = "DTR";
     String BUS_ATTR_RXTX_RTS = "RTS";
+
+    BusType getBusType();
 
 }

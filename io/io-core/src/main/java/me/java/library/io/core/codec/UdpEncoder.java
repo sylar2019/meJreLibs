@@ -1,10 +1,12 @@
 package me.java.library.io.core.codec;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import me.java.library.io.base.Cmd;
+import me.java.library.io.core.bean.TerminalCache;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -31,32 +33,16 @@ public class UdpEncoder extends SimpleEncoder {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Cmd cmd, List<Object> out) throws Exception {
-        if (cmd == null) {
-            return;
+        InetSocketAddress address = cmd.getTo().getInetSocketAddress();
+        if (address == null) {
+            address = TerminalCache.getInstance().get(cmd.getTo());
         }
-
-        //TODO 获取udp报文的目标地址(InetSocketAddress)
-        InetSocketAddress address = null;
-//        String targetDeviceId = cmd.getTargetDeviceId();
-//        if (Strings.isNullOrEmpty(targetDeviceId)) {
-//            return;
-//        }
-//
-//        if (!terminalCache.containsKey(targetDeviceId)) {
-//            return;
-//        }
-//
-//        InetSocketAddress address = terminalCache.get(cmd.getTargetDeviceId());
-//        if (address == null) {
-//            return;
-//        }
-
+        Preconditions.checkNotNull(address, "udp 报文需要目标套接字地址");
         super.encode(ctx, cmd, out);
 
         //build DatagramPacket
         List<Object> raw = Lists.newArrayList(out);
         out.clear();
-
         for (Object obj : raw) {
             if (obj instanceof ByteBuf) {
                 out.add(new DatagramPacket((ByteBuf) obj, address));

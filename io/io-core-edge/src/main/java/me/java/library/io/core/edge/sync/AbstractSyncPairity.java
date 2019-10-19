@@ -39,12 +39,12 @@ public abstract class AbstractSyncPairity implements SyncPairity {
      */
     private Map<Terminal, SyncBeanCache> caches = Maps.newConcurrentMap();
 
-    protected abstract void createReisty(BiMap<String, String> registy);
-
     public AbstractSyncPairity() {
         //初始构造【配对指令注册表】
         createReisty(registy);
     }
+
+    protected abstract void createReisty(BiMap<String, String> registy);
 
     @Override
     public void cacheRequest(Cmd request) {

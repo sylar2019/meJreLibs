@@ -22,6 +22,12 @@ public interface Attributable<K, V> extends Serializable {
 
     Map<K, V> getAttrs();
 
+    default void setAttrs(Map<K, V> attrs) {
+        if (attrs != null && attrs.size() > 0) {
+            getAttrs().putAll(attrs);
+        }
+    }
+
     default V getAttr(K k) {
         return getAttrs().get(k);
     }
@@ -32,12 +38,6 @@ public interface Attributable<K, V> extends Serializable {
             v = getAttr(k);
         }
         return v;
-    }
-
-    default void setAttrs(Map<K, V> attrs) {
-        if (attrs != null && attrs.size() > 0) {
-            getAttrs().putAll(attrs);
-        }
     }
 
     default void setAttr(K k, V v) {

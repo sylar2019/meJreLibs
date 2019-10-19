@@ -165,7 +165,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
 
     protected void onHostStateChanged(boolean isRunning) {
         if (watcher != null) {
-            ConcurrentService.getInstance().post(() -> watcher.onHostStateChanged(AbstractPipe.this, isRunning));
+            ConcurrentService.getInstance().postRunnable(() -> watcher.onHostStateChanged(AbstractPipe.this.host, isRunning));
         }
     }
 }

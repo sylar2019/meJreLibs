@@ -36,13 +36,13 @@ public abstract class AbstractEvent<Source, Content> implements IEvent<Source, C
         return source;
     }
 
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
     @Override
     public Content getContent() {
         return content;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
     }
 
     public void setContent(Content content) {

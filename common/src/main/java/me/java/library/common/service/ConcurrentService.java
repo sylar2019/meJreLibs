@@ -34,11 +34,6 @@ public class ConcurrentService implements Serviceable {
     private final static int CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 2;
     private final static int MAXIMUM_POOL_SIZE = 16;
     private final static long KEEP_ALIVE_TIME = 1L;
-
-    synchronized public static ConcurrentService getInstance() {
-        return new ConcurrentService();
-    }
-
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(
             CORE_POOL_SIZE,
             MAXIMUM_POOL_SIZE,
@@ -47,18 +42,19 @@ public class ConcurrentService implements Serviceable {
             new LinkedBlockingQueue<>(),
             new ThreadFactoryBuilder().setNameFormat("common-pool-%d").build(),
             new ThreadPoolExecutor.DiscardPolicy());
-
     private ScheduledThreadPoolExecutor scheduledExecutor = new ScheduledThreadPoolExecutor(
             CORE_POOL_SIZE,
             new ThreadFactoryBuilder().setNameFormat("common-scheduled-pool-%d").build(),
             new ThreadPoolExecutor.DiscardPolicy()
     );
-
     private ListeningExecutorService service = MoreExecutors.listeningDecorator(executor);
     private ListeningScheduledExecutorService scheduledService = MoreExecutors.listeningDecorator(scheduledExecutor);
-
     private ConcurrentService() {
         executor.allowCoreThreadTimeOut(true);
+    }
+
+    synchronized public static ConcurrentService getInstance() {
+        return new ConcurrentService();
     }
 
     @Override

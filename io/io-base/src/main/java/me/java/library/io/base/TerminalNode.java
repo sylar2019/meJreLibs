@@ -33,6 +33,7 @@ public class TerminalNode extends AbstractIdPojo<String> implements Terminal {
         return type;
     }
 
+
     @Override
     public int hashCode() {
         return (String.format("%s:%s", type, id)).hashCode();

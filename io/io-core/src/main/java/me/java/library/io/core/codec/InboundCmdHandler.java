@@ -107,14 +107,14 @@ public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
     protected void onConnectionChanged(Channel channel, Terminal terminal, boolean isConnected) {
         Pipe pipe = ChannelAttr.get(channel, ChannelAttr.ATTR_PIPE);
         if (pipe.getWatcher() != null) {
-            ConcurrentService.getInstance().post(() -> pipe.getWatcher().onConnectionChanged(pipe, terminal, isConnected));
+            ConcurrentService.getInstance().postRunnable(() -> pipe.getWatcher().onConnectionChanged(pipe, terminal, isConnected));
         }
     }
 
     protected void onCmdReceived(ChannelHandlerContext ctx, Cmd cmd) {
         Pipe pipe = ChannelAttr.get(ctx.channel(), ChannelAttr.ATTR_PIPE);
         if (pipe.getWatcher() != null) {
-            ConcurrentService.getInstance().post(() -> pipe.getWatcher().onReceived(pipe, cmd));
+            ConcurrentService.getInstance().postRunnable(() -> pipe.getWatcher().onReceived(pipe, cmd));
         }
     }
 

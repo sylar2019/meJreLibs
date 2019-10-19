@@ -3,7 +3,6 @@ package me.java.library.io.core.codec;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import me.java.library.io.core.Constants;
 
 /**
  * File Name             :  AbstractSimpleCodec

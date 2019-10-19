@@ -23,6 +23,9 @@ public class ChannelCache extends LocalCache<Terminal, Channel> {
 
     private static ChannelCache instance = new ChannelCache();
 
+    private ChannelCache() {
+    }
+
     synchronized public static ChannelCache getInstance() {
         return instance;
     }

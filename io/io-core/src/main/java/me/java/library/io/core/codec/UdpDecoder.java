@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.DatagramPacketDecoder;
 import me.java.library.io.base.Cmd;
+import me.java.library.io.core.bean.TerminalCache;
 
 import java.util.List;
 
@@ -35,10 +36,9 @@ public class UdpDecoder extends DatagramPacketDecoder {
         for (Object obj : out) {
             if (obj instanceof Cmd) {
                 Cmd cmd = (Cmd) obj;
-                //TODO 记录udp报文的源地址(InetSocketAddress)
-//                if (!Strings.isNullOrEmpty(cmd.getSourceDeviceId())) {
-//                    terminalCache.put(msg.getSourceDeviceId(), datagramPacket.from());
-//                }
+                cmd.getFrom().setInetSocketAddress(datagramPacket.sender());
+                cmd.getTo().setInetSocketAddress(datagramPacket.recipient());
+                TerminalCache.getInstance().put(cmd.getFrom(), datagramPacket.sender());
             }
         }
     }

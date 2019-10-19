@@ -27,11 +27,11 @@ public class AsyncEventBus extends AbstractEventBus {
 
     private static AsyncEventBus instance = new AsyncEventBus();
 
-    synchronized public static AsyncEventBus getInstance() {
-        return instance;
+    private AsyncEventBus() {
     }
 
-    private AsyncEventBus() {
+    synchronized public static AsyncEventBus getInstance() {
+        return instance;
     }
 
     @Override

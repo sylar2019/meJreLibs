@@ -2,7 +2,6 @@ package me.java.library.io.core.codec;
 
 import com.google.common.base.Preconditions;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import me.java.library.io.core.Constants;
 
 /**
  * File Name             : AbstractSimpleStreamCodec

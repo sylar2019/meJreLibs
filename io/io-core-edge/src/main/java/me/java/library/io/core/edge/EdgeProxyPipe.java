@@ -57,8 +57,8 @@ public class EdgeProxyPipe implements Pipe {
             }
 
             @Override
-            public void onHostStateChanged(Pipe pipe, boolean isRunning) {
-                eventBus.postEvent(new HostStateChangedEvent(pipe.getHost(), isRunning));
+            public void onHostStateChanged(Host host, boolean isRunning) {
+                eventBus.postEvent(new HostStateChangedEvent(host, isRunning));
             }
         };
 
@@ -126,6 +126,16 @@ public class EdgeProxyPipe implements Pipe {
             watcher.onConnectionChanged(event.getSource(),
                     event.getContent().getTerminal(),
                     event.getContent().isConnected());
+        }
+    }
+
+
+    @Subscribe
+    @AllowConcurrentEvents
+    public void onEvent(HostStateChangedEvent event) {
+        if (watcher != null) {
+            watcher.onHostStateChanged(event.getSource(),
+                    event.getContent());
         }
     }
 

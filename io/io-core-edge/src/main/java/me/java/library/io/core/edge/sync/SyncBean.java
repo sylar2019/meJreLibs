@@ -19,9 +19,9 @@ import me.java.library.io.base.Cmd;
  * *******************************************************************************************
  */
 public class SyncBean {
+    private final SettableFuture<Cmd> future;
     private Cmd request;
     private Cmd response;
-    private final SettableFuture<Cmd> future;
 
     public SyncBean(Cmd request) {
         this.request = request;
