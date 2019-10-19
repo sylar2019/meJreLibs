@@ -20,6 +20,7 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
+@SuppressWarnings("ALL")
 public enum PasswordAlgorithm {
     //@formatter:off
     bcrypt  ("bcrypt", new BCryptPasswordEncoder()),

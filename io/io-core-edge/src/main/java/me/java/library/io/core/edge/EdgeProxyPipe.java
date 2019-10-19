@@ -1,8 +1,6 @@
 package me.java.library.io.core.edge;
 
 import com.google.common.base.Preconditions;
-import com.google.common.eventbus.AllowConcurrentEvents;
-import com.google.common.eventbus.Subscribe;
 import me.java.library.common.Callback;
 import me.java.library.io.base.Cmd;
 import me.java.library.io.base.Host;
@@ -34,35 +32,51 @@ import java.util.concurrent.TimeUnit;
  */
 public class EdgeProxyPipe implements Pipe {
 
-    protected Pipe pipe;
+    protected final Pipe pipe;
     protected PipeWatcher watcher;
     protected SyncPairity syncPairity;
-    protected AsyncEventBus eventBus = AsyncEventBus.getInstance();
+    protected final AsyncEventBus eventBus = AsyncEventBus.getInstance();
 
     public EdgeProxyPipe(Pipe pipe) {
+        this(pipe, null);
+    }
+
+    public EdgeProxyPipe(Pipe pipe, SyncPairity syncPairity) {
         this.pipe = pipe;
+        this.syncPairity = syncPairity;
         eventBus.regist(this);
 
-        PipeWatcher internalWatcher = new PipeWatcher() {
+        pipe.setWatcher(new PipeWatcher() {
             @Override
             public void onReceived(Pipe pipe, Cmd cmd) {
                 //是否同步响应
                 syncPairity.hasMatched(cmd);
                 eventBus.postEvent(new InboundCmdEvent(pipe, cmd));
+
+                if (watcher != null) {
+                    watcher.onReceived(pipe, cmd);
+                }
             }
 
             @Override
             public void onConnectionChanged(Pipe pipe, Terminal terminal, boolean isConnected) {
-                eventBus.postEvent(new ConnectionChangedEvent(pipe, new ConnectionChangedEvent.Connection(terminal, isConnected)));
+                eventBus.postEvent(new ConnectionChangedEvent(pipe,
+                        new ConnectionChangedEvent.Connection(terminal, isConnected)));
+
+                if (watcher != null) {
+                    watcher.onConnectionChanged(pipe, terminal, isConnected);
+                }
             }
 
             @Override
             public void onHostStateChanged(Host host, boolean isRunning) {
                 eventBus.postEvent(new HostStateChangedEvent(host, isRunning));
-            }
-        };
 
-        pipe.setWatcher(internalWatcher);
+                if (watcher != null) {
+                    watcher.onHostStateChanged(host, isRunning);
+                }
+            }
+        });
     }
 
     @Override
@@ -111,37 +125,14 @@ public class EdgeProxyPipe implements Pipe {
         eventBus.unregist(this);
     }
 
-    @Subscribe
-    @AllowConcurrentEvents
-    public void onEvent(InboundCmdEvent event) {
-        if (watcher != null) {
-            watcher.onReceived(event.getSource(), event.getContent());
-        }
-    }
-
-    @Subscribe
-    @AllowConcurrentEvents
-    public void onEvent(ConnectionChangedEvent event) {
-        if (watcher != null) {
-            watcher.onConnectionChanged(event.getSource(),
-                    event.getContent().getTerminal(),
-                    event.getContent().isConnected());
-        }
-    }
-
-
-    @Subscribe
-    @AllowConcurrentEvents
-    public void onEvent(HostStateChangedEvent event) {
-        if (watcher != null) {
-            watcher.onHostStateChanged(event.getSource(),
-                    event.getContent());
-        }
+    public void setSyncPairity(SyncPairity syncPairity) {
+        this.syncPairity = syncPairity;
     }
 
     public void syncSend(Cmd cmd, long timeoutSeconds, int tryTimes, Callback<Cmd> callback) {
         Preconditions.checkNotNull(cmd);
         Preconditions.checkNotNull(callback);
+        Preconditions.checkNotNull(syncPairity, "syncPairity can not be nul");
         Preconditions.checkState(timeoutSeconds > 0);
         Preconditions.checkState(tryTimes > 0);
 

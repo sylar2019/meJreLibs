@@ -3,12 +3,10 @@ package me.java.library.io.core.edge.sync;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Maps;
 import me.java.library.io.base.Cmd;
 import me.java.library.io.base.Terminal;
 import me.java.library.io.base.cmd.CmdUtils;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +35,7 @@ public abstract class AbstractSyncPairity implements SyncPairity {
     /**
      * 按Terminal缓存请求指令，当响应指令可配对为同步指令时，从缓存移除
      */
-    private Map<Terminal, SyncBeanCache> caches = Maps.newConcurrentMap();
+    private SyncCmdCaches caches = new SyncCmdCaches();
 
     public AbstractSyncPairity() {
         //初始构造【配对指令注册表】
@@ -62,7 +60,7 @@ public abstract class AbstractSyncPairity implements SyncPairity {
             return false;
         }
 
-        SyncBeanCache cache = getCache(response.getFrom());
+        SyncCmdCache cache = getCache(response.getFrom());
         Cmd reqCmd = getMatchedRequest(cache, response);
         return reqCmd != null;
     }
@@ -72,7 +70,7 @@ public abstract class AbstractSyncPairity implements SyncPairity {
         Preconditions.checkState(CmdUtils.isValidCmd(request));
         Preconditions.checkState(isRegisted(request));
 
-        SyncBeanCache cache = getCache(request.getTo());
+        SyncCmdCache cache = getCache(request.getTo());
         Preconditions.checkState(cache.containsKey(request.getId()));
 
         SyncBean bean = cache.get(request.getId());
@@ -84,13 +82,13 @@ public abstract class AbstractSyncPairity implements SyncPairity {
     @Override
     public void cleanCache(Cmd request) {
         Preconditions.checkState(CmdUtils.isValidCmd(request));
-        SyncBeanCache cache = getCache(request.getTo());
+        SyncCmdCache cache = getCache(request.getTo());
         if (cache.containsKey(request.getId())) {
             cache.remove(request.getId());
         }
     }
 
-    protected Cmd getMatchedRequest(SyncBeanCache cache, Cmd response) {
+    protected Cmd getMatchedRequest(SyncCmdCache cache, Cmd response) {
         for (SyncBean bean : cache.getMap().values()) {
             Cmd request = bean.getRequest();
             if (pairs(cache.getTerminal(), request, response)) {
@@ -119,13 +117,12 @@ public abstract class AbstractSyncPairity implements SyncPairity {
         return map.containsKey(cmd.getCode()) || map.inverse().containsKey(cmd.getCode());
     }
 
-    protected SyncBeanCache getCache(Terminal terminal) {
+    protected SyncCmdCache getCache(Terminal terminal) {
         if (!caches.containsKey(terminal)) {
-            SyncBeanCache cache = new SyncBeanCache(terminal);
+            SyncCmdCache cache = new SyncCmdCache(terminal);
             caches.put(terminal, cache);
         }
         return caches.get(terminal);
     }
-
 
 }

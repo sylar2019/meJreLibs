@@ -24,6 +24,10 @@ public class HostNode implements Host {
 
     protected String hostCode;
 
+    public HostNode() {
+        this("default");
+    }
+
     public HostNode(String hostCode) {
         this.hostCode = hostCode;
     }
@@ -37,18 +41,18 @@ public class HostNode implements Host {
     public boolean equals(Object obj) {
         if (obj instanceof HostNode) {
             HostNode pojo = (HostNode) obj;
-            return Objects.equals(hostCode, pojo.getHostCode());
+            return Objects.equals(hostCode, pojo.getCode());
         }
         return super.equals(obj);
     }
 
     @Override
-    public String getHostCode() {
+    public String getCode() {
         return hostCode;
     }
 
     @Override
-    public String getHostName() {
+    public String getName() {
         return NetworkUtils.getHostName();
     }
 

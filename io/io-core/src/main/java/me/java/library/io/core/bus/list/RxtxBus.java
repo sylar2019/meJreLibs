@@ -37,12 +37,12 @@ public class RxtxBus extends AbstractBus {
         return getOrDefault(Bus.BUS_ATTR_RXTX_DATABITS, 8);
     }
 
-    public float getRxtxStopbits() {
-        return getOrDefault(Bus.BUS_ATTR_RXTX_STOPBITS, 1F);
+    public int getRxtxStopbits() {
+        return getOrDefault(Bus.BUS_ATTR_RXTX_STOPBITS, 1);
     }
 
-    public String getRxtxParitybit() {
-        return getOrDefault(Bus.BUS_ATTR_RXTX_PARITYBIT, "NONE");
+    public int getRxtxParitybit() {
+        return getOrDefault(Bus.BUS_ATTR_RXTX_PARITYBIT, 0);
     }
 
     public boolean getRxtxDTR() {
@@ -51,5 +51,29 @@ public class RxtxBus extends AbstractBus {
 
     public boolean getRxtxRTS() {
         return getOrDefault(Bus.BUS_ATTR_RXTX_RTS, false);
+    }
+
+    public void setRxtxBaud(int baud) {
+        setAttr(Bus.BUS_ATTR_RXTX_BAUDRATE, baud);
+    }
+
+    public void setRxtxDatabits(int databits) {
+        setAttr(Bus.BUS_ATTR_RXTX_DATABITS, databits);
+    }
+
+    public void setRxtxStopbits(int stopbits) {
+        setAttr(Bus.BUS_ATTR_RXTX_STOPBITS, stopbits);
+    }
+
+    public void setRxtxParitybit(int paritybit) {
+        setAttr(Bus.BUS_ATTR_RXTX_PARITYBIT, paritybit);
+    }
+
+    public void setRxtxDTR(boolean dtr) {
+        setAttr(Bus.BUS_ATTR_RXTX_DTR, dtr);
+    }
+
+    public void setRxtxRTS(boolean rts) {
+        setAttr(Bus.BUS_ATTR_RXTX_RTS, rts);
     }
 }

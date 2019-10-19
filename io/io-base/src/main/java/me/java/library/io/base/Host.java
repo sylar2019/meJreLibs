@@ -19,9 +19,11 @@ import java.io.Serializable;
  */
 public interface Host extends Serializable {
 
-    String getHostCode();
+    Host LOCAL = new HostNode();
 
-    String getHostName();
+    String getCode();
+
+    String getName();
 
     String getMac();
 

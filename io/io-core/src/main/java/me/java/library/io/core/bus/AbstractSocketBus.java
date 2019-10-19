@@ -38,4 +38,12 @@ public abstract class AbstractSocketBus extends AbstractBus {
     public int getPort(int defaultValue) {
         return getOrDefault(Bus.BUS_ATTR_SOCKET_PORT, defaultValue);
     }
+
+    public void setHost(String host) {
+        setAttr(Bus.BUS_ATTR_SOCKET_HOST, host);
+    }
+
+    public void setPort(int port) {
+        setAttr(Bus.BUS_ATTR_SOCKET_PORT, port);
+    }
 }

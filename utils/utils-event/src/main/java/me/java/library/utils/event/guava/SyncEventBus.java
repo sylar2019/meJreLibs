@@ -20,13 +20,12 @@ import com.google.common.eventbus.EventBus;
 public class SyncEventBus extends AbstractEventBus {
 
     private static SyncEventBus instance = new SyncEventBus();
-    private EventBus bus = new EventBus();
-
-    private SyncEventBus() {
-    }
 
     synchronized public static SyncEventBus getInstance() {
         return instance;
+    }
+
+    private SyncEventBus() {
     }
 
     @Override

@@ -7,7 +7,7 @@ import me.java.library.utils.base.LocalCache;
 import java.util.concurrent.TimeUnit;
 
 /**
- * File Name             :  SyncBeanCache
+ * File Name             :  SyncCmdCache
  *
  * @Author :  sylar
  * @Create :  2019-10-19
@@ -21,14 +21,14 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class SyncBeanCache extends LocalCache<String, SyncBean> {
+public class SyncCmdCache extends LocalCache<String, SyncBean> {
 
     private Terminal terminal;
 
-    public SyncBeanCache(Terminal terminal) {
+    public SyncCmdCache(Terminal terminal) {
         super(CacheBuilder.newBuilder()
                 .maximumSize(1000L)
-                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .expireAfterWrite(3, TimeUnit.MINUTES)
                 .build());
 
         this.terminal = terminal;

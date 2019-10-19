@@ -67,6 +67,7 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
         while ((line = in.readLine()) != null) {
             buffer.append(line);
         }
+        //noinspection unchecked
         return (T) buffer.toString();
     }
 }
