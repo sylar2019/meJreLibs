@@ -21,4 +21,7 @@ import me.java.library.common.IDPojo;
 public interface Terminal extends IDPojo<String>, Attributable<String, Object> {
 
     String getType();
+
+    Terminal LOCAL = new TerminalNode("local", "default");
+    Terminal REMOTE = new TerminalNode("remote", "default");
 }

@@ -3,6 +3,8 @@ package me.java.library.utils.base;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import java.util.Map;
+
 /**
  * File Name             :  LocalCache
  * Author                :  sylar
@@ -19,10 +21,18 @@ import com.google.common.cache.CacheBuilder;
  */
 public class LocalCache<K, V> {
 
-    private Cache<K, V> cache = CacheBuilder.newBuilder()
-            .maximumSize(1000000L)
-            .concurrencyLevel(16)
-            .build();
+    private Cache<K, V> cache;
+
+    public LocalCache() {
+        this(CacheBuilder
+                .newBuilder()
+                .maximumSize(1000000L)
+                .build());
+    }
+
+    public LocalCache(Cache<K, V> cache) {
+        this.cache = cache;
+    }
 
     public V get(K k) {
         return cache.getIfPresent(k);
@@ -32,6 +42,10 @@ public class LocalCache<K, V> {
         if (value != cache.getIfPresent(key)) {
             cache.put(key, value);
         }
+    }
+
+    public void remoceAll() {
+        cache.invalidateAll();
     }
 
     public void remove(K key) {
@@ -44,5 +58,9 @@ public class LocalCache<K, V> {
 
     public long size() {
         return cache.size();
+    }
+
+    public Map<K, V> getMap() {
+        return cache.asMap();
     }
 }

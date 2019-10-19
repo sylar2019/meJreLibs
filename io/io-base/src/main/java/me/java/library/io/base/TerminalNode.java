@@ -2,6 +2,8 @@ package me.java.library.io.base;
 
 import me.java.library.common.AbstractIdPojo;
 
+import java.util.Objects;
+
 /**
  * File Name             :  TerminalNode
  *
@@ -29,5 +31,19 @@ public class TerminalNode extends AbstractIdPojo<String> implements Terminal {
     @Override
     public String getType() {
         return type;
+    }
+
+    @Override
+    public int hashCode() {
+        return (String.format("%s:%s", type, id)).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof TerminalNode) {
+            TerminalNode pojo = (TerminalNode) obj;
+            return Objects.equals(id, pojo.getId()) && Objects.equals(type, pojo.getType());
+        }
+        return false;
     }
 }

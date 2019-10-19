@@ -37,7 +37,7 @@ public class UdpDecoder extends DatagramPacketDecoder {
                 Cmd cmd = (Cmd) obj;
                 //TODO 记录udp报文的源地址(InetSocketAddress)
 //                if (!Strings.isNullOrEmpty(cmd.getSourceDeviceId())) {
-//                    terminalCache.put(msg.getSourceDeviceId(), datagramPacket.sender());
+//                    terminalCache.put(msg.getSourceDeviceId(), datagramPacket.from());
 //                }
             }
         }

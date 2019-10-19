@@ -2,9 +2,9 @@ package me.java.library.io.core.pipe;
 
 import me.java.library.common.service.Serviceable;
 import me.java.library.io.base.Cmd;
+import me.java.library.io.base.Host;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
-import me.java.library.io.base.Host;
 
 /**
  * File Name             :  Pipe
@@ -22,7 +22,6 @@ import me.java.library.io.base.Host;
  * *******************************************************************************************
  */
 public interface Pipe<B extends Bus, C extends Codec> extends Serviceable {
-
 
     /**
      * 启动
@@ -47,11 +46,11 @@ public interface Pipe<B extends Bus, C extends Codec> extends Serviceable {
     boolean isRunning();
 
     /**
-     * 发送指令
+     * 宿主主机信息
      *
-     * @param cmd
+     * @return
      */
-    void send(Cmd cmd);
+    Host getHost();
 
     /**
      * 获取观察者
@@ -68,9 +67,11 @@ public interface Pipe<B extends Bus, C extends Codec> extends Serviceable {
     void setWatcher(PipeWatcher watcher);
 
     /**
-     * 宿主主机信息
+     * 发送指令
      *
-     * @return
+     * @param cmd
      */
-    Host getHost();
+    void send(Cmd cmd);
+
+
 }

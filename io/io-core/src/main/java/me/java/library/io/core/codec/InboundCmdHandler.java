@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
+import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.base.Cmd;
 import me.java.library.io.base.Terminal;
 import me.java.library.io.base.cmd.CmdUtils;
@@ -33,7 +34,7 @@ public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Cmd cmd) throws Exception {
         Preconditions.checkState(CmdUtils.isValidCmd(cmd), "invalid cmd");
-        onConnected(ctx, cmd.getSender());
+        onConnected(ctx, cmd.getFrom());
         onCmdReceived(ctx, cmd);
     }
 
@@ -106,14 +107,14 @@ public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
     protected void onConnectionChanged(Channel channel, Terminal terminal, boolean isConnected) {
         Pipe pipe = ChannelAttr.get(channel, ChannelAttr.ATTR_PIPE);
         if (pipe.getWatcher() != null) {
-            pipe.getWatcher().onConnectionChanged(pipe, terminal, isConnected);
+            ConcurrentService.getInstance().post(() -> pipe.getWatcher().onConnectionChanged(pipe, terminal, isConnected));
         }
     }
 
     protected void onCmdReceived(ChannelHandlerContext ctx, Cmd cmd) {
         Pipe pipe = ChannelAttr.get(ctx.channel(), ChannelAttr.ATTR_PIPE);
         if (pipe.getWatcher() != null) {
-            pipe.getWatcher().onReceived(pipe, cmd);
+            ConcurrentService.getInstance().post(() -> pipe.getWatcher().onReceived(pipe, cmd));
         }
     }
 

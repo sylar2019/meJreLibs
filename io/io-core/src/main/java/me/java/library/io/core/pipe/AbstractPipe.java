@@ -7,13 +7,14 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
+import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.base.Cmd;
+import me.java.library.io.base.Host;
+import me.java.library.io.base.HostNode;
 import me.java.library.io.base.cmd.CmdUtils;
 import me.java.library.io.core.bean.ChannelCache;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
-import me.java.library.io.base.Host;
-import me.java.library.io.base.HostNode;
 import me.java.library.io.core.utils.ChannelAttr;
 import me.java.library.io.core.utils.NettyUtils;
 
@@ -90,18 +91,13 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     }
 
     @Override
-    public boolean isRunning() {
-        return isRunning;
+    public Host getHost() {
+        return host;
     }
 
     @Override
-    public void send(Cmd cmd) {
-        Preconditions.checkNotNull(cmd);
-        Preconditions.checkState(CmdUtils.isValidCmd(cmd));
-
-        //查找对应channel
-        Channel channel = ChannelCache.getInstance().get(cmd.getRecipient());
-        NettyUtils.writeData(channel, cmd);
+    public boolean isRunning() {
+        return isRunning;
     }
 
     @Override
@@ -115,10 +111,14 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     }
 
     @Override
-    public Host getHost() {
-        return host;
-    }
+    public void send(Cmd cmd) {
+        Preconditions.checkNotNull(cmd);
+        Preconditions.checkState(CmdUtils.isValidCmd(cmd));
 
+        //查找对应channel
+        Channel channel = ChannelCache.getInstance().get(cmd.getTo());
+        NettyUtils.writeData(channel, cmd);
+    }
 
     protected void onStart() {
         //do nothing
@@ -160,13 +160,12 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     private void registHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             onHostStateChanged(false);
-
         }));
     }
 
     protected void onHostStateChanged(boolean isRunning) {
         if (watcher != null) {
-            watcher.onHostStateChanged(AbstractPipe.this, isRunning);
+            ConcurrentService.getInstance().post(() -> watcher.onHostStateChanged(AbstractPipe.this, isRunning));
         }
     }
 }

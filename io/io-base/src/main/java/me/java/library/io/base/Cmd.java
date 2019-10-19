@@ -40,14 +40,14 @@ public interface Cmd extends IDPojo<String>, Attributable<String, Object> {
      *
      * @return
      */
-    Terminal getSender();
+    Terminal getFrom();
 
     /**
      * 接收方
      *
      * @return
      */
-    Terminal getRecipient();
+    Terminal getTo();
 
 
     /**

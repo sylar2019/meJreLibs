@@ -3,6 +3,8 @@ package me.java.library.io.base;
 import me.java.library.utils.base.JvmUtils;
 import me.java.library.utils.base.NetworkUtils;
 
+import java.util.Objects;
+
 /**
  * File Name             :  HostNode
  *
@@ -24,6 +26,20 @@ public class HostNode implements Host {
 
     public HostNode(String hostCode) {
         this.hostCode = hostCode;
+    }
+
+    @Override
+    public int hashCode() {
+        return hostCode.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof HostNode) {
+            HostNode pojo = (HostNode) obj;
+            return Objects.equals(hostCode, pojo.getHostCode());
+        }
+        return super.equals(obj);
     }
 
     @Override

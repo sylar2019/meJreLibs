@@ -33,13 +33,23 @@ public abstract class AbstractIdPojo<ID> extends AbstractPojo implements IDPojo<
     }
 
     @Override
-    public final int hashCode() {
-        return super.hashCode();
+    public int hashCode() {
+        return id.hashCode();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public final boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (!obj.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        IDPojo<ID> other = (IDPojo<ID>) obj;
+        return id.equals(other.getId());
     }
 
     @Override

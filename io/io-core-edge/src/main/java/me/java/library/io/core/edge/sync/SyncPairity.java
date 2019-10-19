@@ -1,9 +1,11 @@
-package me.java.library.io.core.edge;
+package me.java.library.io.core.edge.sync;
 
 import me.java.library.io.base.Cmd;
 
+import java.util.concurrent.TimeUnit;
+
 /**
- * File Name             :  CmdPairty
+ * File Name             :  SyncPairity
  *
  * @Author :  sylar
  * @Create :  2019-10-18
@@ -17,7 +19,13 @@ import me.java.library.io.base.Cmd;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface CmdPairty {
+public interface SyncPairity {
 
-    boolean isPairs(Cmd req, Cmd res);
+    void cacheRequest(Cmd request);
+
+    boolean hasMatched(Cmd response);
+
+    Cmd getResponse(Cmd request, long timeout, TimeUnit unit) throws Exception;
+
+    void cleanCache(Cmd request);
 }

@@ -1,9 +1,8 @@
 package me.java.library.io.core.edge;
 
-import com.google.common.collect.Maps;
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
-import com.google.common.util.concurrent.SettableFuture;
 import me.java.library.common.Callback;
 import me.java.library.io.base.Cmd;
 import me.java.library.io.base.Host;
@@ -11,13 +10,12 @@ import me.java.library.io.base.Terminal;
 import me.java.library.io.core.edge.event.ConnectionChangedEvent;
 import me.java.library.io.core.edge.event.HostStateChangedEvent;
 import me.java.library.io.core.edge.event.InboundCmdEvent;
+import me.java.library.io.core.edge.sync.SyncPairity;
 import me.java.library.io.core.pipe.Pipe;
 import me.java.library.io.core.pipe.PipeWatcher;
 import me.java.library.utils.event.guava.AsyncEventBus;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * File Name             :  EdgeProxyPipe
@@ -38,21 +36,32 @@ public class EdgeProxyPipe implements Pipe {
 
     protected Pipe pipe;
     protected PipeWatcher watcher;
+    protected SyncPairity syncPairity;
     protected AsyncEventBus eventBus = AsyncEventBus.getInstance();
-//    protected ExecutorService executor = new ThreadPoolExecutor(
-//            Runtime.getRuntime().availableProcessors() * 2,
-//            16,
-//            10L,
-//            TimeUnit.SECONDS,
-//            new LinkedBlockingQueue<>(),
-//            new ThreadFactoryBuilder().setNameFormat("sync-send-pool-%d").build());
-//
-//    ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
-
 
     public EdgeProxyPipe(Pipe pipe) {
         this.pipe = pipe;
         eventBus.regist(this);
+
+        PipeWatcher internalWatcher = new PipeWatcher() {
+            @Override
+            public void onReceived(Pipe pipe, Cmd cmd) {
+                //是否同步响应
+                syncPairity.hasMatched(cmd);
+                eventBus.postEvent(new InboundCmdEvent(pipe, cmd));
+            }
+
+            @Override
+            public void onConnectionChanged(Pipe pipe, Terminal terminal, boolean isConnected) {
+                eventBus.postEvent(new ConnectionChangedEvent(pipe, new ConnectionChangedEvent.Connection(terminal, isConnected)));
+            }
+
+            @Override
+            public void onHostStateChanged(Pipe pipe, boolean isRunning) {
+                eventBus.postEvent(new HostStateChangedEvent(pipe.getHost(), isRunning));
+            }
+        };
+
         pipe.setWatcher(internalWatcher);
     }
 
@@ -102,68 +111,6 @@ public class EdgeProxyPipe implements Pipe {
         eventBus.unregist(this);
     }
 
-
-    Map<String, SyncBean> syncMap = Maps.newConcurrentMap();
-
-    class SyncBean {
-        final Cmd req;
-        final SettableFuture<Cmd> future;
-
-        public SyncBean(Cmd req) {
-            this.req = req;
-            this.future = SettableFuture.create();
-        }
-
-        public Cmd getReq() {
-            return req;
-        }
-
-        public SettableFuture<Cmd> getFuture() {
-            return future;
-        }
-    }
-
-    public void syncSend(Cmd cmd, int timeoutSeconds, int tryTimes, Callback<Cmd> callback) {
-
-        SyncBean bean = new SyncBean(cmd);
-        syncMap.put(cmd.getId(), bean);
-
-        Cmd res = null;
-        for (int i = 0; i < tryTimes; i++) {
-            send(cmd);
-            try {
-                res = bean.getFuture().get(timeoutSeconds, TimeUnit.SECONDS);
-                if (res != null) {
-                    break;
-                }
-            } catch (Exception e) {
-            }
-        }
-
-        if (res != null) {
-            callback.onSuccess(res);
-        } else {
-            callback.onFailure(new TimeoutException("timeout. cmd:" + cmd));
-        }
-
-    }
-
-    protected boolean isSyncResponse(Cmd repCmd) {
-        Cmd reqCmd = getMatchReqCmd(repCmd);
-        if (reqCmd != null) {
-            SyncBean bean = syncMap.remove(reqCmd.getId());
-            bean.getFuture().set(repCmd);
-            return true;
-        }
-
-        return false;
-    }
-
-    protected Cmd getMatchReqCmd(Cmd repCmd) {
-        return null;
-    }
-
-
     @Subscribe
     @AllowConcurrentEvents
     public void onEvent(InboundCmdEvent event) {
@@ -182,22 +129,33 @@ public class EdgeProxyPipe implements Pipe {
         }
     }
 
-    PipeWatcher internalWatcher = new PipeWatcher() {
-        @Override
-        public void onReceived(Pipe pipe, Cmd cmd) {
-            if (!isSyncResponse(cmd)) {
-                eventBus.postEvent(new InboundCmdEvent(pipe, cmd));
+    public void syncSend(Cmd cmd, long timeoutSeconds, int tryTimes, Callback<Cmd> callback) {
+        Preconditions.checkNotNull(cmd);
+        Preconditions.checkNotNull(callback);
+        Preconditions.checkState(timeoutSeconds > 0);
+        Preconditions.checkState(tryTimes > 0);
+
+        syncPairity.cacheRequest(cmd);
+        Cmd res = null;
+        Throwable t = null;
+        for (int i = 0; i < tryTimes; i++) {
+            send(cmd);
+            try {
+                res = syncPairity.getResponse(cmd, timeoutSeconds, TimeUnit.SECONDS);
+                if (res != null) {
+                    break;
+                }
+            } catch (Exception e) {
+                t = e;
             }
         }
 
-        @Override
-        public void onConnectionChanged(Pipe pipe, Terminal terminal, boolean isConnected) {
-            eventBus.postEvent(new ConnectionChangedEvent(pipe, new ConnectionChangedEvent.Connection(terminal, isConnected)));
+        if (res != null) {
+            callback.onSuccess(res);
+        } else {
+            syncPairity.cleanCache(cmd);
+            callback.onFailure(t);
         }
+    }
 
-        @Override
-        public void onHostStateChanged(Pipe pipe, boolean isRunning) {
-            eventBus.postEvent(new HostStateChangedEvent(pipe.getHost(), isRunning));
-        }
-    };
 }

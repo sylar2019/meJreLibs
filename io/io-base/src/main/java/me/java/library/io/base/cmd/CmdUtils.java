@@ -24,8 +24,8 @@ public class CmdUtils {
     public static boolean isValidCmd(Cmd cmd) {
         return cmd != null
                 && !Strings.isNullOrEmpty(cmd.getCode())
-                && isValidTerminal(cmd.getSender())
-                && isValidTerminal(cmd.getRecipient());
+                && isValidTerminal(cmd.getFrom())
+                && isValidTerminal(cmd.getTo());
     }
 
     public static boolean isValidTerminal(Terminal terminal) {
