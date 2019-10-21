@@ -1,5 +1,7 @@
 package me.java.library.common;
 
+import java.io.Serializable;
+
 /**
  * File Name             :  Identifiable
  *
@@ -15,6 +17,6 @@ package me.java.library.common;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Namable {
-    String getName();
+public interface Identifiable<ID> extends Serializable, Comparable<Identifiable<ID>> {
+    ID getId();
 }

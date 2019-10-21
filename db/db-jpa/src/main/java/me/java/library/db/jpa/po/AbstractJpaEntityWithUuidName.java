@@ -1,6 +1,6 @@
 package me.java.library.db.jpa.po;
 
-import me.java.library.common.IDNamePojo;
+import me.java.library.common.model.pojo.IdName;
 
 import javax.persistence.MappedSuperclass;
 
@@ -19,7 +19,7 @@ import javax.persistence.MappedSuperclass;
  * *******************************************************************************************
  */
 @MappedSuperclass
-public abstract class AbstractJpaEntityWithUuidName extends AbstractJpaEntityWithUuid implements IDNamePojo<String> {
+public abstract class AbstractJpaEntityWithUuidName extends AbstractJpaEntityWithUuid implements IdName<String> {
 
     protected String name;
 

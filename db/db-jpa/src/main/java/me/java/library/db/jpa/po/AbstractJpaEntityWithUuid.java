@@ -1,6 +1,6 @@
 package me.java.library.db.jpa.po;
 
-import me.java.library.common.IDPojo;
+import me.java.library.common.Identifiable;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.GeneratedValue;
@@ -22,7 +22,7 @@ import javax.persistence.MappedSuperclass;
  * *******************************************************************************************
  */
 @MappedSuperclass
-public abstract class AbstractJpaEntityWithUuid extends AbstractJpaEntity implements IDPojo<String> {
+public abstract class AbstractJpaEntityWithUuid extends AbstractJpaEntity implements Identifiable<String> {
 
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid2")

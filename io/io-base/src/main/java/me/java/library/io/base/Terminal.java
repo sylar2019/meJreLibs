@@ -2,7 +2,7 @@ package me.java.library.io.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.java.library.common.Attributable;
-import me.java.library.common.IDPojo;
+import me.java.library.common.Identifiable;
 
 import java.net.InetSocketAddress;
 
@@ -21,7 +21,7 @@ import java.net.InetSocketAddress;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Terminal extends IDPojo<String>, Attributable<String, Object> {
+public interface Terminal extends Identifiable<String>, Attributable<String, Object> {
 
     Terminal LOCAL = new TerminalNode("local", "default");
     Terminal REMOTE = new TerminalNode("remote", "default");

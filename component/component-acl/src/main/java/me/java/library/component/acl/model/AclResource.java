@@ -1,6 +1,6 @@
 package me.java.library.component.acl.model;
 
-import me.java.library.common.IDNamePojo;
+import me.java.library.common.model.pojo.IdName;
 import me.java.library.component.acl.AclResourceType;
 
 /**
@@ -18,7 +18,7 @@ import me.java.library.component.acl.AclResourceType;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface AclResource extends IDNamePojo<Long> {
+public interface AclResource extends IdName<Long> {
 
     /**
      * 资源类型

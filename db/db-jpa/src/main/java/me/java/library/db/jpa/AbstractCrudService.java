@@ -2,8 +2,8 @@ package me.java.library.db.jpa;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import me.java.library.common.IDNamePojo;
-import me.java.library.common.IDPojo;
+import me.java.library.common.model.pojo.IdName;
+import me.java.library.common.Identifiable;
 import me.java.library.common.Namable;
 import me.java.library.common.service.CrudService;
 import me.java.library.db.jpa.annotation.ReadTransactional;
@@ -36,8 +36,8 @@ import java.util.List;
  */
 @DependsOn("foreignKeyService")
 public abstract class AbstractCrudService<
-        PO extends IDPojo<ID>,
-        DTO extends IDPojo<ID>,
+        PO extends Identifiable<ID>,
+        DTO extends Identifiable<ID>,
         ID extends Serializable>
 
         implements CrudService<DTO, ID> {
@@ -85,8 +85,8 @@ public abstract class AbstractCrudService<
     public String getNameById(ID id) {
         Preconditions.checkNotNull(id, "id is null");
         checkExisted(id);
-        if (IDNamePojo.class.isAssignableFrom(classPO)) {
-            return ((IDNamePojo) getRepository().getOne(id)).getName();
+        if (IdName.class.isAssignableFrom(classPO)) {
+            return ((IdName) getRepository().getOne(id)).getName();
         }
         return null;
     }

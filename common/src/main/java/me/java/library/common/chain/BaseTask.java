@@ -17,7 +17,7 @@ import com.lmax.disruptor.EventHandler;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class BaseTask implements EventHandler<Context> {
+public abstract class BaseTask implements EventHandler<ChainContext> {
 
     private ChainContainer container;
 
@@ -25,14 +25,14 @@ public abstract class BaseTask implements EventHandler<Context> {
         this.container = container;
     }
 
-    protected abstract Object onEvent(Context context) throws Exception;
+    protected abstract Object onEvent(ChainContext context) throws Exception;
 
     public String getTaskCode() {
         return getClass().getSimpleName();
     }
 
     @Override
-    public void onEvent(Context event, long sequence, boolean endOfBatch) throws Exception {
+    public void onEvent(ChainContext event, long sequence, boolean endOfBatch) throws Exception {
         System.out.println("handler name: " + getClass().getSimpleName());
         try {
             Object result = this.onEvent(event);

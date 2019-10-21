@@ -2,7 +2,7 @@ package me.java.library.io.core.codec;
 
 import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandler;
-import me.java.library.common.AbstractIdPojo;
+import me.java.library.common.model.pojo.AbstractIdPojo;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package me.java.library.db.jpa.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import me.java.library.common.AbstractPojo;
+import me.java.library.common.model.pojo.AbstractPojo;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;

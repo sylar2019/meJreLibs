@@ -1,6 +1,6 @@
 package me.java.library.io.base.cmd;
 
-import me.java.library.common.AbstractIdPojo;
+import me.java.library.common.model.pojo.AbstractIdPojo;
 import me.java.library.io.base.Cmd;
 import me.java.library.io.base.Terminal;
 import org.joda.time.DateTime;

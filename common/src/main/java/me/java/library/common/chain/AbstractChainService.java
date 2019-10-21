@@ -27,11 +27,11 @@ import com.lmax.disruptor.util.DaemonThreadFactory;
 public abstract class AbstractChainService implements ChainContainer {
 
     private final static int BUFFER_SIZE = 1024;
-    private final static EventTranslatorVararg<Context> TRANSLATOR = (event, sequence, args) -> event.setArgs(args);
+    private final static EventTranslatorVararg<ChainContext> TRANSLATOR = (event, sequence, args) -> event.setArgs(args);
 
     protected ChainCallback callback;
-    protected Disruptor<Context> disruptor = new Disruptor<>(
-            Context::new,
+    protected Disruptor<ChainContext> disruptor = new Disruptor<>(
+            ChainContext::new,
             BUFFER_SIZE,
             DaemonThreadFactory.INSTANCE
     );
@@ -43,7 +43,7 @@ public abstract class AbstractChainService implements ChainContainer {
      * @param disruptor
      * @param endTask
      */
-    protected abstract void createChain(Disruptor<Context> disruptor, EndTask endTask);
+    protected abstract void createChain(Disruptor<ChainContext> disruptor, EndTask endTask);
 
     public AbstractChainService(ChainCallback callback) {
         Preconditions.checkNotNull(callback);
@@ -51,6 +51,11 @@ public abstract class AbstractChainService implements ChainContainer {
 
         createChain(disruptor, new EndTask(this));
         disruptor.start();
+    }
+
+    @Override
+    public void dispose() {
+        start();
     }
 
     @Override
@@ -86,7 +91,7 @@ public abstract class AbstractChainService implements ChainContainer {
     }
 
     @Override
-    public void onChainFinished(Context context) {
+    public void onChainFinished(ChainContext context) {
         callback.onChainFinished(context);
     }
 

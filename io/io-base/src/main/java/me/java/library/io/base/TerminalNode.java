@@ -1,6 +1,6 @@
 package me.java.library.io.base;
 
-import me.java.library.common.AbstractIdPojo;
+import me.java.library.common.model.pojo.AbstractIdPojo;
 
 import java.util.Objects;
 

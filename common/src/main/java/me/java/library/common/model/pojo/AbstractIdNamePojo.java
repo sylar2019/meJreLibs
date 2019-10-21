@@ -1,9 +1,7 @@
-package me.java.library.common;
-
-import java.io.Serializable;
+package me.java.library.common.model.pojo;
 
 /**
- * File Name             :  IDPojo
+ * File Name             :  AbstractIdPojo
  *
  * @author :  sylar
  * @create :  2018/10/7
@@ -17,6 +15,16 @@ import java.io.Serializable;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface IDPojo<ID> extends Serializable, Comparable<IDPojo<ID>> {
-    ID getId();
+public abstract class AbstractIdNamePojo<ID> extends AbstractIdPojo<ID> implements IdName<ID> {
+
+    protected String name;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

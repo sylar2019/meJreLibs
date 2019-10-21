@@ -19,7 +19,7 @@ import java.util.Map;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class LocalCacheService<K, V> {
+public class LocalCacheService<K, V> implements Serviceable {
 
     private Cache<K, V> cache;
 
@@ -32,6 +32,11 @@ public class LocalCacheService<K, V> {
 
     public LocalCacheService(Cache<K, V> cache) {
         this.cache = cache;
+    }
+
+    @Override
+    public void dispose() {
+        cache.invalidateAll();
     }
 
     public V get(K k) {

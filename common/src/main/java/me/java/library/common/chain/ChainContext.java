@@ -6,7 +6,7 @@ import me.java.library.utils.base.JsonUtils;
 import java.util.Map;
 
 /**
- * File Name             :  Context
+ * File Name             :  ChainContext
  *
  * @Author :  sylar
  * @Create :  2019-10-20
@@ -20,7 +20,7 @@ import java.util.Map;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class Context {
+public final class ChainContext {
     private Object[] args;
     private Map<String, Object> taskResults = Maps.newLinkedHashMap();
 

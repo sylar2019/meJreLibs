@@ -1,7 +1,7 @@
 package me.java.library.common.model.dto;
 
 
-import me.java.library.common.AbstractPojo;
+import me.java.library.common.model.pojo.AbstractPojo;
 
 /**
  * @author :  sylar

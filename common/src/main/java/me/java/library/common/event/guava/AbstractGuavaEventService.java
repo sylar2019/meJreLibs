@@ -35,6 +35,10 @@ public abstract class AbstractGuavaEventService implements EventService {
     protected abstract EventBus getBus();
 
     @Override
+    public void dispose() {
+    }
+
+    @Override
     public void regist(EventListener listener) {
         getBus().register(listener);
     }

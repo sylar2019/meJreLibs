@@ -1,5 +1,7 @@
 package me.java.library.common.event;
 
+import me.java.library.common.service.Serviceable;
+
 /**
  * File Name             :  EventService
  *
@@ -15,7 +17,7 @@ package me.java.library.common.event;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public interface EventService {
+public interface EventService extends Serviceable {
 
     void regist(final EventListener listener);
 

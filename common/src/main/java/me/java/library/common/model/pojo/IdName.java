@@ -1,7 +1,10 @@
-package me.java.library.common;
+package me.java.library.common.model.pojo;
+
+import me.java.library.common.Identifiable;
+import me.java.library.common.Namable;
 
 /**
- * File Name             :  AbstractIdPojo
+ * File Name             :
  *
  * @author :  sylar
  * @create :  2018/10/7
@@ -15,16 +18,5 @@ package me.java.library.common;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractIdNamePojo<ID> extends AbstractIdPojo<ID> implements IDNamePojo<ID> {
-
-    protected String name;
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+public interface IdName<ID> extends Identifiable<ID>, Namable {
 }

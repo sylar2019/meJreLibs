@@ -1,7 +1,7 @@
 package me.java.library.io.base;
 
 import me.java.library.common.Attributable;
-import me.java.library.common.IDPojo;
+import me.java.library.common.Identifiable;
 import me.java.library.io.base.cmd.CmdType;
 
 /**
@@ -19,7 +19,7 @@ import me.java.library.io.base.cmd.CmdType;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Cmd extends IDPojo<String>, Attributable<String, Object> {
+public interface Cmd extends Identifiable<String>, Attributable<String, Object> {
 
     /**
      * 消息code

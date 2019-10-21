@@ -1,4 +1,4 @@
-package me.java.library.common.service;
+package me.java.library.common;
 
 /**
  * 初始化接口

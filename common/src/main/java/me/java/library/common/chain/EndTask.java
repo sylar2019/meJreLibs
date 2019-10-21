@@ -17,7 +17,7 @@ import com.lmax.disruptor.EventHandler;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public final class EndTask implements EventHandler<Context> {
+public final class EndTask implements EventHandler<ChainContext> {
 
     protected ChainContainer container;
 
@@ -26,7 +26,7 @@ public final class EndTask implements EventHandler<Context> {
     }
 
     @Override
-    public void onEvent(Context event, long sequence, boolean endOfBatch) throws Exception {
+    public void onEvent(ChainContext event, long sequence, boolean endOfBatch) throws Exception {
         try {
             container.onChainFinished(event);
         } catch (Exception e) {

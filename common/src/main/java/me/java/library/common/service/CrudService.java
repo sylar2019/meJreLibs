@@ -1,6 +1,6 @@
 package me.java.library.common.service;
 
-import me.java.library.common.IDPojo;
+import me.java.library.common.Identifiable;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface CrudService<DTO extends IDPojo<ID>, ID extends Serializable> extends Serviceable {
+public interface CrudService<DTO extends Identifiable<ID>, ID extends Serializable> extends Serviceable {
 
     String getNameById(ID id);
 

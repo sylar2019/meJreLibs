@@ -1,6 +1,7 @@
-package me.java.library.common;
+package me.java.library.common.model.pojo;
 
 import com.google.common.collect.Maps;
+import me.java.library.common.Attributable;
 import me.java.library.utils.base.JsonUtils;
 
 import java.util.Map;

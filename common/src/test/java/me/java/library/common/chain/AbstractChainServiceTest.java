@@ -5,8 +5,6 @@ import com.lmax.disruptor.dsl.Disruptor;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * File Name             :  AbstractChainServiceTest
  *
@@ -55,7 +53,7 @@ public class AbstractChainServiceTest {
         }
 
         @Override
-        public void onChainFinished(Context context) {
+        public void onChainFinished(ChainContext context) {
             print(String.format("【onChainFinished】 context: %s", context));
         }
 
@@ -98,7 +96,7 @@ public class AbstractChainServiceTest {
         }
 
         @Override
-        protected void createChain(Disruptor<Context> disruptor, EndTask endTask) {
+        protected void createChain(Disruptor<ChainContext> disruptor, EndTask endTask) {
             BaseTask t1 = new BaseTask1(this);
             BaseTask t2 = new BaseTask2(this);
             BaseTask t3 = new BaseTask3(this);
@@ -140,7 +138,7 @@ public class AbstractChainServiceTest {
         }
 
         @Override
-        protected Object onEvent(Context context) throws Exception {
+        protected Object onEvent(ChainContext context) throws Exception {
             Thread.sleep(500);
 //            throw new Exception("exception from " + getClass().getSimpleName());
             print("task finished: " + getClass().getSimpleName());
@@ -154,7 +152,7 @@ public class AbstractChainServiceTest {
         }
 
         @Override
-        protected Object onEvent(Context context) throws Exception {
+        protected Object onEvent(ChainContext context) throws Exception {
             Thread.sleep(500);
 //            throw new Exception("exception from " + getClass().getSimpleName());
             print("task finished: " + getClass().getSimpleName());
@@ -168,7 +166,7 @@ public class AbstractChainServiceTest {
         }
 
         @Override
-        protected Object onEvent(Context context) throws Exception {
+        protected Object onEvent(ChainContext context) throws Exception {
             Thread.sleep(500);
             print("task finished: " + getClass().getSimpleName());
             return 300;
@@ -181,7 +179,7 @@ public class AbstractChainServiceTest {
         }
 
         @Override
-        protected Object onEvent(Context context) throws Exception {
+        protected Object onEvent(ChainContext context) throws Exception {
             Thread.sleep(500);
             print("task finished: " + getClass().getSimpleName());
             return 400;
@@ -194,7 +192,7 @@ public class AbstractChainServiceTest {
         }
 
         @Override
-        protected Object onEvent(Context context) throws Exception {
+        protected Object onEvent(ChainContext context) throws Exception {
             Thread.sleep(500);
             print("task finished: " + getClass().getSimpleName());
             return 500;

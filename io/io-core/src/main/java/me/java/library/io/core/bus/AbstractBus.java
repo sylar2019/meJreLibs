@@ -1,6 +1,6 @@
 package me.java.library.io.core.bus;
 
-import me.java.library.common.AbstractPojo;
+import me.java.library.common.model.pojo.AbstractPojo;
 
 /**
  * File Name             :  AbstractBus

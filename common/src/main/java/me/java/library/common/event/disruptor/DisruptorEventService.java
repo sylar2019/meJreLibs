@@ -51,6 +51,11 @@ public class DisruptorEventService implements EventService {
     }
 
     @Override
+    public void dispose() {
+        stop();
+    }
+
+    @Override
     public void regist(EventListener listener) {
         if (!listeners.contains(listener)) {
             listeners.add(listener);

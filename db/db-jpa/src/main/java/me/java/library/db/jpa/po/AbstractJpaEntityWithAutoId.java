@@ -1,6 +1,6 @@
 package me.java.library.db.jpa.po;
 
-import me.java.library.common.IDPojo;
+import me.java.library.common.Identifiable;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +22,7 @@ import javax.persistence.MappedSuperclass;
  * *******************************************************************************************
  */
 @MappedSuperclass
-public abstract class AbstractJpaEntityWithAutoId extends AbstractJpaEntity implements IDPojo<Long> {
+public abstract class AbstractJpaEntityWithAutoId extends AbstractJpaEntity implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,7 +43,7 @@ public abstract class AbstractJpaEntityWithAutoId extends AbstractJpaEntity impl
             return false;
         }
 
-        IDPojo other = (IDPojo) obj;
+        Identifiable other = (Identifiable) obj;
         return id.equals(other.getId());
     }
 

@@ -1,7 +1,7 @@
 package me.java.library.io.core.codec;
 
 import io.netty.channel.ChannelHandler;
-import me.java.library.common.IDPojo;
+import me.java.library.common.Identifiable;
 
 import java.util.LinkedHashMap;
 
@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Codec extends IDPojo<String> {
+public interface Codec extends Identifiable<String> {
 
     String HANDLER_NAME_IDLE_STATE = "idleStateHandler";
     String HANDLER_NAME_LOG = "logHandler";

@@ -1,4 +1,6 @@
-package me.java.library.common;
+package me.java.library.common.model.pojo;
+
+import me.java.library.common.Identifiable;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -17,7 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractIdPojo<ID> extends AbstractPojo implements IDPojo<ID> {
+public abstract class AbstractIdPojo<ID> extends AbstractPojo implements Identifiable<ID> {
 
     protected static final AtomicLong uniqueIdGenerator = new AtomicLong();
     protected final long uniquifier = uniqueIdGenerator.getAndIncrement();
@@ -48,12 +50,12 @@ public abstract class AbstractIdPojo<ID> extends AbstractPojo implements IDPojo<
             return false;
         }
 
-        IDPojo<ID> other = (IDPojo<ID>) obj;
+        Identifiable<ID> other = (Identifiable<ID>) obj;
         return id.equals(other.getId());
     }
 
     @Override
-    public int compareTo(IDPojo<ID> o) {
+    public int compareTo(Identifiable<ID> o) {
 
         if (this == o) {
             return 0;

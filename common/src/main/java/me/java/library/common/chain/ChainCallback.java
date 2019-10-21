@@ -25,7 +25,7 @@ public interface ChainCallback {
 
     void onTaskThrowable(BaseTask task, Throwable t);
 
-    void onChainFinished(Context context);
+    void onChainFinished(ChainContext context);
 
 }
 

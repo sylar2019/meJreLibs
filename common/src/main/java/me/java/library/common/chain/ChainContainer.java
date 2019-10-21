@@ -1,5 +1,7 @@
 package me.java.library.common.chain;
 
+import me.java.library.common.service.Serviceable;
+
 /**
  * File Name             :  ChainContainer
  *
@@ -15,7 +17,7 @@ package me.java.library.common.chain;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public interface ChainContainer {
+public interface ChainContainer extends Serviceable {
 
     void start(Object... args);
 
@@ -29,6 +31,6 @@ public interface ChainContainer {
 
     void onTaskThrowable(BaseTask task, Throwable t);
 
-    void onChainFinished(Context context);
+    void onChainFinished(ChainContext context);
 
 }

@@ -1,6 +1,6 @@
 package me.java.library.component.acl.model;
 
-import me.java.library.common.IDNamePojo;
+import me.java.library.common.model.pojo.IdName;
 
 /**
  * File Name             :
@@ -17,7 +17,7 @@ import me.java.library.common.IDNamePojo;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface AclRole extends IDNamePojo<Long> {
+public interface AclRole extends IdName<Long> {
 
     String getDescription();
 }
