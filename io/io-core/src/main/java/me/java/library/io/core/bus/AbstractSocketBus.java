@@ -27,6 +27,10 @@ public abstract class AbstractSocketBus extends AbstractBus {
         return getOrDefault(Bus.BUS_ATTR_SOCKET_HOST, defaultHost);
     }
 
+    public void setHost(String host) {
+        setAttr(Bus.BUS_ATTR_SOCKET_HOST, host);
+    }
+
     public String getHost(String defaultValue) {
         return getOrDefault(Bus.BUS_ATTR_SOCKET_HOST, defaultValue);
     }
@@ -35,15 +39,11 @@ public abstract class AbstractSocketBus extends AbstractBus {
         return getOrDefault(Bus.BUS_ATTR_SOCKET_PORT, defaultPort);
     }
 
-    public int getPort(int defaultValue) {
-        return getOrDefault(Bus.BUS_ATTR_SOCKET_PORT, defaultValue);
-    }
-
-    public void setHost(String host) {
-        setAttr(Bus.BUS_ATTR_SOCKET_HOST, host);
-    }
-
     public void setPort(int port) {
         setAttr(Bus.BUS_ATTR_SOCKET_PORT, port);
+    }
+
+    public int getPort(int defaultValue) {
+        return getOrDefault(Bus.BUS_ATTR_SOCKET_PORT, defaultValue);
     }
 }

@@ -1,6 +1,6 @@
 package me.java.library.db.jpa.po;
 
-import me.java.library.common.po.IBaseDbEnum;
+import me.java.library.common.model.po.BaseEnum;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.DynamicParameterizedType;
@@ -78,7 +78,7 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
             return null;
         }
         for (Object object : enumClass.getEnumConstants()) {
-            if (Objects.equals(Integer.parseInt(value), ((IBaseDbEnum) object).getValue())) {
+            if (Objects.equals(Integer.parseInt(value), ((BaseEnum) object).getValue())) {
                 return object;
             }
         }
@@ -93,8 +93,8 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
             st.setNull(index, SQL_TYPES[0]);
         } else if (value instanceof Integer) {
             st.setInt(index, (Integer) value);
-        } else if (value instanceof IBaseDbEnum) {
-            st.setInt(index, ((IBaseDbEnum) value).getValue());
+        } else if (value instanceof BaseEnum) {
+            st.setInt(index, ((BaseEnum) value).getValue());
         }
     }
 

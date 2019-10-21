@@ -12,7 +12,7 @@ import me.java.library.io.base.Cmd;
 import me.java.library.io.base.Host;
 import me.java.library.io.base.HostNode;
 import me.java.library.io.base.cmd.CmdUtils;
-import me.java.library.io.core.bean.ChannelCache;
+import me.java.library.io.core.bean.ChannelCacheService;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
 import me.java.library.io.core.utils.ChannelAttr;
@@ -116,7 +116,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
         Preconditions.checkState(CmdUtils.isValidCmd(cmd));
 
         //查找对应channel
-        Channel channel = ChannelCache.getInstance().get(cmd.getTo());
+        Channel channel = ChannelCacheService.getInstance().get(cmd.getTo());
         NettyUtils.writeData(channel, cmd);
     }
 

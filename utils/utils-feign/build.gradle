@@ -6,13 +6,13 @@ configurations {
 
 dependencies {
     //替换原生feign ribbon 中的 原生 httpclient
-    compile("io.jmnarloch:feign-okhttp-spring-cloud-starter:+")
-    compile("com.netflix.feign:feign-core:+")
-    compile("com.netflix.feign:feign-okhttp:+")
+    compile("io.jmnarloch:feign-okhttp-spring-cloud-starter:1.0.0")
+    compile("com.netflix.feign:feign-core:${feignVersion}")
+    compile("com.netflix.feign:feign-okhttp:${feignVersion}")
 
     //feign.builder 的 encoder decoder替换
-    compile("com.netflix.feign:feign-gson:+")
-    compile("com.netflix.feign:feign-jackson:+")
+    compile("com.netflix.feign:feign-gson:${feignVersion}")
+    compile("com.netflix.feign:feign-jackson:${feignVersion}")
             {
                 //排除spring 自带的jackson
                 exclude group: "com.fasterxml.jackson.core"

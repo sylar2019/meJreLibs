@@ -10,7 +10,7 @@ import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.base.Cmd;
 import me.java.library.io.base.Terminal;
 import me.java.library.io.base.cmd.CmdUtils;
-import me.java.library.io.core.bean.ChannelCache;
+import me.java.library.io.core.bean.ChannelCacheService;
 import me.java.library.io.core.pipe.Pipe;
 import me.java.library.io.core.utils.ChannelAttr;
 
@@ -91,8 +91,8 @@ public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
 
     protected void onConnected(ChannelHandlerContext ctx, Terminal terminal) {
         //当有新连接时,在本地缓存加入channel
-        if (ChannelCache.getInstance().get(terminal) != ctx.channel()) {
-            ChannelCache.getInstance().put(terminal, ctx.channel());
+        if (ChannelCacheService.getInstance().get(terminal) != ctx.channel()) {
+            ChannelCacheService.getInstance().put(terminal, ctx.channel());
             onConnectionChanged(ctx.channel(), terminal, true);
         }
     }
@@ -100,7 +100,7 @@ public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
     protected void onDisconnected(ChannelHandlerContext ctx) {
         //当连接断开时,从本地缓存里清除channel
         Terminal terminal = ChannelAttr.get(ctx.channel(), ChannelAttr.ATTR_TERMINAL);
-        ChannelCache.getInstance().remove(terminal);
+        ChannelCacheService.getInstance().remove(terminal);
         onConnectionChanged(ctx.channel(), terminal, false);
     }
 

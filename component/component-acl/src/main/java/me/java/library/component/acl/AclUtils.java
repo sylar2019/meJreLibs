@@ -1,7 +1,7 @@
 package me.java.library.component.acl;
 
 import com.google.common.base.Strings;
-import me.java.library.common.dto.Result;
+import me.java.library.common.model.dto.Result;
 import me.java.library.component.acl.model.AclUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

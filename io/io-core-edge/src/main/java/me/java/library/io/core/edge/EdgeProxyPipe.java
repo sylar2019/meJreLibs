@@ -1,7 +1,8 @@
 package me.java.library.io.core.edge;
 
 import com.google.common.base.Preconditions;
-import me.java.library.common.Callback;
+import com.google.common.util.concurrent.FutureCallback;
+import me.java.library.common.event.guava.GuavaAsyncEventService;
 import me.java.library.io.base.Cmd;
 import me.java.library.io.base.Host;
 import me.java.library.io.base.Terminal;
@@ -11,7 +12,6 @@ import me.java.library.io.core.edge.event.InboundCmdEvent;
 import me.java.library.io.core.edge.sync.SyncPairity;
 import me.java.library.io.core.pipe.Pipe;
 import me.java.library.io.core.pipe.PipeWatcher;
-import me.java.library.utils.event.guava.AsyncEventBus;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,9 +33,9 @@ import java.util.concurrent.TimeUnit;
 public class EdgeProxyPipe implements Pipe {
 
     protected final Pipe pipe;
+    protected final GuavaAsyncEventService eventBus = GuavaAsyncEventService.getInstance();
     protected PipeWatcher watcher;
     protected SyncPairity syncPairity;
-    protected final AsyncEventBus eventBus = AsyncEventBus.getInstance();
 
     public EdgeProxyPipe(Pipe pipe) {
         this(pipe, null);
@@ -44,7 +44,6 @@ public class EdgeProxyPipe implements Pipe {
     public EdgeProxyPipe(Pipe pipe, SyncPairity syncPairity) {
         this.pipe = pipe;
         this.syncPairity = syncPairity;
-        eventBus.regist(this);
 
         pipe.setWatcher(new PipeWatcher() {
             @Override
@@ -122,14 +121,13 @@ public class EdgeProxyPipe implements Pipe {
     @Override
     public void dispose() {
         pipe.dispose();
-        eventBus.unregist(this);
     }
 
     public void setSyncPairity(SyncPairity syncPairity) {
         this.syncPairity = syncPairity;
     }
 
-    public void syncSend(Cmd cmd, long timeoutSeconds, int tryTimes, Callback<Cmd> callback) {
+    public void syncSend(Cmd cmd, long timeoutSeconds, int tryTimes, FutureCallback<Cmd> callback) {
         Preconditions.checkNotNull(cmd);
         Preconditions.checkNotNull(callback);
         Preconditions.checkNotNull(syncPairity, "syncPairity can not be nul");

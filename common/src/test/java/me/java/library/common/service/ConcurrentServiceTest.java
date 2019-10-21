@@ -5,7 +5,6 @@ import com.github.rholder.retry.RetryListener;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-import me.java.library.common.Callback;
 import org.junit.Test;
 
 import javax.annotation.Nullable;
@@ -33,20 +32,8 @@ public class ConcurrentServiceTest {
 
     Callable<Integer> callable = () -> {
         print("do somthing on background");
-        Thread.sleep(1000 * 1);
+        Thread.sleep(1000 * 2);
         return 100;
-    };
-
-    Callback<Integer> callback = new Callback<Integer>() {
-        @Override
-        public void onSuccess(Integer integer) {
-            print("Result: " + integer);
-        }
-
-        @Override
-        public void onFailure(Throwable t) {
-            print("Throwable: " + t);
-        }
     };
 
     FutureCallback<Integer> futureCallback = new FutureCallback<Integer>() {
@@ -65,14 +52,14 @@ public class ConcurrentServiceTest {
     @Test
     public void syncPost1() {
         print("begin post");
-        SettableFuture future = service.syncPost(callable, callback);
+        SettableFuture future = service.syncPost(callable, futureCallback);
         print("exit");
     }
 
     @Test
     public void syncPost2() {
         print("begin post");
-        SettableFuture future = service.syncPost(callable, callback, 1L, TimeUnit.SECONDS);
+        SettableFuture future = service.syncPost(callable, futureCallback, 1L, TimeUnit.SECONDS);
 
         print("exit");
     }
@@ -80,7 +67,7 @@ public class ConcurrentServiceTest {
     @Test
     public void syncPost3() {
         print("begin post");
-        SettableFuture future = service.syncPost(callable, callback, 1L, TimeUnit.SECONDS, 6);
+        SettableFuture future = service.syncPost(callable, futureCallback, 1L, TimeUnit.SECONDS, 6);
         print("exit");
     }
 
@@ -170,7 +157,7 @@ public class ConcurrentServiceTest {
                     print("client request...");
                     return settableFuture.get(1, TimeUnit.SECONDS);
                 },
-                callback,
+                futureCallback,
                 1L,
                 TimeUnit.SECONDS,
                 6,

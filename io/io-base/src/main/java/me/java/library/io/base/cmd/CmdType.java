@@ -1,7 +1,7 @@
 package me.java.library.io.base.cmd;
 
 
-import me.java.library.common.po.IBaseDbEnum;
+import me.java.library.common.model.po.BaseEnum;
 
 import java.io.Serializable;
 
@@ -23,7 +23,7 @@ import java.io.Serializable;
  * @CopyRight : COPYRIGHT(c) iot.zs-inc.com All Rights Reserved
  * *******************************************************************************************
  */
-public enum CmdType implements IBaseDbEnum, Serializable {
+public enum CmdType implements BaseEnum, Serializable {
 
     //@formatter:off
 
@@ -48,7 +48,7 @@ public enum CmdType implements IBaseDbEnum, Serializable {
     }
 
     public static CmdType valueOf(int value) {
-        return IBaseDbEnum.fromValue(CmdType.class, value);
+        return BaseEnum.fromValue(CmdType.class, value);
     }
 
     @Override

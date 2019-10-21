@@ -1,6 +1,6 @@
 package me.java.library.component.acl;
 
-import me.java.library.common.po.IBaseDbEnum;
+import me.java.library.common.model.po.BaseEnum;
 
 /**
  * File Name             :
@@ -17,7 +17,7 @@ import me.java.library.common.po.IBaseDbEnum;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public enum AclResourceType implements IBaseDbEnum {
+public enum AclResourceType implements BaseEnum {
 
     //@formatter:off
     Menu     (1, "菜单"),

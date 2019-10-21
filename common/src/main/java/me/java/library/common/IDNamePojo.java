@@ -16,5 +16,4 @@ package me.java.library.common;
  * *******************************************************************************************
  */
 public interface IDNamePojo<ID> extends IDPojo<ID>, Namable {
-
 }

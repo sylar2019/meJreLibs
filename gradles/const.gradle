@@ -21,6 +21,7 @@ ext {
     guavaVersion = "21.0"
     jodatimeVersion = "2.9.9"
     nettyVersion = "4.1.39.Final"
+    feignVersion="8.18.0"
 
     gradlesPath = rootProject.rootDir.getAbsolutePath() + "/gradles/"
 }

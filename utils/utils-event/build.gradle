@@ -1,6 +1,0 @@
-dependencies {
-    compile("com.google.guava:guava:${guavaVersion}")
-    compile("com.lmax:disruptor:3.4.2")
-}
-
-

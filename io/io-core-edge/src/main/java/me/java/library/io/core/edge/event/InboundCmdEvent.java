@@ -1,8 +1,8 @@
 package me.java.library.io.core.edge.event;
 
+import me.java.library.common.event.BaseEvent;
 import me.java.library.io.base.Cmd;
 import me.java.library.io.core.pipe.Pipe;
-import me.java.library.utils.event.AbstractEvent;
 
 /**
  * File Name             :  InboundCmdEvent
@@ -19,7 +19,7 @@ import me.java.library.utils.event.AbstractEvent;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class InboundCmdEvent extends AbstractEvent<Pipe, Cmd> {
+public class InboundCmdEvent extends BaseEvent<Pipe, Cmd> {
     public InboundCmdEvent(Pipe pipe, Cmd cmd) {
         super(pipe, cmd);
     }

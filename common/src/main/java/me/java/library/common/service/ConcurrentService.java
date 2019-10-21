@@ -3,9 +3,7 @@ package me.java.library.common.service;
 import com.github.rholder.retry.*;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
-import me.java.library.common.Callback;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.*;
 
 /**
@@ -49,6 +47,7 @@ public class ConcurrentService implements Serviceable {
     );
     private ListeningExecutorService service = MoreExecutors.listeningDecorator(executor);
     private ListeningScheduledExecutorService scheduledService = MoreExecutors.listeningDecorator(scheduledExecutor);
+
     private ConcurrentService() {
         executor.allowCoreThreadTimeOut(true);
     }
@@ -137,7 +136,7 @@ public class ConcurrentService implements Serviceable {
      * @param callback
      * @param <T>
      */
-    public <T> ListenableFuture<T> postCallable(Callable<T> callable, Callback<T> callback, long timeout, TimeUnit unit, int tryTimes, RetryListener listener) {
+    public <T> ListenableFuture<T> postCallable(Callable<T> callable, FutureCallback<T> callback, long timeout, TimeUnit unit, int tryTimes, RetryListener listener) {
         Preconditions.checkNotNull(callable);
         Preconditions.checkNotNull(callback);
         Preconditions.checkState(timeout > 0);
@@ -153,18 +152,7 @@ public class ConcurrentService implements Serviceable {
 
         ListenableFuture<T> future = null;
         try {
-            future = postCallable(() -> retryer.call(callable), new FutureCallback<T>() {
-                @Override
-                public void onSuccess(@Nullable T result) {
-                    callback.onSuccess(result);
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    callback.onFailure(t);
-                }
-            });
-
+            future = postCallable(() -> retryer.call(callable), callback);
         } catch (Exception e) {
             callback.onFailure(e);
         }
@@ -183,7 +171,7 @@ public class ConcurrentService implements Serviceable {
      * @param <T>
      * @return SettableFuture<T>
      */
-    public <T> SettableFuture<T> syncPost(Callable<T> callable, Callback<T> callback, long timeout, TimeUnit unit, int tryTimes) {
+    public <T> SettableFuture<T> syncPost(Callable<T> callable, FutureCallback<T> callback, long timeout, TimeUnit unit, int tryTimes) {
         Preconditions.checkNotNull(callback);
         Preconditions.checkState(timeout > 0);
         Preconditions.checkState(tryTimes > 0);
@@ -222,7 +210,7 @@ public class ConcurrentService implements Serviceable {
      * @param <T>
      * @return SettableFuture<T>
      */
-    public <T> SettableFuture<T> syncPost(Callable<T> callable, Callback<T> callback, long timeout, TimeUnit unit) {
+    public <T> SettableFuture<T> syncPost(Callable<T> callable, FutureCallback<T> callback, long timeout, TimeUnit unit) {
         Preconditions.checkNotNull(callback);
         Preconditions.checkState(timeout > 0);
 
@@ -244,7 +232,7 @@ public class ConcurrentService implements Serviceable {
      * @param <T>
      * @return SettableFuture<T>
      */
-    public <T> SettableFuture<T> syncPost(Callable<T> callable, Callback<T> callback) {
+    public <T> SettableFuture<T> syncPost(Callable<T> callable, FutureCallback<T> callback) {
         Preconditions.checkNotNull(callback);
         SettableFuture<T> settableFuture = createSettableFuture(callable);
         try {

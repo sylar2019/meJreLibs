@@ -2,5 +2,5 @@ dependencies {
     compile project(":utils:utils-base")
 
     //test
-    testCompile("junit:junit:+")
+    testCompile("junit:junit:${junitVersion}")
 }

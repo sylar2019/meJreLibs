@@ -35,7 +35,7 @@ public abstract class AbstractSyncPairity implements SyncPairity {
     /**
      * 按Terminal缓存请求指令，当响应指令可配对为同步指令时，从缓存移除
      */
-    private SyncCmdCaches caches = new SyncCmdCaches();
+    private SyncCmdCachesService caches = new SyncCmdCachesService();
 
     public AbstractSyncPairity() {
         //初始构造【配对指令注册表】
@@ -60,7 +60,7 @@ public abstract class AbstractSyncPairity implements SyncPairity {
             return false;
         }
 
-        SyncCmdCache cache = getCache(response.getFrom());
+        SyncCmdCacheService cache = getCache(response.getFrom());
         Cmd reqCmd = getMatchedRequest(cache, response);
         return reqCmd != null;
     }
@@ -70,7 +70,7 @@ public abstract class AbstractSyncPairity implements SyncPairity {
         Preconditions.checkState(CmdUtils.isValidCmd(request));
         Preconditions.checkState(isRegisted(request));
 
-        SyncCmdCache cache = getCache(request.getTo());
+        SyncCmdCacheService cache = getCache(request.getTo());
         Preconditions.checkState(cache.containsKey(request.getId()));
 
         SyncBean bean = cache.get(request.getId());
@@ -82,13 +82,13 @@ public abstract class AbstractSyncPairity implements SyncPairity {
     @Override
     public void cleanCache(Cmd request) {
         Preconditions.checkState(CmdUtils.isValidCmd(request));
-        SyncCmdCache cache = getCache(request.getTo());
+        SyncCmdCacheService cache = getCache(request.getTo());
         if (cache.containsKey(request.getId())) {
             cache.remove(request.getId());
         }
     }
 
-    protected Cmd getMatchedRequest(SyncCmdCache cache, Cmd response) {
+    protected Cmd getMatchedRequest(SyncCmdCacheService cache, Cmd response) {
         for (SyncBean bean : cache.getMap().values()) {
             Cmd request = bean.getRequest();
             if (pairs(cache.getTerminal(), request, response)) {
@@ -117,9 +117,9 @@ public abstract class AbstractSyncPairity implements SyncPairity {
         return map.containsKey(cmd.getCode()) || map.inverse().containsKey(cmd.getCode());
     }
 
-    protected SyncCmdCache getCache(Terminal terminal) {
+    protected SyncCmdCacheService getCache(Terminal terminal) {
         if (!caches.containsKey(terminal)) {
-            SyncCmdCache cache = new SyncCmdCache(terminal);
+            SyncCmdCacheService cache = new SyncCmdCacheService(terminal);
             caches.put(terminal, cache);
         }
         return caches.get(terminal);

@@ -1,6 +1,6 @@
 package me.java.library.component.acl.event;
 
-import me.java.library.common.dto.Result;
+import me.java.library.common.model.dto.Result;
 import me.java.library.component.acl.AclUtils;
 import me.java.library.component.acl.model.AclUser;
 import org.slf4j.Logger;

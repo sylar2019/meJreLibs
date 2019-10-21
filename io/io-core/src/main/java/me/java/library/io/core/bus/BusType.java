@@ -1,7 +1,7 @@
 package me.java.library.io.core.bus;
 
 
-import me.java.library.common.po.IBaseDbEnum;
+import me.java.library.common.model.po.BaseEnum;
 
 /**
  * File Name             :  BusType
@@ -18,7 +18,7 @@ import me.java.library.common.po.IBaseDbEnum;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public enum BusType implements IBaseDbEnum {
+public enum BusType implements BaseEnum {
 
     //@formatter:off
     TcpServer   (1,"TcpServer"),

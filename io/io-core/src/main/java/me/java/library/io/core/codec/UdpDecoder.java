@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.DatagramPacketDecoder;
 import me.java.library.io.base.Cmd;
-import me.java.library.io.core.bean.TerminalCache;
+import me.java.library.io.core.bean.TerminalCacheService;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class UdpDecoder extends DatagramPacketDecoder {
                 Cmd cmd = (Cmd) obj;
                 cmd.getFrom().setInetSocketAddress(datagramPacket.sender());
                 cmd.getTo().setInetSocketAddress(datagramPacket.recipient());
-                TerminalCache.getInstance().put(cmd.getFrom(), datagramPacket.sender());
+                TerminalCacheService.getInstance().put(cmd.getFrom(), datagramPacket.sender());
             }
         }
     }
