@@ -5,18 +5,18 @@
 // *
 // * @author sylar
 // */
-//public interface VoidCallback {
+//public interface VoidCallback extends Callback<Void>{
 //
-//    /**
-//     * 成功时通知
-//     */
-//    void onSuccess();
-//
-//    /**
-//     * 失败时通知
-//     *
-//     * @param t
-//     */
-//    void onFailure(Throwable t);
+////    /**
+////     * 成功时通知
+////     */
+////    void onSuccess();
+////
+////    /**
+////     * 失败时通知
+////     *
+////     * @param t
+////     */
+////    void onFailure(Throwable t);
 //
 //}

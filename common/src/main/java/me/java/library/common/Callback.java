@@ -1,13 +1,15 @@
-//package me.java.library.common;
-//
-///**
-// * 回调接口，通知成功或失败
-// *
-// * @param <Result>
-// * @author sylar
-// */
-//public interface Callback<Result> {
-//
+package me.java.library.common;
+
+import com.google.common.util.concurrent.FutureCallback;
+
+/**
+ * 回调接口，通知成功或失败
+ *
+ * @param <Result>
+ * @author sylar
+ */
+public interface Callback<Result>  extends FutureCallback<Result> {
+
 //    /**
 //     * 成功时通知
 //     *
@@ -21,4 +23,4 @@
 //     * @param t
 //     */
 //    void onFailure(Throwable t);
-//}
+}
