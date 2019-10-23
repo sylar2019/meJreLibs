@@ -8,19 +8,6 @@ import com.google.common.util.concurrent.FutureCallback;
  * @param <Result>
  * @author sylar
  */
-public interface Callback<Result>  extends FutureCallback<Result> {
+public interface Callback<Result> extends FutureCallback<Result> {
 
-//    /**
-//     * 成功时通知
-//     *
-//     * @param result
-//     */
-//    void onSuccess(Result result);
-//
-//    /**
-//     * 失败时通知
-//     *
-//     * @param t
-//     */
-//    void onFailure(Throwable t);
 }
