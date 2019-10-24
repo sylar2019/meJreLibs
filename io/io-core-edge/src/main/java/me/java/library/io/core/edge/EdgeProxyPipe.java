@@ -123,10 +123,24 @@ public class EdgeProxyPipe implements Pipe {
         pipe.dispose();
     }
 
+    /**
+     * 设置指令配对器
+     *
+     * @param syncPairity
+     */
     public void setSyncPairity(SyncPairity syncPairity) {
         this.syncPairity = syncPairity;
     }
 
+
+    /**
+     * 同步发送指令
+     *
+     * @param cmd
+     * @param timeoutSeconds
+     * @param tryTimes
+     * @param callback
+     */
     public void syncSend(Cmd cmd, long timeoutSeconds, int tryTimes, FutureCallback<Cmd> callback) {
         Preconditions.checkNotNull(cmd);
         Preconditions.checkNotNull(callback);

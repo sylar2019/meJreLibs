@@ -19,7 +19,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = MqProperties.PREFIX_MQ)
 public class MqProperties {
 
-    final public static String PREFIX_MQ = "me.mq";
+    final public static String PREFIX_MQ = "mq";
     final public static String PREFIX_PROVIDER = PREFIX_MQ + ".provider";
     final public static String PREFIX_BROKERS = PREFIX_MQ + ".brokers";
     final public static String PREFIX_ACCESS_KEY = PREFIX_MQ + ".accessKey";

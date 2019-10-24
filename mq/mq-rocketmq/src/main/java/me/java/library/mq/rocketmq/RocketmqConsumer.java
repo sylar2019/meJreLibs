@@ -8,12 +8,8 @@ import me.java.library.mq.base.AbstractConsumer;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
-import org.apache.rocketmq.common.message.MessageExt;
-
-import java.util.List;
 
 /**
  * @author :  sylar
@@ -46,20 +42,17 @@ public class RocketmqConsumer extends AbstractConsumer {
         try {
             initConsumer();
 
-            consumer.registerMessageListener(new MessageListenerConcurrently() {
-                @Override
-                public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext
-                        consumeConcurrentlyContext) {
-                    list.forEach(messageExt -> {
-                        Message message = new Message(messageExt.getTopic(), new String(messageExt.getBody(),
-                                Charsets.UTF_8));
-                        message.setExt(messageExt);
-                        message.setKeys(messageExt.getKeys());
-                        message.setTags(messageExt.getTags());
-                        messageListener.onSuccess(message);
-                    });
-                    return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-                }
+            consumer.registerMessageListener((MessageListenerConcurrently) (list, consumeConcurrentlyContext) -> {
+                list.forEach(messageExt -> {
+                    Message message = new Message(messageExt.getTopic(),
+                            new String(messageExt.getBody(),
+                                    Charsets.UTF_8));
+                    message.setExt(messageExt);
+                    message.setKeys(messageExt.getKeys());
+                    message.setTags(messageExt.getTags());
+                    messageListener.onSuccess(message);
+                });
+                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             });
 
             String subExpression = "*";

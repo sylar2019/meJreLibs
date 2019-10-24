@@ -1,3 +1,4 @@
 dependencies {
     compile project(":io:io-core")
+    compile project(":mq:mq-rocketmq")
 }

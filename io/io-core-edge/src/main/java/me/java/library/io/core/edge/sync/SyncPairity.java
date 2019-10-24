@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @Author :  sylar
  * @Create :  2019-10-18
- * Description           :
+ * Description           :  指令配对器
  * Reviewed By           :
  * Reviewed On           :
  * Version History       :

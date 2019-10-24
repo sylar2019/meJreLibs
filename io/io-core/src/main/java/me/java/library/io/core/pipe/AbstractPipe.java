@@ -16,7 +16,6 @@ import me.java.library.io.core.bean.ChannelCacheService;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
 import me.java.library.io.core.utils.ChannelAttr;
-import me.java.library.io.core.utils.NettyUtils;
 
 /**
  * File Name             :  AbstractPipe
@@ -117,7 +116,10 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
 
         //查找对应channel
         Channel channel = ChannelCacheService.getInstance().get(cmd.getTo());
-        NettyUtils.writeData(channel, cmd);
+//        NettyUtils.writeData(channel, cmd);
+        Preconditions.checkNotNull(channel);
+        Preconditions.checkState(channel.isActive());
+        channel.writeAndFlush(cmd);
     }
 
     protected void onStart() {
