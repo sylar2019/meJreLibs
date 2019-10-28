@@ -1,8 +1,8 @@
 package me.java.library.mq.rocketmq;
 
 import me.java.library.mq.base.AbstractFactory;
-import me.java.library.mq.base.IConsumer;
-import me.java.library.mq.base.IProducer;
+import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.Producer;
 
 /**
  * @author :  sylar
@@ -21,14 +21,14 @@ import me.java.library.mq.base.IProducer;
 public class RocketmqFactory extends AbstractFactory {
 
     @Override
-    public IProducer createProducer(String brokers, String groupId, String clientId) {
+    public Producer createProducer(String brokers, String groupId, String clientId) {
         RocketmqProducer producer = new RocketmqProducer();
         setClient(producer, brokers, groupId, clientId);
         return producer;
     }
 
     @Override
-    public IConsumer createConsumer(String brokers, String groupId, String clientId) {
+    public Consumer createConsumer(String brokers, String groupId, String clientId) {
         RocketmqConsumer consumer = new RocketmqConsumer();
         setClient(consumer, brokers, groupId, clientId);
         return consumer;

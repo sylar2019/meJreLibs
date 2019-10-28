@@ -1,8 +1,8 @@
 package me.java.library.mq.starter;
 
-import me.java.library.mq.base.IConsumer;
-import me.java.library.mq.base.IFactory;
-import me.java.library.mq.base.IProducer;
+import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.Factory;
+import me.java.library.mq.base.Producer;
 import me.java.library.utils.base.NetworkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,21 +29,21 @@ public class MqAssistant {
     private MqProperties mqProperties;
 
     @Autowired
-    private IFactory factory;
+    private Factory factory;
 
-    public IProducer createPrducer(String groupId) {
+    public Producer createPrducer(String groupId) {
         return createPrducer(groupId, NetworkUtils.getHostMac());
     }
 
-    public IProducer createPrducer(String groupId, String clientId) {
+    public Producer createPrducer(String groupId, String clientId) {
         return factory.createProducer(mqProperties.getBrokers(), groupId, clientId);
     }
 
-    public IConsumer createConsumer(String groupId) {
+    public Consumer createConsumer(String groupId) {
         return createConsumer(groupId, NetworkUtils.getHostMac());
     }
 
-    public IConsumer createConsumer(String groupId, String clientId) {
+    public Consumer createConsumer(String groupId, String clientId) {
         return factory.createConsumer(mqProperties.getBrokers(), groupId, clientId);
     }
 }

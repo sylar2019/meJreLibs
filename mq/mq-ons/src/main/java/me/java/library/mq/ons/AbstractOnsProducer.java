@@ -17,7 +17,7 @@ import me.java.library.mq.base.AbstractProducer;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractOnsProducer extends AbstractProducer implements IOnsClient {
+public abstract class AbstractOnsProducer extends AbstractProducer implements OnsClient {
 
     protected String accessKey;
     protected String secretKey;

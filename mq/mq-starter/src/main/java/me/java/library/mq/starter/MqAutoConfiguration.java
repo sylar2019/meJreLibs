@@ -1,6 +1,6 @@
 package me.java.library.mq.starter;
 
-import me.java.library.mq.base.IFactory;
+import me.java.library.mq.base.Factory;
 import me.java.library.mq.kafka.KafkaFactory;
 import me.java.library.mq.ons.http.OnsHttpFactory;
 import me.java.library.mq.ons.mqtt.OnsMqttFactory;
@@ -34,8 +34,8 @@ public class MqAutoConfiguration {
     private MqProperties mqProperties;
 
     @Bean
-    @ConditionalOnMissingBean(IFactory.class)
-    public IFactory getFactory() {
+    @ConditionalOnMissingBean(Factory.class)
+    public Factory getFactory() {
         switch (mqProperties.getProvider()) {
             case MqProperties.PROVIDER_ROCKETMQ:
                 return new RocketmqFactory();

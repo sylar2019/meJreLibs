@@ -1,7 +1,7 @@
 package me.java.library.mq.ons.http;
 
-import me.java.library.mq.base.IConsumer;
-import me.java.library.mq.base.IFactory;
+import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.Factory;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import me.java.library.mq.ons.OnsConst;
@@ -25,8 +25,8 @@ import org.junit.Test;
  * *******************************************************************************************
  */
 public class OnsHttpConsumerTest {
-    IFactory factory;
-    IConsumer consumer;
+    Factory factory;
+    Consumer consumer;
     OnsConst onsConst;
 
     @Before

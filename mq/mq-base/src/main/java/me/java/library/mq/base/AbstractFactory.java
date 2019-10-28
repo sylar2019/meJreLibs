@@ -14,7 +14,7 @@ package me.java.library.mq.base;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractFactory implements IFactory {
+public abstract class AbstractFactory implements Factory {
 
     protected void setClient(AbstractClient client, String brokers, String groupId, String clientId) {
         client.setBrokers(brokers);

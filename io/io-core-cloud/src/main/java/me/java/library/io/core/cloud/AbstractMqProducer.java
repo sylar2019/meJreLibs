@@ -1,7 +1,7 @@
 package me.java.library.io.core.cloud;
 
 import me.java.library.io.core.cloud.msg.MqMsg;
-import me.java.library.mq.base.IProducer;
+import me.java.library.mq.base.Producer;
 import me.java.library.mq.base.Message;
 
 /**
@@ -20,7 +20,7 @@ import me.java.library.mq.base.Message;
  * *******************************************************************************************
  */
 public abstract class AbstractMqProducer extends AbstractMqClient {
-    protected IProducer producer;
+    protected Producer producer;
 
     protected abstract String getTopic();
 

@@ -1,7 +1,7 @@
 package me.java.library.io.core.cloud;
 
 import me.java.library.common.Disposable;
-import me.java.library.mq.base.IFactory;
+import me.java.library.mq.base.Factory;
 import me.java.library.mq.rocketmq.RocketmqFactory;
 import me.java.library.utils.base.NetworkUtils;
 
@@ -21,7 +21,7 @@ import me.java.library.utils.base.NetworkUtils;
  * *******************************************************************************************
  */
 public abstract class AbstractMqClient implements Disposable {
-    protected IFactory factory = new RocketmqFactory();
+    protected Factory factory = new RocketmqFactory();
 
     protected abstract String getGroupId();
 

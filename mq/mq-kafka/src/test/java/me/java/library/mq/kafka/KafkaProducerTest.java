@@ -1,7 +1,7 @@
 package me.java.library.mq.kafka;
 
-import me.java.library.mq.base.IFactory;
-import me.java.library.mq.base.IProducer;
+import me.java.library.mq.base.Factory;
+import me.java.library.mq.base.Producer;
 import me.java.library.mq.base.Message;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.junit.After;
@@ -26,8 +26,8 @@ import java.util.concurrent.Future;
  */
 public class KafkaProducerTest {
 
-    IFactory factory;
-    IProducer producer;
+    Factory factory;
+    Producer producer;
 
     String brokers = "localhost:9092";
     String topic = "TopicA";

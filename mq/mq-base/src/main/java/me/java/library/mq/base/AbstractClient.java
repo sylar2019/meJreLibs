@@ -19,7 +19,7 @@ import java.util.Properties;
  * @CopyRight : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractClient extends Properties implements IClient {
+public abstract class AbstractClient extends Properties implements Client {
 
     protected String brokers;
     protected String groupId = "DEFAULT";

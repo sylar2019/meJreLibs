@@ -1,6 +1,6 @@
 package me.java.library.io.core.cloud;
 
-import me.java.library.mq.base.IConsumer;
+import me.java.library.mq.base.Consumer;
 
 /**
  * File Name             :  AbstractMqProducer
@@ -18,7 +18,7 @@ import me.java.library.mq.base.IConsumer;
  * *******************************************************************************************
  */
 public abstract class AbstractMqConsumer extends AbstractMqClient {
-    protected IConsumer consumer;
+    protected Consumer consumer;
 
     public AbstractMqConsumer(String brokers) {
         this.consumer = factory.createConsumer(brokers, getGroupId(), getClientId());

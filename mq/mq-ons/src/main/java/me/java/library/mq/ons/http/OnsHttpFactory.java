@@ -1,7 +1,7 @@
 package me.java.library.mq.ons.http;
 
-import me.java.library.mq.base.IConsumer;
-import me.java.library.mq.base.IProducer;
+import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.Producer;
 import me.java.library.mq.ons.AbstractOnsFactory;
 
 /**
@@ -25,7 +25,7 @@ public class OnsHttpFactory extends AbstractOnsFactory {
     }
 
     @Override
-    public IProducer createProducer(String brokers, String groupId, String clientId) {
+    public Producer createProducer(String brokers, String groupId, String clientId) {
         OnsHttpProducer producer = new OnsHttpProducer();
         setClient(producer, brokers, groupId, clientId);
         setProducerKey(producer, accessKey, secretKey);
@@ -33,7 +33,7 @@ public class OnsHttpFactory extends AbstractOnsFactory {
     }
 
     @Override
-    public IConsumer createConsumer(String brokers, String groupId, String clientId) {
+    public Consumer createConsumer(String brokers, String groupId, String clientId) {
         OnsHttpConsumer consumer = new OnsHttpConsumer();
         setClient(consumer, brokers, groupId, clientId);
         setConsumerKey(consumer, accessKey, secretKey);

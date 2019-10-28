@@ -4,7 +4,7 @@ import java.util.Properties;
 
 /**
  * @author :  sylar
- * @FileName :  IClient
+ * @FileName :  Client
  * @CreateDate :  2017/11/7
  * @Description :
  * @ReviewedBy :
@@ -16,7 +16,7 @@ import java.util.Properties;
  * @CopyRight : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface IClient {
+public interface Client {
 
     /**
      * 获取MQ服务端地址

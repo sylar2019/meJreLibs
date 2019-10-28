@@ -1,7 +1,7 @@
 package me.java.library.mq.rocketmq;
 
-import me.java.library.mq.base.IFactory;
-import me.java.library.mq.base.IProducer;
+import me.java.library.mq.base.Factory;
+import me.java.library.mq.base.Producer;
 import me.java.library.mq.base.Message;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.junit.After;
@@ -24,8 +24,8 @@ import org.junit.Test;
  */
 public class RocketmqProducerTest {
 
-    IFactory factory;
-    IProducer producer;
+    Factory factory;
+    Producer producer;
 
     String brokers = "localhost:9876";
     String topic = "TopicA";

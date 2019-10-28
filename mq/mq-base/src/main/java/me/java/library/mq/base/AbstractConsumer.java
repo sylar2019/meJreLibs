@@ -16,7 +16,7 @@ import com.google.common.base.Preconditions;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractConsumer extends AbstractClient implements IConsumer {
+public abstract class AbstractConsumer extends AbstractClient implements Consumer {
 
     @Override
     public void subscribe(String topic, String[] tags, MessageListener messageListener) {

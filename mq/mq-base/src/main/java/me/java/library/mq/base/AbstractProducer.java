@@ -16,7 +16,7 @@ import com.google.common.base.Preconditions;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractProducer extends AbstractClient implements IProducer {
+public abstract class AbstractProducer extends AbstractClient implements Producer {
 
     protected boolean isRunning;
 

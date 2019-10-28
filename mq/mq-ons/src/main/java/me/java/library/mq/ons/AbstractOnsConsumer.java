@@ -18,7 +18,7 @@ import me.java.library.mq.base.MessageListener;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractOnsConsumer extends AbstractConsumer implements IOnsClient {
+public abstract class AbstractOnsConsumer extends AbstractConsumer implements OnsClient {
 
     protected String accessKey;
     protected String secretKey;

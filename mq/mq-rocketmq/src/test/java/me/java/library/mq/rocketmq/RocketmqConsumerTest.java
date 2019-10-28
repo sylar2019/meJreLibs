@@ -1,7 +1,7 @@
 package me.java.library.mq.rocketmq;
 
-import me.java.library.mq.base.IConsumer;
-import me.java.library.mq.base.IFactory;
+import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.Factory;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import org.apache.rocketmq.common.message.MessageExt;
@@ -25,8 +25,8 @@ import org.junit.Test;
  */
 public class RocketmqConsumerTest {
 
-    IFactory factory;
-    IConsumer consumer;
+    Factory factory;
+    Consumer consumer;
 
     String brokers = "127.0.0.1:9876";
     String topic = "TopicA";

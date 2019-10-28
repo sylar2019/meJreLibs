@@ -118,7 +118,7 @@ public class OnsMqttClient {
     public void subscribe(String topic, MessageListener messageListener) throws MqttException {
         this.messageListener = messageListener;
 
-        /**
+        /*
          * 设置订阅方订阅的Topic集合，此处遵循MQTT的订阅规则，可以是一级Topic，二级Topic，P2P消息请订阅/p2p
          * final String[] topicArray = new String[]{topic + "/notice/", topic + "/p2p"};
          * final int[] qos = {0, 0};

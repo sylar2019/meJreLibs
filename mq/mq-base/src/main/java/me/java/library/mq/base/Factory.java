@@ -2,7 +2,7 @@ package me.java.library.mq.base;
 
 /**
  * @author :  sylar
- * @FileName :  IFactory
+ * @FileName :  Factory
  * @CreateDate :  2017/11/08
  * @Description :
  * @ReviewedBy :
@@ -14,7 +14,7 @@ package me.java.library.mq.base;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
-public interface IFactory {
+public interface Factory {
 
     /**
      * 创建生产者
@@ -24,7 +24,7 @@ public interface IFactory {
      * @param clientId client标识
      * @return MQ消息生产者
      */
-    IProducer createProducer(String brokers, String groupId, String clientId);
+    Producer createProducer(String brokers, String groupId, String clientId);
 
     /**
      * 创建消费者
@@ -34,5 +34,5 @@ public interface IFactory {
      * @param clientId client标识
      * @return MQ消息消费者
      */
-    IConsumer createConsumer(String brokers, String groupId, String clientId);
+    Consumer createConsumer(String brokers, String groupId, String clientId);
 }

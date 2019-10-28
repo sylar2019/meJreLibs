@@ -1,9 +1,9 @@
 package me.java.library.mq.ons;
 
-import me.java.library.mq.base.IClient;
+import me.java.library.mq.base.Client;
 
 /**
- * File Name             :  IOnsClient
+ * File Name             :  OnsClient
  * Author                :  sylar
  * Create Date           :  2018/4/11
  * Description           :
@@ -16,7 +16,7 @@ import me.java.library.mq.base.IClient;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface IOnsClient extends IClient {
+public interface OnsClient extends Client {
 
     /**
      * AccessKey

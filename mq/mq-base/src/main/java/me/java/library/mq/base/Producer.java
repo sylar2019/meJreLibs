@@ -2,7 +2,7 @@ package me.java.library.mq.base;
 
 /**
  * @author :  sylar
- * @FileName :  IProducer
+ * @FileName :  Producer
  * @CreateDate :  2017/11/08
  * @Description :
  * @ReviewedBy :
@@ -14,7 +14,7 @@ package me.java.library.mq.base;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
-public interface IProducer extends IClient {
+public interface Producer extends Client {
 
     /**
      * 获取内部原生的producer

@@ -1,7 +1,7 @@
 package me.java.library.mq.kafka;
 
-import me.java.library.mq.base.IConsumer;
-import me.java.library.mq.base.IFactory;
+import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.Factory;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -24,8 +24,8 @@ import org.junit.Test;
  * *******************************************************************************************
  */
 public class KafkaConsumerTest {
-    IFactory factory;
-    IConsumer consumer;
+    Factory factory;
+    Consumer consumer;
 
     String brokers = "localhost:9092";
     String topic = "TopicA";
