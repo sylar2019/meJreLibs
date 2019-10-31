@@ -33,9 +33,11 @@ public abstract class AbstractJpaEntity extends AbstractPojo {
 
     @JsonIgnore
     @CreatedBy
+    @Column(updatable = false)
     protected String createBy;
     @JsonIgnore
     @CreatedDate
+    @Column(updatable = false)
     protected Date createdDate;
     @JsonIgnore
     @LastModifiedBy
@@ -46,6 +48,10 @@ public abstract class AbstractJpaEntity extends AbstractPojo {
     @JsonIgnore
     @Column(name = "deleted")
     protected boolean deleted = false;
+
+    protected boolean enabled = true;
+    protected String properties;
+    protected String description;
 
     public String getCreateBy() {
         return createBy;
@@ -85,5 +91,29 @@ public abstract class AbstractJpaEntity extends AbstractPojo {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getProperties() {
+        return properties;
+    }
+
+    public void setProperties(String properties) {
+        this.properties = properties;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
