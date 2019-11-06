@@ -15,8 +15,12 @@ def isLib() {
 
 def isApp() {
     Set result = isJavaProject()
-    result.retainAll(isParentEquals("app"))
-    result.retainAll(isProjectEndsWith("app"))
+
+    Set set = isParentEquals("app")
+    set.addAll(isProjectEquals("app"))
+    set.addAll(isProjectEndsWith("app"))
+
+    result.retainAll(set)
     return result
 }
 
