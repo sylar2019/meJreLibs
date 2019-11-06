@@ -18,10 +18,10 @@ ext {
     dubboVersion = "2.5.3"
     fastjsonVersion = "1.2.8"
     jacksonVersion = "2.9.7"
-    guavaVersion = "21.0"
+    guavaVersion = "28.1-jre"
     jodatimeVersion = "2.9.9"
     nettyVersion = "4.1.39.Final"
-    feignVersion="8.18.0"
+    feignVersion = "8.18.0"
 
     gradlesPath = rootProject.rootDir.getAbsolutePath() + "/gradles/"
 }

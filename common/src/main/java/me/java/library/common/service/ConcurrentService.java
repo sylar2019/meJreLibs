@@ -94,7 +94,7 @@ public class ConcurrentService implements Serviceable {
     public ListenableFuture<?> postRunnable(Runnable runnable, FutureCallback<Object> callback) {
         Preconditions.checkNotNull(runnable);
         ListenableFuture<?> future = service.submit(runnable);
-        addCallback(future, callback);
+        addCallback(future, callback, executor);
         return future;
     }
 
@@ -121,7 +121,7 @@ public class ConcurrentService implements Serviceable {
     public <T> ListenableFuture<T> postCallable(Callable<T> callable, FutureCallback<T> callback) {
         Preconditions.checkNotNull(callable);
         ListenableFuture<T> future = service.submit(callable);
-        addCallback(future, callback);
+        addCallback(future, callback, executor);
         return future;
     }
 
@@ -316,9 +316,9 @@ public class ConcurrentService implements Serviceable {
                 delay, unit);
     }
 
-    private <T> void addCallback(ListenableFuture<T> future, FutureCallback<? super T> callback) {
+    private <T> void addCallback(ListenableFuture<T> future, FutureCallback<? super T> callback, Executor executor) {
         if (callback != null) {
-            Futures.addCallback(future, callback);
+            Futures.addCallback(future, callback, executor);
         }
     }
 }
