@@ -1,6 +1,7 @@
 package me.java.library.io.core.edge.event;
 
 import me.java.library.io.base.Host;
+import me.java.library.utils.base.guava.AbstractEvent;
 
 /**
  * File Name             :  HostStateChangedEvent

@@ -1,4 +1,4 @@
-package me.java.library.io.core.edge.event;
+package me.java.library.utils.base.guava;
 
 /**
  * File Name             :  AbstractEvent

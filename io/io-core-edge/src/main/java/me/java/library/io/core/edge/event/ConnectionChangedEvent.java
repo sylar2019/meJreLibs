@@ -2,6 +2,7 @@ package me.java.library.io.core.edge.event;
 
 import me.java.library.io.base.Terminal;
 import me.java.library.io.core.pipe.Pipe;
+import me.java.library.utils.base.guava.AbstractEvent;
 
 
 /**
