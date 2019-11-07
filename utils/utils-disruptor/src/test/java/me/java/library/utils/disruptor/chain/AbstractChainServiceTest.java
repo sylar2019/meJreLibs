@@ -1,4 +1,5 @@
-package me.java.library.common.chain;
+package me.java.library.utils.disruptor.chain;
+
 
 import com.lmax.disruptor.ExceptionHandler;
 import com.lmax.disruptor.dsl.Disruptor;

@@ -1,6 +1,5 @@
 package me.java.library.io.core.edge.event;
 
-import me.java.library.common.event.BaseEvent;
 import me.java.library.io.base.Host;
 
 /**
@@ -18,7 +17,7 @@ import me.java.library.io.base.Host;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class HostStateChangedEvent extends BaseEvent<Host, Boolean> {
+public class HostStateChangedEvent extends AbstractEvent<Host, Boolean> {
 
     public HostStateChangedEvent(Host host, Boolean isRunning) {
         super(host, isRunning);

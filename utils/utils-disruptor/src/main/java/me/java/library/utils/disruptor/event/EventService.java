@@ -1,12 +1,12 @@
-package me.java.library.common.chain;
+package me.java.library.utils.disruptor.event;
 
 import me.java.library.common.service.Serviceable;
 
 /**
- * File Name             :  ChainContainer
+ * File Name             :  EventService
  *
  * @Author :  sylar
- * Create                :  2019-10-20
+ * Create                :  2019-10-21
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -17,20 +17,11 @@ import me.java.library.common.service.Serviceable;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public interface ChainContainer extends Serviceable {
+public interface EventService extends Serviceable {
 
-    void start(Object... args);
+    void regist(final EventListener listener);
 
-    void stop();
+    void unregist(final EventListener listener);
 
-    void onStarted();
-
-    void onStopped();
-
-    void onTaskCompleted(BaseTask task, Object result);
-
-    void onTaskThrowable(BaseTask task, Throwable t);
-
-    void onChainFinished(ChainContext context);
-
+    void postEvent(final Event<?, ?> event);
 }

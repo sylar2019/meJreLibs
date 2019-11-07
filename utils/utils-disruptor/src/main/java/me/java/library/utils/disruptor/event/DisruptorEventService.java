@@ -1,4 +1,4 @@
-package me.java.library.common.event.disruptor;
+package me.java.library.utils.disruptor.event;
 
 import com.google.common.collect.Lists;
 import com.lmax.disruptor.EventHandler;
@@ -6,9 +6,6 @@ import com.lmax.disruptor.EventTranslatorTwoArg;
 import com.lmax.disruptor.ExceptionHandler;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.util.DaemonThreadFactory;
-import me.java.library.common.event.Event;
-import me.java.library.common.event.EventListener;
-import me.java.library.common.event.EventService;
 import me.java.library.common.service.ConcurrentService;
 
 import java.util.List;

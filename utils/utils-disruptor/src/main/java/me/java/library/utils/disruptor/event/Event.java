@@ -1,13 +1,12 @@
-package me.java.library.io.core.edge.event;
+package me.java.library.utils.disruptor.event;
 
-import me.java.library.io.base.Cmd;
-import me.java.library.io.core.pipe.Pipe;
+import java.io.Serializable;
 
 /**
- * File Name             :  InboundCmdEvent
+ * File Name             :  IEvent
  *
  * @Author :  sylar
- * @Create :  2019-10-13
+ * @Create :  2019-10-02
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -18,8 +17,9 @@ import me.java.library.io.core.pipe.Pipe;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class InboundCmdEvent extends AbstractEvent<Pipe, Cmd> {
-    public InboundCmdEvent(Pipe pipe, Cmd cmd) {
-        super(pipe, cmd);
-    }
+public interface Event<Source, Content> extends Serializable {
+
+    Source getSource();
+
+    Content getContent();
 }

@@ -1,6 +1,5 @@
 package me.java.library.io.core.edge.event;
 
-import me.java.library.common.event.BaseEvent;
 import me.java.library.io.base.Terminal;
 import me.java.library.io.core.pipe.Pipe;
 
@@ -20,7 +19,7 @@ import me.java.library.io.core.pipe.Pipe;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class ConnectionChangedEvent extends BaseEvent<Pipe, ConnectionChangedEvent.Connection> {
+public class ConnectionChangedEvent extends AbstractEvent<Pipe, ConnectionChangedEvent.Connection> {
 
     public ConnectionChangedEvent(Pipe pipe, Connection connection) {
         super(pipe, connection);

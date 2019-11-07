@@ -1,10 +1,12 @@
-package me.java.library.common.chain;
+package me.java.library.utils.disruptor.chain;
+
+import me.java.library.common.service.Serviceable;
 
 /**
- * File Name             :  ChainCallback
+ * File Name             :  ChainContainer
  *
  * @Author :  sylar
- * @Create :  2019-10-20
+ * Create                :  2019-10-20
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -12,10 +14,14 @@ package me.java.library.common.chain;
  * Modified By           :
  * Modified Date         :
  * Comments              :
- * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
+ * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public interface ChainCallback {
+public interface ChainContainer extends Serviceable {
+
+    void start(Object... args);
+
+    void stop();
 
     void onStarted();
 
@@ -28,4 +34,3 @@ public interface ChainCallback {
     void onChainFinished(ChainContext context);
 
 }
-

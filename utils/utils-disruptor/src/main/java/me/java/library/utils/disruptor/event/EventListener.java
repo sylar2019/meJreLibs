@@ -1,9 +1,7 @@
-package me.java.library.common.event;
-
-import me.java.library.common.service.Serviceable;
+package me.java.library.utils.disruptor.event;
 
 /**
- * File Name             :  EventService
+ * File Name             :  EventListener
  *
  * @Author :  sylar
  * Create                :  2019-10-21
@@ -17,11 +15,7 @@ import me.java.library.common.service.Serviceable;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public interface EventService extends Serviceable {
+public interface EventListener {
 
-    void regist(final EventListener listener);
-
-    void unregist(final EventListener listener);
-
-    void postEvent(final Event<?, ?> event);
+    void onEvent(Event<?, ?> event);
 }

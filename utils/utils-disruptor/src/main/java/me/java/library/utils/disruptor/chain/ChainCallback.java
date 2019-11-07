@@ -1,12 +1,10 @@
-package me.java.library.common.event;
-
-import java.io.Serializable;
+package me.java.library.utils.disruptor.chain;
 
 /**
- * File Name             :  IEvent
+ * File Name             :  ChainCallback
  *
  * @Author :  sylar
- * @Create :  2019-10-02
+ * @Create :  2019-10-20
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -17,9 +15,17 @@ import java.io.Serializable;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Event<Source, Content> extends Serializable {
+public interface ChainCallback {
 
-    Source getSource();
+    void onStarted();
 
-    Content getContent();
+    void onStopped();
+
+    void onTaskCompleted(BaseTask task, Object result);
+
+    void onTaskThrowable(BaseTask task, Throwable t);
+
+    void onChainFinished(ChainContext context);
+
 }
+

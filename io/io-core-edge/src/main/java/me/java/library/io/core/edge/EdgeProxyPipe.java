@@ -2,7 +2,6 @@ package me.java.library.io.core.edge;
 
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.FutureCallback;
-import me.java.library.common.event.guava.GuavaAsyncEventService;
 import me.java.library.io.base.Cmd;
 import me.java.library.io.base.Host;
 import me.java.library.io.base.Terminal;
@@ -12,6 +11,7 @@ import me.java.library.io.core.edge.event.InboundCmdEvent;
 import me.java.library.io.core.edge.sync.SyncPairity;
 import me.java.library.io.core.pipe.Pipe;
 import me.java.library.io.core.pipe.PipeWatcher;
+import me.java.library.utils.base.guava.AsyncEventUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 public class EdgeProxyPipe implements Pipe {
 
     protected final Pipe pipe;
-    protected final GuavaAsyncEventService eventBus = GuavaAsyncEventService.getInstance();
     protected PipeWatcher watcher;
     protected SyncPairity syncPairity;
 
@@ -50,7 +49,7 @@ public class EdgeProxyPipe implements Pipe {
             public void onReceived(Pipe pipe, Cmd cmd) {
                 //是否同步响应
                 syncPairity.hasMatched(cmd);
-                eventBus.postEvent(new InboundCmdEvent(pipe, cmd));
+                postEvent(new InboundCmdEvent(pipe, cmd));
 
                 if (watcher != null) {
                     watcher.onReceived(pipe, cmd);
@@ -59,7 +58,7 @@ public class EdgeProxyPipe implements Pipe {
 
             @Override
             public void onConnectionChanged(Pipe pipe, Terminal terminal, boolean isConnected) {
-                eventBus.postEvent(new ConnectionChangedEvent(pipe,
+                postEvent(new ConnectionChangedEvent(pipe,
                         new ConnectionChangedEvent.Connection(terminal, isConnected)));
 
                 if (watcher != null) {
@@ -69,7 +68,7 @@ public class EdgeProxyPipe implements Pipe {
 
             @Override
             public void onHostStateChanged(Host host, boolean isRunning) {
-                eventBus.postEvent(new HostStateChangedEvent(host, isRunning));
+                postEvent(new HostStateChangedEvent(host, isRunning));
 
                 if (watcher != null) {
                     watcher.onHostStateChanged(host, isRunning);
@@ -169,6 +168,10 @@ public class EdgeProxyPipe implements Pipe {
             syncPairity.cleanCache(cmd);
             callback.onFailure(t);
         }
+    }
+
+    protected void postEvent(Object event) {
+        AsyncEventUtils.postEvent(event);
     }
 
 }

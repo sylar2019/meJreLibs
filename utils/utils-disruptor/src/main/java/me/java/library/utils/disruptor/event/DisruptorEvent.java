@@ -1,7 +1,7 @@
-package me.java.library.common.event;
+package me.java.library.utils.disruptor.event;
 
 /**
- * File Name             :  EventListener
+ * File Name             :  DisruptorEvent
  *
  * @Author :  sylar
  * Create                :  2019-10-21
@@ -15,7 +15,6 @@ package me.java.library.common.event;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public interface EventListener {
+public final class DisruptorEvent extends BaseEvent<Object, Object> {
 
-    void onEvent(Event<?, ?> event);
 }

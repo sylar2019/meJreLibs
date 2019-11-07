@@ -1,5 +1,6 @@
-package me.java.library.common.event.guava;
+package me.java.library.utils.base.guava;
 
+import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
@@ -8,7 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * File Name             :  GuavaAsyncEventService
+ * File Name             :  SyncEventUtils
  *
  * @Author :  sylar
  * Create                :  2019-10-21
@@ -22,20 +23,12 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class GuavaAsyncEventService extends AbstractGuavaEventService {
+public class AsyncEventUtils {
 
-    private static GuavaAsyncEventService instance = new GuavaAsyncEventService();
+    @SuppressWarnings("UnstableApiUsage")
+    private static EventBus bus;
 
-    private GuavaAsyncEventService() {
-    }
-
-    synchronized public static GuavaAsyncEventService getInstance() {
-        return instance;
-    }
-
-    @Override
-    protected EventBus getBus() {
-
+    static {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
                 Runtime.getRuntime().availableProcessors() * 2,
                 8,
@@ -46,6 +39,19 @@ public class GuavaAsyncEventService extends AbstractGuavaEventService {
 
         executor.allowCoreThreadTimeOut(true);
 
-        return new com.google.common.eventbus.AsyncEventBus("asyncBus", executor);
+        bus = new AsyncEventBus("asyncBus", executor);
+        bus.register(new DeadEventListener());
+    }
+
+    public static void regist(Object listener) {
+        bus.register(listener);
+    }
+
+    public static void unregist(Object listener) {
+        bus.unregister(listener);
+    }
+
+    public static void postEvent(Object event) {
+        bus.post(event);
     }
 }

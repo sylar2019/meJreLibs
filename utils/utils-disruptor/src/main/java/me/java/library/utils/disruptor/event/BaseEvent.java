@@ -1,4 +1,4 @@
-package me.java.library.common.event;
+package me.java.library.utils.disruptor.event;
 
 /**
  * File Name             :  AbstractEvent
