@@ -1,4 +1,4 @@
-apply plugin: 'java-library'
+apply from: gradlesPath + "java.gradle"
 apply plugin: "org.springframework.boot"
 
 configurations {

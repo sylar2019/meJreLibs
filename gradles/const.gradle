@@ -14,7 +14,7 @@ ext {
     springBootAdminVersion = "1.5.7"
     springCloudVersion = "Edgware.SR3"
 
-    junitVersion = "4.9"
+    junitVersion = "4.12"
     dubboVersion = "2.5.3"
     fastjsonVersion = "1.2.8"
     jacksonVersion = "2.9.7"
@@ -22,6 +22,4 @@ ext {
     jodatimeVersion = "2.9.9"
     nettyVersion = "4.1.39.Final"
     feignVersion = "8.18.0"
-
-    gradlesPath = rootProject.rootDir.getAbsolutePath() + "/gradles/"
 }

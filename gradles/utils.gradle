@@ -1,48 +1,75 @@
 ext {
-    isLib = this.&isLib
+    isAndroidApp = this.&isAndroidApp
     isApp = this.&isApp
-    isJavaProject = this.&isJavaProject
-    isParentEquals = this.&isParentEquals
-    isProjectEndsWith = this.&isProjectEndsWith
-    isProjectEquals = this.&isProjectEquals
+    isAndroid = this.&isAndroid
+    isJava = this.&isJava
+
+    getLibProjects = this.&getLibProjects
+    getAppProjects = this.&getAppProjects
+    getJavaProjects = this.&getJavaProjects
 }
 
-def isLib() {
+def isAndroidApp() {
+    return isAndroid() && isApp()
+}
+
+def isApp() {
+    if (project.name.toLowerCase().equals("app")) {
+        return true
+    }
+    if (project.name.toLowerCase().endsWith("app")) {
+        return true
+    }
+    if (project.parent != null && project.parent.name.toLowerCase().equals("app")) {
+        return true
+    }
+    return false
+}
+
+def isAndroid() {
+    return new File(project.projectDir, "src/main/AndroidManifest.xml").exists()
+}
+
+def isJava() {
+    return new File(project.projectDir, "src").exists()
+}
+
+def getLibProjects() {
     Set result = isJavaProject()
     result.removeAll(isApp())
     return result
 }
 
-def isApp() {
+def getAppProjects() {
     Set result = isJavaProject()
 
-    Set set = isParentEquals("app")
-    set.addAll(isProjectEquals("app"))
-    set.addAll(isProjectEndsWith("app"))
+    Set set = getProjectsByName("app")
+    set.addAll(getProjectsByEndsWith("app"))
+    set.addAll(getProjectsByParentEquals("app"))
 
     result.retainAll(set)
     return result
 }
 
-def isParentEquals(parentName) {
+def getProjectsByParentEquals(parentName) {
     return subprojects.findAll {
         it.parent != null && it.parent.name == parentName
     }
 }
 
-def isProjectEndsWith(suffix) {
+def getProjectsByEndsWith(suffix) {
     return subprojects.findAll {
         it.name.endsWith(suffix)
     }
 }
 
-def isProjectEquals(projectName) {
+def getProjectsByName(projectName) {
     return subprojects.findAll {
-        it.name == projectName
+        it.name.equals(projectName)
     }
 }
 
-def isJavaProject() {
+def getJavaProjects() {
     return subprojects.findAll {
         it.childProjects.size() == 0 && new File(it.projectDir, "src").exists()
     }

@@ -1,12 +1,16 @@
-apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/const.gradle"
 apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/utils.gradle"
 
+ext {
+    gradlesPath = rootProject.rootDir.getAbsolutePath() + "/gradles/"
+}
+
+/** ******************************************************************************************/
 buildscript {
-    apply from: "./gradles/const.gradle"
+    apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/const.gradle"
 
     repositories {
         mavenLocal()
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+        maven { url "http://maven.aliyun.com/repository/gradle-plugin" }
     }
 
     dependencies {
@@ -22,7 +26,7 @@ allprojects {
 
     repositories {
         mavenLocal()
-        maven { url "https://maven.aliyun.com/repository/central/" }
+        maven { url "http://maven.aliyun.com/repository/central/" }
     }
 }
 
@@ -31,7 +35,7 @@ subprojects {
     apply from: gradlesPath + "utils.gradle"
 }
 
-configure(isLib()) {
+configure(getJavaProjects()) {
     apply from: gradlesPath + "java.gradle"
 }
 
