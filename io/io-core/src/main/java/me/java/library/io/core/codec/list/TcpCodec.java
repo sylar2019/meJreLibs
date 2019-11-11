@@ -7,8 +7,8 @@ import me.java.library.io.core.codec.SimpleCmdResolver;
 /**
  * File Name             :  TcpCodec
  *
- * @Author :  sylar
- * @Create :  2019-10-15
+ * @author :  sylar
+ * Create :  2019-10-15
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

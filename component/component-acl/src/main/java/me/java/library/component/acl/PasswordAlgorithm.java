@@ -8,8 +8,8 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 /**
  * File Name             :  PasswordAlgorithm
  *
- * @Author :  sylar
- * @Create :  2019-08-15
+ * @author :  sylar
+ * Create :  2019-08-15
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

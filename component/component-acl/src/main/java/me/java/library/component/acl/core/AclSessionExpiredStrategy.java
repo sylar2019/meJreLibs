@@ -13,8 +13,8 @@ import java.io.IOException;
 /**
  * File Name             :  CustomSessionInformationExpiredStrategy
  *
- * @Author :  sylar
- * @Create :  2018/12/13
+ * @author :  sylar
+ * Create :  2018/12/13
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

@@ -1,4 +1,4 @@
-package me.java.library.io.base;
+package me.java.library.io;
 
 import me.java.library.utils.base.JvmUtils;
 import me.java.library.utils.base.NetworkUtils;
@@ -8,8 +8,8 @@ import java.util.Objects;
 /**
  * File Name             :  HostNode
  *
- * @Author :  sylar
- * @Create :  2019-10-17
+ * @author :  sylar
+ * Create :  2019-10-17
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

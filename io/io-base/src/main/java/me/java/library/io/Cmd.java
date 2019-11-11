@@ -1,14 +1,13 @@
-package me.java.library.io.base;
+package me.java.library.io;
 
 import me.java.library.common.Attributable;
 import me.java.library.common.Identifiable;
-import me.java.library.io.base.cmd.CmdType;
 
 /**
  * File Name             :  Cmd
  *
- * @Author :  sylar
- * @Create :  2019-10-05
+ * @author :  sylar
+ * Create :  2019-10-05
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -20,6 +19,20 @@ import me.java.library.io.base.cmd.CmdType;
  * *******************************************************************************************
  */
 public interface Cmd extends Identifiable<String>, Attributable<String, Object> {
+
+    /**
+     * 发送方
+     *
+     * @return
+     */
+    Terminal getFrom();
+
+    /**
+     * 接收方
+     *
+     * @return
+     */
+    Terminal getTo();
 
     /**
      * 消息code
@@ -36,32 +49,10 @@ public interface Cmd extends Identifiable<String>, Attributable<String, Object> 
     CmdType getType();
 
     /**
-     * 发送方
-     *
-     * @return
-     */
-    Terminal getFrom();
-
-    /**
-     * 接收方
-     *
-     * @return
-     */
-    Terminal getTo();
-
-
-    /**
      * 发生时间
      *
      * @return
      */
     long getTime();
-
-    /**
-     * 标签
-     *
-     * @return
-     */
-    Object getTag();
 
 }

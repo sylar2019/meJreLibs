@@ -1,14 +1,14 @@
 package me.java.library.io.core.edge.sync;
 
-import me.java.library.io.base.Cmd;
+import me.java.library.io.Cmd;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * File Name             :  SyncPairity
  *
- * @Author :  sylar
- * @Create :  2019-10-18
+ * @author :  sylar
+ * Create :  2019-10-18
  * Description           :  指令配对器
  * Reviewed By           :
  * Reviewed On           :

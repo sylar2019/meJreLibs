@@ -3,25 +3,24 @@ package me.java.library.io.core.pipe;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import io.netty.bootstrap.AbstractBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import me.java.library.common.service.ConcurrentService;
-import me.java.library.io.base.Cmd;
-import me.java.library.io.base.Host;
-import me.java.library.io.base.HostNode;
-import me.java.library.io.base.cmd.CmdUtils;
+import me.java.library.io.Cmd;
+import me.java.library.io.CmdUtils;
+import me.java.library.io.Host;
+import me.java.library.io.HostNode;
 import me.java.library.io.core.bean.ChannelCacheService;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
 import me.java.library.io.core.utils.ChannelAttr;
 
+import java.util.Map;
+
 /**
  * File Name             :  AbstractPipe
  *
- * @Author :  sylar
- * @Create :  2019-10-05
+ * @author :  sylar
+ * Create :  2019-10-05
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -116,7 +115,6 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
 
         //查找对应channel
         Channel channel = ChannelCacheService.getInstance().get(cmd.getTo());
-//        NettyUtils.writeData(channel, cmd);
         Preconditions.checkNotNull(channel);
         Preconditions.checkState(channel.isActive());
         channel.writeAndFlush(cmd);
@@ -154,7 +152,10 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
                 ChannelAttr.set(channel, ChannelAttr.ATTR_PIPE, AbstractPipe.this);
 
                 //add channelHanders from codec
-                codec.getChannelHandlers().forEach((k, v) -> channel.pipeline().addLast(k, v));
+//                codec.getChannelHandlers().forEach((k, v) -> channel.pipeline().addLast(k, v));
+                for (Map.Entry<String, ChannelHandler> entry : codec.getChannelHandlers().entrySet()) {
+                    channel.pipeline().addLast(entry.getKey(), entry.getValue());
+                }
             }
         };
     }

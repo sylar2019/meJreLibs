@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * File Name             :
  *
- * @Author :  sylar
- * @Create :  2019-06-03
+ * @author :  sylar
+ * Create :  2019-06-03
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

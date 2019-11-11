@@ -1,4 +1,4 @@
-package me.java.library.io.base.cmd;
+package me.java.library.io;
 
 
 import me.java.library.common.model.po.BaseEnum;
@@ -27,15 +27,13 @@ public enum CmdType implements BaseEnum, Serializable {
 
     //@formatter:off
 
-    Normal      (0,"Normal"),
+    General      (0,"General"),
     Info        (1,"Info"),
     Data        (2,"Data"),
     Alarm       (3,"Alarm"),
     Event       (4,"Event"),
     Ota         (5,"Ota"),
     McuLog      (6,"McuLog"),
-//    DasConnection(7,""),
-//    DeviceConnection(8,""),
     //@formatter:on
     ;
 

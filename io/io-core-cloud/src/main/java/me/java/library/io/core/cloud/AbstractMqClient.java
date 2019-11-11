@@ -8,7 +8,7 @@ import me.java.library.utils.base.NetworkUtils;
 /**
  * File Name             :  AbstractMqClient
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-10-23
  * Description           :
  * Reviewed By           :

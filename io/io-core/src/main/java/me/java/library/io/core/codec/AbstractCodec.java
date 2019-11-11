@@ -10,8 +10,8 @@ import java.util.Map;
 /**
  * File Name             :  AbstractCodec
  *
- * @Author :  sylar
- * @Create :  2019-10-14
+ * @author :  sylar
+ * Create :  2019-10-14
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

@@ -1,6 +1,6 @@
 package me.java.library.io.core.edge.event;
 
-import me.java.library.io.base.Terminal;
+import me.java.library.io.Terminal;
 import me.java.library.io.core.pipe.Pipe;
 import me.java.library.utils.base.guava.AbstractEvent;
 
@@ -8,8 +8,8 @@ import me.java.library.utils.base.guava.AbstractEvent;
 /**
  * File Name             :  InboundCmdEvent
  *
- * @Author :  sylar
- * @Create :  2019-10-13
+ * @author :  sylar
+ * Create :  2019-10-13
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

@@ -6,8 +6,8 @@ import me.java.library.component.acl.AclResourceType;
 /**
  * File Name             :
  *
- * @Author :  sylar
- * @Create :  2019-06-03
+ * @author :  sylar
+ * Create :  2019-06-03
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

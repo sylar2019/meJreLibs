@@ -2,14 +2,14 @@ package me.java.library.io.core.utils;
 
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
-import me.java.library.io.base.Terminal;
+import me.java.library.io.Terminal;
 import me.java.library.io.core.pipe.Pipe;
 
 /**
  * File Name             :  ChannelAttr
  *
- * @Author :  sylar
- * @Create :  2019-10-17
+ * @author :  sylar
+ * Create :  2019-10-17
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

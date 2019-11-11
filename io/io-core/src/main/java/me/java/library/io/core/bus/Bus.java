@@ -6,8 +6,8 @@ import me.java.library.common.Attributable;
 /**
  * File Name             :  Bus
  *
- * @Author :  sylar
- * @Create :  2019-09-05
+ * @author :  sylar
+ * Create :  2019-09-05
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

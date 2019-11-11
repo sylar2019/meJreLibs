@@ -5,7 +5,7 @@ import com.google.common.eventbus.EventBus;
 /**
  * File Name             :  SyncEventUtils
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-10-21
  * Description           :
  * Reviewed By           :

@@ -5,8 +5,8 @@ import java.io.Serializable;
 /**
  * File Name             :  IEvent
  *
- * @Author :  sylar
- * @Create :  2019-10-02
+ * @author :  sylar
+ * Create :  2019-10-02
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

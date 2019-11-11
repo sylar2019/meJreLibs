@@ -8,8 +8,8 @@ import java.util.LinkedHashMap;
 /**
  * File Name             :  Codec
  *
- * @Author :  sylar
- * @Create :  2019-10-05
+ * @author :  sylar
+ * Create :  2019-10-05
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

@@ -1,16 +1,16 @@
 package me.java.library.io.core.pipe;
 
 import me.java.library.common.service.Serviceable;
-import me.java.library.io.base.Cmd;
-import me.java.library.io.base.Host;
+import me.java.library.io.Cmd;
+import me.java.library.io.Host;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
 
 /**
  * File Name             :  Pipe
  *
- * @Author :  sylar
- * @Create :  2019-10-05
+ * @author :  sylar
+ * Create :  2019-10-05
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

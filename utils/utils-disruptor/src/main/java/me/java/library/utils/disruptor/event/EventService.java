@@ -5,7 +5,7 @@ import me.java.library.common.service.Serviceable;
 /**
  * File Name             :  EventService
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-10-21
  * Description           :
  * Reviewed By           :

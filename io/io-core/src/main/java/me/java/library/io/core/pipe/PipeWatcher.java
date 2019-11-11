@@ -1,14 +1,14 @@
 package me.java.library.io.core.pipe;
 
-import me.java.library.io.base.Cmd;
-import me.java.library.io.base.Host;
-import me.java.library.io.base.Terminal;
+import me.java.library.io.Cmd;
+import me.java.library.io.Host;
+import me.java.library.io.Terminal;
 
 /**
  * File Name             :  PipeWatcher
  *
- * @Author :  sylar
- * @Create :  2019-10-14
+ * @author :  sylar
+ * Create :  2019-10-14
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

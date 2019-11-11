@@ -12,8 +12,8 @@ import me.java.library.io.core.pipe.AbstractPipe;
 /**
  * File Name             :  UdpUnicastPipe
  *
- * @Author :  sylar
- * @Create :  2019-10-05
+ * @author :  sylar
+ * Create :  2019-10-05
  * Description           :  UDP单播
  * Reviewed By           :
  * Reviewed On           :

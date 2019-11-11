@@ -7,8 +7,8 @@ import me.java.library.io.core.bus.BusType;
 /**
  * File Name             :  RxtxBus
  *
- * @Author :  sylar
- * @Create :  2019-10-15
+ * @author :  sylar
+ * Create :  2019-10-15
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -27,6 +27,10 @@ public class RxtxBus extends AbstractBus {
 
     public String getRxtxPath() {
         return getOrDefault(Bus.BUS_ATTR_RXTX_PATH, "/dev/ttyMT1");
+    }
+
+    public void setRxtxPath(String rxtxPath) {
+        setAttr(Bus.BUS_ATTR_RXTX_PATH, rxtxPath);
     }
 
     public int getRxtxBaud() {

@@ -5,8 +5,8 @@ import com.google.common.base.Preconditions;
 /**
  * File Name             : AbstractSimpleStreamCodec
  *
- * @Author :  sylar
- * @Create :  2019-10-14
+ * @author :  sylar
+ * Create :  2019-10-14
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

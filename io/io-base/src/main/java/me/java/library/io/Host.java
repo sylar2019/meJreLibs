@@ -1,12 +1,12 @@
-package me.java.library.io.base;
+package me.java.library.io;
 
 import java.io.Serializable;
 
 /**
  * File Name             :  Host
  *
- * @Author :  sylar
- * @Create :  2019-10-17
+ * @author :  sylar
+ * Create :  2019-10-17
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

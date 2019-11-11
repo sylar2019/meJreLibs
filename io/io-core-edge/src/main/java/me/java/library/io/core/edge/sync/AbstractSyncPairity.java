@@ -3,9 +3,9 @@ package me.java.library.io.core.edge.sync;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import me.java.library.io.base.Cmd;
-import me.java.library.io.base.Terminal;
-import me.java.library.io.base.cmd.CmdUtils;
+import me.java.library.io.Cmd;
+import me.java.library.io.Terminal;
+import me.java.library.io.CmdUtils;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * File Name             :  AbstractSyncPairity
  *
- * @Author :  sylar
- * @Create :  2019-10-19
+ * @author :  sylar
+ * Create :  2019-10-19
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

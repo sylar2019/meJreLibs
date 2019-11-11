@@ -5,8 +5,8 @@ import com.lmax.disruptor.EventHandler;
 /**
  * File Name             :  BaseTask
  *
- * @Author :  sylar
- * @Create :  2019-10-20
+ * @author :  sylar
+ * Create :  2019-10-20
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

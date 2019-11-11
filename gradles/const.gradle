@@ -20,6 +20,6 @@ ext {
     jacksonVersion = "2.9.7"
     guavaVersion = "28.1-jre"
     jodatimeVersion = "2.9.9"
-    nettyVersion = "4.1.39.Final"
+    nettyVersion = "4.1.43.Final"
     feignVersion = "8.18.0"
 }

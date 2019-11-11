@@ -18,8 +18,8 @@ import java.net.NetworkInterface;
 /**
  * File Name             :  UdpMulticastPipe
  *
- * @Author :  sylar
- * @Create :  2019-10-05
+ * @author :  sylar
+ * Create :  2019-10-05
  * Description           :  UDP组播
  * Reviewed By           :
  * Reviewed On           :

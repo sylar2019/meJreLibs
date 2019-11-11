@@ -3,8 +3,8 @@ package me.java.library.utils.disruptor.event;
 /**
  * File Name             :  AbstractEvent
  *
- * @Author :  sylar
- * @Create :  2019-10-01
+ * @author :  sylar
+ * Create :  2019-10-01
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

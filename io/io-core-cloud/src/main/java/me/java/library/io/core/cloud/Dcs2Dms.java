@@ -1,15 +1,15 @@
 package me.java.library.io.core.cloud;
 
-import me.java.library.io.base.Cmd;
-import me.java.library.io.base.Host;
-import me.java.library.io.base.Terminal;
+import me.java.library.io.Cmd;
+import me.java.library.io.Host;
+import me.java.library.io.Terminal;
 import me.java.library.io.core.pipe.Pipe;
 import me.java.library.io.core.pipe.PipeWatcher;
 
 /**
  * File Name             :  Dcs2Dms
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-10-23
  * Description           :
  * Reviewed By           :

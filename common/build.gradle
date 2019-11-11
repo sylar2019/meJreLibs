@@ -1,6 +1,5 @@
 dependencies {
     compile project(":utils:utils-base")
-    compile("com.lmax:disruptor:3.4.2")
 
     testCompile("junit:junit:${junitVersion}")
 }

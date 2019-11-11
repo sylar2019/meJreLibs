@@ -9,8 +9,8 @@ import java.util.concurrent.*;
 /**
  * File Name             :  ConcurrentService
  *
- * @Author :  sylar
- * @Create :  2019-10-18
+ * @author :  sylar
+ * Create :  2019-10-18
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -24,26 +24,25 @@ import java.util.concurrent.*;
 @SuppressWarnings({"UnstableApiUsage"})
 public class ConcurrentService implements Serviceable {
 
-    /**
-     * ThreadPoolExecutor线程池参数设置技巧
-     * https://www.cnblogs.com/waytobestcoder/p/5323130.html
-     */
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    private static final int CORE_POOL_SIZE = CPU_COUNT + 1;
+    private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
+    private static final int KEEP_ALIVE = 1;
+    private static final TimeUnit KEEP_ALIVE_UNIT = TimeUnit.SECONDS;
 
-    private final static int CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 2;
-    private final static int MAXIMUM_POOL_SIZE = 16;
-    private final static long KEEP_ALIVE_TIME = 1L;
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(
             CORE_POOL_SIZE,
             MAXIMUM_POOL_SIZE,
-            KEEP_ALIVE_TIME,
-            TimeUnit.SECONDS,
-            new LinkedBlockingQueue<>(),
+            KEEP_ALIVE,
+            KEEP_ALIVE_UNIT,
+            new LinkedBlockingQueue<>(128),
             new ThreadFactoryBuilder().setNameFormat("common-pool-%d").build(),
-            new ThreadPoolExecutor.DiscardPolicy());
+            new ThreadPoolExecutor.AbortPolicy());
+
     private ScheduledThreadPoolExecutor scheduledExecutor = new ScheduledThreadPoolExecutor(
             CORE_POOL_SIZE,
             new ThreadFactoryBuilder().setNameFormat("common-scheduled-pool-%d").build(),
-            new ThreadPoolExecutor.DiscardPolicy()
+            new ThreadPoolExecutor.AbortPolicy()
     );
     private ListeningExecutorService service = MoreExecutors.listeningDecorator(executor);
     private ListeningScheduledExecutorService scheduledService = MoreExecutors.listeningDecorator(scheduledExecutor);
@@ -152,7 +151,12 @@ public class ConcurrentService implements Serviceable {
 
         ListenableFuture<T> future = null;
         try {
-            future = postCallable(() -> retryer.call(callable), callback);
+            future = postCallable(new Callable<T>() {
+                @Override
+                public T call() throws Exception {
+                    return retryer.call(callable);
+                }
+            }, callback);
         } catch (Exception e) {
             callback.onFailure(e);
         }

@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * File Name             :  Attributable
  *
- * @Author :  sylar
- * @Create :  2019-10-16
+ * @author :  sylar
+ * Create :  2019-10-16
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

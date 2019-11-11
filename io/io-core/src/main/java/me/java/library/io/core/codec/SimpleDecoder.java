@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import me.java.library.io.base.Cmd;
+import me.java.library.io.Cmd;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class SimpleDecoder extends MessageToMessageDecoder<ByteBuf> {
         }
 
         try {
-            List<Cmd> msgList = simpleCmdResolver.bufToCmd(ctx, buf.nioBuffer());
+            List<Cmd> msgList = simpleCmdResolver.bufToCmd(ctx, buf);
             if (msgList != null && !msgList.isEmpty()) {
                 out.addAll(msgList);
             }

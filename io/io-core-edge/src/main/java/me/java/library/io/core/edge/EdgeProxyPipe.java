@@ -2,9 +2,9 @@ package me.java.library.io.core.edge;
 
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.FutureCallback;
-import me.java.library.io.base.Cmd;
-import me.java.library.io.base.Host;
-import me.java.library.io.base.Terminal;
+import me.java.library.io.Cmd;
+import me.java.library.io.Host;
+import me.java.library.io.Terminal;
 import me.java.library.io.core.edge.event.ConnectionChangedEvent;
 import me.java.library.io.core.edge.event.HostStateChangedEvent;
 import me.java.library.io.core.edge.event.InboundCmdEvent;
@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * File Name             :  EdgeProxyPipe
  *
- * @Author :  sylar
- * @Create :  2019-10-17
+ * @author :  sylar
+ * Create :  2019-10-17
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

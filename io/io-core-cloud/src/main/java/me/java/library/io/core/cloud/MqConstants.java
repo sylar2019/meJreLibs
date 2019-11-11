@@ -3,7 +3,7 @@ package me.java.library.io.core.cloud;
 /**
  * File Name             :  MqConstants
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-10-23
  * Description           :
  * Reviewed By           :

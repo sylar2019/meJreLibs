@@ -3,8 +3,8 @@ package me.java.library.utils.disruptor.chain;
 /**
  * File Name             :  ChainCallback
  *
- * @Author :  sylar
- * @Create :  2019-10-20
+ * @author :  sylar
+ * Create :  2019-10-20
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

@@ -1,4 +1,4 @@
-package me.java.library.io.base;
+package me.java.library.io;
 
 import me.java.library.common.model.pojo.AbstractIdPojo;
 
@@ -7,8 +7,8 @@ import java.util.Objects;
 /**
  * File Name             :  TerminalNode
  *
- * @Author :  sylar
- * @Create :  2019-10-16
+ * @author :  sylar
+ * Create :  2019-10-16
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

@@ -5,8 +5,8 @@ import java.lang.management.ManagementFactory;
 /**
  * File Name             :  JvmUtils
  *
- * @Author :  sylar
- * @Create :  2019-10-17
+ * @author :  sylar
+ * Create :  2019-10-17
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

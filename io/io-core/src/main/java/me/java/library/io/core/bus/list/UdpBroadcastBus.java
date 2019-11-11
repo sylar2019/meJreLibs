@@ -6,8 +6,8 @@ import me.java.library.io.core.bus.BusType;
 /**
  * File Name             :  TcpServerBus
  *
- * @Author :  sylar
- * @Create :  2019-10-15
+ * @author :  sylar
+ * Create :  2019-10-15
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

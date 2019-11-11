@@ -33,6 +33,13 @@ allprojects {
 subprojects {
     apply from: gradlesPath + "const.gradle"
     apply from: gradlesPath + "utils.gradle"
+
+    configurations.all {
+        resolutionStrategy {
+            force "com.google.guava:guava:${guavaVersion}"
+            force "io.netty:netty-all:${nettyVersion}"
+        }
+    }
 }
 
 configure(getJavaProjects()) {

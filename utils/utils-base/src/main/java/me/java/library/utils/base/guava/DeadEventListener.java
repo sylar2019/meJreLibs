@@ -7,7 +7,7 @@ import com.google.common.eventbus.Subscribe;
 /**
  * File Name             :  DeadEventListener
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-11-07
  * Description           :
  * Reviewed By           :

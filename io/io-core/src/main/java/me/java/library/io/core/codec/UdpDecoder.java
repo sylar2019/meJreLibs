@@ -3,7 +3,7 @@ package me.java.library.io.core.codec;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.DatagramPacketDecoder;
-import me.java.library.io.base.Cmd;
+import me.java.library.io.Cmd;
 import me.java.library.io.core.bean.TerminalCacheService;
 
 import java.util.List;

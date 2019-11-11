@@ -1,7 +1,7 @@
 /**
  * File Name             :  package-info
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-11-07
  * Description           :
  * Reviewed By           :

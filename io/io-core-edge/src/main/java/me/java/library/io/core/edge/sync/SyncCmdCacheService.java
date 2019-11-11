@@ -1,7 +1,7 @@
 package me.java.library.io.core.edge.sync;
 
 import com.google.common.cache.CacheBuilder;
-import me.java.library.io.base.Terminal;
+import me.java.library.io.Terminal;
 import me.java.library.common.service.LocalCacheService;
 
 import java.util.concurrent.TimeUnit;
@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * File Name             :  SyncCmdCacheService
  *
- * @Author :  sylar
- * @Create :  2019-10-19
+ * @author :  sylar
+ * Create :  2019-10-19
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

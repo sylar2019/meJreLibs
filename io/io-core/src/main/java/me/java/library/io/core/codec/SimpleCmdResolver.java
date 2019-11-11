@@ -1,9 +1,9 @@
 package me.java.library.io.core.codec;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import me.java.library.io.base.Cmd;
+import me.java.library.io.Cmd;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -26,10 +26,10 @@ public interface SimpleCmdResolver {
      * 读取ByteBuffer数据转换成Imsg
      *
      * @param ctx 上下文
-     * @param buf ByteBuffer
+     * @param buf ByteBuf
      * @return Cmd
      */
-    List<Cmd> bufToCmd(ChannelHandlerContext ctx, ByteBuffer buf);
+    List<Cmd> bufToCmd(ChannelHandlerContext ctx, ByteBuf buf);
 
     /**
      * Cmd 转换成 ByteBuffer
@@ -37,5 +37,5 @@ public interface SimpleCmdResolver {
      * @param cmd Cmd
      * @return ByteBuffer
      */
-    ByteBuffer cmdToBuf(Cmd cmd);
+    ByteBuf cmdToBuf(Cmd cmd);
 }

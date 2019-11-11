@@ -3,7 +3,7 @@ package me.java.library.io.core.cloud.msg;
 /**
  * File Name             :  MqMsg
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-10-24
  * Description           :
  * Reviewed By           :

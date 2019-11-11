@@ -1,12 +1,11 @@
 package me.java.library.io.core.codec;
 
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
-import me.java.library.io.base.Cmd;
+import me.java.library.io.Cmd;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -40,9 +39,8 @@ public class SimpleEncoder extends MessageToMessageEncoder<Cmd> {
         }
 
         try {
-            ByteBuffer buf = simpleCmdResolver.cmdToBuf(cmd);
-            buf.flip();
-            out.add(Unpooled.copiedBuffer(buf));
+            ByteBuf buf = simpleCmdResolver.cmdToBuf(cmd);
+            out.add(buf);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package me.java.library.io.base;
+package me.java.library.io;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.java.library.common.Attributable;
@@ -9,8 +9,8 @@ import java.net.InetSocketAddress;
 /**
  * File Name             :  Terminal
  *
- * @Author :  sylar
- * @Create :  2019-10-05
+ * @author :  sylar
+ * Create :  2019-10-05
  * Description           : 通讯终端
  * Reviewed By           :
  * Reviewed On           :

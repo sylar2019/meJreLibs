@@ -3,8 +3,8 @@ package me.java.library.io.core.bus;
 /**
  * File Name             :  AbstractSocketBus
  *
- * @Author :  sylar
- * @Create :  2019-10-15
+ * @author :  sylar
+ * Create :  2019-10-15
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

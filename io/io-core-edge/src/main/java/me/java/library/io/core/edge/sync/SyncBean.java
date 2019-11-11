@@ -1,13 +1,13 @@
 package me.java.library.io.core.edge.sync;
 
 import com.google.common.util.concurrent.SettableFuture;
-import me.java.library.io.base.Cmd;
+import me.java.library.io.Cmd;
 
 /**
  * File Name             :  SyncBean
  *
- * @Author :  sylar
- * @Create :  2019-10-19
+ * @author :  sylar
+ * Create :  2019-10-19
  * Description           :
  * Reviewed By           :
  * Reviewed On           :

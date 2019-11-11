@@ -5,7 +5,7 @@ import me.java.library.mq.base.Consumer;
 /**
  * File Name             :  AbstractMqProducer
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-10-23
  * Description           :
  * Reviewed By           :

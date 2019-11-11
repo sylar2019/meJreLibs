@@ -3,7 +3,7 @@ package me.java.library.utils.disruptor.event;
 /**
  * File Name             :  EventListener
  *
- * @Author :  sylar
+ * @author :  sylar
  * Create                :  2019-10-21
  * Description           :
  * Reviewed By           :
