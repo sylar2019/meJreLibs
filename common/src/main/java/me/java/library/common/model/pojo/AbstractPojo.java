@@ -32,8 +32,13 @@ public abstract class AbstractPojo implements Attributable<String, Object> {
     }
 
     @SuppressWarnings("unchecked")
+    public <V> V get(String attrKey) {
+        return (V) attrs.get(attrKey);
+    }
+
+    @SuppressWarnings("unchecked")
     public <V> V getOrDefault(String attrKey, V defaultValue) {
-        return (V) getAttrOrDefault(attrKey, defaultValue);
+        return (V) attrs.getOrDefault(attrKey, defaultValue);
     }
 
     @Override

@@ -28,19 +28,24 @@ public class CmdNode extends AbstractIdPojo<String> implements Cmd {
     protected long time;
 
     public CmdNode() {
+        this.id = UUID.randomUUID().toString();
+        this.time = System.currentTimeMillis();
+        this.type = CmdType.General;
+    }
+
+    public CmdNode(Terminal from, Terminal to) {
+        this();
+        this.from = from;
+        this.to = to;
     }
 
     public CmdNode(Terminal from, Terminal to, String code) {
-        this(from, to, code, CmdType.General);
+        this(from, to);
+        this.code = code;
     }
 
     public CmdNode(Terminal from, Terminal to, String code, CmdType type) {
-        this.id = UUID.randomUUID().toString();
-        this.time = System.currentTimeMillis();
-
-        this.from = from;
-        this.to = to;
-        this.code = code;
+        this(from, to, code);
         this.type = type;
     }
 
