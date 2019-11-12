@@ -1,35 +1,43 @@
-//package me.java.library.io.core.utils;
-//
-//import com.google.common.base.Preconditions;
-//import io.netty.buffer.Unpooled;
-//import io.netty.channel.Channel;
-//import io.netty.channel.ChannelFutureListener;
-//import io.netty.channel.ChannelPipeline;
-//import io.netty.channel.socket.DatagramChannel;
-//import io.netty.channel.socket.SocketChannel;
-//import io.netty.handler.timeout.IdleStateHandler;
-//import io.netty.util.AttributeKey;
-//import me.java.library.io.core.Constants;
-//import me.java.library.io.core.codec.Codec;
-//
-//import java.net.InetSocketAddress;
-//
-///**
-// * @author :  sylar
-// * @FileName :  NettyUtils
-// * @CreateDate :  2017/11/08
-// * @Description :
-// * @ReviewedBy :
-// * @ReviewedOn :
-// * @VersionHistory :
-// * @ModifiedBy :
-// * @ModifiedDate :
-// * @Comments :
-// * @CopyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
-// * *******************************************************************************************
-// */
-//public class NettyUtils {
-//
+package me.java.library.io.core.utils;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.util.CharsetUtil;
+
+/**
+ * @author :  sylar
+ * @FileName :  NettyUtils
+ * @CreateDate :  2017/11/08
+ * @Description :
+ * @ReviewedBy :
+ * @ReviewedOn :
+ * @VersionHistory :
+ * @ModifiedBy :
+ * @ModifiedDate :
+ * @Comments :
+ * @CopyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
+ * *******************************************************************************************
+ */
+public class NettyUtils {
+
+    /**
+     * 给 ByteBuf 写入定长字符串
+     * <p>
+     * 若字符串长度大于定长，则截取定长字节；若小于定长，则补零
+     *
+     * @param buf
+     * @param content
+     * @param length
+     */
+    public static void writeFixLength(ByteBuf buf, String content, int length) {
+        byte[] bytes = content.getBytes(CharsetUtil.UTF_8);
+        int blen = bytes.length;
+        int wlen = blen > length ? length : blen;
+        buf.writeBytes(bytes, 0, wlen);
+        if (wlen < length) {
+            buf.writeZero(length - wlen);
+        }
+    }
+
 //    public static final AttributeKey<String> ATTR_CLIENTID = AttributeKey.valueOf("clientId");
 //    public static final AttributeKey<String> ATTR_DEVICE_TYPE = AttributeKey.valueOf("deviceType");
 //    public static final AttributeKey<Boolean> ATTR_CLEAN_SESSION = AttributeKey.valueOf("cleanSession");
@@ -118,4 +126,4 @@
 //            channel.writeAndFlush(value).addListener(ChannelFutureListener.CLOSE);
 //        }
 //    }
-//}
+}
