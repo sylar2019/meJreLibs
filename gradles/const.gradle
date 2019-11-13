@@ -15,6 +15,7 @@ ext {
     springCloudVersion = "Edgware.SR3"
 
     junitVersion = "4.12"
+    validationApiVersion = "2.0.1.Final"
     dubboVersion = "2.5.3"
     fastjsonVersion = "1.2.8"
     jacksonVersion = "2.9.7"
