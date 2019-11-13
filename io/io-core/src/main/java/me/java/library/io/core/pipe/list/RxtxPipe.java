@@ -1,5 +1,6 @@
 package me.java.library.io.core.pipe.list;
 
+import com.google.common.base.Preconditions;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.oio.OioEventLoopGroup;
@@ -10,6 +11,9 @@ import io.netty.channel.rxtx.RxtxDeviceAddress;
 import me.java.library.io.core.bus.list.RxtxBus;
 import me.java.library.io.core.codec.list.RxtxCodec;
 import me.java.library.io.core.pipe.AbstractPipe;
+import me.java.library.utils.base.OSInfoUtils;
+
+import java.io.File;
 
 /**
  * File Name             :  RxtxPipe
@@ -39,6 +43,7 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
 
         group = new OioEventLoopGroup();
         try {
+            setRxtxPermisson(bus.getRxtxPath());
             RxtxDeviceAddress rxtxDeviceAddress = new RxtxDeviceAddress(bus.getRxtxPath());
 
             Bootstrap b = new Bootstrap();
@@ -60,6 +65,35 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
         } finally {
             group.shutdownGracefully();
             isRunning = false;
+        }
+    }
+
+
+    static void setRxtxPermisson(String fileName) {
+        if (OSInfoUtils.isLinux()
+                || OSInfoUtils.isMacOS()
+                || OSInfoUtils.isMacOSX()) {
+
+            File device = new File(fileName);
+            Preconditions.checkState(device.exists(), "serialport file invalid");
+
+            /* Check access permission */
+            if (!device.canRead() || !device.canWrite()) {
+                try {
+                    /* Missing read/write permission, trying to chmod the file */
+                    Process su;
+                    su = Runtime.getRuntime().exec("/system/bin/su");
+                    String cmd = "chmod 666 " + device.getAbsolutePath() + "\n"
+                            + "exit\n";
+                    su.getOutputStream().write(cmd.getBytes());
+                    if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
+                        throw new SecurityException();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new SecurityException();
+                }
+            }
         }
     }
 
