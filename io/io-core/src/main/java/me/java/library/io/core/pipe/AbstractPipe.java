@@ -115,6 +115,9 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
 
         //查找对应channel
         Channel channel = ChannelCacheService.getInstance().get(cmd.getTo());
+        if (channel == null) {
+            channel = this.channel;
+        }
         Preconditions.checkNotNull(channel);
         Preconditions.checkState(channel.isActive());
         channel.writeAndFlush(cmd);
@@ -148,11 +151,11 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
         return new ChannelInitializer<Channel>() {
             @Override
             protected void initChannel(Channel channel) throws Exception {
-                //关联 channel 与 pipe
+                AbstractPipe.this.channel = channel;
                 ChannelAttr.set(channel, ChannelAttr.ATTR_PIPE, AbstractPipe.this);
 
                 //add channelHanders from codec
-//                codec.getChannelHandlers().forEach((k, v) -> channel.pipeline().addLast(k, v));
+                //codec.getChannelHandlers().forEach((k, v) -> channel.pipeline().addLast(k, v)); //android 不支持
                 for (Map.Entry<String, ChannelHandler> entry : codec.getChannelHandlers().entrySet()) {
                     channel.pipeline().addLast(entry.getKey(), entry.getValue());
                 }
@@ -171,4 +174,5 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
             ConcurrentService.getInstance().postRunnable(() -> watcher.onHostStateChanged(AbstractPipe.this.host, isRunning));
         }
     }
+
 }

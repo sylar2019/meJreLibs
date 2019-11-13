@@ -18,45 +18,43 @@ import java.util.Map;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Attributable<K, V> extends Serializable {
+public interface Attributable extends Serializable {
 
-    Map<K, V> getAttrs();
+    Map<String, Object> getAttrs();
 
-    default void setAttrs(Map<K, V> attrs) {
+    default void setAttrs(Map<String, Object> attrs) {
         if (attrs != null && attrs.size() > 0) {
             getAttrs().putAll(attrs);
         }
     }
 
-    default V getAttr(K k) {
-        return getAttrs().get(k);
-    }
-
-    default V getAttrOrDefault(K k, V defaultValue) {
+    default <V> V getOrDefault(String key, V defaultValue) {
         V v = defaultValue;
-        if (getAttrs().containsKey(k)) {
-            v = getAttr(k);
+        if (containsKey(key)) {
+            v = getAttr(key);
         }
         return v;
     }
 
-    default void setAttr(K k, V v) {
-        getAttrs().put(k, v);
+    @SuppressWarnings("unchecked")
+    default <V> V getAttr(String key) {
+        return (V) getAttrs().get(key);
     }
 
-    default void setIfAbsent(K k, V v) {
-        getAttrs().putIfAbsent(k, v);
+
+    default void setAttr(String key, Object value) {
+        getAttrs().put(key, value);
     }
 
-    default void remove(K k) {
-        getAttrs().remove(k);
+    default void remove(String key) {
+        getAttrs().remove(key);
     }
 
-    default boolean containsKey(K k) {
-        return getAttrs().containsKey(k);
+    default boolean containsKey(String key) {
+        return getAttrs().containsKey(key);
     }
 
-    default boolean containsValue(V v) {
-        return getAttrs().containsValue(v);
+    default boolean containsValue(Object value) {
+        return getAttrs().containsValue(value);
     }
 }

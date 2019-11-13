@@ -18,7 +18,7 @@ import me.java.library.common.Attributable;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Bus extends Attributable<String, Object> {
+public interface Bus extends Attributable {
 
     String BUS_ATTR_SOCKET_HOST = "host";
     String BUS_ATTR_SOCKET_PORT = "port";

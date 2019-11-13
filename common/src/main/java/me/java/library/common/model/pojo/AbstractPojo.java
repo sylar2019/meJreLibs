@@ -22,23 +22,13 @@ import java.util.Map;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractPojo implements Attributable<String, Object> {
+public abstract class AbstractPojo implements Attributable {
 
     protected Map<String, Object> attrs = Maps.newHashMap();
 
     @Override
     public Map<String, Object> getAttrs() {
         return attrs;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <V> V get(String attrKey) {
-        return (V) attrs.get(attrKey);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <V> V getOrDefault(String attrKey, V defaultValue) {
-        return (V) attrs.getOrDefault(attrKey, defaultValue);
     }
 
     @Override

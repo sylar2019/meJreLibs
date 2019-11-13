@@ -18,7 +18,7 @@ import me.java.library.common.Identifiable;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Cmd extends Identifiable<String>, Attributable<String, Object> {
+public interface Cmd extends Identifiable<String>, Attributable {
 
     /**
      * 发送方

@@ -21,7 +21,7 @@ import java.net.InetSocketAddress;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Terminal extends Identifiable<String>, Attributable<String, Object> {
+public interface Terminal extends Identifiable<String>, Attributable {
 
     Terminal LOCAL = new TerminalNode("local", "default");
     Terminal REMOTE = new TerminalNode("remote", "default");
