@@ -1,8 +1,8 @@
 package me.java.library.mq.rocketmq;
 
 import me.java.library.mq.base.Factory;
-import me.java.library.mq.base.Producer;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.Producer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.junit.After;
 import org.junit.Before;

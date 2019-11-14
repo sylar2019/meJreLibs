@@ -1,8 +1,8 @@
 package me.java.library.io.core.edge.sync;
 
 import com.google.common.cache.CacheBuilder;
-import me.java.library.io.Terminal;
 import me.java.library.common.service.LocalCacheService;
+import me.java.library.io.Terminal;
 
 import java.util.concurrent.TimeUnit;
 

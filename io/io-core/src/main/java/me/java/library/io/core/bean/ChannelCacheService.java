@@ -1,8 +1,8 @@
 package me.java.library.io.core.bean;
 
 import io.netty.channel.Channel;
-import me.java.library.io.Terminal;
 import me.java.library.common.service.LocalCacheService;
+import me.java.library.io.Terminal;
 
 /**
  * File Name             :  ChannelCacheService

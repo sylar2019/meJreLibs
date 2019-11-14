@@ -39,6 +39,22 @@ public class DisruptorEventService implements EventService {
             BUFFER_SIZE,
             DaemonThreadFactory.INSTANCE
     );
+    private ExceptionHandler exceptionHandler = new ExceptionHandler() {
+        @Override
+        public void handleEventException(Throwable ex, long sequence, Object event) {
+            System.err.println(String.format("###handleEventException###\nevent:%s\nerror:%s", event, ex));
+        }
+
+        @Override
+        public void handleOnStartException(Throwable ex) {
+            System.err.println(String.format("###handleOnStartException###\nerror:%s", ex));
+        }
+
+        @Override
+        public void handleOnShutdownException(Throwable ex) {
+            System.err.println(String.format("###handleOnShutdownException###\nerror:%s", ex));
+        }
+    };
 
     public DisruptorEventService() {
         disruptor.setDefaultExceptionHandler(exceptionHandler);
@@ -83,23 +99,6 @@ public class DisruptorEventService implements EventService {
     private void stop() {
         disruptor.shutdown();
     }
-
-    private ExceptionHandler exceptionHandler = new ExceptionHandler() {
-        @Override
-        public void handleEventException(Throwable ex, long sequence, Object event) {
-            System.err.println(String.format("###handleEventException###\nevent:%s\nerror:%s", event, ex));
-        }
-
-        @Override
-        public void handleOnStartException(Throwable ex) {
-            System.err.println(String.format("###handleOnStartException###\nerror:%s", ex));
-        }
-
-        @Override
-        public void handleOnShutdownException(Throwable ex) {
-            System.err.println(String.format("###handleOnShutdownException###\nerror:%s", ex));
-        }
-    };
 
     private void onDisruptorEvent(DisruptorEvent event) {
         listeners.forEach(listener -> ConcurrentService.getInstance().postRunnable(() -> listener.onEvent(event)));

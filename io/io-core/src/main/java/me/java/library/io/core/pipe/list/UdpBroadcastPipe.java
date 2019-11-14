@@ -1,7 +1,6 @@
 package me.java.library.io.core.pipe.list;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
@@ -32,30 +31,22 @@ public class UdpBroadcastPipe extends AbstractPipe<UdpBroadcastBus, UdpCodec> {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart() throws Exception {
         super.onStart();
 
         group = new NioEventLoopGroup();
-        try {
 
-            String boradcastHost = bus.getHost(AbstractSocketBus.defaultBroadcastHost);
-            int boradcastPort = bus.getPort();
+        String boradcastHost = bus.getHost(AbstractSocketBus.defaultBroadcastHost);
+        int boradcastPort = bus.getPort();
 
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-                    .channel(NioDatagramChannel.class)
-                    .handler(getChannelInitializer())
-                    .remoteAddress(boradcastHost, boradcastPort)
-                    .option(ChannelOption.SO_BROADCAST, true);
+        Bootstrap b = new Bootstrap();
+        b.group(group)
+                .channel(NioDatagramChannel.class)
+                .handler(getChannelInitializer())
+                .remoteAddress(boradcastHost, boradcastPort)
+                .option(ChannelOption.SO_BROADCAST, true);
 
-            ChannelFuture future = bind(b, AbstractSocketBus.anyHost, boradcastPort);
-            isRunning = true;
-            future.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            group.shutdownGracefully();
-        }
+        future = bind(b, AbstractSocketBus.anyHost, boradcastPort);
     }
 
 }

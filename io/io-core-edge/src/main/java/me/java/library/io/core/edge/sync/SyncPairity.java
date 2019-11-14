@@ -23,9 +23,9 @@ public interface SyncPairity {
 
     void cacheRequest(Cmd request);
 
+    void cleanCache(Cmd request);
+
     boolean hasMatched(Cmd response);
 
     Cmd getResponse(Cmd request, long timeout, TimeUnit unit) throws Exception;
-
-    void cleanCache(Cmd request);
 }

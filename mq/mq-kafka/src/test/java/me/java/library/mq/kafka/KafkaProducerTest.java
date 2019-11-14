@@ -1,8 +1,8 @@
 package me.java.library.mq.kafka;
 
 import me.java.library.mq.base.Factory;
-import me.java.library.mq.base.Producer;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.Producer;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.junit.After;
 import org.junit.Before;

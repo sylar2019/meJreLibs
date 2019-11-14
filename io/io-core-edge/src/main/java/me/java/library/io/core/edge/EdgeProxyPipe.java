@@ -5,9 +5,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import me.java.library.io.Cmd;
 import me.java.library.io.Host;
 import me.java.library.io.Terminal;
-import me.java.library.io.core.edge.event.ConnectionChangedEvent;
-import me.java.library.io.core.edge.event.HostStateChangedEvent;
-import me.java.library.io.core.edge.event.InboundCmdEvent;
+import me.java.library.io.core.edge.event.*;
 import me.java.library.io.core.edge.sync.SyncPairity;
 import me.java.library.io.core.pipe.Pipe;
 import me.java.library.io.core.pipe.PipeWatcher;
@@ -45,14 +43,20 @@ public class EdgeProxyPipe implements Pipe {
         this.syncPairity = syncPairity;
 
         pipe.setWatcher(new PipeWatcher() {
-            @Override
-            public void onReceived(Pipe pipe, Cmd cmd) {
-                //是否同步响应
-                syncPairity.hasMatched(cmd);
-                postEvent(new InboundCmdEvent(pipe, cmd));
 
+            @Override
+            public void onHostStateChanged(Host host, boolean isRunning) {
+                postEvent(new HostStateChangedEvent(host, isRunning));
                 if (watcher != null) {
-                    watcher.onReceived(pipe, cmd);
+                    watcher.onHostStateChanged(host, isRunning);
+                }
+            }
+
+            @Override
+            public void onPipeRunningChanged(Pipe pipe, boolean isRunning) {
+                postEvent(new PipeRunningChangedEvent(pipe, isRunning));
+                if (watcher != null) {
+                    watcher.onPipeRunningChanged(pipe, isRunning);
                 }
             }
 
@@ -67,11 +71,23 @@ public class EdgeProxyPipe implements Pipe {
             }
 
             @Override
-            public void onHostStateChanged(Host host, boolean isRunning) {
-                postEvent(new HostStateChangedEvent(host, isRunning));
-
+            public void onReceived(Pipe pipe, Cmd cmd) {
+                postEvent(new InboundCmdEvent(pipe, cmd));
                 if (watcher != null) {
-                    watcher.onHostStateChanged(host, isRunning);
+                    watcher.onReceived(pipe, cmd);
+                }
+
+                //是否同步响应
+                if (syncPairity != null) {
+                    syncPairity.hasMatched(cmd);
+                }
+            }
+
+            @Override
+            public void onException(Pipe pipe, Throwable t) {
+                postEvent(new PipeExceptionEvent(pipe, t));
+                if (watcher != null) {
+                    watcher.onException(pipe, t);
                 }
             }
         });

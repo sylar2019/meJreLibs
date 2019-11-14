@@ -5,10 +5,7 @@ import com.google.common.base.Strings;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.*;
 import me.java.library.common.service.ConcurrentService;
-import me.java.library.io.Cmd;
-import me.java.library.io.CmdUtils;
-import me.java.library.io.Host;
-import me.java.library.io.HostNode;
+import me.java.library.io.*;
 import me.java.library.io.core.bean.ChannelCacheService;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
@@ -37,11 +34,11 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     protected B bus;
     protected C codec;
 
-
     protected EventLoopGroup group;
-    protected boolean isRunning;
+    protected ChannelFuture future;
     protected Channel channel;
     protected PipeWatcher watcher;
+    protected boolean isRunning;
 
     public AbstractPipe(B bus, C codec) {
         this("default", bus, codec);
@@ -63,14 +60,20 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
 
     @Override
     public void start() {
-        Preconditions.checkNotNull(bus);
-        Preconditions.checkNotNull(codec);
-
         if (isRunning) {
             return;
         }
 
-        onStart();
+        try {
+            Preconditions.checkNotNull(bus, "bus is null");
+            Preconditions.checkNotNull(codec, "codec is null");
+
+            onStart();
+            isRunning = true;
+            onPipeRunningChanged(isRunning);
+        } catch (Exception e) {
+            onException(e.getCause());
+        }
     }
 
     @Override
@@ -79,7 +82,13 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
             return;
         }
 
-        onStop();
+        try {
+            onStop();
+            isRunning = false;
+            onPipeRunningChanged(isRunning);
+        } catch (Exception e) {
+            onException(e.getCause());
+        }
     }
 
     @Override
@@ -110,28 +119,32 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
 
     @Override
     public void send(Cmd cmd) {
-        Preconditions.checkNotNull(cmd);
-        Preconditions.checkState(CmdUtils.isValidCmd(cmd));
+        try {
+            Preconditions.checkNotNull(cmd);
+            Preconditions.checkState(CmdUtils.isValidCmd(cmd));
 
-        //查找对应channel
-        Channel channel = ChannelCacheService.getInstance().get(cmd.getTo());
-        if (channel == null) {
-            channel = this.channel;
+            //查找对应channel
+            Channel channel = ChannelCacheService.getInstance().get(cmd.getTo());
+            if (channel == null) {
+                //非伺服器模式时
+                channel = this.channel;
+            }
+            Preconditions.checkNotNull(channel);
+            Preconditions.checkState(channel.isActive());
+            channel.writeAndFlush(cmd);
+        } catch (Exception e) {
+            onException(e.getCause());
         }
-        Preconditions.checkNotNull(channel);
-        Preconditions.checkState(channel.isActive());
-        channel.writeAndFlush(cmd);
     }
 
-    protected void onStart() {
+    protected void onStart() throws Exception {
         //do nothing
     }
 
-    protected void onStop() {
+    protected void onStop() throws Exception {
         if (group != null) {
             group.shutdownGracefully();
         }
-        isRunning = false;
     }
 
     protected ChannelFuture bind(AbstractBootstrap b, String host, int port) throws InterruptedException {
@@ -172,6 +185,30 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     protected void onHostStateChanged(boolean isRunning) {
         if (watcher != null) {
             ConcurrentService.getInstance().postRunnable(() -> watcher.onHostStateChanged(AbstractPipe.this.host, isRunning));
+        }
+    }
+
+    protected void onPipeRunningChanged(boolean isRunning) {
+        if (watcher != null) {
+            ConcurrentService.getInstance().postRunnable(() -> watcher.onPipeRunningChanged(AbstractPipe.this, isRunning));
+        }
+    }
+
+    protected void onConnectionChanged(Terminal terminal, boolean isConnected) {
+        if (watcher != null) {
+            ConcurrentService.getInstance().postRunnable(() -> watcher.onConnectionChanged(AbstractPipe.this, terminal, isConnected));
+        }
+    }
+
+    protected void onReceived(Cmd cmd) {
+        if (watcher != null) {
+            ConcurrentService.getInstance().postRunnable(() -> watcher.onReceived(AbstractPipe.this, cmd));
+        }
+    }
+
+    protected void onException(Throwable t) {
+        if (watcher != null) {
+            ConcurrentService.getInstance().postRunnable(() -> watcher.onException(AbstractPipe.this, t));
         }
     }
 

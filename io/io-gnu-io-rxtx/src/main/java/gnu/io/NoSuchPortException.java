@@ -58,21 +58,20 @@
 package gnu.io;
 
 /**
-* The requested Port does not exist
-* @author Trent Jarvi
-* @version %I%, %G%
-* @since JDK1.0
-*/
+ * The requested Port does not exist
+ *
+ * @author Trent Jarvi
+ * @version %I%, %G%
+ * @since JDK1.0
+ */
 
-public class NoSuchPortException extends Exception
-{
-	NoSuchPortException( String str )
-	{
-		super( str );
-	}
-	public NoSuchPortException()
-	{
-		super();
-	}
+public class NoSuchPortException extends Exception {
+    NoSuchPortException(String str) {
+        super(str);
+    }
+
+    public NoSuchPortException() {
+        super();
+    }
 }
 

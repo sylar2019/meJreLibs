@@ -1,7 +1,6 @@
 package me.java.library.io.core.pipe.list;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -34,33 +33,26 @@ public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart() throws Exception {
         super.onStart();
 
         group = new NioEventLoopGroup();
         childGroup = new NioEventLoopGroup();
-        try {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(group, childGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .childHandler(getChannelInitializer())
-                    .option(ChannelOption.SO_KEEPALIVE, true);
 
-            ChannelFuture future = bind(b, bus.getHost(AbstractSocketBus.anyHost), bus.getPort());
-            isRunning = true;
-            future.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            group.shutdownGracefully();
-            childGroup.shutdownGracefully();
-            isRunning = false;
-        }
+        ServerBootstrap b = new ServerBootstrap();
+        b.group(group, childGroup)
+                .channel(NioServerSocketChannel.class)
+                .childHandler(getChannelInitializer())
+                .option(ChannelOption.SO_KEEPALIVE, true);
+
+        future = bind(b, bus.getHost(AbstractSocketBus.anyHost), bus.getPort());
     }
 
     @Override
-    protected void onStop() {
-        childGroup.shutdownGracefully();
+    protected void onStop() throws Exception {
+        if (childGroup != null) {
+            childGroup.shutdownGracefully();
+        }
         super.onStop();
     }
 }

@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import me.java.library.io.Cmd;
-import me.java.library.io.Terminal;
 import me.java.library.io.CmdUtils;
+import me.java.library.io.Terminal;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

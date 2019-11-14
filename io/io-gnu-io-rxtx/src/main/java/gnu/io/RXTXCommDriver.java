@@ -122,6 +122,9 @@ public class RXTXCommDriver implements CommDriver {
     private String deviceDirectory;
     private String osName;
 
+    // for rxtx prior to 2.1.7
+    public static native String nativeGetVersion();
+
     private native boolean registerKnownPorts(int PortType);
 
     private native boolean isPortPrefixValid(String dev);
@@ -129,9 +132,6 @@ public class RXTXCommDriver implements CommDriver {
     private native boolean testRead(String dev, int type);
 
     private native String getDeviceDirectory();
-
-    // for rxtx prior to 2.1.7
-    public static native String nativeGetVersion();
 
     private final String[] getValidPortPrefixes(String CandidatePortPrefixes[]) {
 		/*

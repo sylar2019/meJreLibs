@@ -29,22 +29,6 @@ import java.util.Objects;
 public interface BaseEnum extends Serializable {
 
     /**
-     * 用于显示的枚举名
-     *
-     * @return
-     */
-    String getName();
-
-    /**
-     * 存储到数据库的枚举值
-     *
-     * @return
-     */
-    @JsonValue
-    int getValue();
-
-
-    /**
      * 按枚举的value获取枚举实例
      *
      * @param enumType
@@ -104,5 +88,20 @@ public interface BaseEnum extends Serializable {
         }
         return false;
     }
+
+    /**
+     * 用于显示的枚举名
+     *
+     * @return
+     */
+    String getName();
+
+    /**
+     * 存储到数据库的枚举值
+     *
+     * @return
+     */
+    @JsonValue
+    int getValue();
 
 }

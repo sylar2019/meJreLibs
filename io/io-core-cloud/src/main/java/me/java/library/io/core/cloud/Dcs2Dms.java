@@ -30,7 +30,12 @@ public class Dcs2Dms extends AbstractMqProducer {
 
         pipe.setWatcher(new PipeWatcher() {
             @Override
-            public void onReceived(Pipe pipe, Cmd cmd) {
+            public void onHostStateChanged(Host host, boolean isRunning) {
+
+            }
+
+            @Override
+            public void onPipeRunningChanged(Pipe pipe, boolean isRunning) {
 
             }
 
@@ -40,7 +45,12 @@ public class Dcs2Dms extends AbstractMqProducer {
             }
 
             @Override
-            public void onHostStateChanged(Host host, boolean isRunning) {
+            public void onReceived(Pipe pipe, Cmd cmd) {
+
+            }
+
+            @Override
+            public void onException(Pipe pipe, Throwable t) {
 
             }
         });

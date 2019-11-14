@@ -8,8 +8,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.Cmd;
-import me.java.library.io.Terminal;
 import me.java.library.io.CmdUtils;
+import me.java.library.io.Terminal;
 import me.java.library.io.core.bean.ChannelCacheService;
 import me.java.library.io.core.pipe.Pipe;
 import me.java.library.io.core.utils.ChannelAttr;
@@ -34,7 +34,8 @@ public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Cmd cmd) throws Exception {
         Preconditions.checkState(CmdUtils.isValidCmd(cmd), "invalid cmd");
-        onConnected(ctx, cmd.getFrom());
+        ChannelCacheService.getInstance().put(cmd.getFrom(), ctx.channel());
+//        onConnected(ctx, cmd.getFrom());
         onCmdReceived(ctx, cmd);
     }
 
@@ -91,8 +92,8 @@ public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
 
     protected void onConnected(ChannelHandlerContext ctx, Terminal terminal) {
         //当有新连接时,在本地缓存加入channel
+        //TODO 上线应由 业务层pipe 自行处理， 断线可由 IdleHandler 处理
         if (ChannelCacheService.getInstance().get(terminal) != ctx.channel()) {
-            ChannelCacheService.getInstance().put(terminal, ctx.channel());
             onConnectionChanged(ctx.channel(), terminal, true);
         }
     }

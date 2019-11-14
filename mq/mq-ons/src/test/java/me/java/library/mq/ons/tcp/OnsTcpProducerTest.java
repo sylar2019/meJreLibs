@@ -2,8 +2,8 @@ package me.java.library.mq.ons.tcp;
 
 import com.aliyun.openservices.ons.api.SendResult;
 import me.java.library.mq.base.Factory;
-import me.java.library.mq.base.Producer;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.Producer;
 import me.java.library.mq.ons.OnsConst;
 import me.java.library.mq.ons.OnsServerConst;
 import org.junit.After;

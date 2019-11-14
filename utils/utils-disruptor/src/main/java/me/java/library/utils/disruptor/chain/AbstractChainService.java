@@ -36,6 +36,14 @@ public abstract class AbstractChainService implements ChainContainer {
             DaemonThreadFactory.INSTANCE
     );
 
+    public AbstractChainService(ChainCallback callback) {
+        Preconditions.checkNotNull(callback);
+        this.callback = callback;
+
+        createChain(disruptor, new EndTask(this));
+        disruptor.start();
+    }
+
     /**
      * 构造调用链
      * 参见：https://blog.csdn.net/KongZhongNiao/article/details/86083417
@@ -44,14 +52,6 @@ public abstract class AbstractChainService implements ChainContainer {
      * @param endTask
      */
     protected abstract void createChain(Disruptor<ChainContext> disruptor, EndTask endTask);
-
-    public AbstractChainService(ChainCallback callback) {
-        Preconditions.checkNotNull(callback);
-        this.callback = callback;
-
-        createChain(disruptor, new EndTask(this));
-        disruptor.start();
-    }
 
     @Override
     public void dispose() {

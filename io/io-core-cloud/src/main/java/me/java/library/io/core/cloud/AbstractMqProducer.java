@@ -1,8 +1,8 @@
 package me.java.library.io.core.cloud;
 
 import me.java.library.io.core.cloud.msg.MqMsg;
-import me.java.library.mq.base.Producer;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.Producer;
 
 /**
  * File Name             :  AbstractMqProducer
@@ -22,11 +22,11 @@ import me.java.library.mq.base.Message;
 public abstract class AbstractMqProducer extends AbstractMqClient {
     protected Producer producer;
 
-    protected abstract String getTopic();
-
     public AbstractMqProducer(String brokers) {
         this.producer = factory.createProducer(brokers, getGroupId(), getClientId());
     }
+
+    protected abstract String getTopic();
 
     @Override
     public void dispose() {

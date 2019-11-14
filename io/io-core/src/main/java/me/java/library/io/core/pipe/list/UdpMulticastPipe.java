@@ -2,7 +2,6 @@ package me.java.library.io.core.pipe.list;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFactory;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.InternetProtocolFamily;
@@ -37,40 +36,33 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart() throws Exception {
         super.onStart();
 
         group = new NioEventLoopGroup();
-        try {
-            String networkInterfaceName = bus.getNetworkInterfaceName();
-            NetworkInterface networkInterface = NetworkInterface.getByName(networkInterfaceName);
-            String multicastHost = bus.getHost(AbstractSocketBus.defaultMulticastHost);
-            int multicastPort = bus.getPort();
-            InetSocketAddress multicastAddress = new InetSocketAddress(multicastHost, multicastPort);
 
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-                    .channelFactory(new ChannelFactory<NioDatagramChannel>() {
-                        @Override
-                        public NioDatagramChannel newChannel() {
-                            return new NioDatagramChannel(InternetProtocolFamily.IPv4);
-                        }
-                    })
-                    .channel(NioDatagramChannel.class)
-                    .handler(getChannelInitializer())
-                    .option(ChannelOption.IP_MULTICAST_LOOP_DISABLED, false)
-                    .option(ChannelOption.IP_MULTICAST_TTL, 255)
-                    .option(ChannelOption.IP_MULTICAST_IF, networkInterface)
-                    .option(ChannelOption.SO_REUSEADDR, true);
+        String networkInterfaceName = bus.getNetworkInterfaceName();
+        NetworkInterface networkInterface = NetworkInterface.getByName(networkInterfaceName);
+        String multicastHost = bus.getHost(AbstractSocketBus.defaultMulticastHost);
+        int multicastPort = bus.getPort();
+        InetSocketAddress multicastAddress = new InetSocketAddress(multicastHost, multicastPort);
 
-            ChannelFuture future = bind(b, AbstractSocketBus.anyHost, multicastPort);
-            future = ((NioDatagramChannel) future.channel()).joinGroup(multicastAddress, networkInterface).sync();
-            isRunning = true;
-            future.channel().closeFuture().sync();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            group.shutdownGracefully();
-        }
+        Bootstrap b = new Bootstrap();
+        b.group(group)
+                .channelFactory(new ChannelFactory<NioDatagramChannel>() {
+                    @Override
+                    public NioDatagramChannel newChannel() {
+                        return new NioDatagramChannel(InternetProtocolFamily.IPv4);
+                    }
+                })
+                .channel(NioDatagramChannel.class)
+                .handler(getChannelInitializer())
+                .option(ChannelOption.IP_MULTICAST_LOOP_DISABLED, false)
+                .option(ChannelOption.IP_MULTICAST_TTL, 255)
+                .option(ChannelOption.IP_MULTICAST_IF, networkInterface)
+                .option(ChannelOption.SO_REUSEADDR, true);
+
+        future = bind(b, AbstractSocketBus.anyHost, multicastPort);
+        future = ((NioDatagramChannel) future.channel()).joinGroup(multicastAddress, networkInterface).sync();
     }
 }

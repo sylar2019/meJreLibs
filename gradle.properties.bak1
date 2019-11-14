@@ -17,7 +17,6 @@
 org.gradle.daemon=true
 org.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m
 org.gradle.parallel=true
-
 # nexus
 PUBLIC_REPOSITORY_URL=http://192.168.1.100:8081/nexus/content/repositories/public/
 RELEASE_REPOSITORY_URL=http://192.168.1.100:8081/nexus/content/repositories/releases/
