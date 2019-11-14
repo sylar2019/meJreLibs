@@ -39,7 +39,7 @@ public abstract class AbstractSimpleCodec extends AbstractCodec {
 
     protected LoggingHandler getLoggingHandler() {
         String handlerKey = Codec.HANDLER_NAME_LOG;
-        String strLevel = getHandlerAttr(handlerKey, Codec.HANDLER_ATTR_LOG_LEVEL, "INFO");
+        String strLevel = getHandlerAttr(handlerKey, Codec.HANDLER_ATTR_LOG_LEVEL, "INFO").toUpperCase();
         LogLevel level = Enum.valueOf(LogLevel.class, strLevel);
         return new LoggingHandler(handlerKey, level);
     }

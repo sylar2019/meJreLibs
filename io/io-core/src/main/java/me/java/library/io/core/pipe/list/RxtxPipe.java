@@ -70,6 +70,8 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
     protected void onStart() throws Exception {
         super.onStart();
 
+        AbstractPipe p1 = null;
+
         group = new OioEventLoopGroup();
 
         setRxtxPermisson(bus.getRxtxPath());

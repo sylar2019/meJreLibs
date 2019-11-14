@@ -24,8 +24,8 @@ public class DeadEventListener {
     @Subscribe
     @AllowConcurrentEvents
     public void onEvent(DeadEvent event) {
-        System.err.println("###DeadEvent###");
-        System.err.println(String.format("source:%s", event.getSource()));
-        System.err.println(String.format("event:%s", event.getEvent()));
+        System.out.println("###DeadEvent###");
+        System.out.println(String.format("source:%s", event.getSource()));
+        System.out.println(String.format("event:%s", event.getEvent()));
     }
 }

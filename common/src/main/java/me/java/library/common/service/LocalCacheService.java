@@ -24,13 +24,17 @@ public class LocalCacheService<K, V> implements Serviceable {
     private Cache<K, V> cache;
 
     public LocalCacheService() {
+        this(1000000L);
+    }
+
+    public LocalCacheService(long maximumSize) {
         this(CacheBuilder
                 .newBuilder()
                 .maximumSize(1000000L)
                 .build());
     }
 
-    public LocalCacheService(Cache<K, V> cache) {
+    protected LocalCacheService(Cache<K, V> cache) {
         this.cache = cache;
     }
 

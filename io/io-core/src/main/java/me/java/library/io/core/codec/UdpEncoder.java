@@ -6,7 +6,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import me.java.library.io.Cmd;
-import me.java.library.io.core.bean.TerminalCacheService;
+import me.java.library.io.core.pipe.PipeAssistant;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -35,7 +35,7 @@ public class UdpEncoder extends SimpleEncoder {
     protected void encode(ChannelHandlerContext ctx, Cmd cmd, List<Object> out) throws Exception {
         InetSocketAddress address = cmd.getTo().getInetSocketAddress();
         if (address == null) {
-            address = TerminalCacheService.getInstance().get(cmd.getTo());
+            address = PipeAssistant.getInstance().getTerminalSocketAddress(ctx.channel(), cmd.getTo());
         }
         Preconditions.checkNotNull(address, "udp 报文需要目标套接字地址");
         super.encode(ctx, cmd, out);

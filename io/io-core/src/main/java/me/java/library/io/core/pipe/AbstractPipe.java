@@ -6,7 +6,6 @@ import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.*;
 import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.*;
-import me.java.library.io.core.bean.ChannelCacheService;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
 import me.java.library.io.core.utils.ChannelAttr;
@@ -39,6 +38,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     protected Channel channel;
     protected PipeWatcher watcher;
     protected boolean isRunning;
+    protected PipeAssistant pipeAssistant = PipeAssistant.getInstance();
 
     public AbstractPipe(B bus, C codec) {
         this("default", bus, codec);
@@ -54,8 +54,23 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     }
 
     @Override
-    public void dispose() {
-        stop();
+    public Host getHost() {
+        return host;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    @Override
+    public PipeWatcher getWatcher() {
+        return watcher;
+    }
+
+    @Override
+    public void setWatcher(PipeWatcher watcher) {
+        this.watcher = watcher;
     }
 
     @Override
@@ -98,23 +113,8 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     }
 
     @Override
-    public Host getHost() {
-        return host;
-    }
-
-    @Override
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-    @Override
-    public PipeWatcher getWatcher() {
-        return watcher;
-    }
-
-    @Override
-    public void setWatcher(PipeWatcher watcher) {
-        this.watcher = watcher;
+    public void dispose() {
+        stop();
     }
 
     @Override
@@ -124,11 +124,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
             Preconditions.checkState(CmdUtils.isValidCmd(cmd));
 
             //查找对应channel
-            Channel channel = ChannelCacheService.getInstance().get(cmd.getTo());
-            if (channel == null) {
-                //非伺服器模式时
-                channel = this.channel;
-            }
+            Channel channel = pipeAssistant.getChannel(this, cmd.getTo());
             Preconditions.checkNotNull(channel);
             Preconditions.checkState(channel.isActive());
             channel.writeAndFlush(cmd);

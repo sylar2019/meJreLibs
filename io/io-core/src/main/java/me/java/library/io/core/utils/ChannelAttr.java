@@ -2,7 +2,6 @@ package me.java.library.io.core.utils;
 
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
-import me.java.library.io.Terminal;
 import me.java.library.io.core.pipe.Pipe;
 
 /**
@@ -21,9 +20,7 @@ import me.java.library.io.core.pipe.Pipe;
  * *******************************************************************************************
  */
 public interface ChannelAttr {
-
     AttributeKey<Pipe> ATTR_PIPE = AttributeKey.valueOf("pipe");
-    AttributeKey<Terminal> ATTR_TERMINAL = AttributeKey.valueOf("terminal");
 
     static <V> V get(Channel channel, AttributeKey<V> attrKey) {
         return channel.attr(attrKey).get();

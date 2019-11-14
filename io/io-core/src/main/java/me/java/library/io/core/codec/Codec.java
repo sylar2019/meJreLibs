@@ -30,6 +30,7 @@ public interface Codec extends Identifiable<String> {
     String HANDLER_NAME_SIMPLE_ENCODER = "simpleEncoderHandler";
     String HANDLER_NAME_SIMPLE_DECODER = "simpleDecoderHandler";
     String HANDLER_NAME_FRAME_DECODER = "frameDecoderHandler";
+
     String HANDLER_ATTR_LOG_LEVEL = "logLevel";
     String HANDLER_ATTR_READ_IDLE_TIME = "readerIdleTimeSeconds";
     String HANDLER_ATTR_WRITE_IDLE_TIME = "writerIdleTimeSeconds";
