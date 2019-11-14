@@ -35,7 +35,10 @@ public class UdpEncoder extends SimpleEncoder {
     protected void encode(ChannelHandlerContext ctx, Cmd cmd, List<Object> out) throws Exception {
         InetSocketAddress address = cmd.getTo().getInetSocketAddress();
         if (address == null) {
-            address = PipeAssistant.getInstance().getTerminalSocketAddress(ctx.channel(), cmd.getTo());
+            address = PipeAssistant.getInstance()
+                    .getPipeContext(ctx.channel())
+                    .getTerminalState(cmd.getTo())
+                    .getSocketAddress();
         }
         Preconditions.checkNotNull(address, "udp 报文需要目标套接字地址");
         super.encode(ctx, cmd, out);

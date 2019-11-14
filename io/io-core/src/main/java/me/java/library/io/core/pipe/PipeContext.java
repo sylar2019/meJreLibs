@@ -27,14 +27,14 @@ import java.util.Set;
 public class PipeContext {
 
     private Pipe pipe;
-    private Set<Channel> channels;
-    private Set<Terminal> terminals;
+
+    private Map<Channel, Set<Terminal>> channelSetMap;
     private Map<Terminal, TerminalState> terminalStateMap;
 
     public PipeContext(Pipe pipe) {
         this.pipe = pipe;
-        channels = Sets.newConcurrentHashSet();
-        terminals = Sets.newConcurrentHashSet();
+
+        channelSetMap = Maps.newConcurrentMap();
         terminalStateMap = Maps.newConcurrentMap();
     }
 
@@ -42,20 +42,18 @@ public class PipeContext {
         return pipe;
     }
 
-    public Set<Channel> getChannels() {
-        return channels;
-    }
-
-    public Set<Terminal> getTerminals() {
-        return terminals;
+    public Set<Terminal> getTerminals(Channel channel) {
+        if (!channelSetMap.containsKey(channel)) {
+            channelSetMap.put(channel, Sets.newConcurrentHashSet());
+        }
+        return channelSetMap.get(channel);
     }
 
     public TerminalState getTerminalState(Terminal terminal) {
+        if (!terminalStateMap.containsKey(terminal)) {
+            terminalStateMap.put(terminal, new TerminalState(terminal));
+        }
         return terminalStateMap.get(terminal);
-    }
-
-    public void setTerminalState(TerminalState terminalState) {
-        terminalStateMap.put(terminalState.getTerminal(), terminalState);
     }
 
     @Override

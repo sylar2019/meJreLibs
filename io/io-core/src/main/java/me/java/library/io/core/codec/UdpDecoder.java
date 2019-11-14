@@ -38,11 +38,11 @@ public class UdpDecoder extends DatagramPacketDecoder {
                 Cmd cmd = (Cmd) obj;
                 cmd.getFrom().setInetSocketAddress(datagramPacket.sender());
                 cmd.getTo().setInetSocketAddress(datagramPacket.recipient());
-                PipeAssistant.getInstance().setTerminalSocketAddress(
-                        ctx.channel(),
-                        cmd.getFrom(),
-                        datagramPacket.sender());
 
+                PipeAssistant.getInstance()
+                        .getPipeContext(ctx.channel())
+                        .getTerminalState(cmd.getFrom())
+                        .setSocketAddress(datagramPacket.sender());
             }
         }
     }

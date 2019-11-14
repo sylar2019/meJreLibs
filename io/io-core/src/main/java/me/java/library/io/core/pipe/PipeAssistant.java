@@ -7,9 +7,7 @@ import me.java.library.io.Cmd;
 import me.java.library.io.Terminal;
 import me.java.library.io.core.utils.ChannelAttr;
 
-import java.net.InetSocketAddress;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * File Name             :  PipeAssistant
@@ -32,10 +30,26 @@ public class PipeAssistant {
         return new PipeAssistant();
     }
 
-    Map<Pipe, PipeContext> pipeAssistants;
+    private Map<Pipe, PipeContext> pipeAssistants;
 
     private PipeAssistant() {
         pipeAssistants = Maps.newConcurrentMap();
+    }
+
+    public void addPipe(Pipe pipe) {
+        pipeAssistants.put(pipe, new PipeContext(pipe));
+    }
+
+    public void remove(Pipe pipe) {
+        pipeAssistants.remove(pipe);
+    }
+
+    public PipeContext getPipeContext(Pipe pipe) {
+        return pipeAssistants.get(pipe);
+    }
+
+    public PipeContext getPipeContext(Channel channel) {
+        return pipeAssistants.get(getPipe(channel));
     }
 
     public Pipe getPipe(Channel channel) {
@@ -43,80 +57,45 @@ public class PipeAssistant {
     }
 
     public Channel getChannel(AbstractPipe pipe, Terminal terminal) {
-        TerminalState state = pipeAssistants.get(pipe).getTerminalState(terminal);
-        if (state != null && state.getChannel() != null) {
-            return state.getChannel();
-        } else {
+        Channel channel = getPipeContext(pipe).getTerminalState(terminal).getChannel();
+        if (channel == null) {
             //非伺服器模式时
             return pipe.channel;
+        } else {
+            return channel;
         }
     }
-
-
-    public Set<Channel> getChannels(Pipe pipe) {
-        return pipeAssistants.get(pipe).getChannels();
-    }
-
-    public Set<Terminal> getTerminals(Pipe pipe) {
-        return pipeAssistants.get(pipe).getTerminals();
-    }
-
-    public TerminalState getTerminalState(Pipe pipe, Terminal terminal) {
-        return pipeAssistants.get(pipe).getTerminalState(terminal);
-    }
-
-    public void setTerminalState(Pipe pipe, TerminalState terminalState) {
-        pipeAssistants.get(pipe).setTerminalState(terminalState);
-    }
-
-
-    public InetSocketAddress getTerminalSocketAddress(Channel channel, Terminal terminal) {
-        return getTerminalState(getPipe(channel), terminal).getSocketAddress();
-    }
-
-    public void setTerminalSocketAddress(Channel channel, Terminal terminal, InetSocketAddress address) {
-        Pipe pipe = getPipe(channel);
-        TerminalState state = getTerminalState(pipe, terminal);
-        state.setSocketAddress(address);
-    }
-
 
     public void onThrowable(Channel channel, Throwable throwable) {
         AbstractPipe pipe = getBasePipe(channel);
-        //TODO
-//        pipe.onReceived(cmd);
+        pipe.onException(throwable);
     }
-
 
     public void onReceived(Channel channel, Cmd cmd) {
         AbstractPipe pipe = getBasePipe(channel);
-        pipe.onReceived(cmd);
+        getPipeContext(channel).getTerminals(channel).add(cmd.getFrom());
+        onConnectionChanged(channel, cmd.getFrom(), true);
 
-        //TODO -> onConnectionChanged
+        pipe.onReceived(cmd);
     }
 
-
     public void onChannelIdle(Channel channel, IdleStateEvent idleStateEvent) {
-        AbstractPipe pipe = getBasePipe(channel);
-        //TODO -> onConnectionChanged
-//        pipe.onConnectionChanged(terminal, connected);
-
+        getPipeContext(channel).getTerminals(channel).forEach(terminal -> {
+            getPipeContext(channel).getTerminals(channel).remove(terminal);
+            onConnectionChanged(channel, terminal, false);
+        });
     }
 
     public void onConnectionChanged(Channel channel, Terminal terminal, boolean connected) {
-        AbstractPipe pipe = getBasePipe(channel);
-        pipe.onConnectionChanged(terminal, connected);
+        TerminalState state = getPipeContext(channel).getTerminalState(terminal);
+        if(state.isConnected() != connected){
+            state.setConnected(connected);
+            state.setChannel(connected ? channel : null);
 
-        TerminalState state = getTerminalState(pipe, terminal);
-        if (connected) {
-            state.setChannel(channel);
-            state.setConnected(true);
-        } else {
-            state.setChannel(channel);
-            state.setConnected(false);
+            AbstractPipe pipe = getBasePipe(channel);
+            pipe.onConnectionChanged(terminal, connected);
         }
     }
-
 
     private AbstractPipe getBasePipe(Channel channel) {
         Pipe pipe = ChannelAttr.get(channel, ChannelAttr.ATTR_PIPE);

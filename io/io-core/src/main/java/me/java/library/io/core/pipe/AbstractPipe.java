@@ -45,6 +45,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     }
 
     public AbstractPipe(String hostCode, B bus, C codec) {
+        pipeAssistant.addPipe(this);
         this.host = new HostNode(hostCode);
         this.bus = bus;
         this.codec = codec;
@@ -115,6 +116,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     @Override
     public void dispose() {
         stop();
+        pipeAssistant.remove(this);
     }
 
     @Override
@@ -196,7 +198,11 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
         }
     }
 
+    /**
+     * @param cmd
+     */
     protected void onReceived(Cmd cmd) {
+        interceptReceivedCmd(cmd);
         if (watcher != null) {
             ConcurrentService.getInstance().postRunnable(() -> watcher.onReceived(AbstractPipe.this, cmd));
         }
@@ -206,6 +212,14 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
         if (watcher != null) {
             ConcurrentService.getInstance().postRunnable(() -> watcher.onException(AbstractPipe.this, t));
         }
+    }
+
+    /**
+     * 拦截收到的指令
+     *
+     * @param cmd
+     */
+    protected void interceptReceivedCmd(Cmd cmd) {
     }
 
 }
