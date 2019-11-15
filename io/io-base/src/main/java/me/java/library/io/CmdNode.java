@@ -21,11 +21,11 @@ import java.util.UUID;
  */
 public class CmdNode extends AbstractIdPojo<String> implements Cmd {
 
-    protected Terminal from;
-    protected Terminal to;
     protected String code;
     protected CmdType type;
     protected long time;
+    protected Terminal from;
+    protected Terminal to;
 
     public CmdNode() {
         this.id = UUID.randomUUID().toString();
@@ -47,24 +47,6 @@ public class CmdNode extends AbstractIdPojo<String> implements Cmd {
     public CmdNode(Terminal from, Terminal to, String code, CmdType type) {
         this(from, to, code);
         this.type = type;
-    }
-
-    @Override
-    public Terminal getFrom() {
-        return from;
-    }
-
-    public void setFrom(Terminal from) {
-        this.from = from;
-    }
-
-    @Override
-    public Terminal getTo() {
-        return to;
-    }
-
-    public void setTo(Terminal to) {
-        this.to = to;
     }
 
     @Override
@@ -92,5 +74,23 @@ public class CmdNode extends AbstractIdPojo<String> implements Cmd {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    @Override
+    public Terminal getFrom() {
+        return from;
+    }
+
+    public void setFrom(Terminal from) {
+        this.from = from;
+    }
+
+    @Override
+    public Terminal getTo() {
+        return to;
+    }
+
+    public void setTo(Terminal to) {
+        this.to = to;
     }
 }
