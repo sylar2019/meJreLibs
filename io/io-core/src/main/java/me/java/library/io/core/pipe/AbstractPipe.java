@@ -88,7 +88,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
             isRunning = true;
             onPipeRunningChanged(isRunning);
         } catch (Exception e) {
-            onException(e.getCause());
+            onException(e);
         }
     }
 
@@ -103,7 +103,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
             isRunning = false;
             onPipeRunningChanged(isRunning);
         } catch (Exception e) {
-            onException(e.getCause());
+            onException(e);
         }
     }
 
@@ -131,7 +131,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
             Preconditions.checkState(channel.isActive());
             channel.writeAndFlush(cmd);
         } catch (Exception e) {
-            onException(e.getCause());
+            onException(e);
         }
     }
 

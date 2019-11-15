@@ -24,6 +24,14 @@ import java.util.concurrent.*;
 @SuppressWarnings({"UnstableApiUsage"})
 public class ConcurrentService implements Serviceable {
 
+    public static ConcurrentService getInstance() {
+        return SingletonHolder.instance;
+    }
+
+    private static class SingletonHolder {
+        private static ConcurrentService instance = new ConcurrentService();
+    }
+
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final int CORE_POOL_SIZE = CPU_COUNT + 1;
     private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
@@ -49,10 +57,6 @@ public class ConcurrentService implements Serviceable {
 
     private ConcurrentService() {
         executor.allowCoreThreadTimeOut(true);
-    }
-
-    synchronized public static ConcurrentService getInstance() {
-        return new ConcurrentService();
     }
 
     @Override

@@ -26,8 +26,12 @@ import java.util.Map;
  */
 public class PipeAssistant {
 
-    synchronized public static PipeAssistant getInstance() {
-        return new PipeAssistant();
+    public static PipeAssistant getInstance() {
+        return SingletonHolder.instance;
+    }
+
+    private static class SingletonHolder {
+        private static PipeAssistant instance = new PipeAssistant();
     }
 
     private Map<Pipe, PipeContext> pipeAssistants;
@@ -72,10 +76,10 @@ public class PipeAssistant {
     }
 
     public void onReceived(Channel channel, Cmd cmd) {
-        AbstractPipe pipe = getBasePipe(channel);
         getPipeContext(channel).getTerminals(channel).add(cmd.getFrom());
         onConnectionChanged(channel, cmd.getFrom(), true);
 
+        AbstractPipe pipe = getBasePipe(channel);
         pipe.onReceived(cmd);
     }
 
@@ -88,7 +92,7 @@ public class PipeAssistant {
 
     public void onConnectionChanged(Channel channel, Terminal terminal, boolean connected) {
         TerminalState state = getPipeContext(channel).getTerminalState(terminal);
-        if(state.isConnected() != connected){
+        if (state.isConnected() != connected) {
             state.setConnected(connected);
             state.setChannel(connected ? channel : null);
 
