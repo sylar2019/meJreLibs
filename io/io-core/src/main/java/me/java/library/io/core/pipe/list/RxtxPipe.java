@@ -66,6 +66,27 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
         }
     }
 
+    static void setDataLocalTmp() {
+
+        File device = new File("/data/local/tmp");
+
+        /* Check access permission */
+        try {
+            /* Missing read/write permission, trying to chmod the file */
+            Process su;
+            su = Runtime.getRuntime().exec("/system/bin/su");
+            String cmd = "chmod 777 " + device.getAbsolutePath() + "\n"
+                    + "exit\n";
+            su.getOutputStream().write(cmd.getBytes());
+            if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
+                throw new SecurityException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SecurityException();
+        }
+    }
+
     @Override
     protected void onStart() throws Exception {
         super.onStart();
@@ -74,6 +95,7 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
 
         group = new OioEventLoopGroup();
 
+        setDataLocalTmp();
         setRxtxPermisson(bus.getRxtxPath());
         RxtxDeviceAddress rxtxDeviceAddress = new RxtxDeviceAddress(bus.getRxtxPath());
 
