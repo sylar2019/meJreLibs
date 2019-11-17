@@ -33,23 +33,29 @@ public class UdpEncoder extends SimpleEncoder {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Cmd cmd, List<Object> out) throws Exception {
-        InetSocketAddress address = cmd.getTo().getInetSocketAddress();
-        if (address == null) {
-            address = PipeAssistant.getInstance()
-                    .getPipeContext(ctx.channel())
-                    .getTerminalState(cmd.getTo())
-                    .getSocketAddress();
-        }
-        Preconditions.checkNotNull(address, "udp 报文需要目标套接字地址");
         super.encode(ctx, cmd, out);
 
-        //build DatagramPacket
-        List<Object> raw = Lists.newArrayList(out);
-        out.clear();
-        for (Object obj : raw) {
-            if (obj instanceof ByteBuf) {
-                out.add(new DatagramPacket((ByteBuf) obj, address));
+        try {
+            InetSocketAddress address = cmd.getTo().getInetSocketAddress();
+            if (address == null) {
+                address = PipeAssistant.getInstance()
+                        .getPipeContext(ctx.channel())
+                        .getTerminalState(cmd.getTo())
+                        .getSocketAddress();
             }
+            Preconditions.checkNotNull(address, "udp 报文需要目标套接字地址");
+
+            //build DatagramPacket
+            List<Object> raw = Lists.newArrayList(out);
+            out.clear();
+            for (Object obj : raw) {
+                if (obj instanceof ByteBuf) {
+                    out.add(new DatagramPacket((ByteBuf) obj, address));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
         }
     }
 }

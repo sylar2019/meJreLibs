@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import me.java.library.io.Cmd;
+import me.java.library.io.core.pipe.PipeAssistant;
 
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class SimpleEncoder extends MessageToMessageEncoder<Cmd> {
             out.add(buf);
         } catch (Exception e) {
             e.printStackTrace();
+            PipeAssistant.getInstance().onThrowable(ctx.channel(),e);
         }
     }
 }

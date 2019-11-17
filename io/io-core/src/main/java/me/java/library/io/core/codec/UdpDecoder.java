@@ -32,18 +32,24 @@ public class UdpDecoder extends DatagramPacketDecoder {
     protected void decode(ChannelHandlerContext ctx, DatagramPacket datagramPacket, List<Object> out) throws Exception {
         super.decode(ctx, datagramPacket, out);
 
-        //记录每个udp client 的地址端口信息
-        for (Object obj : out) {
-            if (obj instanceof Cmd) {
-                Cmd cmd = (Cmd) obj;
-                cmd.getFrom().setInetSocketAddress(datagramPacket.sender());
-                cmd.getTo().setInetSocketAddress(datagramPacket.recipient());
+        try {
+            //记录每个udp client 的地址端口信息
+            for (Object obj : out) {
+                if (obj instanceof Cmd) {
+                    Cmd cmd = (Cmd) obj;
+                    cmd.getFrom().setInetSocketAddress(datagramPacket.sender());
+                    cmd.getTo().setInetSocketAddress(datagramPacket.recipient());
 
-                PipeAssistant.getInstance()
-                        .getPipeContext(ctx.channel())
-                        .getTerminalState(cmd.getFrom())
-                        .setSocketAddress(datagramPacket.sender());
+                    PipeAssistant.getInstance()
+                            .getPipeContext(ctx.channel())
+                            .getTerminalState(cmd.getFrom())
+                            .setSocketAddress(datagramPacket.sender());
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
         }
+
     }
 }

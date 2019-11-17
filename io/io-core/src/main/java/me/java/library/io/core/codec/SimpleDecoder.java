@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import me.java.library.io.Cmd;
+import me.java.library.io.core.pipe.PipeAssistant;
 
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class SimpleDecoder extends MessageToMessageDecoder<ByteBuf> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
         }
     }
 }
