@@ -561,7 +561,7 @@ final public class RXTXPort extends SerialPort {
     /* =================== cleaned messages to here */
 
     /**
-     *  Line status methods
+     * Line status methods
      */
 
     private native synchronized int open(String name)

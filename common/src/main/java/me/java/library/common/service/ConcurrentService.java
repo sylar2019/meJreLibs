@@ -24,20 +24,11 @@ import java.util.concurrent.*;
 @SuppressWarnings({"UnstableApiUsage"})
 public class ConcurrentService implements Serviceable {
 
-    public static ConcurrentService getInstance() {
-        return SingletonHolder.instance;
-    }
-
-    private static class SingletonHolder {
-        private static ConcurrentService instance = new ConcurrentService();
-    }
-
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final int CORE_POOL_SIZE = CPU_COUNT + 1;
     private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
     private static final int KEEP_ALIVE = 1;
     private static final TimeUnit KEEP_ALIVE_UNIT = TimeUnit.SECONDS;
-
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(
             CORE_POOL_SIZE,
             MAXIMUM_POOL_SIZE,
@@ -46,7 +37,6 @@ public class ConcurrentService implements Serviceable {
             new LinkedBlockingQueue<>(128),
             new ThreadFactoryBuilder().setNameFormat("common-pool-%d").build(),
             new ThreadPoolExecutor.AbortPolicy());
-
     private ScheduledThreadPoolExecutor scheduledExecutor = new ScheduledThreadPoolExecutor(
             CORE_POOL_SIZE,
             new ThreadFactoryBuilder().setNameFormat("common-scheduled-pool-%d").build(),
@@ -54,9 +44,12 @@ public class ConcurrentService implements Serviceable {
     );
     private ListeningExecutorService service = MoreExecutors.listeningDecorator(executor);
     private ListeningScheduledExecutorService scheduledService = MoreExecutors.listeningDecorator(scheduledExecutor);
-
     private ConcurrentService() {
         executor.allowCoreThreadTimeOut(true);
+    }
+
+    public static ConcurrentService getInstance() {
+        return SingletonHolder.instance;
     }
 
     @Override
@@ -328,5 +321,9 @@ public class ConcurrentService implements Serviceable {
         if (callback != null) {
             Futures.addCallback(future, callback, executor);
         }
+    }
+
+    private static class SingletonHolder {
+        private static ConcurrentService instance = new ConcurrentService();
     }
 }

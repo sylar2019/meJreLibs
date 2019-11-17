@@ -44,7 +44,7 @@ public class SimpleEncoder extends MessageToMessageEncoder<Cmd> {
             out.add(buf);
         } catch (Exception e) {
             e.printStackTrace();
-            PipeAssistant.getInstance().onThrowable(ctx.channel(),e);
+            PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
         }
     }
 }

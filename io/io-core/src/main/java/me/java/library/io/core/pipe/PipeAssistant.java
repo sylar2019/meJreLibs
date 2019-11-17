@@ -26,18 +26,14 @@ import java.util.Map;
  */
 public class PipeAssistant {
 
-    public static PipeAssistant getInstance() {
-        return SingletonHolder.instance;
-    }
-
-    private static class SingletonHolder {
-        private static PipeAssistant instance = new PipeAssistant();
-    }
-
     private Map<Pipe, PipeContext> pipeAssistants;
 
     private PipeAssistant() {
         pipeAssistants = Maps.newConcurrentMap();
+    }
+
+    public static PipeAssistant getInstance() {
+        return SingletonHolder.instance;
     }
 
     public void addPipe(Pipe pipe) {
@@ -107,6 +103,10 @@ public class PipeAssistant {
             return (AbstractPipe) pipe;
         }
         throw new RuntimeException("不支持的pipe实现，pipe 须派生自 AbstractPipe");
+    }
+
+    private static class SingletonHolder {
+        private static PipeAssistant instance = new PipeAssistant();
     }
 
 }
