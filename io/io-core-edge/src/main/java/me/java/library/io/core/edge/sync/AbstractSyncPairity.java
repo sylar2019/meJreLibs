@@ -67,8 +67,8 @@ public abstract class AbstractSyncPairity implements SyncPairity {
 
     @Override
     public Cmd getResponse(Cmd request, long timeout, TimeUnit unit) throws Exception {
-        Preconditions.checkState(CmdUtils.isValidCmd(request));
-        Preconditions.checkState(isRegisted(request));
+        Preconditions.checkArgument(CmdUtils.isValidCmd(request), "无效指令:" + request);
+        Preconditions.checkArgument(isRegisted(request), "未注册同步Key的指令:" + request);
 
         SyncCmdCacheService cache = getCache(request.getTo());
         Preconditions.checkState(cache.containsKey(request.getId()));
