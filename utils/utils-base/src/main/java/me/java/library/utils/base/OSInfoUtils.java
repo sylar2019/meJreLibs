@@ -19,11 +19,8 @@ public class OSInfoUtils {
 
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
 
-    private static OS platform = getOS();
-
     private OSInfoUtils() {
     }
-
 
     public static boolean isLinux() {
         return OS_NAME.indexOf("linux") >= 0;

@@ -1,6 +1,6 @@
 package me.java.library.io.core.pipe.list;
 
-import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.oio.OioEventLoopGroup;
 import io.netty.channel.rxtx.RxtxChannel;
@@ -11,8 +11,7 @@ import me.java.library.io.core.bus.list.RxtxBus;
 import me.java.library.io.core.codec.list.RxtxCodec;
 import me.java.library.io.core.pipe.AbstractPipe;
 import me.java.library.utils.base.OSInfoUtils;
-
-import java.io.File;
+import me.java.library.utils.base.ShellUtils;
 
 /**
  * File Name             :  RxtxPipe
@@ -36,67 +35,12 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
         super(bus, codec);
     }
 
-    static void setRxtxPermisson(String fileName) {
-        System.setProperty("gnu.io.rxtx.SerialPorts", fileName);
-
-        if (OSInfoUtils.isLinux()
-                || OSInfoUtils.isMacOS()
-                || OSInfoUtils.isMacOSX()) {
-
-            File device = new File(fileName);
-            Preconditions.checkState(device.exists(), "serialport file invalid");
-
-            /* Check access permission */
-            if (!device.canRead() || !device.canWrite()) {
-                try {
-                    /* Missing read/write permission, trying to chmod the file */
-                    Process su;
-                    su = Runtime.getRuntime().exec("/system/bin/su");
-                    String cmd = "chmod 666 " + device.getAbsolutePath() + "\n"
-                            + "exit\n";
-                    su.getOutputStream().write(cmd.getBytes());
-                    if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
-                        throw new SecurityException();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new SecurityException();
-                }
-            }
-        }
-    }
-
-    static void setDataLocalTmp() {
-
-        File device = new File("/data/local/tmp");
-
-        /* Check access permission */
-        try {
-            /* Missing read/write permission, trying to chmod the file */
-            Process su;
-            su = Runtime.getRuntime().exec("/system/bin/su");
-            String cmd = "chmod 777 " + device.getAbsolutePath() + "\n"
-                    + "exit\n";
-            su.getOutputStream().write(cmd.getBytes());
-            if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
-                throw new SecurityException();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new SecurityException();
-        }
-    }
-
     @Override
     protected void onStart() throws Exception {
         super.onStart();
-
-        AbstractPipe p1 = null;
+        preparePermisson();
 
         group = new OioEventLoopGroup();
-
-        setDataLocalTmp();
-        setRxtxPermisson(bus.getRxtxPath());
         RxtxDeviceAddress rxtxDeviceAddress = new RxtxDeviceAddress(bus.getRxtxPath());
 
         Bootstrap b = new Bootstrap();
@@ -111,6 +55,29 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
                 .handler(getChannelInitializer());
 
         future = b.connect(rxtxDeviceAddress).sync();
+    }
+
+    protected void preparePermisson() {
+
+        System.setProperty("gnu.io.rxtx.SerialPorts", bus.getRxtxPath());
+        String cmd;
+        ShellUtils.CommandResult cmdRes;
+
+        if (OSInfoUtils.isLinux() || OSInfoUtils.isMacOS() || OSInfoUtils.isMacOSX()) {
+            cmd = String.format("chmod 666 %s", bus.getRxtxPath());
+            cmdRes = ShellUtils.execCommand(cmd, true, true);
+            if (!Strings.isNullOrEmpty(cmdRes.errorMsg)) {
+                throw new SecurityException("没有串口读写权限");
+            }
+        }
+
+        if (OSInfoUtils.isLinux()) {
+            cmd = String.format("chmod 777 %s", "/data/local/tmp");
+            cmdRes = ShellUtils.execCommand(cmd, true, true);
+            if (!Strings.isNullOrEmpty(cmdRes.errorMsg)) {
+                throw new SecurityException("没有android root权限");
+            }
+        }
     }
 
 }
