@@ -12,6 +12,7 @@ import me.java.library.io.core.pipe.PipeWatcher;
 import me.java.library.utils.base.guava.AsyncEventUtils;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * File Name             :  EdgeProxyPipe
@@ -151,22 +152,30 @@ public class EdgeProxyPipe implements Pipe {
     /**
      * 同步发送指令
      *
-     * @param cmd
-     * @param timeoutSeconds
-     * @param tryTimes
-     * @param callback
+     * @param cmd            待发送指令
+     * @param timeoutSeconds 超时时间(秒)
+     * @param tryTimes       重试次数(须大于等于0)
+     * @param callback       回调
      */
     public void syncSend(Cmd cmd, long timeoutSeconds, int tryTimes, FutureCallback<Cmd> callback) {
+        try {
+            Cmd res = syncSend(cmd, timeoutSeconds, tryTimes);
+            callback.onSuccess(res);
+        } catch (Exception e) {
+            callback.onFailure(e);
+        }
+    }
+
+    public Cmd syncSend(Cmd cmd, long timeoutSeconds, int tryTimes) throws Exception {
         Preconditions.checkNotNull(cmd);
-        Preconditions.checkNotNull(callback);
         Preconditions.checkNotNull(syncPairity, "syncPairity can not be nul");
         Preconditions.checkState(timeoutSeconds > 0);
-        Preconditions.checkState(tryTimes > 0);
+        Preconditions.checkState(tryTimes >= 0);
 
         syncPairity.cacheRequest(cmd);
         Cmd res = null;
-        Throwable t = null;
-        for (int i = 0; i < tryTimes; i++) {
+        Exception err = null;
+        for (int i = 0; i <= tryTimes; i++) {
             send(cmd);
             try {
                 res = syncPairity.getResponse(cmd, timeoutSeconds, TimeUnit.SECONDS);
@@ -174,15 +183,19 @@ public class EdgeProxyPipe implements Pipe {
                     break;
                 }
             } catch (Exception e) {
-                t = e;
+                err = e;
             }
         }
 
         if (res != null) {
-            callback.onSuccess(res);
+            return res;
         } else {
             syncPairity.cleanCache(cmd);
-            callback.onFailure(t);
+            if (err != null) {
+                throw new Exception("同步异常:\r\n" + cmd, err);
+            } else {
+                throw new TimeoutException("同步超时: \r\n" + cmd);
+            }
         }
     }
 

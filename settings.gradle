@@ -29,6 +29,7 @@ include ":mq:mq-rocketmq"
 include ":mq:mq-starter"
 
 include ":utils"
+include ":utils:utils-aoe"
 include ":utils:utils-base"
 include ":utils:utils-disruptor"
 include ":utils:utils-dubbo"

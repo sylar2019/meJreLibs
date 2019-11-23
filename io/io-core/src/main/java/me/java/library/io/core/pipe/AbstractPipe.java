@@ -140,6 +140,9 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     }
 
     protected void onStop() throws Exception {
+        if (future != null && future.channel() != null) {
+            future.channel().close().sync();
+        }
         if (group != null) {
             group.shutdownGracefully();
         }
