@@ -89,6 +89,15 @@ public interface BaseEnum extends Serializable {
         return false;
     }
 
+    static <T extends BaseEnum> int getEnumIndex(Class<T> enumType, T enumInstance) {
+        for (int i = 0; i < enumType.getEnumConstants().length; i++) {
+            if (enumInstance == enumType.getEnumConstants()[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     /**
      * 用于显示的枚举名
      *
