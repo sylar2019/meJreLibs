@@ -21,7 +21,7 @@ buildscript {
 /** ******************************************************************************************/
 
 allprojects {
-    group 'com.github.sylar2019'
+    group 'com.github.sylar2019.meJreLibs'
     version "1.0.0"
 
     repositories {
