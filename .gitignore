@@ -12,8 +12,6 @@ Thumbs.db
 *.dex
 
 # Java class files
-*.class
-
 # generated files
 bin/
 gen/
@@ -49,7 +47,6 @@ proguard-rules.pro
 .project
 
 # Intellij project files
-*.iml
 *.ipr
 *.iws
 .idea/
