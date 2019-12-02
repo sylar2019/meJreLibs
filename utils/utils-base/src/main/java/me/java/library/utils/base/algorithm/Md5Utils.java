@@ -18,13 +18,13 @@ import com.google.common.hash.Hashing;
  * @@CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
+@SuppressWarnings("UnstableApiUsage")
 public class Md5Utils {
 
     public static String md5(String str) {
 
-        HashCode hashCode = Hashing.md5().hashString(str, Charsets.UTF_8);
-        String md5 = hashCode.toString();
-        return md5;
+        HashCode hashCode = Hashing.sha256().hashString(str, Charsets.UTF_8);
+        return hashCode.toString();
     }
 
 }

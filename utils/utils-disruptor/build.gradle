@@ -1,6 +1,4 @@
 dependencies {
     compile project(":common")
     compile("com.lmax:disruptor:3.4.2")
-
-
 }

@@ -25,6 +25,7 @@ import java.util.List;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
+@SuppressWarnings("ALL")
 public class DisruptorEventService implements EventService {
     private final static int BUFFER_SIZE = 1024;
     private final static EventTranslatorTwoArg<DisruptorEvent, Object, Object> TRANSLATOR = (event, sequence, arg0, arg1) -> {
@@ -39,6 +40,7 @@ public class DisruptorEventService implements EventService {
             BUFFER_SIZE,
             DaemonThreadFactory.INSTANCE
     );
+
     private ExceptionHandler exceptionHandler = new ExceptionHandler() {
         @Override
         public void handleEventException(Throwable ex, long sequence, Object event) {

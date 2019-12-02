@@ -49,7 +49,7 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
         if (mediaType == null) {
             throw new IllegalStateException("Missing response header [content-type] ");
         }
-        if (mediaType.type().equals("application") && mediaType.subtype().equals("json")) {
+        if ("application".equals(mediaType.type()) && "json".equals(mediaType.subtype())) {
             try {
                 T result = adapter.read(jsonReader);
                 if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
