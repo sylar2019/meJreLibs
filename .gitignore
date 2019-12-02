@@ -53,7 +53,4 @@ proguard-rules.pro
 
 # Gradle
 .gradle/
-gradlew
-gradlew.bat
-gradle.properties
 local.properties
