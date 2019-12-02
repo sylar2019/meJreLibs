@@ -9,7 +9,8 @@ buildscript {
     apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/const.gradle"
 
     repositories {
-        mavenLocal()
+//        mavenLocal()
+        maven { url "https://jcenter.bintray.com/" }
         maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
     }
 
@@ -25,7 +26,9 @@ allprojects {
     version "1.0.0"
 
     repositories {
-        mavenLocal()
+//        mavenLocal()
+
+        maven { url "https://jcenter.bintray.com/" }
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://mirrors.huaweicloud.com/repository/maven/" }
     }
