@@ -10,7 +10,7 @@ buildscript {
 
     repositories {
         mavenLocal()
-        maven { url "http://maven.aliyun.com/repository/gradle-plugin" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
     }
 
     dependencies {
@@ -27,6 +27,7 @@ allprojects {
     repositories {
         mavenLocal()
         maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://mirrors.huaweicloud.com/repository/maven/" }
     }
 
     configurations.all {
