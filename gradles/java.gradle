@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: 'maven-publish'
+//apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
 //JVM 版本号要求
@@ -14,46 +14,45 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar', '*.aar', '**/*.so'])
-
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile("junit:junit:${junitVersion}")
 }
 
 /** ******************************************************************************************/
 
-task sourceJar(type: Jar) {
-    archiveClassifier.set('sources')
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives sourceJar
-}
-
-/** ******************************************************************************************/
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = "$project.group"
-            artifactId = "$project.name"
-            version = "$project.version"
-
-            artifact jar
-            artifact sourceJar
-        }
-    }
-
-    repositories {
-        maven {
-            url = version.endsWith('SNAPSHOT') ? SNAPSHOT_REPOSITORY_URL : RELEASE_REPOSITORY_URL
-            credentials {
-                username = NEXUS_USERNAME
-                password = NEXUS_PASSWORD
-            }
-        }
-    }
-}
+//task sourceJar(type: Jar) {
+//    archiveClassifier.set('sources')
+//    from sourceSets.main.allSource
+//}
+//
+//artifacts {
+//    archives sourceJar
+//}
+//
+///** ******************************************************************************************/
+//
+//publishing {
+//    publications {
+//        maven(MavenPublication) {
+//            groupId = "$project.group"
+//            artifactId = "$project.name"
+//            version = "$project.version"
+//
+//            artifact jar
+//            artifact sourceJar
+//        }
+//    }
+//
+//    repositories {
+//        maven {
+//            url = version.endsWith('SNAPSHOT') ? SNAPSHOT_REPOSITORY_URL : RELEASE_REPOSITORY_URL
+//            credentials {
+//                username = NEXUS_USERNAME
+//                password = NEXUS_PASSWORD
+//            }
+//        }
+//    }
+//}
 
 /** ******************************************************************************************/
 
