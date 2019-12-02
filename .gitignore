@@ -59,7 +59,3 @@ proguard-rules.pro
 gradle/
 gradlew
 gradlew.bat
-
-
-# docker 提供开发环境
-/dockerDevEnv
