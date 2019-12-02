@@ -47,4 +47,5 @@ public enum BusType implements BaseEnum {
     @Override
     public int getValue() {
         return 0;
-    }}
+    }
+}

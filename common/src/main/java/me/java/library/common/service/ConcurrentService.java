@@ -44,6 +44,7 @@ public class ConcurrentService implements Serviceable {
     );
     private ListeningExecutorService service = MoreExecutors.listeningDecorator(executor);
     private ListeningScheduledExecutorService scheduledService = MoreExecutors.listeningDecorator(scheduledExecutor);
+
     private ConcurrentService() {
         executor.allowCoreThreadTimeOut(true);
     }
