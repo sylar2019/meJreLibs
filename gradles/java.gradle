@@ -21,4 +21,13 @@ dependencies {
 }
 
 /** ******************************************************************************************/
+//打包源代码
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
 /** ******************************************************************************************/
