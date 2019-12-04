@@ -1,11 +1,11 @@
-rootProject.name = "me.java.library"
+rootProject.name = "meJreLibs"
+//rootProject.name = "com.github.sylar2019"
 
 include ":common"
 
 include ":component"
 include ":component:component-acl"
 include ":component:component-flowable"
-include ":component:component-report"
 
 include ":db"
 include ":db:db-hbase"

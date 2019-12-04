@@ -1,5 +1,8 @@
+apply from: gradlesPath + "const.gradle"
+apply from: gradlesPath + "utils.gradle"
+apply from: gradlesPath + "maven.gradle"
+
 apply plugin: 'java-library'
-apply plugin: 'maven'
 
 //JVM 版本号要求
 sourceCompatibility = 1.8
@@ -19,28 +22,3 @@ dependencies {
 
 /** ******************************************************************************************/
 /** ******************************************************************************************/
-
-install {
-    repositories.mavenInstaller {
-        pom.groupId = project.group
-        pom.artifactId = project.name
-        pom.version = project.version
-    }
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            pom.groupId = "$project.group"
-            pom.artifactId = "$project.name"
-            pom.version = "$project.version"
-
-            def url = version.endsWith('SNAPSHOT') ? SNAPSHOT_REPOSITORY_URL : RELEASE_REPOSITORY_URL
-            repository(url: url) {
-                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
-            }
-        }
-    }
-}
-
-uploadArchives.dependsOn(compileJava)

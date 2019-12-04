@@ -9,8 +9,7 @@ buildscript {
     apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/const.gradle"
 
     repositories {
-//        mavenLocal()
-        maven { url "https://jcenter.bintray.com/" }
+        mavenLocal()
         maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
     }
 
@@ -22,28 +21,19 @@ buildscript {
 /** ******************************************************************************************/
 
 allprojects {
-    group 'com.github.sylar2019'
+    group rootProject.name
     version "1.0.0"
 
     repositories {
-//        mavenLocal()
-
-        maven { url "https://jcenter.bintray.com/" }
+        mavenLocal()
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://mirrors.huaweicloud.com/repository/maven/" }
     }
-
-    configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-    }
-
 }
 
 subprojects {
-    apply from: gradlesPath + "const.gradle"
-    apply from: gradlesPath + "utils.gradle"
-
     configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
         resolutionStrategy {
             force "com.google.guava:guava:${guavaVersion}"
             force "io.netty:netty-all:${nettyVersion}"
