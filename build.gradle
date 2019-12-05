@@ -22,7 +22,7 @@ buildscript {
 
 allprojects {
     group rootProject.name
-    version "1.0.0"
+    version "1.0.0-SNAPSHOT"
 
     repositories {
         mavenLocal()
