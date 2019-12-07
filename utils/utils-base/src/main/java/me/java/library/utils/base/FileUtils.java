@@ -216,9 +216,12 @@ public class FileUtils {
                                     boolean append) {
         OutputStream o = null;
         try {
-            makeDirs(file.getAbsolutePath());
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
             o = new FileOutputStream(file, append);
-            byte data[] = new byte[1024];
+            byte[] data = new byte[1024];
             int length = -1;
             while ((length = stream.read(data)) != -1) {
                 o.write(data, 0, length);

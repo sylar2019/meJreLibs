@@ -233,9 +233,12 @@ public class ExcelHelper {
         CellStyle style = workbook.createCellStyle();
 
         DataFormat format = workbook.createDataFormat();
-        style.setDataFormat(format.getFormat("@"));// // 内容样式 设置单元格内容格式是文本
-        style.setAlignment(HorizontalAlignment.CENTER);// 内容居中
-        style.setVerticalAlignment(VerticalAlignment.CENTER);// 内容居中
+        //内容样式 设置单元格内容格式是文本
+        style.setDataFormat(format.getFormat("@"));
+        // 内容居中
+        style.setAlignment(HorizontalAlignment.CENTER);
+        // 内容居中
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
 
         // style.setBorderTop(CellStyle.BORDER_THIN);// 边框样式
         // style.setBorderRight(CellStyle.BORDER_THIN);
