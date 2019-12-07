@@ -10,11 +10,9 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.joda.time.DateTime;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -50,16 +48,16 @@ public class ExcelUtils {
         }
     }
 
-    public static void writeHttpResponse(Workbook workbook, String fileName, HttpServletResponse response) throws Exception {
-        try {
-            response.setCharacterEncoding("UTF-8");
-            response.setHeader("content-Type", "application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-            workbook.write(response.getOutputStream());
-        } finally {
-            workbook.close();
-        }
-    }
+//    public static void writeHttpResponse(Workbook workbook, String fileName, HttpServletResponse response) throws Exception {
+//        try {
+//            response.setCharacterEncoding("UTF-8");
+//            response.setHeader("content-Type", "application/vnd.ms-excel");
+//            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+//            workbook.write(response.getOutputStream());
+//        } finally {
+//            workbook.close();
+//        }
+//    }
 
     public static <T> Workbook toExcel(List<T> list) throws Exception {
         HSSFWorkbook workbook = new HSSFWorkbook();
