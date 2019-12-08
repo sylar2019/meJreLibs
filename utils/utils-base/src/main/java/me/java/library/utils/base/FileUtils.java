@@ -216,6 +216,7 @@ public class FileUtils {
                                     boolean append) {
         OutputStream o = null;
         try {
+            makeDirs(file.getPath());
             if (!file.exists()) {
                 file.createNewFile();
             }

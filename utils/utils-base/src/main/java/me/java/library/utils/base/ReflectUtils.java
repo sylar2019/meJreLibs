@@ -39,22 +39,14 @@ public class ReflectUtils {
     }
 
     static public <T> List<Field> getAllFieldByOrder(Class<T> clazz) {
-        List<List<Field>> all = Lists.newArrayList();
-
+        List<Field> list = Lists.newArrayList();
         Class tempClass = clazz;
         while (tempClass != null) {
-            List<Field> list = Lists.newArrayList();
-            list.addAll(Arrays.asList(tempClass.getDeclaredFields()));
-            all.add(list);
+            list.addAll(0, Lists.newArrayList(tempClass.getDeclaredFields()));
             //得到父类,然后赋给自己
             tempClass = tempClass.getSuperclass();
         }
-
-        List<Field> fields = Lists.newArrayList();
-        for (int i = all.size() - 1; i >= 0; i--) {
-            fields.addAll(all.get(i));
-        }
-        return fields;
+        return list;
     }
 
     @SuppressWarnings("unchecked")
