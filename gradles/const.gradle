@@ -17,6 +17,7 @@ ext {
     junitVersion = "4.12"
     validationApiVersion = "2.0.1.Final"
     hibernateValidationVersion = "6.1.0.Final"
+
     dubboVersion = "2.5.3"
     fastjsonVersion = "1.2.8"
     jacksonVersion = "2.9.7"
