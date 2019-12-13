@@ -6,6 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import me.java.library.io.Cmd;
 import me.java.library.io.core.pipe.PipeAssistant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class SimpleDecoder extends MessageToMessageDecoder<ByteBuf> {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     protected SimpleCmdResolver simpleCmdResolver;
 
@@ -46,6 +49,7 @@ public class SimpleDecoder extends MessageToMessageDecoder<ByteBuf> {
                 out.addAll(msgList);
             }
         } catch (Exception e) {
+            logger.error("decode error:" + e.getMessage());
             e.printStackTrace();
             PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
         }

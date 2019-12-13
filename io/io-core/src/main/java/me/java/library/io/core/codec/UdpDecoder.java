@@ -5,6 +5,8 @@ import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.DatagramPacketDecoder;
 import me.java.library.io.Cmd;
 import me.java.library.io.core.pipe.PipeAssistant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ import java.util.List;
  * *******************************************************************************************
  */
 public class UdpDecoder extends DatagramPacketDecoder {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public UdpDecoder(SimpleDecoder simpleDecoder) {
         super(simpleDecoder);
@@ -47,6 +50,7 @@ public class UdpDecoder extends DatagramPacketDecoder {
                 }
             }
         } catch (Exception e) {
+            logger.error("decode error:" + e.getMessage());
             e.printStackTrace();
             PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
         }

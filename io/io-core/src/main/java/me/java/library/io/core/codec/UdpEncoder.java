@@ -7,6 +7,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import me.java.library.io.Cmd;
 import me.java.library.io.core.pipe.PipeAssistant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.List;
  * *******************************************************************************************
  */
 public class UdpEncoder extends SimpleEncoder {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public UdpEncoder(SimpleCmdResolver simpleCmdResolver) {
         super(simpleCmdResolver);
@@ -54,6 +58,7 @@ public class UdpEncoder extends SimpleEncoder {
                 }
             }
         } catch (Exception e) {
+            logger.error("encode error:" + e.getMessage());
             e.printStackTrace();
             PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
         }

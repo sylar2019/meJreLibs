@@ -17,6 +17,8 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile("org.springframework.boot:spring-boot-starter-logging:${springBootVersion}")
     testCompile("junit:junit:${junitVersion}")
 }
 

@@ -3,6 +3,8 @@ package me.java.library.io.core.codec;
 import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandler;
 import me.java.library.common.model.pojo.AbstractIdPojo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +25,8 @@ import java.util.Map;
  * *******************************************************************************************
  */
 public abstract class AbstractCodec extends AbstractIdPojo<String> implements Codec {
+
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected LinkedHashMap<String, ChannelHandler> handlers = Maps.newLinkedHashMap();
     protected Map<String, Map<String, Object>> allAttrs = Maps.newHashMap();
