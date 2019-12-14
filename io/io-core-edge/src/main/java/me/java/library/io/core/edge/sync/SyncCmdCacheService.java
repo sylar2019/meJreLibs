@@ -27,7 +27,7 @@ public class SyncCmdCacheService extends LocalCacheService<String, SyncBean> {
 
     public SyncCmdCacheService(Terminal terminal) {
         super(CacheBuilder.newBuilder()
-                .maximumSize(1000L)
+                .maximumSize(100000L)
                 .expireAfterWrite(3, TimeUnit.MINUTES)
                 .build());
 

@@ -148,7 +148,6 @@ public class EdgeProxyPipe implements Pipe {
         this.syncPairity = syncPairity;
     }
 
-
     /**
      * 同步发送指令
      *
@@ -184,13 +183,14 @@ public class EdgeProxyPipe implements Pipe {
                 }
             } catch (Exception e) {
                 err = e;
+            } finally {
+                syncPairity.cleanCache(cmd);
             }
         }
 
         if (res != null) {
             return res;
         } else {
-            syncPairity.cleanCache(cmd);
             if (err != null) {
                 throw new Exception("同步异常:\r\n" + cmd, err);
             } else {
