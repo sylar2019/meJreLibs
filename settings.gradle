@@ -39,4 +39,5 @@ include ":utils:utils-gps"
 include ":utils:utils-httpclient"
 include ":utils:utils-jetty"
 include ":utils:utils-redis"
+include ":utils:utils-task"
 
