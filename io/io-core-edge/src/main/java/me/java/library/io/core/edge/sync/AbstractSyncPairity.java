@@ -71,7 +71,7 @@ public abstract class AbstractSyncPairity implements SyncPairity {
         Preconditions.checkArgument(isRegisted(request), "未注册同步Key的指令:" + request);
 
         SyncCmdCacheService cache = getCache(request.getTo());
-        Preconditions.checkState(cache.containsKey(request.getId()));
+        Preconditions.checkState(cache.containsKey(request.getId()), "同步缓存未发现:" + request);
 
         SyncBean bean = cache.get(request.getId());
         Cmd response = bean.getFuture().get(timeout, unit);
@@ -112,8 +112,8 @@ public abstract class AbstractSyncPairity implements SyncPairity {
     }
 
     protected boolean isRegisted(BiMap<String, String> map, Cmd cmd) {
-        Preconditions.checkNotNull(map);
-        Preconditions.checkState(CmdUtils.isValidCmd(cmd));
+        Preconditions.checkNotNull(map, "未定义同步键表");
+        Preconditions.checkState(CmdUtils.isValidCmd(cmd), "无效指令");
         return map.containsKey(cmd.getCode()) || map.inverse().containsKey(cmd.getCode());
     }
 

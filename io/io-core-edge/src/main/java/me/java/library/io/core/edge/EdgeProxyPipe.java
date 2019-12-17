@@ -151,50 +151,52 @@ public class EdgeProxyPipe implements Pipe {
     /**
      * 同步发送指令
      *
-     * @param cmd            待发送指令
+     * @param request        待发送指令
      * @param timeoutSeconds 超时时间(秒)
      * @param tryTimes       重试次数(须大于等于0)
      * @param callback       回调
      */
-    public void syncSend(Cmd cmd, long timeoutSeconds, int tryTimes, FutureCallback<Cmd> callback) {
+    public void syncSend(Cmd request, long timeoutSeconds, int tryTimes, FutureCallback<Cmd> callback) {
         try {
-            Cmd res = syncSend(cmd, timeoutSeconds, tryTimes);
-            callback.onSuccess(res);
+            Cmd response = syncSend(request, timeoutSeconds, tryTimes);
+            callback.onSuccess(response);
         } catch (Exception e) {
             callback.onFailure(e);
         }
     }
 
-    public Cmd syncSend(Cmd cmd, long timeoutSeconds, int tryTimes) throws Exception {
-        Preconditions.checkNotNull(cmd);
+    public Cmd syncSend(Cmd request, long timeoutSeconds, int tryTimes) throws Exception {
+        Preconditions.checkNotNull(request);
         Preconditions.checkNotNull(syncPairity, "syncPairity can not be nul");
         Preconditions.checkState(timeoutSeconds > 0);
         Preconditions.checkState(tryTimes >= 0);
 
-        syncPairity.cacheRequest(cmd);
-        Cmd res = null;
+        syncPairity.cacheRequest(request);
+        Cmd response = null;
         Exception err = null;
         for (int i = 0; i <= tryTimes; i++) {
-            send(cmd);
             try {
-                res = syncPairity.getResponse(cmd, timeoutSeconds, TimeUnit.SECONDS);
-                if (res != null) {
+                send(request);
+                response = syncPairity.getResponse(request, timeoutSeconds, TimeUnit.SECONDS);
+                if (response != null) {
                     break;
                 }
             } catch (Exception e) {
+                System.err.println("同步异常， i = " + i);
+                e.printStackTrace();
                 err = e;
             } finally {
-                syncPairity.cleanCache(cmd);
+                syncPairity.cleanCache(request);
             }
         }
 
-        if (res != null) {
-            return res;
+        if (response != null) {
+            return response;
         } else {
-            if (err != null) {
-                throw new Exception("同步异常:\r\n" + cmd, err);
+            if (err instanceof TimeoutException) {
+                throw new TimeoutException("同步超时: \r\n" + request);
             } else {
-                throw new TimeoutException("同步超时: \r\n" + cmd);
+                throw new Exception("同步异常:\r\n" + request, err);
             }
         }
     }

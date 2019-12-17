@@ -23,8 +23,11 @@ import java.net.InetSocketAddress;
  */
 public interface Terminal extends Identifiable<String>, Attributable {
 
+    Terminal SERVER = new TerminalNode("server", "default");
+    Terminal CLIENT = new TerminalNode("client", "default");
     Terminal LOCAL = new TerminalNode("local", "default");
     Terminal REMOTE = new TerminalNode("remote", "default");
+
     String ATTR_HOST = "host";
     String ATTR_PORT = "port";
 
