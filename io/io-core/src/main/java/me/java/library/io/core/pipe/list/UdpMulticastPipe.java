@@ -2,6 +2,7 @@ package me.java.library.io.core.pipe.list;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFactory;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.InternetProtocolFamily;
@@ -36,9 +37,7 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
     }
 
     @Override
-    protected void onStart() throws Exception {
-        super.onStart();
-
+    protected ChannelFuture onStart() throws Exception {
         group = new NioEventLoopGroup();
 
         String networkInterfaceName = bus.getNetworkInterfaceName();
@@ -47,8 +46,8 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
         int multicastPort = bus.getPort();
         InetSocketAddress multicastAddress = new InetSocketAddress(multicastHost, multicastPort);
 
-        Bootstrap b = new Bootstrap();
-        b.group(group)
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(group)
                 .channelFactory(new ChannelFactory<NioDatagramChannel>() {
                     @Override
                     public NioDatagramChannel newChannel() {
@@ -62,7 +61,7 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
                 .option(ChannelOption.IP_MULTICAST_IF, networkInterface)
                 .option(ChannelOption.SO_REUSEADDR, true);
 
-        future = bind(b, AbstractSocketBus.anyHost, multicastPort);
-        future = ((NioDatagramChannel) future.channel()).joinGroup(multicastAddress, networkInterface).sync();
+        ChannelFuture future = bind(bootstrap, AbstractSocketBus.anyHost, multicastPort);
+        return ((NioDatagramChannel) future.channel()).joinGroup(multicastAddress, networkInterface);
     }
 }

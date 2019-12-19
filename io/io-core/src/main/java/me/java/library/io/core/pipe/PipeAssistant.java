@@ -8,6 +8,7 @@ import me.java.library.io.Terminal;
 import me.java.library.io.core.utils.ChannelAttr;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * File Name             :  PipeAssistant
@@ -72,18 +73,24 @@ public class PipeAssistant {
     }
 
     public void onReceived(Channel channel, Cmd cmd) {
-        getPipeContext(channel).getTerminals(channel).add(cmd.getFrom());
+        Set<Terminal> terminals = getTerminals(channel);
+        terminals.add(cmd.getFrom());
         onConnectionChanged(channel, cmd.getFrom(), true);
 
         AbstractPipe pipe = getBasePipe(channel);
         pipe.onReceived(cmd);
     }
 
-    public void onChannelIdle(Channel channel, IdleStateEvent idleStateEvent) {
-        getPipeContext(channel).getTerminals(channel).forEach(terminal -> {
-            getPipeContext(channel).getTerminals(channel).remove(terminal);
+    public void onChannleInactive(Channel channel) {
+        Set<Terminal> terminals = getTerminals(channel);
+        terminals.forEach(terminal -> {
+            terminals.remove(terminal);
             onConnectionChanged(channel, terminal, false);
         });
+    }
+
+    public void onChannelIdle(Channel channel, IdleStateEvent idleStateEvent) {
+        System.out.println("### onChannelIdle: " + idleStateEvent);
     }
 
     public void onConnectionChanged(Channel channel, Terminal terminal, boolean connected) {
@@ -95,6 +102,11 @@ public class PipeAssistant {
             AbstractPipe pipe = getBasePipe(channel);
             pipe.onConnectionChanged(terminal, connected);
         }
+    }
+
+    private Set<Terminal> getTerminals(Channel channel) {
+        PipeContext pipeContext = getPipeContext(channel);
+        return pipeContext.getTerminals(channel);
     }
 
     private AbstractPipe getBasePipe(Channel channel) {

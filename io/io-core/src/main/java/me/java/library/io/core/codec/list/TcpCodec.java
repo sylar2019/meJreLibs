@@ -20,8 +20,7 @@ import me.java.library.io.core.codec.SimpleCmdResolver;
  * *******************************************************************************************
  */
 public class TcpCodec extends AbstractSimpleStreamCodec {
-
-    public TcpCodec(ByteToMessageDecoder frameDecoder, SimpleCmdResolver simpleCmdResolver) {
-        super(frameDecoder, simpleCmdResolver);
+    public TcpCodec(SimpleCmdResolver simpleCmdResolver, Class<? extends ByteToMessageDecoder> frameDecoderClass) {
+        super(simpleCmdResolver, frameDecoderClass);
     }
 }

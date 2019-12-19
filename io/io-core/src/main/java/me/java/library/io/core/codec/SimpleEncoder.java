@@ -28,9 +28,8 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class SimpleEncoder extends MessageToMessageEncoder<Cmd> {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
     protected SimpleCmdResolver simpleCmdResolver;
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public SimpleEncoder(SimpleCmdResolver simpleCmdResolver) {
         super();

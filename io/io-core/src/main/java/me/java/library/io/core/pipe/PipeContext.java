@@ -28,13 +28,13 @@ public class PipeContext {
 
     private Pipe pipe;
 
-    private Map<Channel, Set<Terminal>> channelSetMap;
+    private Map<Channel, Set<Terminal>> channelTerminals;
     private Map<Terminal, TerminalState> terminalStateMap;
 
     public PipeContext(Pipe pipe) {
         this.pipe = pipe;
 
-        channelSetMap = Maps.newConcurrentMap();
+        channelTerminals = Maps.newConcurrentMap();
         terminalStateMap = Maps.newConcurrentMap();
     }
 
@@ -43,10 +43,10 @@ public class PipeContext {
     }
 
     public Set<Terminal> getTerminals(Channel channel) {
-        if (!channelSetMap.containsKey(channel)) {
-            channelSetMap.put(channel, Sets.newConcurrentHashSet());
+        if (!channelTerminals.containsKey(channel)) {
+            channelTerminals.put(channel, Sets.newConcurrentHashSet());
         }
-        return channelSetMap.get(channel);
+        return channelTerminals.get(channel);
     }
 
     public TerminalState getTerminalState(Terminal terminal) {

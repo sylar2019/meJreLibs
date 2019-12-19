@@ -32,8 +32,8 @@ allprojects {
 }
 
 subprojects {
-    configurations{
-        all*.exclude group: "org.slf4j" , module: "log4j-over-slf4j"
+    configurations {
+        all*.exclude group: "org.slf4j", module: "log4j-over-slf4j"
         all*.exclude group: "ch.qos.logback"
         all*.exclude group: "log4j"
     }

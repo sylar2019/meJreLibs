@@ -125,6 +125,16 @@ public class EdgeProxyPipe implements Pipe {
     }
 
     @Override
+    public long getDaemonSeconds() {
+        return pipe.getDaemonSeconds();
+    }
+
+    @Override
+    public void setDaemonSeconds(long seconds) {
+        pipe.setDaemonSeconds(seconds);
+    }
+
+    @Override
     public PipeWatcher getWatcher() {
         return watcher;
     }
@@ -165,17 +175,17 @@ public class EdgeProxyPipe implements Pipe {
         }
     }
 
-    public Cmd syncSend(Cmd request, long timeoutSeconds, int tryTimes) throws Exception {
+    synchronized public Cmd syncSend(Cmd request, long timeoutSeconds, int tryTimes) throws Exception {
         Preconditions.checkNotNull(request);
         Preconditions.checkNotNull(syncPairity, "syncPairity can not be nul");
         Preconditions.checkState(timeoutSeconds > 0);
         Preconditions.checkState(tryTimes >= 0);
 
-        syncPairity.cacheRequest(request);
         Cmd response = null;
         Exception err = null;
         for (int i = 0; i <= tryTimes; i++) {
             try {
+                syncPairity.cacheRequest(request);
                 send(request);
                 response = syncPairity.getResponse(request, timeoutSeconds, TimeUnit.SECONDS);
                 if (response != null) {

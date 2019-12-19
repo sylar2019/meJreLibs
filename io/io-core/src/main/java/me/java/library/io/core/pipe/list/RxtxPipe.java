@@ -2,6 +2,7 @@ package me.java.library.io.core.pipe.list;
 
 import com.google.common.base.Strings;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.oio.OioEventLoopGroup;
 import io.netty.channel.rxtx.RxtxChannel;
 import io.netty.channel.rxtx.RxtxChannelConfig;
@@ -36,15 +37,14 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
     }
 
     @Override
-    protected void onStart() throws Exception {
-        super.onStart();
+    protected ChannelFuture onStart() throws Exception {
         preparePermisson();
 
         group = new OioEventLoopGroup();
         RxtxDeviceAddress rxtxDeviceAddress = new RxtxDeviceAddress(bus.getRxtxPath());
 
-        Bootstrap b = new Bootstrap();
-        b.group(group)
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(group)
                 .channel(RxtxChannel.class)
                 .option(RxtxChannelOption.BAUD_RATE, bus.getRxtxBaud())
                 .option(RxtxChannelOption.DATA_BITS, RxtxChannelConfig.Databits.valueOf(bus.getRxtxDatabits()))
@@ -54,7 +54,7 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
                 .option(RxtxChannelOption.RTS, bus.getRxtxRTS())
                 .handler(getChannelInitializer());
 
-        future = b.connect(rxtxDeviceAddress).sync();
+        return bootstrap.connect(rxtxDeviceAddress).sync();
     }
 
     protected void preparePermisson() {

@@ -20,8 +20,7 @@ import me.java.library.io.core.codec.SimpleCmdResolver;
  * *******************************************************************************************
  */
 public class RxtxCodec extends AbstractSimpleStreamCodec {
-
-    public RxtxCodec(ByteToMessageDecoder frameDecoder, SimpleCmdResolver simpleCmdResolver) {
-        super(frameDecoder, simpleCmdResolver);
+    public RxtxCodec(SimpleCmdResolver simpleCmdResolver, Class<? extends ByteToMessageDecoder> frameDecoderClass) {
+        super(simpleCmdResolver, frameDecoderClass);
     }
 }

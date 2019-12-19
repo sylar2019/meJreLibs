@@ -3,6 +3,7 @@ package me.java.library.io;
 import me.java.library.common.model.pojo.AbstractIdPojo;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * File Name             :  TerminalNode
@@ -22,6 +23,11 @@ import java.util.Objects;
 public class TerminalNode extends AbstractIdPojo<String> implements Terminal {
 
     private String type;
+
+    public TerminalNode() {
+        this.id = UUID.randomUUID().toString();
+        this.type = "default";
+    }
 
     public TerminalNode(String id, String type) {
         this.id = id;

@@ -1,8 +1,11 @@
 package me.java.library.io.core.codec;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+
+import java.util.LinkedHashMap;
 
 /**
  * File Name             :  AbstractSimpleCodec
@@ -21,26 +24,58 @@ import io.netty.handler.timeout.IdleStateHandler;
  */
 public abstract class AbstractSimpleCodec extends AbstractCodec {
 
-    public AbstractSimpleCodec() {
-        super();
+    public AbstractSimpleCodec(SimpleCmdResolver simpleCmdResolver) {
+        super(simpleCmdResolver);
+    }
+
+    @Override
+    protected void putHandlers(LinkedHashMap<String, ChannelHandler> handlers) {
+        super.putHandlers(handlers);
         handlers.put(Codec.HANDLER_NAME_IDLE_STATE, getIdleStateHandler());
         handlers.put(Codec.HANDLER_NAME_LOG, getLoggingHandler());
     }
 
+    public LogLevel getLogLevel() {
+        return getHandlerAttr(Codec.HANDLER_NAME_LOG, Codec.HANDLER_ATTR_LOG_LEVEL, LogLevel.INFO);
+    }
+
+    public void setLogLevel(LogLevel logLevel) {
+        setHandlerAttr(Codec.HANDLER_NAME_LOG, Codec.HANDLER_ATTR_LOG_LEVEL, logLevel);
+    }
+
+    public int getReadIdleTime() {
+        return getHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_READ_IDLE_TIME, 0);
+    }
+
+    public void setReadIdleTime(int seconds) {
+        setHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_READ_IDLE_TIME, seconds);
+    }
+
+    public int getWriteIdleTime() {
+        return getHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_WRITE_IDLE_TIME, 0);
+    }
+
+    public void setWriteIdleTime(int seconds) {
+        setHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_WRITE_IDLE_TIME, seconds);
+    }
+
+    public int getAllIdleTime() {
+        return getHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_ALL_IDLE_TIME, 0);
+    }
+
+    public void setAllIdleTime(int seconds) {
+        setHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_ALL_IDLE_TIME, seconds);
+    }
+
     protected IdleStateHandler getIdleStateHandler() {
-        String handlerKey = Codec.HANDLER_NAME_IDLE_STATE;
-        int readerIdleTimeSeconds = getHandlerAttr(handlerKey, Codec.HANDLER_ATTR_READ_IDLE_TIME, 0);
-        int writerIdleTimeSeconds = getHandlerAttr(handlerKey, Codec.HANDLER_ATTR_WRITE_IDLE_TIME, 0);
-        int allIdleTimeSeconds = getHandlerAttr(handlerKey, Codec.HANDLER_ATTR_ALL_IDLE_TIME, 0);
-        return new IdleStateHandler(readerIdleTimeSeconds,
-                writerIdleTimeSeconds,
-                allIdleTimeSeconds);
+        int readIdleTime = getReadIdleTime();
+        int writeIdleTime = getWriteIdleTime();
+        int allIdleTime = getAllIdleTime();
+        return new IdleStateHandler(readIdleTime, writeIdleTime, allIdleTime);
     }
 
     protected LoggingHandler getLoggingHandler() {
-        String handlerKey = Codec.HANDLER_NAME_LOG;
-        String strLevel = getHandlerAttr(handlerKey, Codec.HANDLER_ATTR_LOG_LEVEL, "INFO").toUpperCase();
-        LogLevel level = Enum.valueOf(LogLevel.class, strLevel);
-        return new LoggingHandler(handlerKey, level);
+        LogLevel logLevel = getLogLevel();
+        return new LoggingHandler(Codec.HANDLER_NAME_LOG, logLevel);
     }
 }

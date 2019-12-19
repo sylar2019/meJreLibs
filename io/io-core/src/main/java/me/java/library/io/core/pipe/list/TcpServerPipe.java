@@ -1,7 +1,7 @@
 package me.java.library.io.core.pipe.list;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import me.java.library.io.core.bus.AbstractSocketBus;
@@ -33,19 +33,16 @@ public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
     }
 
     @Override
-    protected void onStart() throws Exception {
-        super.onStart();
-
+    protected ChannelFuture onStart() throws Exception {
         group = new NioEventLoopGroup();
         childGroup = new NioEventLoopGroup();
 
-        ServerBootstrap b = new ServerBootstrap();
-        b.group(group, childGroup)
+        ServerBootstrap bootstrap = new ServerBootstrap();
+        bootstrap.group(group, childGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(getChannelInitializer())
-                .option(ChannelOption.SO_KEEPALIVE, true);
+                .childHandler(getChannelInitializer());
 
-        future = bind(b, bus.getHost(AbstractSocketBus.anyHost), bus.getPort());
+        return bind(bootstrap, bus.getHost(AbstractSocketBus.anyHost), bus.getPort());
     }
 
     @Override

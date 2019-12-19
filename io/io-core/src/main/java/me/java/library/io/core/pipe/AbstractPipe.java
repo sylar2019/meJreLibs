@@ -9,8 +9,11 @@ import me.java.library.io.*;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
 import me.java.library.io.core.utils.ChannelAttr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * File Name             :  AbstractPipe
@@ -28,6 +31,7 @@ import java.util.Map;
  * *******************************************************************************************
  */
 public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pipe<B, C> {
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected Host host;
     protected B bus;
@@ -38,6 +42,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     protected Channel channel;
     protected PipeWatcher watcher;
     protected boolean isRunning;
+    protected long daemonSeconds = 5;
     protected PipeAssistant pipeAssistant = PipeAssistant.getInstance();
 
     public AbstractPipe(B bus, C codec) {
@@ -65,6 +70,16 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     }
 
     @Override
+    public long getDaemonSeconds() {
+        return daemonSeconds;
+    }
+
+    @Override
+    public void setDaemonSeconds(long seconds) {
+        this.daemonSeconds = seconds;
+    }
+
+    @Override
     public PipeWatcher getWatcher() {
         return watcher;
     }
@@ -83,14 +98,14 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
         try {
             Preconditions.checkNotNull(bus, "bus is null");
             Preconditions.checkNotNull(codec, "codec is null");
-
-            onStart();
-            isRunning = true;
-            onPipeRunningChanged(isRunning);
+            future = onStart();
+            future.addListener(new ConnectionListener());
         } catch (Exception e) {
             onException(e);
         }
     }
+
+    protected abstract ChannelFuture onStart() throws Exception;
 
     @Override
     public void stop() {
@@ -100,10 +115,19 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
 
         try {
             onStop();
-            isRunning = false;
-            onPipeRunningChanged(isRunning);
         } catch (Exception e) {
             onException(e);
+        } finally {
+            onPipeRunningChanged(false);
+        }
+    }
+
+    protected void onStop() throws Exception {
+        if (future != null && future.channel() != null) {
+            future.channel().close().sync();
+        }
+        if (group != null) {
+            group.shutdownGracefully();
         }
     }
 
@@ -135,27 +159,14 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
         }
     }
 
-    protected void onStart() throws Exception {
-        //do nothing
-    }
-
-    protected void onStop() throws Exception {
-        if (future != null && future.channel() != null) {
-            future.channel().close().sync();
-        }
-        if (group != null) {
-            group.shutdownGracefully();
-        }
-    }
-
     protected ChannelFuture bind(AbstractBootstrap b, String host, int port) throws InterruptedException {
         ChannelFuture future;
         if (!Strings.isNullOrEmpty(host) && port > 0) {
-            future = b.bind(host, port).sync();
+            future = b.bind(host, port);
         } else if (port > 0) {
-            future = b.bind(port).sync();
+            future = b.bind(port);
         } else {
-            future = b.bind().sync();
+            future = b.bind();
         }
 
         return future;
@@ -190,6 +201,11 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     }
 
     protected void onPipeRunningChanged(boolean isRunning) {
+        if (this.isRunning == isRunning) {
+            return;
+        }
+
+        this.isRunning = isRunning;
         if (watcher != null) {
             ConcurrentService.getInstance().postRunnable(() -> watcher.onPipeRunningChanged(AbstractPipe.this, isRunning));
         }
@@ -201,9 +217,6 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
         }
     }
 
-    /**
-     * @param cmd
-     */
     protected void onReceived(Cmd cmd) {
         interceptReceivedCmd(cmd);
         if (watcher != null) {
@@ -223,6 +236,18 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
      * @param cmd
      */
     protected void interceptReceivedCmd(Cmd cmd) {
+    }
+
+    class ConnectionListener implements ChannelFutureListener {
+        @Override
+        public void operationComplete(final ChannelFuture future) throws Exception {
+            if (future.isSuccess()) {
+                onPipeRunningChanged(true);
+            } else if (daemonSeconds > 0) {
+                final EventLoop loop = future.channel().eventLoop();
+                loop.schedule(AbstractPipe.this::start, daemonSeconds, TimeUnit.SECONDS);
+            }
+        }
     }
 
 }

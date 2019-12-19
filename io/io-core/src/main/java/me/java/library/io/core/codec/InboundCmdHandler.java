@@ -35,13 +35,14 @@ public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
     }
 
     @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        super.channelInactive(ctx);
+        pipeAssistant.onChannleInactive(ctx.channel());
+    }
+
+    @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt)
             throws Exception {
-        /*
-         * Netty 实现心跳机制与断线重连
-         * https://segmentfault.com/a/1190000006931568?utm_source=tag-newest
-         * */
-
         // IdleStateHandler 所产生的 IdleStateEvent 的处理逻辑.
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;

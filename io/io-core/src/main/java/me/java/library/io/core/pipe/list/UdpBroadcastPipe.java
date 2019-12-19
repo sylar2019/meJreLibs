@@ -1,6 +1,7 @@
 package me.java.library.io.core.pipe.list;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
@@ -31,22 +32,20 @@ public class UdpBroadcastPipe extends AbstractPipe<UdpBroadcastBus, UdpCodec> {
     }
 
     @Override
-    protected void onStart() throws Exception {
-        super.onStart();
-
+    protected ChannelFuture onStart() throws Exception {
         group = new NioEventLoopGroup();
 
         String boradcastHost = bus.getHost(AbstractSocketBus.defaultBroadcastHost);
         int boradcastPort = bus.getPort();
 
-        Bootstrap b = new Bootstrap();
-        b.group(group)
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(group)
                 .channel(NioDatagramChannel.class)
                 .handler(getChannelInitializer())
                 .remoteAddress(boradcastHost, boradcastPort)
                 .option(ChannelOption.SO_BROADCAST, true);
 
-        future = bind(b, AbstractSocketBus.anyHost, boradcastPort);
+        return bind(bootstrap, AbstractSocketBus.anyHost, boradcastPort);
     }
 
 }

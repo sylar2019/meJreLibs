@@ -66,6 +66,10 @@ public interface Pipe<B extends Bus, C extends Codec> extends Serviceable {
      */
     void setWatcher(PipeWatcher watcher);
 
+    long getDaemonSeconds();
+
+    void setDaemonSeconds(long seconds);
+
     /**
      * 发送指令
      *
