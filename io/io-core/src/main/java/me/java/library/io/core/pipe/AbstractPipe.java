@@ -161,12 +161,12 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
 
     protected ChannelFuture bind(AbstractBootstrap b, String host, int port) throws InterruptedException {
         ChannelFuture future;
-        if (!Strings.isNullOrEmpty(host) && port > 0) {
+        if (!Strings.isNullOrEmpty(host) && port >= 0) {
             future = b.bind(host, port);
-        } else if (port > 0) {
+        } else if (port >= 0) {
             future = b.bind(port);
         } else {
-            future = b.bind();
+            future = b.bind(0);
         }
 
         return future;

@@ -4,7 +4,6 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-import me.java.library.io.core.bus.AbstractSocketBus;
 import me.java.library.io.core.bus.list.UdpUnicastBus;
 import me.java.library.io.core.codec.list.UdpCodec;
 import me.java.library.io.core.pipe.AbstractPipe;
@@ -39,7 +38,7 @@ public class UdpUnicastPipe extends AbstractPipe<UdpUnicastBus, UdpCodec> {
                 .channel(NioDatagramChannel.class)
                 .handler(getChannelInitializer());
 
-        return bind(bootstrap, bus.getHost(AbstractSocketBus.anyHost), bus.getPort());
+        return bind(bootstrap, null, bus.getPort());
     }
 
 

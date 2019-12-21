@@ -48,20 +48,15 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
 
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)
-                .channelFactory(new ChannelFactory<NioDatagramChannel>() {
-                    @Override
-                    public NioDatagramChannel newChannel() {
-                        return new NioDatagramChannel(InternetProtocolFamily.IPv4);
-                    }
-                })
-                .channel(NioDatagramChannel.class)
+                .channelFactory((ChannelFactory<NioDatagramChannel>) () -> new NioDatagramChannel(InternetProtocolFamily.IPv4))
                 .handler(getChannelInitializer())
                 .option(ChannelOption.IP_MULTICAST_LOOP_DISABLED, false)
                 .option(ChannelOption.IP_MULTICAST_TTL, 255)
                 .option(ChannelOption.IP_MULTICAST_IF, networkInterface)
                 .option(ChannelOption.SO_REUSEADDR, true);
 
-        ChannelFuture future = bind(bootstrap, AbstractSocketBus.anyHost, multicastPort);
-        return ((NioDatagramChannel) future.channel()).joinGroup(multicastAddress, networkInterface);
+        ChannelFuture future = bind(bootstrap, null, multicastPort).sync();
+        future = ((NioDatagramChannel) future.channel()).joinGroup(multicastAddress, networkInterface);
+        return future;
     }
 }

@@ -42,7 +42,7 @@ public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
                 .channel(NioServerSocketChannel.class)
                 .childHandler(getChannelInitializer());
 
-        return bind(bootstrap, bus.getHost(AbstractSocketBus.anyHost), bus.getPort());
+        return bind(bootstrap, null, bus.getPort());
     }
 
     @Override

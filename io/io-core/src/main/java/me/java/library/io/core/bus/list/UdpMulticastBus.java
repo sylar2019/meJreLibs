@@ -27,7 +27,7 @@ public class UdpMulticastBus extends AbstractSocketBus {
 
 
     public String getNetworkInterfaceName() {
-        return getOrDefault(RxtxBus.BUS_ATTR_SOCKET_NETWORK_INTERFACE, "en1");
+        return getOrDefault(RxtxBus.BUS_ATTR_SOCKET_NETWORK_INTERFACE, "en0");
     }
 
     public void setNetworkInterfaceName(String networkInterfaceName) {

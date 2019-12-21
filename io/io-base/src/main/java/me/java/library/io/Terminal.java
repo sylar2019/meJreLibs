@@ -38,8 +38,8 @@ public interface Terminal extends Identifiable<String>, Attributable {
         InetSocketAddress address = null;
         if (containsKey(ATTR_HOST) && containsKey(ATTR_PORT)) {
             try {
-                String host = getAttr(ATTR_HOST) != null ? getAttr(ATTR_HOST).toString() : null;
-                int port = getAttr(ATTR_HOST) != null ? Integer.parseInt(getAttr(ATTR_HOST).toString()) : 0;
+                String host = getAttr(ATTR_HOST);
+                int port = getAttr(ATTR_PORT);
                 if (host != null && port > 0) {
                     address = InetSocketAddress.createUnresolved(host, port);
                 }

@@ -17,7 +17,7 @@ package me.java.library.io.core.bus;
  */
 public abstract class AbstractSocketBus extends AbstractBus {
 
-    public final static String defaultHost = "127.0.0.1";
+    public final static String defaultHost = "localhost";
     public final static String anyHost = "0.0.0.0";
     public final static String defaultMulticastHost = "239.255.27.1";
     public final static String defaultBroadcastHost = "255.255.255.255";

@@ -35,17 +35,13 @@ public class UdpBroadcastPipe extends AbstractPipe<UdpBroadcastBus, UdpCodec> {
     protected ChannelFuture onStart() throws Exception {
         group = new NioEventLoopGroup();
 
-        String boradcastHost = bus.getHost(AbstractSocketBus.defaultBroadcastHost);
-        int boradcastPort = bus.getPort();
-
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)
                 .channel(NioDatagramChannel.class)
                 .handler(getChannelInitializer())
-                .remoteAddress(boradcastHost, boradcastPort)
                 .option(ChannelOption.SO_BROADCAST, true);
 
-        return bind(bootstrap, AbstractSocketBus.anyHost, boradcastPort);
+        return bind(bootstrap, null, bus.getPort());
     }
 
 }
