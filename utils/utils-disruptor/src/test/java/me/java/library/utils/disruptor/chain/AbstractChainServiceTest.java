@@ -107,22 +107,22 @@ public class AbstractChainServiceTest {
 //            //串行1
             disruptor.handleEventsWith(t1).handleEventsWith(t2).handleEventsWith(t3);
 //            //串行2
-            disruptor.handleEventsWith(t1).then(t2).then(t3);
+//            disruptor.handleEventsWith(t1).then(t2).then(t3);
 //            //并行1
-            disruptor.handleEventsWith(t1, t2, t3);
+//            disruptor.handleEventsWith(t1, t2, t3);
 //            //并行2
 //            disruptor.handleEventsWith(t1);
 //            disruptor.handleEventsWith(t2);
 //            disruptor.handleEventsWith(t3);
 //            //菱形1
-            disruptor.handleEventsWith(t1, t2).then(t3);
+//            disruptor.handleEventsWith(t1, t2).then(t3);
 //            //菱形2
 //            disruptor.handleEventsWith(t1, t2).handleEventsWith(t3);
 //            //六边形
-            disruptor.handleEventsWith(t1, t2);
-            disruptor.after(t1).handleEventsWith(t3);
-            disruptor.after(t2).handleEventsWith(t4);
-            disruptor.after(t3, t4).handleEventsWith(t5);
+//            disruptor.handleEventsWith(t1, t2);
+//            disruptor.after(t1).handleEventsWith(t3);
+//            disruptor.after(t2).handleEventsWith(t4);
+//            disruptor.after(t3, t4).handleEventsWith(t5);
 //            //set ExceptionHandler
 //            disruptor.setDefaultExceptionHandler(exceptionHandler);
 //            disruptor.handleExceptionsFor(t1).with(exceptionHandler);
