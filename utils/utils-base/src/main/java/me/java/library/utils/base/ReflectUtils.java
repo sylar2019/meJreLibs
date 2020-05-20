@@ -1,12 +1,9 @@
 package me.java.library.utils.base;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -33,7 +30,8 @@ public class ReflectUtils {
         while (tempClass != null) {
             //当父类为null的时候说明到达了最上层的父类(Object类)
             fieldList.addAll(Arrays.asList(tempClass.getDeclaredFields()));
-            tempClass = tempClass.getSuperclass(); //得到父类,然后赋给自己
+            //得到父类,然后赋给自己
+            tempClass = tempClass.getSuperclass();
         }
         return fieldList;
     }
@@ -50,21 +48,28 @@ public class ReflectUtils {
     }
 
     @SuppressWarnings("unchecked")
-    static public <T> T getReflectObj(String classFullName, Class<T> clazz) {
-        T t = null;
+    static public <T> T getReflectObj(String classFullName) {
+        Preconditions.checkNotNull(classFullName, "classFullName is null");
+        Object obj = null;
 
         try {
-            if (!Strings.isNullOrEmpty(classFullName)) {
-                Class<?> c = Class.forName(classFullName);
-                Object obj = c.newInstance();
-                if (obj != null && clazz.isAssignableFrom(c)) {
-                    t = (T) obj;
+            Class<?> c = Class.forName(classFullName);
+            Constructor<?>[] constructors = c.getConstructors();
+            if (constructors.length > 0) {
+                //有默认构造方法
+                obj = c.newInstance();
+            } else {
+                //单子模式
+                Method method = c.getMethod("getInstance");
+                if (method != null && Modifier.isStatic(method.getModifiers())) {
+                    obj = method.invoke(null);
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return t;
+        return (T) obj;
     }
 
     static public <T> Class<?> getGenericType(List<T> list) {
