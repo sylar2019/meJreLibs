@@ -1,7 +1,6 @@
 package me.java.library.utils.disruptor.event;
 
 import com.google.common.collect.Lists;
-import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.EventTranslatorTwoArg;
 import com.lmax.disruptor.ExceptionHandler;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -25,7 +24,7 @@ import java.util.List;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings("deprecation")
 public class DisruptorEventService implements EventService {
     private final static int BUFFER_SIZE = 1024;
     private final static EventTranslatorTwoArg<DisruptorEvent, Object, Object> TRANSLATOR = (event, sequence, arg0, arg1) -> {
@@ -41,28 +40,25 @@ public class DisruptorEventService implements EventService {
             DaemonThreadFactory.INSTANCE
     );
 
-    private ExceptionHandler exceptionHandler = new ExceptionHandler() {
-        @Override
-        public void handleEventException(Throwable ex, long sequence, Object event) {
-            System.err.println(String.format("###handleEventException###\nevent:%s\nerror:%s", event, ex));
-        }
-
-        @Override
-        public void handleOnStartException(Throwable ex) {
-            System.err.println(String.format("###handleOnStartException###\nerror:%s", ex));
-        }
-
-        @Override
-        public void handleOnShutdownException(Throwable ex) {
-            System.err.println(String.format("###handleOnShutdownException###\nerror:%s", ex));
-        }
-    };
-
     public DisruptorEventService() {
-        disruptor.setDefaultExceptionHandler(exceptionHandler);
-        disruptor.handleEventsWith(
-                (EventHandler<DisruptorEvent>) (event, sequence, endOfBatch) -> onDisruptorEvent(event)
-        );
+        disruptor.setDefaultExceptionHandler(new ExceptionHandler<DisruptorEvent>() {
+            @Override
+            public void handleEventException(Throwable throwable, long sequence, DisruptorEvent event) {
+                System.err.println(String.format("###handleEventException###\nevent:%s\nerror:%s", event, throwable));
+            }
+
+            @Override
+            public void handleOnStartException(Throwable ex) {
+                System.err.println(String.format("###handleOnStartException###\nerror:%s", ex));
+            }
+
+            @Override
+            public void handleOnShutdownException(Throwable ex) {
+                System.err.println(String.format("###handleOnShutdownException###\nerror:%s", ex));
+            }
+        });
+
+        disruptor.handleEventsWith((event, sequence, endOfBatch) -> onDisruptorEvent(event));
     }
 
     @Override

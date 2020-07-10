@@ -1,10 +1,13 @@
-package me.java.library.io.core.codec;
+package me.java.library.io.core.bus.list;
+
+import me.java.library.io.core.bus.AbstractSocketBus;
+import me.java.library.io.core.bus.BusType;
 
 /**
- * File Name             :  AbstractSimpleCodec
+ * File Name             :  TcpServerBus
  *
  * @author :  sylar
- * Create :  2019-10-14
+ * Create :  2019-10-15
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -15,11 +18,9 @@ package me.java.library.io.core.codec;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractSimpleCodec extends AbstractCodecWithLogAndIdle {
-
-    protected SimpleCmdResolver simpleCmdResolver;
-
-    public AbstractSimpleCodec(SimpleCmdResolver simpleCmdResolver) {
-        this.simpleCmdResolver = simpleCmdResolver;
+public class WebSocketClientBus extends AbstractSocketBus {
+    @Override
+    public BusType getBusType() {
+        return BusType.WebSocketClient;
     }
 }

@@ -6,6 +6,7 @@ ext {
 }
 
 dependencies {
+    compile project(":utils:utils-base")
     compile("org.springframework.data:spring-data-commons")
     compile("org.springframework.data:spring-data-hadoop:${springDataHadoopVersion}")
 

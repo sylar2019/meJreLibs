@@ -27,6 +27,8 @@ public enum BusType implements BaseEnum {
     UdpBroadcast(4,"UdpBroadcast"),
     UdpMulticast(5,"UdpMulticast"),
     RXTX        (6,"Rxtx"),
+    WebSocketServer        (7,"WebSocketServer"),
+    WebSocketClient        (8,"WebSocketClient"),
     //@formatter:on
     ;
 

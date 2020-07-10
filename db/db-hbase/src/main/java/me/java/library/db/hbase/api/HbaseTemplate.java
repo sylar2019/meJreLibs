@@ -1,6 +1,7 @@
 package me.java.library.db.hbase.api;
 
 import me.java.library.db.hbase.boot.HbaseAutoConfiguration;
+import me.java.library.utils.base.ConcurrentUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.TableName;
@@ -199,8 +200,7 @@ public class HbaseTemplate implements HbaseOperations {
             synchronized (this) {
                 if (null == this.connection) {
                     try {
-                        ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(200, Integer.MAX_VALUE, 60L,
-                                TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+                        ThreadPoolExecutor poolExecutor = ConcurrentUtils.simpleThreadPool();
                         // init pool
                         poolExecutor.prestartCoreThread();
 

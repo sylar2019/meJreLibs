@@ -1,6 +1,5 @@
 package me.java.library.io.core.codec;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandler;
 import me.java.library.common.model.pojo.AbstractIdPojo;
@@ -30,12 +29,6 @@ public abstract class AbstractCodec extends AbstractIdPojo<String> implements Co
     protected Logger logger = LoggerFactory.getLogger(getClass());
     protected LinkedHashMap<String, ChannelHandler> handlers = Maps.newLinkedHashMap();
     protected Map<String, Map<String, Object>> allAttrs = Maps.newHashMap();
-    protected SimpleCmdResolver simpleCmdResolver;
-
-    public AbstractCodec(SimpleCmdResolver simpleCmdResolver) {
-        Preconditions.checkNotNull(simpleCmdResolver);
-        this.simpleCmdResolver = simpleCmdResolver;
-    }
 
     @Override
     public LinkedHashMap<String, ChannelHandler> getChannelHandlers() {

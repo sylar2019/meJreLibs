@@ -26,13 +26,19 @@ import retrofit2.Converter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @description:
  * @author: luhao
  * @create: 2019-7-2 18:22
  */
+@SuppressWarnings("deprecation")
 final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
+
+    private final static String MEDIA_TYPE_APPLICATION = "application";
+    private final static String MEDIA_TYPE_JSON = "json";
+
     private final Gson gson;
     private final TypeAdapter<T> adapter;
 
@@ -49,7 +55,8 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
         if (mediaType == null) {
             throw new IllegalStateException("Missing response header [content-type] ");
         }
-        if ("application".equals(mediaType.type()) && "json".equals(mediaType.subtype())) {
+        if (Objects.equals(mediaType.type(), MEDIA_TYPE_APPLICATION)
+                && Objects.equals(mediaType.type(), MEDIA_TYPE_JSON)) {
             try {
                 T result = adapter.read(jsonReader);
                 if (jsonReader.peek() != JsonToken.END_DOCUMENT) {

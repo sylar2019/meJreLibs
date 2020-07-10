@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import me.java.library.utils.base.ConcurrentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.MessageListener;
@@ -47,21 +48,8 @@ public class RedisNotice {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(jedisConnectionFactory);
 
-        Executor subscriptionExecutor = new ThreadPoolExecutor(
-                10,
-                Integer.MAX_VALUE,
-                10L,
-                TimeUnit.SECONDS,
-                new SynchronousQueue<>(),
-                new ThreadFactoryBuilder().setNameFormat("subscription-pool-%d").build());
-
-        Executor taskExecutor = new ThreadPoolExecutor(
-                10,
-                Integer.MAX_VALUE,
-                10L,
-                TimeUnit.SECONDS,
-                new SynchronousQueue<>(),
-                new ThreadFactoryBuilder().setNameFormat("taskDetail-pool-%d").build());
+        Executor subscriptionExecutor = ConcurrentUtils.simpleThreadPool("subscription");
+        Executor taskExecutor = ConcurrentUtils.simpleThreadPool("taskDetail");
 
         container.setSubscriptionExecutor(subscriptionExecutor);
         container.setTaskExecutor(taskExecutor);

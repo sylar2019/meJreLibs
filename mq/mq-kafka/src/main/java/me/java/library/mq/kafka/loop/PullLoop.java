@@ -3,6 +3,7 @@ package me.java.library.mq.kafka.loop;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
+import me.java.library.utils.base.ConcurrentUtils;
 import org.apache.kafka.clients.consumer.CommitFailedException;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -43,14 +44,7 @@ public class PullLoop implements Runnable {
         this.shutdown = new AtomicBoolean(false);
         this.shutdownLatch = new CountDownLatch(1);
 
-        executorService = new ThreadPoolExecutor(
-                10,
-                Integer.MAX_VALUE,
-                10L,
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(),
-                new ThreadFactoryBuilder().setNameFormat("kafka-pull-pool-%d").build());
-
+        executorService = ConcurrentUtils.simpleThreadPool();
         executorService.execute(this);
     }
 

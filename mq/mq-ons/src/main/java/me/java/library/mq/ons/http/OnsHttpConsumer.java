@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import me.java.library.mq.ons.AbstractOnsConsumer;
+import me.java.library.utils.base.ConcurrentUtils;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -29,14 +30,7 @@ public class OnsHttpConsumer extends AbstractOnsConsumer {
     public void subscribe(String topic, String[] tags, MessageListener messageListener) {
         super.subscribe(topic, tags, messageListener);
 
-        executorService = new ThreadPoolExecutor(
-                10,
-                Integer.MAX_VALUE,
-                10L,
-                TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(),
-                new ThreadFactoryBuilder().setNameFormat("OnsHttpConsumer-pull-pool-%d").build());
-
+        executorService = ConcurrentUtils.simpleThreadPool();
         executorService.execute(new Runnable() {
             @Override
             public void run() {

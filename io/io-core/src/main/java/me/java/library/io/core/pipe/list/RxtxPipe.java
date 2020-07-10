@@ -29,7 +29,7 @@ import me.java.library.utils.base.ShellUtils;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings("deprecation")
 public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
 
     public RxtxPipe(RxtxBus bus, RxtxCodec codec) {
