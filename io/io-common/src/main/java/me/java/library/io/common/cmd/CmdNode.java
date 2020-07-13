@@ -1,6 +1,7 @@
 package me.java.library.io.common.cmd;
 
 import me.java.library.common.model.pojo.AbstractIdPojo;
+import me.java.library.utils.base.JsonUtils;
 
 import java.util.UUID;
 
@@ -21,6 +22,8 @@ import java.util.UUID;
  */
 public class CmdNode extends AbstractIdPojo<String> implements Cmd {
 
+    protected final static String DEFAULT_CODE = "default";
+
     protected String code;
     protected CmdType type;
     protected long time;
@@ -30,7 +33,12 @@ public class CmdNode extends AbstractIdPojo<String> implements Cmd {
     public CmdNode() {
         this.id = UUID.randomUUID().toString();
         this.time = System.currentTimeMillis();
+
+        this.code = DEFAULT_CODE;
         this.type = CmdType.General;
+
+        this.from = new TerminalNode(UUID.randomUUID().toString(), "unknown");
+        this.to = new TerminalNode(UUID.randomUUID().toString(), "unknown");
     }
 
     public CmdNode(Terminal from, Terminal to) {
@@ -92,5 +100,10 @@ public class CmdNode extends AbstractIdPojo<String> implements Cmd {
 
     public void setTo(Terminal to) {
         this.to = to;
+    }
+
+    @Override
+    public String toString() {
+        return JsonUtils.toJSONString(this);
     }
 }

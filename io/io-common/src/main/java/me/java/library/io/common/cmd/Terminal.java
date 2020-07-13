@@ -5,6 +5,7 @@ import me.java.library.common.Attributable;
 import me.java.library.common.Identifiable;
 
 import java.net.InetSocketAddress;
+import java.util.UUID;
 
 /**
  * File Name             :  Terminal
@@ -23,15 +24,17 @@ import java.net.InetSocketAddress;
  */
 public interface Terminal extends Identifiable<String>, Attributable {
 
-    Terminal SERVER = new TerminalNode("server", "default");
-    Terminal CLIENT = new TerminalNode("client", "default");
-    Terminal LOCAL = new TerminalNode("local", "default");
-    Terminal REMOTE = new TerminalNode("remote", "default");
+    Terminal UNKNOWN = new TerminalNode(UUID.randomUUID().toString(), "unknown");
+    Terminal SERVER = new TerminalNode(UUID.randomUUID().toString(), "server");
+    Terminal CLIENT = new TerminalNode(UUID.randomUUID().toString(), "client");
+    Terminal LOCAL = new TerminalNode(UUID.randomUUID().toString(), "local");
+    Terminal REMOTE = new TerminalNode(UUID.randomUUID().toString(), "remote");
+
+
+    String getType();
 
     String ATTR_HOST = "host";
     String ATTR_PORT = "port";
-
-    String getType();
 
     @JsonIgnore
     default InetSocketAddress getInetSocketAddress() {

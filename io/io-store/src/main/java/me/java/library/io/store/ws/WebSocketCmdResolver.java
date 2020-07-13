@@ -4,6 +4,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import me.java.library.io.common.cmd.TerminalNode;
+
+import java.net.InetSocketAddress;
 
 /**
  * @author :  sylar
@@ -27,14 +30,22 @@ public interface WebSocketCmdResolver {
             if (webSocketFrame == null) {
                 return null;
             }
+
+            WebSocketCmdNode cmd = null;
             if (webSocketFrame instanceof TextWebSocketFrame) {
                 TextWebSocketFrame textWebSocketFrame = (TextWebSocketFrame) webSocketFrame;
-                return WebSocketCmdNode.fromText(textWebSocketFrame.text());
+                cmd = WebSocketCmdNode.fromText(textWebSocketFrame.text());
             } else if (webSocketFrame instanceof BinaryWebSocketFrame) {
                 BinaryWebSocketFrame binaryWebSocketFrame = (BinaryWebSocketFrame) webSocketFrame;
-                return WebSocketCmdNode.fromBinary(binaryWebSocketFrame.content());
+                cmd = WebSocketCmdNode.fromBinary(binaryWebSocketFrame.content());
             }
-            return null;
+
+            if (cmd != null) {
+                cmd.getFrom().setInetSocketAddress((InetSocketAddress)ctx.channel().remoteAddress());
+                cmd.getTo().setInetSocketAddress((InetSocketAddress)ctx.channel().localAddress());
+            }
+
+            return cmd;
         }
 
         @Override

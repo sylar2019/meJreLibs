@@ -22,11 +22,16 @@ import java.util.UUID;
  */
 public class TerminalNode extends AbstractIdPojo<String> implements Terminal {
 
+    protected final static String DEFAULT_TYPE = "default";
+
     private String type;
 
     public TerminalNode() {
-        this.id = UUID.randomUUID().toString();
-        this.type = "default";
+        this(UUID.randomUUID().toString(), DEFAULT_TYPE);
+    }
+
+    public TerminalNode(String id) {
+        this(id, DEFAULT_TYPE);
     }
 
     public TerminalNode(String id, String type) {

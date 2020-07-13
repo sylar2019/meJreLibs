@@ -22,10 +22,12 @@ import java.util.Objects;
  */
 public class HostNode implements Host {
 
+    protected final static String DEFAULT_TYPE = "default";
+
     protected String hostCode;
 
     public HostNode() {
-        this("default");
+        this(DEFAULT_TYPE);
     }
 
     public HostNode(String hostCode) {
