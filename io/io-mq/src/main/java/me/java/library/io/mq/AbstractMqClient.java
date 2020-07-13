@@ -1,9 +1,9 @@
-package me.java.library.io.core.cloud;
+package me.java.library.io.mq;
 
 import me.java.library.common.Disposable;
 import me.java.library.mq.base.Factory;
-import me.java.library.mq.rocketmq.RocketmqFactory;
 import me.java.library.utils.base.NetworkUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * File Name             :  AbstractMqClient
@@ -21,7 +21,8 @@ import me.java.library.utils.base.NetworkUtils;
  * *******************************************************************************************
  */
 public abstract class AbstractMqClient implements Disposable {
-    protected Factory factory = new RocketmqFactory();
+    @Autowired
+    protected Factory factory;
 
     protected abstract String getGroupId();
 

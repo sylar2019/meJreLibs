@@ -1,4 +1,4 @@
-package me.java.library.io.core.cloud;
+package me.java.library.io.mq;
 
 /**
  * File Name             :  MqConstants

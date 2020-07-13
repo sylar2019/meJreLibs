@@ -1,4 +1,4 @@
-package me.java.library.io.core.cloud.msg;
+package me.java.library.io.mq.msg;
 
 /**
  * File Name             :  CmdMsg
@@ -15,5 +15,5 @@ package me.java.library.io.core.cloud.msg;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public interface CmdMsg extends MqMsg {
+public interface CmdMsg extends MqMsg{
 }

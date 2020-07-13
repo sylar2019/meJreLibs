@@ -1,7 +1,7 @@
-package me.java.library.io.core.cloud;
+package me.java.library.io.mq;
 
 import me.java.library.io.common.cmd.Cmd;
-import me.java.library.io.Host;
+import me.java.library.io.common.cmd.Host;
 import me.java.library.io.common.cmd.Terminal;
 import me.java.library.io.common.pipe.Pipe;
 import me.java.library.io.common.pipe.PipeWatcher;

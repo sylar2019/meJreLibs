@@ -37,8 +37,6 @@ public class MqAutoConfiguration {
     @ConditionalOnMissingBean(Factory.class)
     public Factory getFactory() {
         switch (mqProperties.getProvider()) {
-            case MqProperties.PROVIDER_ROCKETMQ:
-                return new RocketmqFactory();
             case MqProperties.PROVIDER_KAFKA:
                 return new KafkaFactory();
             case MqProperties.PROVIDER_ONS_TCP:

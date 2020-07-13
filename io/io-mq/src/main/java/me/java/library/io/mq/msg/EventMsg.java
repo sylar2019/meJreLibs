@@ -1,10 +1,10 @@
-package me.java.library.utils.aoe;
+package me.java.library.io.mq.msg;
 
 /**
- * File Name             :  IActivity
+ * File Name             :  CmdMsg
  *
  * @author :  sylar
- * Create                :  2019-11-21
+ * Create                :  2019-10-24
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -15,5 +15,5 @@ package me.java.library.utils.aoe;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public interface IActivity {
+public interface EventMsg extends MqMsg  {
 }

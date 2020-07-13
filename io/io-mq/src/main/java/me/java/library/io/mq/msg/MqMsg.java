@@ -1,4 +1,4 @@
-package me.java.library.io.core.cloud.msg;
+package me.java.library.io.mq.msg;
 
 /**
  * File Name             :  MqMsg
@@ -16,4 +16,5 @@ package me.java.library.io.core.cloud.msg;
  * *******************************************************************************************
  */
 public interface MqMsg {
+
 }

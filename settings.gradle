@@ -15,14 +15,9 @@ include ":db:db-mongo"
 
 include ":io"
 include ":io:io-common"
-
-//include ":io:io-base"
 include ":io:io-store"
 include ":io:io-store-rxtx"
-//include ":io:io-core-cloud"
-//include ":io:io-core-edge"
-//include ":io:io-core-mqtt"
-//include ":io:io-gnu-io-rxtx"
+include ":io:io-mq"
 
 include ":mq"
 include ":mq:mq-base"
@@ -32,7 +27,6 @@ include ":mq:mq-rocketmq"
 include ":mq:mq-starter"
 
 include ":utils"
-include ":utils:utils-aoe"
 include ":utils:utils-base"
 include ":utils:utils-disruptor"
 include ":utils:utils-dubbo"

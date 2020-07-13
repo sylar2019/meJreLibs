@@ -2,7 +2,7 @@
  * File Name             :  package-info
  *
  * @author :  sylar
- * Create                :  2019-10-23
+ * Create                :  2020/7/13
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -13,4 +13,4 @@
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-package me.java.library.io.core.cloud;
+package me.java.library.io.mq;

@@ -1,6 +1,6 @@
-package me.java.library.io.core.cloud;
+package me.java.library.io.mq;
 
-import me.java.library.io.core.cloud.msg.MqMsg;
+import me.java.library.io.mq.msg.MqMsg;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.Producer;
 
