@@ -1,5 +1,0 @@
-dependencies {
-    compile project(":common")
-    compile project(":io:io-base")
-    compile "io.netty:netty-all:${nettyVersion}"
-}

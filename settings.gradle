@@ -14,10 +14,13 @@ include ":db:db-jpa-oracle"
 include ":db:db-mongo"
 
 include ":io"
-include ":io:io-base"
-include ":io:io-core"
-include ":io:io-core-cloud"
-include ":io:io-core-edge"
+include ":io:io-common"
+
+//include ":io:io-base"
+include ":io:io-store"
+include ":io:io-store-rxtx"
+//include ":io:io-core-cloud"
+//include ":io:io-core-edge"
 //include ":io:io-core-mqtt"
 //include ":io:io-gnu-io-rxtx"
 
