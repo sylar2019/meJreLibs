@@ -31,6 +31,8 @@ public class WebSocketServerPipe extends AbstractPipe<WebSocketServerBus, WebSoc
 
     @Override
     protected ChannelFuture onStart() throws Exception {
+        codec.setBus(bus);
+
         group = new NioEventLoopGroup();
         childGroup = new NioEventLoopGroup();
 

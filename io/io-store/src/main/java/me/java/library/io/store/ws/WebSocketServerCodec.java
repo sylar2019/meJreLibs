@@ -1,5 +1,6 @@
 package me.java.library.io.store.ws;
 
+import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
@@ -24,23 +25,17 @@ import me.java.library.io.common.codec.InboundCmdHandler;
  * *******************************************************************************************
  */
 public class WebSocketServerCodec extends AbstractCodecWithLogAndIdle {
-
-//    public final static String HANDLER_NAME_HTTP_SERVER_CODEC = "httpServerCodec";
-//    public final static String HANDLER_NAME_CHUNKED_WRITE = "chunkedWrite";
-//    public final static String HANDLER_NAME_HTTP_OBJECT_AGGREGATOR = "httpObjectAggregator";
-//    public final static String HANDLER_NAME_WS_SERVER_PROTOCOL = "webSocketServerProtocolHandler";
-
-    private String websocketPath = "/";
+    private WebSocketServerBus bus;
     private WebSocketCmdResolver webSocketCmdResolver;
 
-    public WebSocketServerCodec(String websocketPath, WebSocketCmdResolver webSocketCmdResolver) {
-        this.websocketPath = websocketPath;
+    public WebSocketServerCodec(WebSocketCmdResolver webSocketCmdResolver) {
         this.webSocketCmdResolver = webSocketCmdResolver;
     }
 
     @Override
     public void initPipeLine(Channel channel) throws Exception {
         super.initPipeLine(channel);
+        Preconditions.checkNotNull(bus);
 
         //http解编码器
         channel.pipeline().addLast(new HttpServerCodec());
@@ -50,7 +45,7 @@ public class WebSocketServerCodec extends AbstractCodecWithLogAndIdle {
         channel.pipeline().addLast(new HttpObjectAggregator(1024 * 8));
         //WebSocketServerProtocolHandler处理器可以处理了 webSocket 协议的握手请求处理，以及 Close、Ping、Pong控制帧的处理。
         //对于文本和二进制的数据帧需要我们自己处理。
-        channel.pipeline().addLast(new WebSocketServerProtocolHandler(websocketPath));
+        channel.pipeline().addLast(new WebSocketServerProtocolHandler(bus.getSocketPath()));
         //业务层解码
         channel.pipeline().addLast(WebSocketDecoder.HANDLER_NAME, new WebSocketDecoder(webSocketCmdResolver));
         //加上默认的入站处理器 InboundCmdHandler
@@ -61,4 +56,11 @@ public class WebSocketServerCodec extends AbstractCodecWithLogAndIdle {
         channel.pipeline().addLast(WebSocketEncoder.HANDLER_NAME, new WebSocketEncoder(webSocketCmdResolver));
     }
 
+    public WebSocketServerBus getBus() {
+        return bus;
+    }
+
+    public void setBus(WebSocketServerBus bus) {
+        this.bus = bus;
+    }
 }
