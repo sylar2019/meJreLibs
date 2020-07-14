@@ -1,9 +1,7 @@
 package me.java.library.io.common.codec;
 
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.Channel;
 import me.java.library.common.Identifiable;
-
-import java.util.LinkedHashMap;
 
 /**
  * File Name             :  Codec
@@ -24,11 +22,12 @@ public interface Codec extends Identifiable<String> {
 
     String HANDLER_NAME_IDLE_STATE = "idleStateHandler";
     String HANDLER_NAME_LOG = "logHandler";
-    String HANDLER_NAME_INBOUND_CMD = "inboundCmdHandler";
-    String HANDLER_NAME_UDP_ENCODER = "udpEncoderHandler";
-    String HANDLER_NAME_UDP_DECODER = "udpDecoderHandler";
-    String HANDLER_NAME_SIMPLE_ENCODER = "simpleEncoderHandler";
-    String HANDLER_NAME_SIMPLE_DECODER = "simpleDecoderHandler";
+
+//    String HANDLER_NAME_INBOUND_CMD = "inboundCmdHandler";
+//    String HANDLER_NAME_UDP_ENCODER = "udpEncoderHandler";
+//    String HANDLER_NAME_UDP_DECODER = "udpDecoderHandler";
+//    String HANDLER_NAME_SIMPLE_ENCODER = "simpleEncoderHandler";
+//    String HANDLER_NAME_SIMPLE_DECODER = "simpleDecoderHandler";
     String HANDLER_NAME_FRAME_DECODER = "frameDecoderHandler";
 
     String HANDLER_ATTR_LOG_LEVEL = "logLevel";
@@ -36,7 +35,7 @@ public interface Codec extends Identifiable<String> {
     String HANDLER_ATTR_WRITE_IDLE_TIME = "writerIdleTimeSeconds";
     String HANDLER_ATTR_ALL_IDLE_TIME = "allIdleTimeSeconds";
 
-    LinkedHashMap<String, ChannelHandler> getChannelHandlers();
+    void initPipeLine(Channel channel) throws Exception;
 
     <V> V getHandlerAttr(String handlerKey, String attrKey, V defaultValue);
 }

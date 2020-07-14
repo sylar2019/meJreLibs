@@ -1,5 +1,7 @@
 package me.java.library.io.common.bus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * File Name             :  AbstractSocketBus
  *
@@ -17,33 +19,50 @@ package me.java.library.io.common.bus;
  */
 public abstract class AbstractSocketBus extends AbstractBus {
 
-    public final static String defaultHost = "localhost";
-    public final static String anyHost = "0.0.0.0";
-    public final static String defaultMulticastHost = "239.255.27.1";
-    public final static String defaultBroadcastHost = "255.255.255.255";
-    public final static int defaultPort = 0;
+    public final static String BUS_ATTR_SOCKET_HOST = "host";
+    public final static String BUS_ATTR_SOCKET_PORT = "port";
+    public final static String BUS_ATTR_SOCKET_PATH = "path";
+    public final static String BUS_ATTR_SOCKET_NETWORK_INTERFACE = "interface";
 
+    public final static String DEFAULT_HOST = "localhost";
+    public final static int DEFAULT_PORT = 0;
+    public final static String DEFAULT_PATH = "/";
+    public final static String DEFAULT_MULTICAST_HOST = "239.255.27.1";
+    public final static String DEFAULT_BROADCAST_HOST = "255.255.255.255";
+    public final static String ANY_HOST = "0.0.0.0";
+
+    @JsonIgnore
     public String getHost() {
-        return getOrDefault(Bus.BUS_ATTR_SOCKET_HOST, defaultHost);
+        return getOrDefault(BUS_ATTR_SOCKET_HOST, DEFAULT_HOST);
     }
 
     public void setHost(String host) {
-        setAttr(Bus.BUS_ATTR_SOCKET_HOST, host);
+        setAttr(BUS_ATTR_SOCKET_HOST, host);
     }
 
     public String getHost(String defaultValue) {
-        return getOrDefault(Bus.BUS_ATTR_SOCKET_HOST, defaultValue);
+        return getOrDefault(BUS_ATTR_SOCKET_HOST, defaultValue);
     }
 
+    @JsonIgnore
     public int getPort() {
-        return getOrDefault(Bus.BUS_ATTR_SOCKET_PORT, defaultPort);
+        return getOrDefault(BUS_ATTR_SOCKET_PORT, DEFAULT_PORT);
     }
 
     public void setPort(int port) {
-        setAttr(Bus.BUS_ATTR_SOCKET_PORT, port);
+        setAttr(BUS_ATTR_SOCKET_PORT, port);
     }
 
     public int getPort(int defaultValue) {
-        return getOrDefault(Bus.BUS_ATTR_SOCKET_PORT, defaultValue);
+        return getOrDefault(BUS_ATTR_SOCKET_PORT, defaultValue);
+    }
+
+    @JsonIgnore
+    public String getSocketPath() {
+        return getOrDefault(BUS_ATTR_SOCKET_PATH, DEFAULT_PATH);
+    }
+
+    public void setSocketPath(String path) {
+        setAttr(BUS_ATTR_SOCKET_PATH, path);
     }
 }

@@ -26,6 +26,8 @@ import me.java.library.io.common.pipe.PipeAssistant;
 @ChannelHandler.Sharable
 public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
 
+    public final static String HANDLER_NAME = InboundCmdHandler.class.getSimpleName();
+
     private PipeAssistant pipeAssistant = PipeAssistant.getInstance();
 
     @Override

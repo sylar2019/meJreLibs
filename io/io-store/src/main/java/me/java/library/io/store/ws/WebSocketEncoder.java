@@ -26,7 +26,7 @@ import java.util.List;
  */
 @ChannelHandler.Sharable
 public class WebSocketEncoder extends MessageToMessageEncoder<WebSocketCmdNode> {
-
+    public final static String HANDLER_NAME = WebSocketEncoder.class.getSimpleName();
     protected WebSocketCmdResolver webSocketCmdResolver;
     private Logger logger = LoggerFactory.getLogger(getClass());
 

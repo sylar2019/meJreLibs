@@ -12,7 +12,6 @@ import me.java.library.io.common.utils.ChannelAttr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -179,11 +178,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
                 AbstractPipe.this.channel = channel;
                 ChannelAttr.set(channel, ChannelAttr.ATTR_PIPE, AbstractPipe.this);
 
-                //add channelHanders from codec
-                //codec.getChannelHandlers().forEach((k, v) -> channel.pipeline().addLast(k, v)); //android 不支持
-                for (Map.Entry<String, ChannelHandler> entry : codec.getChannelHandlers().entrySet()) {
-                    channel.pipeline().addLast(entry.getKey(), entry.getValue());
-                }
+                codec.initPipeLine(channel);
             }
         };
     }

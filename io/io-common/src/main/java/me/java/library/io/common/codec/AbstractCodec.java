@@ -1,12 +1,9 @@
 package me.java.library.io.common.codec;
 
 import com.google.common.collect.Maps;
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.Channel;
 import me.java.library.common.model.pojo.AbstractIdPojo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -26,18 +23,12 @@ import java.util.Map;
  */
 public abstract class AbstractCodec extends AbstractIdPojo<String> implements Codec {
 
-    protected Logger logger = LoggerFactory.getLogger(getClass());
-    protected LinkedHashMap<String, ChannelHandler> handlers = Maps.newLinkedHashMap();
+    protected Channel channel;
     protected Map<String, Map<String, Object>> allAttrs = Maps.newHashMap();
 
     @Override
-    public LinkedHashMap<String, ChannelHandler> getChannelHandlers() {
-        putHandlers(handlers);
-        return handlers;
-    }
-
-    protected void putHandlers(LinkedHashMap<String, ChannelHandler> handlers) {
-
+    public void initPipeLine(Channel channel) throws Exception {
+        this.channel = channel;
     }
 
     @SuppressWarnings("unchecked")

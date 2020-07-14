@@ -1,20 +1,24 @@
 package me.java.library.io.store.ws;
 
-import io.netty.channel.ChannelHandler;
+import com.google.common.base.Preconditions;
+import io.netty.channel.Channel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
-import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
+import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslHandler;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import me.java.library.io.common.codec.AbstractCodecWithLogAndIdle;
-import me.java.library.io.common.codec.Codec;
 import me.java.library.io.common.codec.InboundCmdHandler;
 
+import javax.net.ssl.SSLException;
 import java.net.URI;
-import java.util.LinkedHashMap;
 
 /**
  * File Name             :  WSServerCodec
@@ -33,50 +37,68 @@ import java.util.LinkedHashMap;
  */
 public class WebSocketClientCodec extends AbstractCodecWithLogAndIdle {
 
-    String HANDLER_NAME_HTTP_CLIENT_CODEC = "httpClientCodec";
-    String HANDLER_NAME_CHUNKED_WRITE = "chunkedWrite";
-    String HANDLER_NAME_HTTP_OBJECT_AGGREGATOR = "httpObjectAggregator";
-    String HANDLER_NAME_WS_CLIENT_PROTOCOL = "webSocketClientProtocolHandler";
-
-    /**
-     * WS服务端地址，类似："ws://localhost:8899/ws"
-     */
-    private String wsServerUrl;
+    private WebSocketClientBus bus;
     private WebSocketCmdResolver webSocketCmdResolver;
 
-    public WebSocketClientCodec(String wsServerUrl, WebSocketCmdResolver webSocketCmdResolver) {
-        this.wsServerUrl = wsServerUrl;
+    public WebSocketClientCodec(WebSocketCmdResolver webSocketCmdResolver) {
         this.webSocketCmdResolver = webSocketCmdResolver;
     }
 
     @Override
-    protected void putHandlers(LinkedHashMap<String, ChannelHandler> handlers) {
-        super.putHandlers(handlers);
+    public void initPipeLine(Channel channel) throws Exception {
+        super.initPipeLine(channel);
+        Preconditions.checkNotNull(bus);
 
-        WebSocketClientHandshaker handshaker = WebSocketClientHandshakerFactory.newHandshaker(
-                URI.create(wsServerUrl),
-                WebSocketVersion.V13,
-                null,
-                false,
-                new DefaultHttpHeaders());
+        final SslHandler sslHandler = getSslHandler();
+        if (sslHandler != null) {
+            channel.pipeline().addLast(sslHandler);
+        }
 
         //http解编码器
-        handlers.put(HANDLER_NAME_HTTP_CLIENT_CODEC, new HttpClientCodec());
+        channel.pipeline().addLast(new HttpClientCodec());
         //分块写数据，防止发送大文件时导致内存溢出
-        handlers.put(HANDLER_NAME_CHUNKED_WRITE, new ChunkedWriteHandler());
+        channel.pipeline().addLast(new ChunkedWriteHandler());
         //将多个消息体进行聚合,参数是聚合字节的最大长度
-        handlers.put(HANDLER_NAME_HTTP_OBJECT_AGGREGATOR, new HttpObjectAggregator(1024 * 64));
-        //WebSocketClientProtocolHandler
-        handlers.put(HANDLER_NAME_WS_CLIENT_PROTOCOL, new WebSocketClientProtocolHandler(handshaker));
+        channel.pipeline().addLast(new HttpObjectAggregator(1024 * 8));
+        channel.pipeline().addLast(WebSocketClientCompressionHandler.INSTANCE);
+        channel.pipeline().addLast(WebSocketClientHandler.HANDLER_NAME, getWebSocketClientHandler());
 
         //业务层解码
-        handlers.put(Codec.HANDLER_NAME_SIMPLE_DECODER, new WebSocketDecoder(webSocketCmdResolver));
+        channel.pipeline().addLast(WebSocketDecoder.HANDLER_NAME, new WebSocketDecoder(webSocketCmdResolver));
         //加上默认的入站处理器 InboundCmdHandler
-        handlers.put(Codec.HANDLER_NAME_INBOUND_CMD, new InboundCmdHandler());
+        channel.pipeline().addLast(InboundCmdHandler.HANDLER_NAME, new InboundCmdHandler());
 
         //out
         //业务层编码
-        handlers.put(Codec.HANDLER_NAME_SIMPLE_ENCODER, new WebSocketEncoder(webSocketCmdResolver));
+        channel.pipeline().addLast(WebSocketEncoder.HANDLER_NAME, new WebSocketEncoder(webSocketCmdResolver));
     }
 
+    public WebSocketClientBus getBus() {
+        return bus;
+    }
+
+    public void setBus(WebSocketClientBus bus) {
+        this.bus = bus;
+    }
+
+    private WebSocketClientHandler getWebSocketClientHandler() {
+        WebSocketClientHandshaker handshaker = WebSocketClientHandshakerFactory.newHandshaker(
+                URI.create(bus.getUriPath()),
+                WebSocketVersion.V13,
+                null,
+                true,
+                new DefaultHttpHeaders());
+        return new WebSocketClientHandler(handshaker);
+    }
+
+    private SslHandler getSslHandler() throws SSLException {
+        if (bus.isSsl()) {
+            SslContext sslCtx = SslContextBuilder
+                    .forClient()
+                    .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                    .build();
+            return sslCtx.newHandler(channel.alloc(), bus.getHost(), bus.getPort());
+        }
+        return null;
+    }
 }

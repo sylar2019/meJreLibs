@@ -28,6 +28,8 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class SimpleEncoder extends MessageToMessageEncoder<Cmd> {
 
+    public final static String HANDLER_NAME = SimpleEncoder.class.getSimpleName();
+
     protected SimpleCmdResolver simpleCmdResolver;
     private Logger logger = LoggerFactory.getLogger(getClass());
 

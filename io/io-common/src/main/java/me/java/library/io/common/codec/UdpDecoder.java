@@ -25,6 +25,9 @@ import java.util.List;
  * *******************************************************************************************
  */
 public class UdpDecoder extends DatagramPacketDecoder {
+
+    public final static String HANDLER_NAME = UdpDecoder.class.getSimpleName();
+
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public UdpDecoder(SimpleDecoder simpleDecoder) {

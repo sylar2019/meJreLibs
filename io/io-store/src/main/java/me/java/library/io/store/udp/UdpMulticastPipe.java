@@ -40,7 +40,7 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
 
         String networkInterfaceName = bus.getNetworkInterfaceName();
         NetworkInterface networkInterface = NetworkInterface.getByName(networkInterfaceName);
-        String multicastHost = bus.getHost(AbstractSocketBus.defaultMulticastHost);
+        String multicastHost = bus.getHost(AbstractSocketBus.DEFAULT_MULTICAST_HOST);
         int multicastPort = bus.getPort();
         InetSocketAddress multicastAddress = new InetSocketAddress(multicastHost, multicastPort);
 

@@ -1,6 +1,7 @@
 package me.java.library.io.store.ws;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -30,15 +31,20 @@ public class WebSocketClientPipe extends AbstractPipe<WebSocketClientBus, WebSoc
 
     @Override
     protected ChannelFuture onStart() throws Exception {
-        group = new NioEventLoopGroup();
+        codec.setBus(bus);
 
+        group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)
                 .channel(NioSocketChannel.class)
                 .handler(getChannelInitializer())
                 .option(ChannelOption.SO_KEEPALIVE, true);
 
-        return bootstrap.connect(bus.getHost(), bus.getPort());
+        Channel channel = bootstrap.connect(bus.getHost(), bus.getPort()).sync().channel();
+
+        WebSocketClientHandler webSocketClientHandler =
+                (WebSocketClientHandler) channel.pipeline().get(WebSocketClientHandler.HANDLER_NAME);
+        return webSocketClientHandler.handshakeFuture().sync();
     }
 
     @Override

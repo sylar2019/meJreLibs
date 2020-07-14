@@ -1,10 +1,8 @@
 package me.java.library.io.common.codec;
 
 import com.google.common.base.Preconditions;
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.Channel;
 import io.netty.handler.codec.ByteToMessageDecoder;
-
-import java.util.LinkedHashMap;
 
 /**
  * File Name             : AbstractSimpleStreamCodec
@@ -40,19 +38,19 @@ public class AbstractSimpleStreamCodec extends AbstractSimpleCodec {
     }
 
     @Override
-    protected void putHandlers(LinkedHashMap<String, ChannelHandler> handlers) {
-        super.putHandlers(handlers);
+    public void initPipeLine(Channel channel) throws Exception {
+        super.initPipeLine(channel);
 
         ByteToMessageDecoder frameDecoder = createFrameDecoder(frameDecoderClass);
         Preconditions.checkNotNull(frameDecoder);
 
         //in
-        handlers.put(Codec.HANDLER_NAME_FRAME_DECODER, frameDecoder);
-        handlers.put(Codec.HANDLER_NAME_SIMPLE_DECODER, new SimpleDecoder(simpleCmdResolver));
-        handlers.put(Codec.HANDLER_NAME_INBOUND_CMD, new InboundCmdHandler());
+        channel.pipeline().addLast(Codec.HANDLER_NAME_FRAME_DECODER, frameDecoder);
+        channel.pipeline().addLast(SimpleDecoder.HANDLER_NAME, new SimpleDecoder(simpleCmdResolver));
+        channel.pipeline().addLast(InboundCmdHandler.HANDLER_NAME, new InboundCmdHandler());
 
         //out
-        handlers.put(Codec.HANDLER_NAME_SIMPLE_ENCODER, new SimpleEncoder(simpleCmdResolver));
+        channel.pipeline().addLast(SimpleEncoder.HANDLER_NAME, new SimpleEncoder(simpleCmdResolver));
     }
 
     protected ByteToMessageDecoder createFrameDecoder(Class<?> clazz) {

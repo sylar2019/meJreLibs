@@ -1,7 +1,6 @@
 package me.java.library.io.store.udp;
 
 import me.java.library.io.common.bus.AbstractSocketBus;
-import me.java.library.io.common.bus.Bus;
 import me.java.library.io.common.bus.BusType;
 
 /**
@@ -28,10 +27,10 @@ public class UdpMulticastBus extends AbstractSocketBus {
 
 
     public String getNetworkInterfaceName() {
-        return getOrDefault(Bus.BUS_ATTR_SOCKET_NETWORK_INTERFACE, "en0");
+        return getOrDefault(BUS_ATTR_SOCKET_NETWORK_INTERFACE, "en0");
     }
 
     public void setNetworkInterfaceName(String networkInterfaceName) {
-        setAttr(Bus.BUS_ATTR_SOCKET_NETWORK_INTERFACE, networkInterfaceName);
+        setAttr(BUS_ATTR_SOCKET_NETWORK_INTERFACE, networkInterfaceName);
     }
 }

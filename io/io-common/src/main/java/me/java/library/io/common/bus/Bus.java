@@ -20,9 +20,7 @@ import me.java.library.common.Attributable;
  */
 public interface Bus extends Attributable {
 
-    String BUS_ATTR_SOCKET_HOST = "host";
-    String BUS_ATTR_SOCKET_PORT = "port";
-    String BUS_ATTR_SOCKET_NETWORK_INTERFACE = "interface";
+
     String BUS_ATTR_RXTX_PATH = "path";
     String BUS_ATTR_RXTX_BAUDRATE = "baudrate";
     String BUS_ATTR_RXTX_STOPBITS = "stopbits";

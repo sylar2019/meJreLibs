@@ -1,11 +1,9 @@
 package me.java.library.io.common.codec;
 
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.Channel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-
-import java.util.LinkedHashMap;
 
 /**
  * File Name             :  AbstractCodecWithLogAndIdle
@@ -25,10 +23,10 @@ import java.util.LinkedHashMap;
 public abstract class AbstractCodecWithLogAndIdle extends AbstractCodec {
 
     @Override
-    protected void putHandlers(LinkedHashMap<String, ChannelHandler> handlers) {
-        super.putHandlers(handlers);
-        handlers.put(Codec.HANDLER_NAME_IDLE_STATE, getIdleStateHandler());
-        handlers.put(Codec.HANDLER_NAME_LOG, getLoggingHandler());
+    public void initPipeLine(Channel channel) throws Exception {
+        super.initPipeLine(channel);
+        channel.pipeline().addLast(Codec.HANDLER_NAME_IDLE_STATE, getIdleStateHandler());
+        channel.pipeline().addLast(Codec.HANDLER_NAME_LOG, getLoggingHandler());
     }
 
     public LogLevel getLogLevel() {

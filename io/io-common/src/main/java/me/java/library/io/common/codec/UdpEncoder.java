@@ -29,6 +29,7 @@ import java.util.List;
  */
 public class UdpEncoder extends SimpleEncoder {
 
+    public final static String HANDLER_NAME = UdpEncoder.class.getSimpleName();
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public UdpEncoder(SimpleCmdResolver simpleCmdResolver) {

@@ -28,6 +28,8 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class SimpleDecoder extends MessageToMessageDecoder<ByteBuf> {
 
+    public final static String HANDLER_NAME = SimpleDecoder.class.getSimpleName();
+
     protected SimpleCmdResolver simpleCmdResolver;
     private Logger logger = LoggerFactory.getLogger(getClass());
 

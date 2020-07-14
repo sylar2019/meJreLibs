@@ -18,7 +18,7 @@ import me.java.library.io.common.bus.BusType;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class WebSocketClientBus extends AbstractSocketBus {
+public class WebSocketClientBus extends WebSocketBus {
     @Override
     public BusType getBusType() {
         return BusType.WebSocketClient;
