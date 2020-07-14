@@ -98,6 +98,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
             Preconditions.checkNotNull(bus, "bus is null");
             Preconditions.checkNotNull(codec, "codec is null");
             future = onStart();
+            //守护进程，自动重开
             future.addListener(new ConnectionListener());
         } catch (Exception e) {
             onException(e);
@@ -151,7 +152,8 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
             //查找对应channel
             Channel channel = pipeAssistant.getChannel(this, cmd.getTo());
             Preconditions.checkNotNull(channel);
-            Preconditions.checkState(channel.isActive());
+            Preconditions.checkState(channel.isActive(), "channel is not active");
+            Preconditions.checkState(channel.isWritable(), "channle is not writeable");
             channel.writeAndFlush(cmd);
         } catch (Exception e) {
             onException(e);
