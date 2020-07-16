@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":io:io-common")
+    compile ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+}

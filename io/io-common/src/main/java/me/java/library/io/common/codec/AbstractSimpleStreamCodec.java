@@ -21,6 +21,8 @@ import io.netty.handler.codec.ByteToMessageDecoder;
  */
 public class AbstractSimpleStreamCodec extends AbstractSimpleCodec {
 
+    final static String HANDLER_NAME_FRAME_DECODER = "frameDecoderHandler";
+
     /**
      * 协议帧解码器
      * 参见 netty 默认提供的 FrameDecoder
@@ -29,39 +31,24 @@ public class AbstractSimpleStreamCodec extends AbstractSimpleCodec {
      * LengthFieldBasedFrameDecoder     基于消息长度
      * LineBasedFrameDecoder            基于文本换行
      */
-    protected Class<?> frameDecoderClass;
+    protected ByteToMessageDecoder frameDecoder;
 
-    public AbstractSimpleStreamCodec(SimpleCmdResolver simpleCmdResolver, Class<? extends ByteToMessageDecoder> frameDecoderClass) {
+    public AbstractSimpleStreamCodec(SimpleCmdResolver simpleCmdResolver, ByteToMessageDecoder frameDecoder) {
         super(simpleCmdResolver);
-        Preconditions.checkNotNull(frameDecoderClass);
-        this.frameDecoderClass = frameDecoderClass;
+        this.frameDecoder = frameDecoder;
     }
 
     @Override
     public void initPipeLine(Channel channel) throws Exception {
         super.initPipeLine(channel);
-
-        ByteToMessageDecoder frameDecoder = createFrameDecoder(frameDecoderClass);
         Preconditions.checkNotNull(frameDecoder);
 
         //in
-        channel.pipeline().addLast(Codec.HANDLER_NAME_FRAME_DECODER, frameDecoder);
+        channel.pipeline().addLast(HANDLER_NAME_FRAME_DECODER, frameDecoder);
         channel.pipeline().addLast(SimpleDecoder.HANDLER_NAME, new SimpleDecoder(simpleCmdResolver));
         channel.pipeline().addLast(InboundCmdHandler.HANDLER_NAME, new InboundCmdHandler());
 
         //out
         channel.pipeline().addLast(SimpleEncoder.HANDLER_NAME, new SimpleEncoder(simpleCmdResolver));
     }
-
-    protected ByteToMessageDecoder createFrameDecoder(Class<?> clazz) {
-        try {
-            Object obj = clazz.newInstance();
-            Preconditions.checkNotNull(obj, "创建帧解析器异常:" + clazz.getName());
-            Preconditions.checkState(obj instanceof ByteToMessageDecoder, "帧解析器基类型错误:" + clazz.getName());
-            return (ByteToMessageDecoder) obj;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
 }

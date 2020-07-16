@@ -4,7 +4,9 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import me.java.library.io.common.pipe.AbstractPipe;
+import io.netty.handler.codec.ByteToMessageDecoder;
+import me.java.library.io.common.codec.SimpleCmdResolver;
+import me.java.library.io.common.pipe.BasePipe;
 
 /**
  * File Name             :  TcpServerPipe
@@ -21,7 +23,25 @@ import me.java.library.io.common.pipe.AbstractPipe;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
+public class TcpServerPipe extends BasePipe<TcpServerBus, TcpCodec> {
+
+    /**
+     * 快速创建 TcpServerPipe
+     *
+     * @param port         绑定的端口
+     * @param frameDecoder 帧解析器
+     * @param cmdResolver  指令编解码器
+     * @return
+     */
+    public static TcpServerPipe express(int port,
+                                        ByteToMessageDecoder frameDecoder,
+                                        SimpleCmdResolver cmdResolver) {
+        TcpServerBus bus = new TcpServerBus();
+        bus.setUrl(String.format("tcp://localhost:%d", port));
+
+        TcpCodec codec = new TcpCodec(cmdResolver, frameDecoder);
+        return new TcpServerPipe(bus, codec);
+    }
 
     protected NioEventLoopGroup childGroup;
 
@@ -30,12 +50,12 @@ public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
     }
 
     @Override
-    protected ChannelFuture onStart() throws Exception {
-        group = new NioEventLoopGroup();
+    protected ChannelFuture onStartByNetty() throws Exception {
+        masterLoop = new NioEventLoopGroup();
         childGroup = new NioEventLoopGroup();
 
         ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(group, childGroup)
+        bootstrap.group(masterLoop, childGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(getChannelInitializer());
 

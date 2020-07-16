@@ -8,7 +8,9 @@ import io.netty.channel.rxtx.RxtxChannel;
 import io.netty.channel.rxtx.RxtxChannelConfig;
 import io.netty.channel.rxtx.RxtxChannelOption;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
-import me.java.library.io.common.pipe.AbstractPipe;
+import io.netty.handler.codec.ByteToMessageDecoder;
+import me.java.library.io.common.codec.SimpleCmdResolver;
+import me.java.library.io.common.pipe.BasePipe;
 import me.java.library.utils.base.OSInfoUtils;
 import me.java.library.utils.base.ShellUtils;
 
@@ -27,22 +29,43 @@ import me.java.library.utils.base.ShellUtils;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-@SuppressWarnings("deprecation")
-public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
+@SuppressWarnings({"deprecation"})
+public class RxtxPipe extends BasePipe<RxtxBus, RxtxCodec> {
+    /**
+     * 快速创建 RxtxPipe
+     *
+     * @param rxtxPath     串口地址，如：COM1 或 /dev/ttyAMA3
+     * @param baud         串口波特率
+     * @param frameDecoder 帧解析器
+     * @param cmdResolver  指令编解码器
+     * @return
+     */
+    public static RxtxPipe express(
+            String rxtxPath,
+            int baud,
+            ByteToMessageDecoder frameDecoder,
+            SimpleCmdResolver cmdResolver) {
+        RxtxBus bus = new RxtxBus();
+        bus.setRxtxPath(rxtxPath);
+        bus.setRxtxBaud(baud);
+
+        RxtxCodec codec = new RxtxCodec(cmdResolver, frameDecoder);
+        return new RxtxPipe(bus, codec);
+    }
 
     public RxtxPipe(RxtxBus bus, RxtxCodec codec) {
         super(bus, codec);
     }
 
     @Override
-    protected ChannelFuture onStart() throws Exception {
+    protected ChannelFuture onStartByNetty() throws Exception {
         preparePermisson();
 
-        group = new OioEventLoopGroup();
+        masterLoop = new OioEventLoopGroup();
         RxtxDeviceAddress rxtxDeviceAddress = new RxtxDeviceAddress(bus.getRxtxPath());
 
         Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(group)
+        bootstrap.group(masterLoop)
                 .channel(RxtxChannel.class)
                 .option(RxtxChannelOption.BAUD_RATE, bus.getRxtxBaud())
                 .option(RxtxChannelOption.DATA_BITS, RxtxChannelConfig.Databits.valueOf(bus.getRxtxDatabits()))

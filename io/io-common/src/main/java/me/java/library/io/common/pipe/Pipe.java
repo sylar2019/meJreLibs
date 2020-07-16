@@ -2,9 +2,7 @@ package me.java.library.io.common.pipe;
 
 import me.java.library.common.service.Serviceable;
 import me.java.library.io.common.cmd.Cmd;
-import me.java.library.io.common.bus.Bus;
 import me.java.library.io.common.cmd.Host;
-import me.java.library.io.common.codec.Codec;
 
 /**
  * File Name             :  Pipe
@@ -21,7 +19,7 @@ import me.java.library.io.common.codec.Codec;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public interface Pipe<B extends Bus, C extends Codec> extends Serviceable {
+public interface Pipe extends Serviceable {
 
     /**
      * 启动
@@ -34,9 +32,11 @@ public interface Pipe<B extends Bus, C extends Codec> extends Serviceable {
     void stop();
 
     /**
-     * 重启
+     * 发送指令
+     *
+     * @param cmd
      */
-    void restart();
+    void send(Cmd cmd);
 
     /**
      * 是否在运行
@@ -53,29 +53,17 @@ public interface Pipe<B extends Bus, C extends Codec> extends Serviceable {
     Host getHost();
 
     /**
-     * 获取观察者
-     *
-     * @return
-     */
-    PipeWatcher getWatcher();
-
-    /**
      * 设置观察者
      *
      * @param watcher
      */
     void setWatcher(PipeWatcher watcher);
 
-    long getDaemonSeconds();
-
-    void setDaemonSeconds(long seconds);
-
     /**
-     * 发送指令
+     * 设置是否启用守护线程
      *
-     * @param cmd
+     * @param enabled
      */
-    void send(Cmd cmd);
-
+    void setDaemon(boolean enabled);
 
 }

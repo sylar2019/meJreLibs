@@ -57,7 +57,7 @@ public class PipeAssistant {
         return ChannelAttr.get(channel, ChannelAttr.ATTR_PIPE);
     }
 
-    public Channel getChannel(AbstractPipe pipe, Terminal terminal) {
+    public Channel getChannel(BasePipe pipe, Terminal terminal) {
         Channel channel = getPipeContext(pipe).getTerminalState(terminal).getChannel();
         if (channel == null) {
             //非伺服器模式时
@@ -68,7 +68,7 @@ public class PipeAssistant {
     }
 
     public void onThrowable(Channel channel, Throwable throwable) {
-        AbstractPipe pipe = getBasePipe(channel);
+        BasePipe pipe = getBasePipe(channel);
         pipe.onException(throwable);
     }
 
@@ -77,7 +77,7 @@ public class PipeAssistant {
         terminals.add(cmd.getFrom());
         onConnectionChanged(channel, cmd.getFrom(), true);
 
-        AbstractPipe pipe = getBasePipe(channel);
+        BasePipe pipe = getBasePipe(channel);
         pipe.onReceived(cmd);
     }
 
@@ -99,7 +99,7 @@ public class PipeAssistant {
             state.setConnected(connected);
             state.setChannel(connected ? channel : null);
 
-            AbstractPipe pipe = getBasePipe(channel);
+            BasePipe pipe = getBasePipe(channel);
             pipe.onConnectionChanged(terminal, connected);
         }
     }
@@ -109,10 +109,10 @@ public class PipeAssistant {
         return pipeContext.getTerminals(channel);
     }
 
-    private AbstractPipe getBasePipe(Channel channel) {
+    private BasePipe getBasePipe(Channel channel) {
         Pipe pipe = ChannelAttr.get(channel, ChannelAttr.ATTR_PIPE);
-        if (pipe instanceof AbstractPipe) {
-            return (AbstractPipe) pipe;
+        if (pipe instanceof BasePipe) {
+            return (BasePipe) pipe;
         }
         throw new RuntimeException("不支持的pipe实现，pipe 须派生自 AbstractPipe");
     }

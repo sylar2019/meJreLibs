@@ -22,43 +22,52 @@ import io.netty.handler.timeout.IdleStateHandler;
  */
 public abstract class AbstractCodecWithLogAndIdle extends AbstractCodec {
 
+    final static String HANDLER_NAME_IDLE_STATE = "idleStateHandler";
+    final static String HANDLER_NAME_LOG = "logHandler";
+
+
+    final static String HANDLER_ATTR_LOG_LEVEL = "logLevel";
+    final static String HANDLER_ATTR_READ_IDLE_TIME = "readerIdleTimeSeconds";
+    final static String HANDLER_ATTR_WRITE_IDLE_TIME = "writerIdleTimeSeconds";
+    final static String HANDLER_ATTR_ALL_IDLE_TIME = "allIdleTimeSeconds";
+
     @Override
     public void initPipeLine(Channel channel) throws Exception {
         super.initPipeLine(channel);
-        channel.pipeline().addLast(Codec.HANDLER_NAME_IDLE_STATE, getIdleStateHandler());
-        channel.pipeline().addLast(Codec.HANDLER_NAME_LOG, getLoggingHandler());
+        channel.pipeline().addLast(HANDLER_NAME_IDLE_STATE, getIdleStateHandler());
+        channel.pipeline().addLast(HANDLER_NAME_LOG, getLoggingHandler());
     }
 
     public LogLevel getLogLevel() {
-        return getHandlerAttr(Codec.HANDLER_NAME_LOG, Codec.HANDLER_ATTR_LOG_LEVEL, LogLevel.INFO);
+        return getHandlerAttr(HANDLER_NAME_LOG, HANDLER_ATTR_LOG_LEVEL, LogLevel.INFO);
     }
 
     public void setLogLevel(LogLevel logLevel) {
-        setHandlerAttr(Codec.HANDLER_NAME_LOG, Codec.HANDLER_ATTR_LOG_LEVEL, logLevel);
+        setHandlerAttr(HANDLER_NAME_LOG, HANDLER_ATTR_LOG_LEVEL, logLevel);
     }
 
     public int getReadIdleTime() {
-        return getHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_READ_IDLE_TIME, 0);
+        return getHandlerAttr(HANDLER_NAME_IDLE_STATE, HANDLER_ATTR_READ_IDLE_TIME, 0);
     }
 
     public void setReadIdleTime(int seconds) {
-        setHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_READ_IDLE_TIME, seconds);
+        setHandlerAttr(HANDLER_NAME_IDLE_STATE, HANDLER_ATTR_READ_IDLE_TIME, seconds);
     }
 
     public int getWriteIdleTime() {
-        return getHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_WRITE_IDLE_TIME, 0);
+        return getHandlerAttr(HANDLER_NAME_IDLE_STATE, HANDLER_ATTR_WRITE_IDLE_TIME, 0);
     }
 
     public void setWriteIdleTime(int seconds) {
-        setHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_WRITE_IDLE_TIME, seconds);
+        setHandlerAttr(HANDLER_NAME_IDLE_STATE, HANDLER_ATTR_WRITE_IDLE_TIME, seconds);
     }
 
     public int getAllIdleTime() {
-        return getHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_ALL_IDLE_TIME, 0);
+        return getHandlerAttr(HANDLER_NAME_IDLE_STATE, HANDLER_ATTR_ALL_IDLE_TIME, 0);
     }
 
     public void setAllIdleTime(int seconds) {
-        setHandlerAttr(Codec.HANDLER_NAME_IDLE_STATE, Codec.HANDLER_ATTR_ALL_IDLE_TIME, seconds);
+        setHandlerAttr(HANDLER_NAME_IDLE_STATE, HANDLER_ATTR_ALL_IDLE_TIME, seconds);
     }
 
     protected IdleStateHandler getIdleStateHandler() {
@@ -70,6 +79,6 @@ public abstract class AbstractCodecWithLogAndIdle extends AbstractCodec {
 
     protected LoggingHandler getLoggingHandler() {
         LogLevel logLevel = getLogLevel();
-        return new LoggingHandler(Codec.HANDLER_NAME_LOG, logLevel);
+        return new LoggingHandler(HANDLER_NAME_LOG, logLevel);
     }
 }

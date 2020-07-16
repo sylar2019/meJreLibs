@@ -2,6 +2,8 @@ package me.java.library.io.common.bus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.net.URI;
+
 /**
  * File Name             :  AbstractSocketBus
  *
@@ -19,10 +21,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public abstract class AbstractSocketBus extends AbstractBus {
 
+    public final static String BUS_ATTR_SOCKET_URL = "url";
+    public final static String BUS_ATTR_SSL_CERT_FILE = "sslCertFile";
+    public final static String BUS_ATTR_SSL_KEY_FILE = "sslKeyFile";
     public final static String BUS_ATTR_SOCKET_HOST = "host";
     public final static String BUS_ATTR_SOCKET_PORT = "port";
     public final static String BUS_ATTR_SOCKET_PATH = "path";
-    public final static String BUS_ATTR_SOCKET_NETWORK_INTERFACE = "interface";
+    public final static String BUS_ATTR_SOCKET_NETWORK_INTERFACE = "networkInterface";
 
     public final static String DEFAULT_HOST = "localhost";
     public final static int DEFAULT_PORT = 0;
@@ -31,38 +36,64 @@ public abstract class AbstractSocketBus extends AbstractBus {
     public final static String DEFAULT_BROADCAST_HOST = "255.255.255.255";
     public final static String ANY_HOST = "0.0.0.0";
 
+    private URI getUri() {
+        return URI.create(getUrl());
+    }
+
+    /**
+     * url的构成：
+     * [scheme:][//authority][path][?query][#fragment]
+     * 或
+     * [scheme:][//host:port][path][?query][#fragment]
+     * 即：authority = host:port
+     *
+     * @return
+     */
+    @JsonIgnore
+    public String getUrl() {
+        return getAttr(BUS_ATTR_SOCKET_URL);
+    }
+
+    public void setUrl(String url) {
+        setAttr(BUS_ATTR_SOCKET_URL, url);
+    }
+
+    @JsonIgnore
+    public String getScheme() {
+        return getUri().getScheme();
+    }
+
     @JsonIgnore
     public String getHost() {
-        return getOrDefault(BUS_ATTR_SOCKET_HOST, DEFAULT_HOST);
-    }
-
-    public void setHost(String host) {
-        setAttr(BUS_ATTR_SOCKET_HOST, host);
-    }
-
-    public String getHost(String defaultValue) {
-        return getOrDefault(BUS_ATTR_SOCKET_HOST, defaultValue);
+        return getUri().getHost();
     }
 
     @JsonIgnore
     public int getPort() {
-        return getOrDefault(BUS_ATTR_SOCKET_PORT, DEFAULT_PORT);
-    }
-
-    public void setPort(int port) {
-        setAttr(BUS_ATTR_SOCKET_PORT, port);
-    }
-
-    public int getPort(int defaultValue) {
-        return getOrDefault(BUS_ATTR_SOCKET_PORT, defaultValue);
+        return getUri().getPort();
     }
 
     @JsonIgnore
-    public String getSocketPath() {
-        return getOrDefault(BUS_ATTR_SOCKET_PATH, DEFAULT_PATH);
+    public String getPath() {
+        return getUri().getPath();
     }
 
-    public void setSocketPath(String path) {
-        setAttr(BUS_ATTR_SOCKET_PATH, path);
+    @JsonIgnore
+    public String getSslCertFilePath() {
+        return getAttr(BUS_ATTR_SSL_CERT_FILE);
     }
+
+    public void setSslCertFilePath(String certFilePath) {
+        setAttr(BUS_ATTR_SSL_CERT_FILE, certFilePath);
+    }
+
+    @JsonIgnore
+    public String getSslKeyFilePath() {
+        return getAttr(BUS_ATTR_SSL_KEY_FILE);
+    }
+
+    public void setSslKeyFilePath(String keyFilePath) {
+        setAttr(BUS_ATTR_SSL_KEY_FILE, keyFilePath);
+    }
+
 }

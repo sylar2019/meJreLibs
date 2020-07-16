@@ -29,6 +29,8 @@ public enum BusType implements BaseEnum {
     RXTX        (6,"Rxtx"),
     WebSocketServer        (7,"WebSocketServer"),
     WebSocketClient        (8,"WebSocketClient"),
+    MqttClient        (9,"MqttClient"),
+    MqttServer        (10,"MqttClient"),
     //@formatter:on
     ;
 

@@ -40,6 +40,7 @@ public class EdgeProxyPipe implements Pipe {
     }
 
     public EdgeProxyPipe(Pipe pipe, SyncPairity syncPairity) {
+        Preconditions.checkNotNull(pipe);
         this.pipe = pipe;
         this.syncPairity = syncPairity;
 
@@ -104,10 +105,6 @@ public class EdgeProxyPipe implements Pipe {
         pipe.stop();
     }
 
-    @Override
-    public void restart() {
-        pipe.restart();
-    }
 
     @Override
     public boolean isRunning() {
@@ -125,23 +122,13 @@ public class EdgeProxyPipe implements Pipe {
     }
 
     @Override
-    public long getDaemonSeconds() {
-        return pipe.getDaemonSeconds();
-    }
-
-    @Override
-    public void setDaemonSeconds(long seconds) {
-        pipe.setDaemonSeconds(seconds);
-    }
-
-    @Override
-    public PipeWatcher getWatcher() {
-        return watcher;
-    }
-
-    @Override
     public void setWatcher(PipeWatcher watcher) {
         this.watcher = watcher;
+    }
+
+    @Override
+    public void setDaemon(boolean enabled) {
+        pipe.setDaemon(enabled);
     }
 
     @Override

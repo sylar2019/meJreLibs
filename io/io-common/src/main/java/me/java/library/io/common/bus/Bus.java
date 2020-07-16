@@ -1,6 +1,5 @@
 package me.java.library.io.common.bus;
 
-
 import me.java.library.common.Attributable;
 
 /**
@@ -19,15 +18,6 @@ import me.java.library.common.Attributable;
  * *******************************************************************************************
  */
 public interface Bus extends Attributable {
-
-
-    String BUS_ATTR_RXTX_PATH = "path";
-    String BUS_ATTR_RXTX_BAUDRATE = "baudrate";
-    String BUS_ATTR_RXTX_STOPBITS = "stopbits";
-    String BUS_ATTR_RXTX_DATABITS = "Databits";
-    String BUS_ATTR_RXTX_PARITYBIT = "Paritybit";
-    String BUS_ATTR_RXTX_DTR = "DTR";
-    String BUS_ATTR_RXTX_RTS = "RTS";
 
     BusType getBusType();
 

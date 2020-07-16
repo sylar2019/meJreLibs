@@ -7,8 +7,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.InternetProtocolFamily;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-import me.java.library.io.common.bus.AbstractSocketBus;
-import me.java.library.io.common.pipe.AbstractPipe;
+import me.java.library.io.common.codec.SimpleCmdResolver;
+import me.java.library.io.common.pipe.BasePipe;
 
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
@@ -28,24 +28,42 @@ import java.net.NetworkInterface;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
+public class UdpMulticastPipe extends BasePipe<UdpMulticastBus, UdpCodec> {
+
+    /**
+     * 快速创建 UdpMulticastPipe
+     *
+     * @param networkInterfaceName 网络接口名称
+     * @param port                 本地端口
+     * @param cmdResolver          指令编解码器
+     * @return
+     */
+    public static UdpMulticastPipe express(String networkInterfaceName, int port, SimpleCmdResolver cmdResolver) {
+        UdpMulticastBus bus = new UdpMulticastBus();
+        bus.setNetworkInterfaceName(networkInterfaceName);
+        bus.setUrl(String.format("udp://localhost:%d", port));
+
+        UdpCodec codec = new UdpCodec(cmdResolver);
+        return new UdpMulticastPipe(bus, codec);
+    }
+
 
     public UdpMulticastPipe(UdpMulticastBus bus, UdpCodec codec) {
         super(bus, codec);
     }
 
     @Override
-    protected ChannelFuture onStart() throws Exception {
-        group = new NioEventLoopGroup();
+    protected ChannelFuture onStartByNetty() throws Exception {
+        masterLoop = new NioEventLoopGroup();
 
         String networkInterfaceName = bus.getNetworkInterfaceName();
         NetworkInterface networkInterface = NetworkInterface.getByName(networkInterfaceName);
-        String multicastHost = bus.getHost(AbstractSocketBus.DEFAULT_MULTICAST_HOST);
+        String multicastHost = bus.getHost();
         int multicastPort = bus.getPort();
         InetSocketAddress multicastAddress = new InetSocketAddress(multicastHost, multicastPort);
 
         Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(group)
+        bootstrap.group(masterLoop)
                 .channelFactory((ChannelFactory<NioDatagramChannel>) () -> new NioDatagramChannel(InternetProtocolFamily.IPv4))
                 .handler(getChannelInitializer())
                 .option(ChannelOption.IP_MULTICAST_LOOP_DISABLED, false)

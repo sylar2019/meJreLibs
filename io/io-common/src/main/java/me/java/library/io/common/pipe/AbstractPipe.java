@@ -1,24 +1,19 @@
 package me.java.library.io.common.pipe;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import io.netty.bootstrap.AbstractBootstrap;
-import io.netty.channel.*;
 import me.java.library.common.service.ConcurrentService;
-import me.java.library.io.common.bus.Bus;
-import me.java.library.io.common.cmd.*;
-import me.java.library.io.common.codec.Codec;
-import me.java.library.io.common.utils.ChannelAttr;
+import me.java.library.io.common.cmd.Cmd;
+import me.java.library.io.common.cmd.CmdUtils;
+import me.java.library.io.common.cmd.Host;
+import me.java.library.io.common.cmd.Terminal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
-
 /**
- * File Name             :  AbstractPipe
+ * File Name             :  BasePipe
  *
  * @author :  sylar
- * Create :  2019-10-05
+ * Create                :  2020/7/15
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -26,67 +21,33 @@ import java.util.concurrent.TimeUnit;
  * Modified By           :
  * Modified Date         :
  * Comments              :
- * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
+ * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pipe<B, C> {
+public abstract class AbstractPipe implements Pipe {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected Host host;
-    protected B bus;
-    protected C codec;
-
-    protected EventLoopGroup group;
-    protected ChannelFuture future;
-    protected Channel channel;
     protected PipeWatcher watcher;
     protected boolean isRunning;
-    protected long daemonSeconds = 5;
-    protected PipeAssistant pipeAssistant = PipeAssistant.getInstance();
+    protected boolean isDaemon;
 
-    public AbstractPipe(B bus, C codec) {
-        this("default", bus, codec);
+    public AbstractPipe() {
+        this(Host.LOCAL);
     }
 
-    public AbstractPipe(String hostCode, B bus, C codec) {
-        pipeAssistant.addPipe(this);
-        this.host = new HostNode(hostCode);
-        this.bus = bus;
-        this.codec = codec;
+    public AbstractPipe(Host host) {
+        this.host = host;
 
         onHostStateChanged(true);
         registHook();
     }
 
-    @Override
-    public Host getHost() {
-        return host;
-    }
+    protected abstract void onStart() throws Exception;
 
-    @Override
-    public boolean isRunning() {
-        return isRunning;
-    }
+    protected abstract void onStop() throws Exception;
 
-    @Override
-    public long getDaemonSeconds() {
-        return daemonSeconds;
-    }
-
-    @Override
-    public void setDaemonSeconds(long seconds) {
-        this.daemonSeconds = seconds;
-    }
-
-    @Override
-    public PipeWatcher getWatcher() {
-        return watcher;
-    }
-
-    @Override
-    public void setWatcher(PipeWatcher watcher) {
-        this.watcher = watcher;
-    }
+    protected abstract void onSend(Cmd cmd) throws Exception;
 
     @Override
     public void start() {
@@ -95,17 +56,11 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
         }
 
         try {
-            Preconditions.checkNotNull(bus, "bus is null");
-            Preconditions.checkNotNull(codec, "codec is null");
-            future = onStart();
-            //守护进程，自动重开
-            future.addListener(new ConnectionListener());
+            onStart();
         } catch (Exception e) {
             onException(e);
         }
     }
-
-    protected abstract ChannelFuture onStart() throws Exception;
 
     @Override
     public void stop() {
@@ -122,70 +77,47 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
         }
     }
 
-    protected void onStop() throws Exception {
-        if (future != null && future.channel() != null) {
-            future.channel().close().sync();
-        }
-        if (group != null) {
-            group.shutdownGracefully();
-        }
-    }
-
-    @Override
-    public void restart() {
-        stop();
-        start();
-    }
-
-    @Override
-    public void dispose() {
-        stop();
-        pipeAssistant.remove(this);
-    }
-
     @Override
     public void send(Cmd cmd) {
         try {
-            Preconditions.checkNotNull(cmd);
-            Preconditions.checkState(CmdUtils.isValidCmd(cmd));
-
-            //查找对应channel
-            Channel channel = pipeAssistant.getChannel(this, cmd.getTo());
-            Preconditions.checkNotNull(channel);
-            Preconditions.checkState(channel.isActive(), "channel is not active");
-            Preconditions.checkState(channel.isWritable(), "channle is not writeable");
-            channel.writeAndFlush(cmd);
+            checkOnSend(cmd);
+            onSend(cmd);
         } catch (Exception e) {
             onException(e);
         }
     }
 
-    protected ChannelFuture bind(AbstractBootstrap b, String host, int port) throws InterruptedException {
-        ChannelFuture future;
-        if (!Strings.isNullOrEmpty(host) && port >= 0) {
-            future = b.bind(host, port);
-        } else if (port >= 0) {
-            future = b.bind(port);
-        } else {
-            future = b.bind(0);
-        }
-
-        return future;
+    protected void checkOnSend(Cmd cmd) {
+        Preconditions.checkState(isRunning, "pipe is not running");
+        Preconditions.checkState(CmdUtils.isValidCmd(cmd), "invalid cmd");
     }
 
-    protected ChannelInitializer<Channel> getChannelInitializer() {
-        return new ChannelInitializer<Channel>() {
-            @Override
-            protected void initChannel(Channel channel) throws Exception {
-                AbstractPipe.this.channel = channel;
-                ChannelAttr.set(channel, ChannelAttr.ATTR_PIPE, AbstractPipe.this);
-
-                codec.initPipeLine(channel);
-            }
-        };
+    @Override
+    public boolean isRunning() {
+        return isRunning;
     }
 
-    private void registHook() {
+    @Override
+    public Host getHost() {
+        return host;
+    }
+
+    @Override
+    public void setWatcher(PipeWatcher watcher) {
+        this.watcher = watcher;
+    }
+
+    @Override
+    public void setDaemon(boolean enabled) {
+        isDaemon = enabled;
+    }
+
+    @Override
+    public void dispose() {
+        stop();
+    }
+
+    protected void registHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             onHostStateChanged(false);
         }));
@@ -193,7 +125,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
 
     protected void onHostStateChanged(boolean isRunning) {
         if (watcher != null) {
-            ConcurrentService.getInstance().postRunnable(() -> watcher.onHostStateChanged(AbstractPipe.this.host, isRunning));
+            ConcurrentService.getInstance().postRunnable(() -> watcher.onHostStateChanged(host, isRunning));
         }
     }
 
@@ -215,36 +147,15 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pi
     }
 
     protected void onReceived(Cmd cmd) {
-        interceptReceivedCmd(cmd);
         if (watcher != null) {
             ConcurrentService.getInstance().postRunnable(() -> watcher.onReceived(AbstractPipe.this, cmd));
         }
     }
 
     protected void onException(Throwable t) {
+        logger.warn(t.getMessage(), t);
         if (watcher != null) {
             ConcurrentService.getInstance().postRunnable(() -> watcher.onException(AbstractPipe.this, t));
         }
     }
-
-    /**
-     * 拦截收到的指令
-     *
-     * @param cmd
-     */
-    protected void interceptReceivedCmd(Cmd cmd) {
-    }
-
-    class ConnectionListener implements ChannelFutureListener {
-        @Override
-        public void operationComplete(final ChannelFuture future) throws Exception {
-            if (future.isSuccess()) {
-                onPipeRunningChanged(true);
-            } else if (daemonSeconds > 0) {
-                final EventLoop loop = future.channel().eventLoop();
-                loop.schedule(AbstractPipe.this::start, daemonSeconds, TimeUnit.SECONDS);
-            }
-        }
-    }
-
 }
