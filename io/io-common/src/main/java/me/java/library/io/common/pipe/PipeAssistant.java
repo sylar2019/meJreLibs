@@ -114,7 +114,7 @@ public class PipeAssistant {
         if (pipe instanceof BasePipe) {
             return (BasePipe) pipe;
         }
-        throw new RuntimeException("不支持的pipe实现，pipe 须派生自 AbstractPipe");
+        throw new RuntimeException("不支持的pipe实现，pipe 须派生自 BasePipe");
     }
 
     private static class SingletonHolder {

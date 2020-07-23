@@ -1,0 +1,7 @@
+dependencies {
+    compile project(":io:io-common")
+    compile ("commons-cli:commons-cli:+")
+    compile ("org.eclipse.leshan:leshan-server-cf:1.1.0")
+    compile ("org.eclipse.leshan:leshan-server-redis:1.1.0")
+    compile ("org.eclipse.californium:californium-core:2.3.0")
+}

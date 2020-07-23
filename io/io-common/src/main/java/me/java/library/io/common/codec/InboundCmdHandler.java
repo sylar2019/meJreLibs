@@ -49,6 +49,7 @@ public class InboundCmdHandler extends SimpleChannelInboundHandler<Cmd> {
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             pipeAssistant.onChannelIdle(ctx.channel(), event);
+            //空闲时断开（可能是死连接），释放连接资源
             ctx.close();
         } else {
             super.userEventTriggered(ctx, evt);

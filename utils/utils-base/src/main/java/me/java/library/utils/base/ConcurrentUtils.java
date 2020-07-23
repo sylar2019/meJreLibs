@@ -21,13 +21,11 @@ import java.util.concurrent.*;
  */
 public class ConcurrentUtils {
 
-
     public static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final int CORE_POOL_SIZE = CPU_COUNT;
     private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2;
     private static final int KEEP_ALIVE = 1;
     private static final TimeUnit KEEP_ALIVE_UNIT = TimeUnit.SECONDS;
-
 
     private ConcurrentUtils() {
         throw new AssertionError();
@@ -51,7 +49,6 @@ public class ConcurrentUtils {
                 queue,
                 new ThreadFactoryBuilder().setNameFormat(poolName + "-pool-%d").build());
     }
-
 
     public static ScheduledThreadPoolExecutor simpleScheduledThreadPool() {
         return simpleScheduledThreadPool("simple");

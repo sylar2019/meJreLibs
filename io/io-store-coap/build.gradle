@@ -1,4 +1,0 @@
-dependencies {
-    compile project(":io:io-common")
-    compile ("org.eclipse.californium:californium-core:2.3.0")
-}

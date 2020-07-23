@@ -8,12 +8,13 @@ import me.java.library.io.common.bus.Bus;
 import me.java.library.io.common.cmd.Cmd;
 import me.java.library.io.common.cmd.Host;
 import me.java.library.io.common.codec.Codec;
+import me.java.library.io.common.sync.SyncPairity;
 import me.java.library.io.common.utils.ChannelAttr;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * File Name             :  AbstractPipe
+ * File Name             :  BasePipe
  *
  * @author :  sylar
  * Create :  2019-10-05
@@ -36,6 +37,7 @@ public abstract class BasePipe<B extends Bus, C extends Codec> extends AbstractP
     protected EventLoopGroup masterLoop;
     protected ChannelFuture future;
     protected Channel channel;
+    protected SyncPairity syncPairity;
     protected PipeAssistant pipeAssistant = PipeAssistant.getInstance();
 
     public BasePipe(B bus, C codec) {
@@ -52,6 +54,14 @@ public abstract class BasePipe<B extends Bus, C extends Codec> extends AbstractP
 
     protected abstract ChannelFuture onStartByNetty() throws Exception;
 
+    public SyncPairity getSyncPairity() {
+        return syncPairity;
+    }
+
+    public void setSyncPairity(SyncPairity syncPairity) {
+        this.syncPairity = syncPairity;
+    }
+
     @Override
     protected void onStart() throws Exception {
         Preconditions.checkNotNull(bus, "bus is null");
@@ -60,7 +70,6 @@ public abstract class BasePipe<B extends Bus, C extends Codec> extends AbstractP
 
         future.addListener(new ConnectionListener());
     }
-
 
     @Override
     protected void onStop() throws Exception {
@@ -73,24 +82,39 @@ public abstract class BasePipe<B extends Bus, C extends Codec> extends AbstractP
     }
 
     @Override
-    protected void onSend(Cmd cmd) throws Exception {
-        checkOnSend(cmd);
+    protected Cmd onSyncSend(Cmd request, long timeout, TimeUnit unit) throws Exception {
+        SyncPairity syncPairity = getSyncPairity();
+        Preconditions.checkNotNull(syncPairity, "syncPairity can not be null");
 
-        //查找对应channel
-        Channel channel = pipeAssistant.getChannel(this, cmd.getTo());
-        Preconditions.checkNotNull(channel);
-        Preconditions.checkState(channel.isActive(), "channel is not active");
-        Preconditions.checkState(channel.isWritable(), "channle is not writeable");
-        channel.writeAndFlush(cmd);
+        try {
+            syncPairity.cacheRequest(request);
+            onSend(request);
+            return syncPairity.getResponse(request, timeout, unit);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        } finally {
+            syncPairity.cleanCache(request);
+        }
     }
 
+    @Override
+    protected void onSend(Cmd request) throws Exception {
+        //查找对应channel
+        Channel channel = pipeAssistant.getChannel(this, request.getTo());
+        Preconditions.checkNotNull(channel);
+        Preconditions.checkState(channel.isOpen(), "channel is not open");
+        Preconditions.checkState(channel.isActive(), "channel is not active");
+        Preconditions.checkState(channel.isWritable(), "channle is not writeable");
+        channel.writeAndFlush(request);
+    }
 
     @Override
     public void dispose() {
         super.dispose();
         pipeAssistant.remove(this);
     }
-
 
     protected ChannelFuture bind(AbstractBootstrap bootstrap, String host, int port) {
         ChannelFuture future;
