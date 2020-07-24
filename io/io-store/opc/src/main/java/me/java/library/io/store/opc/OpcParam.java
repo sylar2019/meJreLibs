@@ -1,4 +1,6 @@
-package me.java.library.io.store.opc.client;
+package me.java.library.io.store.opc;
+
+import org.openscada.opc.lib.common.ConnectionInformation;
 
 /**
  * File Name             :  OpcParam
@@ -22,6 +24,17 @@ public class OpcParam {
     private String password;
     private String clsId;
     private String progId;
+
+    public ConnectionInformation convert() {
+        ConnectionInformation ci = new ConnectionInformation();
+        ci.setHost(host);
+        ci.setDomain(domain);
+        ci.setUser(user);
+        ci.setPassword(password);
+        ci.setProgId(progId);
+        ci.setClsid(clsId);
+        return ci;
+    }
 
     public String getHost() {
         return host;

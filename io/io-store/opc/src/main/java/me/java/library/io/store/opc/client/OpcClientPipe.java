@@ -1,17 +1,18 @@
 package me.java.library.io.store.opc.client;
 
+import com.google.common.base.Preconditions;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
+import me.java.library.io.store.opc.OpcParam;
+import me.java.library.io.store.opc.cmd.*;
 import me.java.library.utils.base.ConcurrentUtils;
+import me.java.library.utils.base.ExceptionUtils;
 import org.jinterop.dcom.common.JIException;
 import org.jinterop.dcom.core.JIVariant;
-import org.openscada.opc.lib.common.ConnectionInformation;
-import org.openscada.opc.lib.da.Group;
-import org.openscada.opc.lib.da.Item;
-import org.openscada.opc.lib.da.Server;
+import org.openscada.opc.lib.da.*;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,82 +31,146 @@ import java.util.concurrent.TimeUnit;
  * *******************************************************************************************
  */
 public class OpcClientPipe extends BasePipe {
+
+    Server server;
+    AutoReconnectController controller;
+    AccessBase subSccess;
+
+    public OpcClientPipe(OpcParam param) {
+        server = new Server(param.convert(), ConcurrentUtils.simpleScheduledThreadPool());
+        controller = new AutoReconnectController(server);
+    }
+
     @Override
     protected void onStart() throws Exception {
+        if (isDaemon) {
+            controller.connect();
+        } else {
+            server.connect();
+        }
 
+        onPipeRunningChanged(true);
     }
 
     @Override
     protected void onStop() throws Exception {
-
+        if (isDaemon) {
+            controller.disconnect();
+        } else {
+            server.disconnect();
+        }
     }
 
     @Override
     protected void onSend(Cmd request) throws Exception {
+        Group group = server.addGroup();
+        if (request instanceof OpcReadRequestCmd) {
+            OpcReadRequestCmd readRequestCmd = (OpcReadRequestCmd) request;
+            Map<String, Item> items = group.addItems(readRequestCmd.getItems().toArray(new String[]{}));
 
+            CountDownLatch countDownLatch = new CountDownLatch(items.size());
+            OpcReadResponseCmd readResponseCmd = new OpcReadResponseCmd();
+
+            AccessBase access = new SyncAccess(server, 1000);
+
+            items.values().forEach(item -> {
+                try {
+                    access.addItem(item.getId(), new DataCallback() {
+                        @Override
+                        public void changed(Item item, ItemState itemState) {
+                            readResponseCmd.getResult().put(item.getId(), itemState.getValue());
+                            countDownLatch.countDown();
+                        }
+                    });
+                } catch (JIException | AddFailedException e) {
+                    e.printStackTrace();
+                    countDownLatch.countDown();
+                }
+            });
+
+            access.bind();
+
+            countDownLatch.await();
+            access.unbind();
+
+            onReceived(readResponseCmd);
+
+        } else if (request instanceof OpcStartSubscribeCmd) {
+            startSub((OpcStartSubscribeCmd) request);
+        } else if (request instanceof OpcStopSubscribeCmd) {
+            stopSub((OpcStopSubscribeCmd) request);
+        } else {
+            ExceptionUtils.notSupportMethod();
+        }
     }
 
     @Override
     protected Cmd onSyncSend(Cmd request, long timeout, TimeUnit unit) throws Exception {
+        Group group = server.addGroup();
+
+        if (request instanceof OpcReadRequestCmd) {
+            OpcReadRequestCmd readRequestCmd = (OpcReadRequestCmd) request;
+            Map<String, Item> items = group.addItems(readRequestCmd.getItems().toArray(new String[]{}));
+
+            OpcReadResponseCmd readResponseCmd = new OpcReadResponseCmd();
+            items.values().forEach(item -> {
+                try {
+                    readResponseCmd.getResult().put(item.getId(), item.read(false).getValue());
+                } catch (JIException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            return readResponseCmd;
+
+        } else if (request instanceof OpcWriteRequestCmd) {
+            OpcWriteRequestCmd writeRequestCmd = (OpcWriteRequestCmd) request;
+
+            Map<String, JIVariant> values = writeRequestCmd.getValues();
+            Map<String, Item> items = group.addItems(values.keySet().toArray(new String[]{}));
+
+            OpcWriteResponseCmd writeResponseCmd = new OpcWriteResponseCmd();
+            items.values().forEach(item -> {
+                try {
+                    item.write(values.get(item.getId()));
+                } catch (JIException e) {
+                    writeResponseCmd.getResult().put(item.getId(), e);
+                    writeResponseCmd.setErrorCount(writeResponseCmd.getErrorCount() + 1);
+                }
+            });
+            return writeResponseCmd;
+        }
         return null;
     }
 
-    public static void main(final String[] args) throws Throwable {
-        // create connection information
-        final ConnectionInformation ci = new ConnectionInformation();
-        ci.setHost("127.0.0.1");
+    @Override
+    protected void checkOnSend(Cmd request) {
+        super.checkOnSend(request);
+        Preconditions.checkState(request instanceof OpcCmd);
+    }
 
-        ci.setDomain("");
-        // ci.setProgId("Matrikon.OPC.Simulation.1");
-        //s7 注意 使用progId必须要求dcom配置正确
-        ci.setProgId("OPC.SimaticNET");
-        //ci.setClsid("F8582CF2-88FB-11D0-B850-00C0F0104305");
-        // simatic S7
-        //ci.setClsid("B6EACB30-42D5-11D0-9517-0020AFAA4B3C");
-        ci.setUser("Administrator");
-        ci.setPassword("asd3839729");
-
-
-        // create a new server
-//        final Server server = new Server(ci, Executors.newSingleThreadScheduledExecutor());
-        final Server server = new Server(ci, ConcurrentUtils.simpleScheduledThreadPool());
-
-        try {
-            server.connect();
-
-            Group group = server.addGroup("group");
-            // group is initially active ... just for demonstration
-            group.setActive(true);
-
-            // Add a new item to the group
-            final Item item = group.addItem("S7:[@LOCALSERVER]DB1,W0");
-
-            String[] test = new String[]{"S7:[@LOCALSERVER]DB1,W2", "S7:[@LOCALSERVER]DB1,W1"};
-
-
-            Map<String, Item> map = new HashMap<String, Item>();
-            map = group.addItems(test);
-
-
-            System.out.println(map.keySet());
-            for (String s : map.keySet()) {
-                Item it = map.get(s);
-                System.out.println(s + " ===============  " + it.read(true).getValue().getObjectAsUnsigned().getValue());
-            }
-
-
-            // Items are initially active ... just for demonstration
-            item.setActive(true);
-            item.write(new JIVariant("121"));
-
-            System.out.println(item.read(true).getValue().getObjectAsUnsigned().getValue() + "  <------==");
-
-            // Add some more items ... including one that is already existing
-            // final Map<String, Item> items = group.addItems ( "Saw-toothed Waves.Int2", "Saw-toothed Waves.Int4" );
-
-
-        } catch (final JIException e) {
-            System.out.println(String.format("%08X: %s", e.getErrorCode(), server.getErrorMessage(e.getErrorCode())));
+    private void startSub(OpcStartSubscribeCmd startCmd) throws Exception {
+        if (subSccess != null) {
+            throw new IllegalAccessException("重复启动订阅");
         }
+
+        subSccess = new Async20Access(server, startCmd.getPeriod(), false);
+        startCmd.getItems().forEach(item -> {
+            try {
+                subSccess.addItem(item, startCmd.getDataCallback());
+            } catch (JIException | AddFailedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        subSccess.bind();
+    }
+
+    private void stopSub(OpcStopSubscribeCmd stopCmd) throws Exception {
+        if (subSccess == null) {
+            throw new IllegalAccessException("未启动订阅");
+        }
+
+        subSccess.unbind();
     }
 }
