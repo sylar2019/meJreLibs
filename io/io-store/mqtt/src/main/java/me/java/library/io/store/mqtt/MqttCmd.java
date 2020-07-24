@@ -1,7 +1,7 @@
 package me.java.library.io.store.mqtt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import me.java.library.io.common.cmd.CmdNode;
+import me.java.library.io.base.cmd.CmdNode;
 
 /**
  * File Name             :  MqttCmdNode

@@ -4,8 +4,7 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import me.java.library.io.common.pipe.BasePipe;
-import me.java.library.io.store.websocket.WebSocketCmdResolver;
+import me.java.library.io.core.pipe.AbstractPipe;
 
 /**
  * File Name             :  TcpServerPipe
@@ -22,7 +21,7 @@ import me.java.library.io.store.websocket.WebSocketCmdResolver;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class WebSocketServerPipe extends BasePipe<WebSocketServerBus, WebSocketServerCodec> {
+public class WebSocketServerPipe extends AbstractPipe<WebSocketServerBus, WebSocketServerCodec> {
     protected NioEventLoopGroup childGroup;
 
     public WebSocketServerPipe(WebSocketServerBus bus, WebSocketServerCodec codec) {
@@ -39,7 +38,7 @@ public class WebSocketServerPipe extends BasePipe<WebSocketServerBus, WebSocketS
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(masterLoop, childGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(getChannelInitializer());
+                .childHandler(channelInitializer);
 
         return bind(bootstrap, null, bus.getPort());
     }

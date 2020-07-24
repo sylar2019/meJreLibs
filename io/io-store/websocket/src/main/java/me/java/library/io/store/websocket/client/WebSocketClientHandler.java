@@ -44,7 +44,6 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        System.out.println("channelActive");
         handshaker.handshake(ctx.channel());
     }
 

@@ -1,8 +1,8 @@
 package me.java.library.io.store.rxtx;
 
 import io.netty.handler.codec.ByteToMessageDecoder;
-import me.java.library.io.common.codec.AbstractSimpleStreamCodec;
-import me.java.library.io.common.codec.SimpleCmdResolver;
+import me.java.library.io.core.codec.AbstractSimpleStreamCodec;
+import me.java.library.io.core.codec.SimpleCmdResolver;
 
 /**
  * File Name             :  TcpCodec

@@ -1,7 +1,7 @@
 package me.java.library.io.store.socket.udp;
 
-import me.java.library.io.common.codec.AbstractSimpleDatagramCodec;
-import me.java.library.io.common.codec.SimpleCmdResolver;
+import me.java.library.io.core.codec.AbstractSimpleDatagramCodec;
+import me.java.library.io.core.codec.SimpleCmdResolver;
 
 /**
  * File Name             :  UdpCodec

@@ -1,6 +1,6 @@
 package me.java.library.io.store.websocket;
 
-import me.java.library.io.common.bus.AbstractSocketBus;
+import me.java.library.io.core.bus.AbstractSocketBus;
 
 /**
  * File Name             :  WebSocketBus

@@ -3,11 +3,11 @@ package me.java.library.io.store.mqtt.client;
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import io.netty.handler.codec.mqtt.MqttQoS;
-import me.java.library.io.common.cmd.Cmd;
-import me.java.library.io.common.cmd.Terminal;
-import me.java.library.io.common.pipe.AbstractPipe;
+import me.java.library.io.base.cmd.Cmd;
+import me.java.library.io.base.cmd.Terminal;
+import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.io.store.mqtt.MqttCmd;
+import me.java.library.io.store.mqtt.MqttQoS;
 import me.java.library.utils.base.ExceptionUtils;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class MqttClientPipe extends AbstractPipe {
+public class MqttClientPipe extends BasePipe {
 
     protected MqttClient client;
     protected MqttClientPersistence persistence;

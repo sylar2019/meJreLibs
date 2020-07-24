@@ -4,8 +4,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-import me.java.library.io.common.codec.SimpleCmdResolver;
-import me.java.library.io.common.pipe.BasePipe;
+import me.java.library.io.core.pipe.AbstractPipe;
 
 /**
  * File Name             :  UdpUnicastPipe
@@ -22,7 +21,7 @@ import me.java.library.io.common.pipe.BasePipe;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class UdpUnicastPipe extends BasePipe<UdpUnicastBus, UdpCodec> {
+public class UdpUnicastPipe extends AbstractPipe<UdpUnicastBus, UdpCodec> {
     public UdpUnicastPipe(UdpUnicastBus bus, UdpCodec codec) {
         super(bus, codec);
     }
@@ -34,7 +33,7 @@ public class UdpUnicastPipe extends BasePipe<UdpUnicastBus, UdpCodec> {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(masterLoop)
                 .channel(NioDatagramChannel.class)
-                .handler(getChannelInitializer());
+                .handler(channelInitializer);
 
         return bind(bootstrap, null, bus.getPort());
     }

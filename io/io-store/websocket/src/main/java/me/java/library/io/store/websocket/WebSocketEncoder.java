@@ -1,12 +1,10 @@
 package me.java.library.io.store.websocket;
 
+import com.google.common.base.Preconditions;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import me.java.library.io.common.pipe.PipeAssistant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -28,25 +26,15 @@ import java.util.List;
 public class WebSocketEncoder extends MessageToMessageEncoder<WebSocketCmd> {
     public final static String HANDLER_NAME = WebSocketEncoder.class.getSimpleName();
     protected WebSocketCmdResolver webSocketCmdResolver;
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public WebSocketEncoder(WebSocketCmdResolver webSocketCmdResolver) {
+        Preconditions.checkNotNull(webSocketCmdResolver);
         this.webSocketCmdResolver = webSocketCmdResolver;
     }
 
     @Override
     protected void encode(ChannelHandlerContext ctx, WebSocketCmd cmd, List<Object> out) throws Exception {
-        if (cmd == null || webSocketCmdResolver == null) {
-            return;
-        }
-
-        try {
-            WebSocketFrame frame = webSocketCmdResolver.cmdToFrame(cmd);
-            out.add(frame);
-        } catch (Exception e) {
-            logger.error("encode error:" + e.getMessage());
-            e.printStackTrace();
-            PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
-        }
+        WebSocketFrame frame = webSocketCmdResolver.cmdToFrame(cmd);
+        out.add(frame);
     }
 }

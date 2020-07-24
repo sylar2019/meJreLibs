@@ -1,7 +1,7 @@
 package me.java.library.io.store.coap.server;
 
-import me.java.library.io.common.cmd.Cmd;
-import me.java.library.io.common.pipe.AbstractPipe;
+import me.java.library.io.base.cmd.Cmd;
+import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.utils.base.ExceptionUtils;
 import org.eclipse.californium.core.server.resources.Resource;
 
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class CoapServerPipe extends AbstractPipe {
+public class CoapServerPipe extends BasePipe {
 
     private Server server;
 

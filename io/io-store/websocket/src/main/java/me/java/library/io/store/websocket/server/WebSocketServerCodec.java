@@ -9,9 +9,9 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import me.java.library.io.common.bus.Scheme;
-import me.java.library.io.common.codec.AbstractCodecWithLogAndIdle;
-import me.java.library.io.common.codec.InboundCmdHandler;
+import me.java.library.io.core.bus.Scheme;
+import me.java.library.io.core.codec.AbstractCodecWithLogAndIdle;
+import me.java.library.io.core.codec.InboundHandler;
 import me.java.library.io.store.websocket.WebSocketCmdResolver;
 import me.java.library.io.store.websocket.WebSocketDecoder;
 import me.java.library.io.store.websocket.WebSocketEncoder;
@@ -63,7 +63,7 @@ public class WebSocketServerCodec extends AbstractCodecWithLogAndIdle {
         //业务层解码
         channel.pipeline().addLast(WebSocketDecoder.HANDLER_NAME, new WebSocketDecoder(webSocketCmdResolver));
         //加上默认的入站处理器 InboundCmdHandler
-        channel.pipeline().addLast(InboundCmdHandler.HANDLER_NAME, new InboundCmdHandler());
+        channel.pipeline().addLast(InboundHandler.HANDLER_NAME, new InboundHandler());
 
         //out
         //业务层编码

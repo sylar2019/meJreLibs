@@ -1,8 +1,8 @@
 package me.java.library.io.store.coap.client;
 
 import com.google.common.base.Preconditions;
-import me.java.library.io.common.cmd.Cmd;
-import me.java.library.io.common.pipe.AbstractPipe;
+import me.java.library.io.base.cmd.Cmd;
+import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.io.store.coap.CoapRequestCmd;
 import me.java.library.io.store.coap.CoapResponseCmd;
 import org.eclipse.californium.core.CoapClient;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeoutException;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class CoapClientPipe extends AbstractPipe {
+public class CoapClientPipe extends BasePipe {
 
     private static final File CONFIG_FILE = new File("Californium.properties");
     private static final String CONFIG_HEADER = "Californium CoAP Properties file for Fileclient";

@@ -1,10 +1,10 @@
 package me.java.library.io.store.websocket;
 
+import com.google.common.base.Preconditions;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import me.java.library.io.common.pipe.PipeAssistant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,24 +33,15 @@ public class WebSocketDecoder extends MessageToMessageDecoder<WebSocketFrame> {
     private WebSocketCmdResolver webSocketCmdResolver;
 
     public WebSocketDecoder(WebSocketCmdResolver webSocketCmdResolver) {
+        Preconditions.checkNotNull(webSocketCmdResolver);
         this.webSocketCmdResolver = webSocketCmdResolver;
     }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, WebSocketFrame msg, List<Object> out) throws Exception {
-        if (webSocketCmdResolver == null) {
-            return;
-        }
-
-        try {
-            WebSocketCmd cmd = webSocketCmdResolver.frameToCmd(ctx, msg);
-            if (cmd != null) {
-                out.add(cmd);
-            }
-        } catch (Exception e) {
-            logger.error("decode error:" + e.getMessage());
-            e.printStackTrace();
-            PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
+        WebSocketCmd cmd = webSocketCmdResolver.frameToCmd(ctx, msg);
+        if (cmd != null) {
+            out.add(cmd);
         }
     }
 }

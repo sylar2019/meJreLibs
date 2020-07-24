@@ -7,8 +7,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.InternetProtocolFamily;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-import me.java.library.io.common.codec.SimpleCmdResolver;
-import me.java.library.io.common.pipe.BasePipe;
+import me.java.library.io.core.pipe.AbstractPipe;
 
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
@@ -28,7 +27,7 @@ import java.net.NetworkInterface;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class UdpMulticastPipe extends BasePipe<UdpMulticastBus, UdpCodec> {
+public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
     public UdpMulticastPipe(UdpMulticastBus bus, UdpCodec codec) {
         super(bus, codec);
     }
@@ -46,7 +45,7 @@ public class UdpMulticastPipe extends BasePipe<UdpMulticastBus, UdpCodec> {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(masterLoop)
                 .channelFactory((ChannelFactory<NioDatagramChannel>) () -> new NioDatagramChannel(InternetProtocolFamily.IPv4))
-                .handler(getChannelInitializer())
+                .handler(channelInitializer)
                 .option(ChannelOption.IP_MULTICAST_LOOP_DISABLED, false)
                 .option(ChannelOption.IP_MULTICAST_TTL, 255)
                 .option(ChannelOption.IP_MULTICAST_IF, networkInterface)

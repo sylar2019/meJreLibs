@@ -1,4 +1,0 @@
-dependencies {
-    compile project(":common")
-    compile "io.netty:netty-all:${nettyVersion}"
-}

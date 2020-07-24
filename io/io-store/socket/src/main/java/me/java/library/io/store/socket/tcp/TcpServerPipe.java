@@ -4,7 +4,7 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import me.java.library.io.common.pipe.BasePipe;
+import me.java.library.io.core.pipe.AbstractPipe;
 
 /**
  * File Name             :  TcpServerPipe
@@ -21,7 +21,7 @@ import me.java.library.io.common.pipe.BasePipe;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class TcpServerPipe extends BasePipe<TcpServerBus, TcpCodec> {
+public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
     protected NioEventLoopGroup childGroup;
 
     public TcpServerPipe(TcpServerBus bus, TcpCodec codec) {
@@ -36,7 +36,7 @@ public class TcpServerPipe extends BasePipe<TcpServerBus, TcpCodec> {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(masterLoop, childGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(getChannelInitializer());
+                .childHandler(channelInitializer);
 
         return bind(bootstrap, null, bus.getPort());
     }

@@ -1,8 +1,8 @@
 package me.java.library.io.store.rxtx;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import me.java.library.io.common.bus.AbstractBus;
-import me.java.library.io.common.bus.BusType;
+import me.java.library.io.core.bus.AbstractBus;
+import me.java.library.io.core.bus.BusType;
 import me.java.library.utils.rxtx.RxtxParam;
 
 /**

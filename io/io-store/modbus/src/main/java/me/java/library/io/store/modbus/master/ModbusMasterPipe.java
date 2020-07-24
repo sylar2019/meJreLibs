@@ -5,8 +5,11 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.serotonin.modbus4j.ModbusMaster;
 import com.serotonin.modbus4j.msg.ModbusResponse;
 import me.java.library.common.service.ConcurrentService;
-import me.java.library.io.common.cmd.Cmd;
-import me.java.library.io.common.pipe.AbstractPipe;
+import me.java.library.io.base.cmd.Cmd;
+import me.java.library.io.base.pipe.BasePipe;
+import me.java.library.io.store.modbus.MaskValue;
+import me.java.library.io.store.modbus.ModbusRequestCmd;
+import me.java.library.io.store.modbus.ModbusResponseCmd;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.concurrent.Callable;
@@ -27,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class ModbusMasterPipe extends AbstractPipe {
+public class ModbusMasterPipe extends BasePipe {
     protected ModbusMaster master;
 
     public ModbusMasterPipe(ModbusMaster master) {
@@ -69,8 +72,8 @@ public class ModbusMasterPipe extends AbstractPipe {
     @Override
     protected Cmd onSyncSend(Cmd request, long timeout, TimeUnit unit) throws Exception {
 
-        Preconditions.checkState(request instanceof MasterRequestCmd);
-        MasterRequestCmd cmd = (MasterRequestCmd) request;
+        Preconditions.checkState(request instanceof ModbusRequestCmd);
+        ModbusRequestCmd cmd = (ModbusRequestCmd) request;
         master.setTimeout((int) TimeUnit.MILLISECONDS.convert(timeout, unit));
 
         ModbusResponse response;
@@ -120,7 +123,7 @@ public class ModbusMasterPipe extends AbstractPipe {
         if (response.isException()) {
             throw new Exception(response.getExceptionMessage());
         } else {
-            return new MasterResponseCmd(response);
+            return new ModbusResponseCmd(response);
         }
     }
 
@@ -128,8 +131,8 @@ public class ModbusMasterPipe extends AbstractPipe {
     protected void checkOnSend(Cmd request) {
         super.checkOnSend(request);
 
-        Preconditions.checkState(request instanceof MasterRequestCmd);
-        MasterRequestCmd cmd = (MasterRequestCmd) request;
+        Preconditions.checkState(request instanceof ModbusRequestCmd);
+        ModbusRequestCmd cmd = (ModbusRequestCmd) request;
         Preconditions.checkNotNull(cmd.getFunctionType());
         Preconditions.checkState(cmd.getSlaveId() > 0);
         Preconditions.checkState(cmd.getStart() > 0);

@@ -1,6 +1,5 @@
 package me.java.library.io.store.rxtx;
 
-import com.google.common.base.Preconditions;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.oio.OioEventLoopGroup;
@@ -8,7 +7,7 @@ import io.netty.channel.rxtx.RxtxChannel;
 import io.netty.channel.rxtx.RxtxChannelConfig;
 import io.netty.channel.rxtx.RxtxChannelOption;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
-import me.java.library.io.common.pipe.BasePipe;
+import me.java.library.io.core.pipe.AbstractPipe;
 import me.java.library.utils.rxtx.RxtxParam;
 import me.java.library.utils.rxtx.RxtxUtils;
 
@@ -28,7 +27,7 @@ import me.java.library.utils.rxtx.RxtxUtils;
  * *******************************************************************************************
  */
 @SuppressWarnings({"deprecation"})
-public class RxtxPipe extends BasePipe<RxtxBus, RxtxCodec> {
+public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
     public RxtxPipe(RxtxBus bus, RxtxCodec codec) {
         super(bus, codec);
     }
@@ -51,7 +50,7 @@ public class RxtxPipe extends BasePipe<RxtxBus, RxtxCodec> {
                 .option(RxtxChannelOption.PARITY_BIT, RxtxChannelConfig.Paritybit.valueOf(param.getParity()))
                 .option(RxtxChannelOption.DTR, param.isDTR())
                 .option(RxtxChannelOption.RTS, param.isRTS())
-                .handler(getChannelInitializer());
+                .handler(channelInitializer);
 
         return bootstrap.connect(rxtxDeviceAddress).sync();
     }

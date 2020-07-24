@@ -3,8 +3,8 @@ package me.java.library.io.store.modbus.slave;
 import com.serotonin.modbus4j.ModbusSlaveSet;
 import com.serotonin.modbus4j.ProcessImage;
 import me.java.library.common.service.ConcurrentService;
-import me.java.library.io.common.cmd.Cmd;
-import me.java.library.io.common.pipe.AbstractPipe;
+import me.java.library.io.base.cmd.Cmd;
+import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.utils.base.ExceptionUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class ModbusSlavePipe extends AbstractPipe {
+public class ModbusSlavePipe extends BasePipe {
 
     private ModbusSlaveSet slave;
 

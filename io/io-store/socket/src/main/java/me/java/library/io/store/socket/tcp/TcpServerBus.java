@@ -1,7 +1,7 @@
 package me.java.library.io.store.socket.tcp;
 
-import me.java.library.io.common.bus.AbstractSocketBus;
-import me.java.library.io.common.bus.BusType;
+import me.java.library.io.core.bus.AbstractSocketBus;
+import me.java.library.io.core.bus.BusType;
 
 /**
  * File Name             :  TcpServerBus

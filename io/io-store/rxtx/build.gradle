@@ -1,4 +1,4 @@
 dependencies {
     compile project(":utils:utils-rxtx")
-    compile project(":io:io-common")
+    compile project(":io:io-core")
 }

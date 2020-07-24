@@ -2,7 +2,7 @@ package me.java.library.io.store.websocket;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
-import me.java.library.io.common.cmd.CmdNode;
+import me.java.library.io.base.cmd.CmdNode;
 
 /**
  * File Name             :  WSCmd
