@@ -27,17 +27,17 @@ import java.util.Set;
  */
 public class PipeContextImpl implements PipeContext {
 
-    private Pipe pipe;
+    private final Pipe pipe;
     private Channel initChannel;
     /**
      * 一个pipe可能有多个channel
      * 一个channel上可能连接多个terminal
      */
-    private Map<Channel, Set<Terminal>> channelMap;
+    private final Map<Channel, Set<Terminal>> channelMap;
     /**
      * 一个terminal有且仅有与唯一的channel对应
      */
-    private Map<Terminal, Channel> terminalMap;
+    private final Map<Terminal, Channel> terminalMap;
 
     public PipeContextImpl(Pipe pipe) {
         this.pipe = pipe;
@@ -115,7 +115,7 @@ public class PipeContextImpl implements PipeContext {
 
     @Override
     public Channel getChannel(Terminal terminal) {
-        if (containsTerminal(terminal)) {
+        if (terminal != null && containsTerminal(terminal)) {
             return terminalMap.get(terminal);
         }
         return initChannel;
@@ -130,7 +130,7 @@ public class PipeContextImpl implements PipeContext {
 
     private void disposeChannel(Channel channel) {
         if (containsChannel(channel)) {
-            channelMap.get(channel).forEach(terminal -> terminalMap.remove(terminal));
+            channelMap.get(channel).forEach(terminalMap::remove);
             channelMap.remove(channel);
         }
     }

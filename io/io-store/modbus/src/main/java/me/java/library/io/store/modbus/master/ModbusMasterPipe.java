@@ -12,7 +12,6 @@ import me.java.library.io.store.modbus.ModbusRequestCmd;
 import me.java.library.io.store.modbus.ModbusResponseCmd;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,35 +37,32 @@ public class ModbusMasterPipe extends BasePipe {
     }
 
     @Override
-    protected void onStart() throws Exception {
+    protected boolean onStart() throws Exception {
         master.init();
-        onPipeRunningChanged(true);
+        return true;
     }
 
     @Override
-    protected void onStop() throws Exception {
+    protected boolean onStop() throws Exception {
         master.destroy();
+        return true;
     }
 
     @Override
-    protected void onSend(Cmd request) throws Exception {
-        ConcurrentService.getInstance().postCallable(new Callable<Cmd>() {
-            @Override
-            public Cmd call() throws Exception {
-                return syncSend(request);
-            }
-        }, new FutureCallback<Cmd>() {
-            @Override
-            public void onSuccess(@Nullable Cmd result) {
-                onReceived(result);
-            }
+    protected boolean onSend(Cmd request) throws Exception {
+        return ConcurrentService.getInstance().postCallable(
+                () -> syncSend(request),
+                new FutureCallback<Cmd>() {
+                    @Override
+                    public void onSuccess(@Nullable Cmd result) {
+                        onReceived(result);
+                    }
 
-            @Override
-            public void onFailure(Throwable t) {
-                onException(t);
-            }
-        });
-
+                    @Override
+                    public void onFailure(Throwable t) {
+                        onException(t);
+                    }
+                }).isDone();
     }
 
     @Override

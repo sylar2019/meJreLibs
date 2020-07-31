@@ -29,7 +29,7 @@ public class WebSocketClientPipe extends AbstractPipe<WebSocketClientBus, WebSoc
     }
 
     @Override
-    protected ChannelFuture onStartByNetty() throws Exception {
+    protected boolean onStart() throws Exception {
         codec.setBus(bus);
 
         masterLoop = new NioEventLoopGroup();
@@ -43,7 +43,7 @@ public class WebSocketClientPipe extends AbstractPipe<WebSocketClientBus, WebSoc
 
         WebSocketClientHandler webSocketClientHandler =
                 (WebSocketClientHandler) channel.pipeline().get(WebSocketClientHandler.HANDLER_NAME);
-        return webSocketClientHandler.handshakeFuture().sync();
+        return webSocketClientHandler.handshakeFuture().sync().isDone();
     }
 
 }

@@ -29,7 +29,7 @@ public class WebSocketServerPipe extends AbstractPipe<WebSocketServerBus, WebSoc
     }
 
     @Override
-    protected ChannelFuture onStartByNetty() throws Exception {
+    protected boolean onStart() throws Exception {
         codec.setBus(bus);
 
         masterLoop = new NioEventLoopGroup();
@@ -40,14 +40,14 @@ public class WebSocketServerPipe extends AbstractPipe<WebSocketServerBus, WebSoc
                 .channel(NioServerSocketChannel.class)
                 .childHandler(channelInitializer);
 
-        return bind(bootstrap, null, bus.getPort());
+        return bind(bootstrap, bus.getHost(), bus.getPort()).sync().isDone();
     }
 
     @Override
-    protected void onStop() throws Exception {
+    protected boolean onStop() throws Exception {
         if (childGroup != null) {
             childGroup.shutdownGracefully();
         }
-        super.onStop();
+        return super.onStop();
     }
 }

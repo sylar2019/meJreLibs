@@ -34,14 +34,21 @@ public interface Pipe extends Serviceable {
     void stop();
 
     /**
-     * 发送指令，异步接收回应指令
+     * 异步发送
+     * 【关于异步发送】
+     * 若有应答，应答可在 watcher 中接收
      *
      * @param request
      */
     void send(Cmd request);
 
     /**
-     * 发送指令，同步接收回应指令。【按默认超时】
+     * 同步发送【按默认超时】
+     * 【关于同步发送】
+     * 一般情形下，通讯是以 请求/应答 配对形式进行
+     * 在NIO、特殊物理总线、或复杂上层业务通讯协议下，请求/应答 不一定是按时间顺序的
+     * 通常，请求/应答 的配对机制应由 业务协议定义
+     * 配对机制详见 {@code SyncPairity}
      *
      * @param request 待发送的请求指令
      * @return 回应指令
@@ -50,7 +57,7 @@ public interface Pipe extends Serviceable {
     Cmd syncSend(Cmd request) throws Exception;
 
     /**
-     * 发送指令，同步接收回应指令
+     * 同步发送
      *
      * @param request 待发送的请求指令
      * @param timeout 回应超时时间
@@ -61,7 +68,7 @@ public interface Pipe extends Serviceable {
     Cmd syncSend(Cmd request, long timeout, TimeUnit unit) throws Exception;
 
     /**
-     * 发送指令，同步接收回应指令
+     * 同步发送
      *
      * @param request  待发送的请求指令
      * @param timeout  回应超时时间
@@ -73,7 +80,7 @@ public interface Pipe extends Serviceable {
     Cmd syncSend(Cmd request, long timeout, TimeUnit unit, int tryTimes) throws Exception;
 
     /**
-     * 是否在运行
+     * 通道是否在运行
      *
      * @return 运行状态
      */
@@ -99,5 +106,4 @@ public interface Pipe extends Serviceable {
      * @param enabled
      */
     void setDaemon(boolean enabled);
-
 }

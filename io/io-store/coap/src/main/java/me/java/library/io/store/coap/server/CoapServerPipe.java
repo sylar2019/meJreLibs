@@ -36,22 +36,24 @@ public class CoapServerPipe extends BasePipe {
     }
 
     @Override
-    protected void onStart() throws Exception {
+    protected boolean onStart() throws Exception {
         server.start();
-        onPipeRunningChanged(true);
+        return true;
     }
 
     @Override
-    protected void onStop() throws Exception {
+    protected boolean onStop() throws Exception {
         if (server != null) {
             server.start();
             server = null;
         }
+        return true;
     }
 
     @Override
-    protected void onSend(Cmd request) throws Exception {
+    protected boolean onSend(Cmd request) throws Exception {
         ExceptionUtils.notSupportMethod();
+        return true;
     }
 
     @Override

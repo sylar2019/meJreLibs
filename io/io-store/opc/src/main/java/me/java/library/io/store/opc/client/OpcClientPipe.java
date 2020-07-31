@@ -42,27 +42,27 @@ public class OpcClientPipe extends BasePipe {
     }
 
     @Override
-    protected void onStart() throws Exception {
+    protected boolean onStart() throws Exception {
         if (isDaemon) {
             controller.connect();
         } else {
             server.connect();
         }
-
-        onPipeRunningChanged(true);
+        return true;
     }
 
     @Override
-    protected void onStop() throws Exception {
+    protected boolean onStop() throws Exception {
         if (isDaemon) {
             controller.disconnect();
         } else {
             server.disconnect();
         }
+        return true;
     }
 
     @Override
-    protected void onSend(Cmd request) throws Exception {
+    protected boolean onSend(Cmd request) throws Exception {
         Group group = server.addGroup();
         if (request instanceof OpcReadRequestCmd) {
             OpcReadRequestCmd readRequestCmd = (OpcReadRequestCmd) request;
@@ -102,6 +102,8 @@ public class OpcClientPipe extends BasePipe {
         } else {
             ExceptionUtils.notSupportMethod();
         }
+
+        return true;
     }
 
     @Override

@@ -9,11 +9,11 @@ import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.cmd.Host;
 import me.java.library.io.base.cmd.Terminal;
 import me.java.library.io.base.pipe.BasePipe;
-import me.java.library.io.base.sync.SyncPairity;
 import me.java.library.io.core.bus.Bus;
 import me.java.library.io.core.codec.Codec;
 import me.java.library.io.core.codec.ExceptionHandler;
 import me.java.library.io.core.codec.InboundHandler;
+import me.java.library.io.core.sync.SyncPairity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,13 +33,10 @@ import java.util.concurrent.TimeUnit;
  * *******************************************************************************************
  */
 public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BasePipe {
-    final static int DAEMON_PERIOD_SECONDS = 5;
-
     protected B bus;
     protected C codec;
 
     protected EventLoopGroup masterLoop;
-    protected ChannelFuture future;
     protected SyncPairity syncPairity;
     protected PipeContext pipeContext = new PipeContextImpl(this);
 
@@ -54,8 +51,6 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
         this.codec = codec;
     }
 
-    protected abstract ChannelFuture onStartByNetty() throws Exception;
-
     public SyncPairity getSyncPairity() {
         return syncPairity;
     }
@@ -65,22 +60,23 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
     }
 
     @Override
-    protected void onStart() throws Exception {
+    protected void checkOnStart() {
+        super.checkOnStart();
         Preconditions.checkNotNull(bus, "bus is null");
         Preconditions.checkNotNull(codec, "codec is null");
-
-        future = onStartByNetty();
-        future.addListener(connectionListener);
     }
 
     @Override
-    protected void onStop() throws Exception {
-        if (future != null && future.channel() != null) {
-            future.channel().close().sync();
+    protected boolean onStop() throws Exception {
+        Channel channel = pipeContext.getChannel(null);
+        if (channel != null) {
+            channel.close().sync();
         }
+
         if (masterLoop != null) {
-            masterLoop.shutdownGracefully();
+            masterLoop.shutdownGracefully().sync();
         }
+        return true;
     }
 
     @Override
@@ -93,7 +89,6 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
             onSend(request);
             return syncPairity.getResponse(request, timeout, unit);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
             e.printStackTrace();
             throw e;
         } finally {
@@ -102,7 +97,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
     }
 
     @Override
-    protected void onSend(Cmd request) throws Exception {
+    protected boolean onSend(Cmd request) throws Exception {
         //查找对应channel
         Channel channel = pipeContext.getChannel(request.getTo());
         Preconditions.checkNotNull(channel);
@@ -110,6 +105,7 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
         Preconditions.checkState(channel.isActive(), "channel is not active");
         Preconditions.checkState(channel.isWritable(), "channle is not writeable");
         channel.writeAndFlush(request);
+        return true;
     }
 
     @Override
@@ -118,11 +114,8 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
         pipeContext.dispose();
     }
 
-    protected int getDaemonSeconds() {
-        return DAEMON_PERIOD_SECONDS;
-    }
 
-    protected ChannelFuture bind(AbstractBootstrap bootstrap, String host, int port) {
+    protected ChannelFuture bind(AbstractBootstrap<?, ?> bootstrap, String host, int port) {
         ChannelFuture future;
         if (!Strings.isNullOrEmpty(host) && port >= 0) {
             future = bootstrap.bind(host, port);
@@ -150,16 +143,6 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
             if (exceptionHandler != null) {
                 exceptionHandler.setChannelKeeper(channelKeeper);
             }
-        }
-    };
-
-    protected ChannelFutureListener connectionListener = future -> {
-        if (future.isSuccess()) {
-            onPipeRunningChanged(true);
-        } else if (isDaemon && getDaemonSeconds() > 0) {
-            //守护进程，自动重开
-            final EventLoop loop = future.channel().eventLoop();
-            loop.schedule(AbstractPipe.this::start, getDaemonSeconds(), TimeUnit.SECONDS);
         }
     };
 

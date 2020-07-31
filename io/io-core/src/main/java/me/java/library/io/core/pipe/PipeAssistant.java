@@ -25,18 +25,18 @@ import java.util.Map;
  */
 public class PipeAssistant {
 
-    private Map<Pipe, PipeContext> map;
+    private final Map<Pipe, PipeContext> map;
 
     private PipeAssistant() {
         map = Maps.newConcurrentMap();
     }
 
     public static PipeAssistant getInstance() {
-        return SingletonHolder.instance;
+        return SingletonHolder.INSTANCE;
     }
 
     private static class SingletonHolder {
-        private static PipeAssistant instance = new PipeAssistant();
+        private static final PipeAssistant INSTANCE = new PipeAssistant();
     }
 
     public void add(PipeContext pipeContext) {

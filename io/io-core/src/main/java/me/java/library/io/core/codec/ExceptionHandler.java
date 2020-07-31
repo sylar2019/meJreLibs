@@ -1,9 +1,6 @@
 package me.java.library.io.core.codec;
 
-import io.netty.channel.ChannelDuplexHandler;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPromise;
+import io.netty.channel.*;
 import me.java.library.io.core.pipe.ChannelKeeper;
 
 /**
@@ -21,6 +18,7 @@ import me.java.library.io.core.pipe.ChannelKeeper;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
+@ChannelHandler.Sharable
 public class ExceptionHandler extends ChannelDuplexHandler {
     public final static String HANDLER_NAME = ExceptionHandler.class.getSimpleName();
 

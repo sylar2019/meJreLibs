@@ -2,7 +2,6 @@ package me.java.library.io.store.modbus.slave;
 
 import com.serotonin.modbus4j.ModbusSlaveSet;
 import com.serotonin.modbus4j.ProcessImage;
-import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.utils.base.ExceptionUtils;
@@ -49,28 +48,21 @@ public class ModbusSlavePipe extends BasePipe {
     }
 
     @Override
-    protected void onStart() throws Exception {
-        ConcurrentService.getInstance().postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    slave.start();
-                    onPipeRunningChanged(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    protected boolean onStart() throws Exception {
+        slave.start();
+        return true;
     }
 
     @Override
-    protected void onStop() throws Exception {
+    protected boolean onStop() throws Exception {
         slave.stop();
+        return true;
     }
 
     @Override
-    protected void onSend(Cmd request) throws Exception {
+    protected boolean onSend(Cmd request) throws Exception {
         ExceptionUtils.notSupportMethod();
+        return true;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package me.java.library.io.store.socket.udp;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
@@ -28,7 +27,7 @@ public class UdpBroadcastPipe extends AbstractPipe<UdpBroadcastBus, UdpCodec> {
     }
 
     @Override
-    protected ChannelFuture onStartByNetty() throws Exception {
+    protected boolean onStart() throws Exception {
         masterLoop = new NioEventLoopGroup();
 
         Bootstrap bootstrap = new Bootstrap();
@@ -37,7 +36,7 @@ public class UdpBroadcastPipe extends AbstractPipe<UdpBroadcastBus, UdpCodec> {
                 .handler(channelInitializer)
                 .option(ChannelOption.SO_BROADCAST, true);
 
-        return bind(bootstrap, null, bus.getPort());
+        return bind(bootstrap, bus.getHost(), bus.getPort()).sync().isDone();
     }
 
 }

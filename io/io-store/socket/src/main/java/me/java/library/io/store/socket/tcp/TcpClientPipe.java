@@ -1,7 +1,6 @@
 package me.java.library.io.store.socket.tcp;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -28,7 +27,7 @@ public class TcpClientPipe extends AbstractPipe<TcpClientBus, TcpCodec> {
     }
 
     @Override
-    protected ChannelFuture onStartByNetty() throws Exception {
+    protected boolean onStart() throws Exception {
         masterLoop = new NioEventLoopGroup();
 
         Bootstrap bootstrap = new Bootstrap();
@@ -37,6 +36,6 @@ public class TcpClientPipe extends AbstractPipe<TcpClientBus, TcpCodec> {
                 .handler(channelInitializer)
                 .option(ChannelOption.SO_KEEPALIVE, true);
 
-        return bootstrap.connect(bus.getHost(), bus.getPort());
+        return bootstrap.connect(bus.getHost(), bus.getPort()).sync().isDone();
     }
 }

@@ -1,4 +1,4 @@
-package me.java.library.io.base.sync;
+package me.java.library.io.core.sync;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
@@ -94,7 +94,7 @@ public abstract class AbstractSyncPairity implements SyncPairity {
             if (pairs(cache.getTerminal(), request, response)) {
                 bean.getFuture().set(response);
                 return request;
-            }
+        }
         }
         return null;
     }

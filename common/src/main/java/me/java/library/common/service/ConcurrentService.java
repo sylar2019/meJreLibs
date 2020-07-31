@@ -125,8 +125,7 @@ public class ConcurrentService implements Serviceable {
         Preconditions.checkState(timeout > 0);
         Preconditions.checkState(tryTimes > 0);
 
-        Retryer<T> retryer = RetryerBuilder.
-                <T>newBuilder()
+        Retryer<T> retryer = RetryerBuilder.<T>newBuilder()
                 .retryIfException()
                 .withRetryListener(listener)
                 .withWaitStrategy(WaitStrategies.fixedWait(timeout, unit))
@@ -135,12 +134,7 @@ public class ConcurrentService implements Serviceable {
 
         ListenableFuture<T> future = null;
         try {
-            future = postCallable(new Callable<T>() {
-                @Override
-                public T call() throws Exception {
-                    return retryer.call(callable);
-                }
-            }, callback);
+            future = postCallable(() -> retryer.call(callable), callback);
         } catch (Exception e) {
             callback.onFailure(e);
         }

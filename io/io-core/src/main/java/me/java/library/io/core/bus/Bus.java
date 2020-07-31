@@ -19,6 +19,10 @@ import me.java.library.common.Attributable;
  */
 public interface Bus extends Attributable {
 
+    /**
+     *
+     * @return
+     */
     BusType getBusType();
 
 }

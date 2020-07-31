@@ -1,6 +1,7 @@
 package me.java.library.io.base.pipe;
 
 import com.google.common.base.Preconditions;
+import com.google.common.util.concurrent.FutureCallback;
 import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.cmd.CmdUtils;
@@ -8,6 +9,7 @@ import me.java.library.io.base.cmd.Host;
 import me.java.library.io.base.cmd.Terminal;
 import me.java.library.io.base.event.*;
 import me.java.library.utils.base.guava.AsyncEventUtils;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,12 +31,14 @@ import java.util.concurrent.TimeUnit;
  * *******************************************************************************************
  */
 public abstract class BasePipe implements Pipe {
+    protected final static int DAEMON_PERIOD_SECONDS = 5;
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected Host host;
     protected PipeWatcher watcher;
     protected boolean isRunning;
     protected boolean isDaemon;
+    protected boolean isEventEnabled;
 
     public BasePipe() {
         this(Host.LOCAL);
@@ -47,12 +51,41 @@ public abstract class BasePipe implements Pipe {
         registHook();
     }
 
-    protected abstract void onStart() throws Exception;
+    /**
+     * 建造通讯链路
+     * 通讯链路的建立有同步与异步两种方式
+     * 同步方式下，应以顺序代码的方式调用 onPipeRunningChanged(true)
+     * 异步方式下，应在相应的回调方法内调用 onPipeRunningChanged(true)
+     *
+     * @return
+     * @throws Exception
+     */
+    protected abstract boolean onStart() throws Exception;
 
-    protected abstract void onStop() throws Exception;
+    /**
+     * 拆除通讯链路
+     *
+     * @throws Exception
+     */
+    protected abstract boolean onStop() throws Exception;
 
-    protected abstract void onSend(Cmd request) throws Exception;
+    /**
+     * 异步发送
+     *
+     * @param request
+     * @throws Exception
+     */
+    protected abstract boolean onSend(Cmd request) throws Exception;
 
+    /**
+     * 同步发送
+     *
+     * @param request
+     * @param timeout
+     * @param unit
+     * @return
+     * @throws Exception
+     */
     protected abstract Cmd onSyncSend(Cmd request, long timeout, TimeUnit unit) throws Exception;
 
     @Override
@@ -61,11 +94,22 @@ public abstract class BasePipe implements Pipe {
             return;
         }
 
-        try {
-            onStart();
-        } catch (Exception e) {
-            onException(e);
-        }
+        checkOnStart();
+        ConcurrentService.getInstance().postCallable(this::onStart, new FutureCallback<Boolean>() {
+            @Override
+            public void onSuccess(@Nullable Boolean result) {
+                Preconditions.checkNotNull(result);
+                onPipeRunningChanged(result);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                onException(t);
+                if (isDaemon) {
+                    ConcurrentService.getInstance().schedule(() -> onStart(), getDaemonSeconds(), TimeUnit.SECONDS);
+                }
+            }
+        });
     }
 
     @Override
@@ -74,13 +118,18 @@ public abstract class BasePipe implements Pipe {
             return;
         }
 
-        try {
-            onStop();
-        } catch (Exception e) {
-            onException(e);
-        } finally {
-            onPipeRunningChanged(false);
-        }
+        checkOnStop();
+        ConcurrentService.getInstance().postCallable(this::onStop, new FutureCallback<Boolean>() {
+            @Override
+            public void onSuccess(@Nullable Boolean result) {
+                onPipeRunningChanged(false);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                onException(t);
+            }
+        });
     }
 
     @Override
@@ -130,6 +179,14 @@ public abstract class BasePipe implements Pipe {
         } catch (Exception e) {
             onException(e);
         }
+    }
+
+    protected void checkOnStart() {
+
+    }
+
+    protected void checkOnStop() {
+
     }
 
     protected void checkOnSend(Cmd request) {
@@ -210,6 +267,12 @@ public abstract class BasePipe implements Pipe {
     }
 
     protected void postEvent(Object event) {
-        AsyncEventUtils.postEvent(event);
+        if (isEventEnabled) {
+            AsyncEventUtils.postEvent(event);
+        }
+    }
+
+    protected int getDaemonSeconds() {
+        return DAEMON_PERIOD_SECONDS;
     }
 }

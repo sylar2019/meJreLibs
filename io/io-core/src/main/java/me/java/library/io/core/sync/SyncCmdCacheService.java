@@ -1,4 +1,4 @@
-package me.java.library.io.base.sync;
+package me.java.library.io.core.sync;
 
 import com.google.common.cache.CacheBuilder;
 import me.java.library.common.service.LocalCacheService;
@@ -7,7 +7,7 @@ import me.java.library.io.base.cmd.Terminal;
 import java.util.concurrent.TimeUnit;
 
 /**
- * File Name             :  SyncCmdCachesService
+ * File Name             :  SyncCmdCacheService
  *
  * @author :  sylar
  * Create :  2019-10-19
@@ -21,11 +21,20 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class SyncCmdCachesService extends LocalCacheService<Terminal, SyncCmdCacheService> {
-    public SyncCmdCachesService() {
+public class SyncCmdCacheService extends LocalCacheService<String, SyncBean> {
+
+    private Terminal terminal;
+
+    public SyncCmdCacheService(Terminal terminal) {
         super(CacheBuilder.newBuilder()
-                .maximumSize(100000L)
-                .expireAfterAccess(10, TimeUnit.MINUTES)
+                .maximumSize(1024 * 100)
+                .expireAfterWrite(3, TimeUnit.MINUTES)
                 .build());
+
+        this.terminal = terminal;
+    }
+
+    public Terminal getTerminal() {
+        return terminal;
     }
 }

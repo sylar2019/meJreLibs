@@ -27,7 +27,7 @@ public class UdpUnicastPipe extends AbstractPipe<UdpUnicastBus, UdpCodec> {
     }
 
     @Override
-    protected ChannelFuture onStartByNetty() throws Exception {
+    protected boolean onStart() throws Exception {
         masterLoop = new NioEventLoopGroup();
 
         Bootstrap bootstrap = new Bootstrap();
@@ -35,7 +35,7 @@ public class UdpUnicastPipe extends AbstractPipe<UdpUnicastBus, UdpCodec> {
                 .channel(NioDatagramChannel.class)
                 .handler(channelInitializer);
 
-        return bind(bootstrap, null, bus.getPort());
+        return bind(bootstrap, bus.getHost(), bus.getPort()).sync().isDone();
     }
 
 

@@ -33,7 +33,7 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
     }
 
     @Override
-    protected ChannelFuture onStartByNetty() throws Exception {
+    protected boolean onStart() throws Exception {
         masterLoop = new NioEventLoopGroup();
 
         String networkInterfaceName = bus.getNetworkInterfaceName();
@@ -51,8 +51,8 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastBus, UdpCodec> {
                 .option(ChannelOption.IP_MULTICAST_IF, networkInterface)
                 .option(ChannelOption.SO_REUSEADDR, true);
 
-        ChannelFuture future = bind(bootstrap, null, multicastPort).sync();
+        ChannelFuture future = bind(bootstrap, bus.getHost(), multicastPort).sync();
         future = ((NioDatagramChannel) future.channel()).joinGroup(multicastAddress, networkInterface);
-        return future;
+        return future.sync().isDone();
     }
 }

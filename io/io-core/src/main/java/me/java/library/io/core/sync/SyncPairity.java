@@ -1,4 +1,4 @@
-package me.java.library.io.base.sync;
+package me.java.library.io.core.sync;
 
 import me.java.library.io.base.cmd.Cmd;
 

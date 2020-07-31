@@ -42,7 +42,7 @@ public class MqttClientPipe extends BasePipe {
     }
 
     @Override
-    protected void onStart() throws Exception {
+    protected boolean onStart() throws Exception {
         persistence = new MemoryPersistence();
         client = new MqttClient(options.getBroker(),
                 options.getClientId(),
@@ -71,12 +71,11 @@ public class MqttClientPipe extends BasePipe {
         }
 
         client.connect(connOpts);
-
-        onPipeRunningChanged(true);
+        return true;
     }
 
     @Override
-    protected void onStop() throws Exception {
+    protected boolean onStop() throws Exception {
         if (client != null) {
             client.disconnect();
             client.close();
@@ -87,10 +86,11 @@ public class MqttClientPipe extends BasePipe {
             persistence.close();
             persistence = null;
         }
+        return true;
     }
 
     @Override
-    protected void onSend(Cmd request) throws Exception {
+    protected boolean onSend(Cmd request) throws Exception {
         Preconditions.checkNotNull(client);
         Preconditions.checkState(client.isConnected());
         Preconditions.checkState(request instanceof MqttCmd);
@@ -100,6 +100,8 @@ public class MqttClientPipe extends BasePipe {
         message.setQos(MqttQoS.AT_LEAST_ONCE.value());
 
         client.publish(mqttCmd.getTopic(), message);
+
+        return true;
     }
 
     @Override

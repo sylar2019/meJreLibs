@@ -1,4 +1,4 @@
-package me.java.library.io.base.sync;
+package me.java.library.io.core.sync;
 
 import com.google.common.util.concurrent.SettableFuture;
 import me.java.library.io.base.cmd.Cmd;

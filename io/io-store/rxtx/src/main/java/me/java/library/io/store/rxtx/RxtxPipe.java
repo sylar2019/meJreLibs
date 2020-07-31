@@ -1,7 +1,6 @@
 package me.java.library.io.store.rxtx;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.oio.OioEventLoopGroup;
 import io.netty.channel.rxtx.RxtxChannel;
 import io.netty.channel.rxtx.RxtxChannelConfig;
@@ -33,8 +32,7 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
     }
 
     @Override
-    protected ChannelFuture onStartByNetty() throws Exception {
-
+    protected boolean onStart() throws Exception {
         RxtxParam param = bus.getRxtxParam();
         RxtxUtils.preparePermisson(param.getCommPortId());
 
@@ -52,6 +50,6 @@ public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
                 .option(RxtxChannelOption.RTS, param.isRTS())
                 .handler(channelInitializer);
 
-        return bootstrap.connect(rxtxDeviceAddress).sync();
+        return bootstrap.connect(rxtxDeviceAddress).sync().isDone();
     }
 }

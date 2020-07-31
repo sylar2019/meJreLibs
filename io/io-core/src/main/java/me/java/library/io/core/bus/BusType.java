@@ -21,16 +21,16 @@ import me.java.library.common.model.po.BaseEnum;
 public enum BusType implements BaseEnum {
 
     //@formatter:off
-    TcpServer   (1,"TcpServer"),
-    TcpClient   (2,"TcpClient"),
-    UdpUnicast  (3,"UdpUnicast"),
-    UdpBroadcast(4,"UdpBroadcast"),
-    UdpMulticast(5,"UdpMulticast"),
-    RXTX        (6,"Rxtx"),
-    WebSocketServer        (7,"WebSocketServer"),
-    WebSocketClient        (8,"WebSocketClient"),
-    MqttClient        (9,"MqttClient"),
-    MqttServer        (10,"MqttClient"),
+    TcpServer               (1,"TcpServer"),
+    TcpClient               (2,"TcpClient"),
+    UdpUnicast              (3,"UdpUnicast"),
+    UdpBroadcast            (4,"UdpBroadcast"),
+    UdpMulticast            (5,"UdpMulticast"),
+    RXTX                    (6,"Rxtx"),
+    WebSocketServer         (7,"WebSocketServer"),
+    WebSocketClient         (8,"WebSocketClient"),
+    MqttClient              (9,"MqttClient"),
+    MqttServer              (10,"MqttServer"),
     //@formatter:on
     ;
 

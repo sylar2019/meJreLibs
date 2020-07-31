@@ -1,7 +1,6 @@
 package me.java.library.io.store.socket.tcp;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import me.java.library.io.core.pipe.AbstractPipe;
@@ -29,7 +28,7 @@ public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
     }
 
     @Override
-    protected ChannelFuture onStartByNetty() throws Exception {
+    protected boolean onStart() throws Exception {
         masterLoop = new NioEventLoopGroup();
         childGroup = new NioEventLoopGroup();
 
@@ -38,14 +37,15 @@ public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
                 .channel(NioServerSocketChannel.class)
                 .childHandler(channelInitializer);
 
-        return bind(bootstrap, null, bus.getPort());
+       return bind(bootstrap, bus.getHost(), bus.getPort()).sync().isDone();
     }
 
+
     @Override
-    protected void onStop() throws Exception {
+    protected boolean onStop() throws Exception {
         if (childGroup != null) {
-            childGroup.shutdownGracefully();
+            childGroup.shutdownGracefully().sync();
         }
-        super.onStop();
+        return super.onStop();
     }
 }
