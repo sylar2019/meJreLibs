@@ -27,10 +27,8 @@ import java.util.List;
  */
 @ChannelHandler.Sharable
 public class WebSocketDecoder extends MessageToMessageDecoder<WebSocketFrame> {
-
     public final static String HANDLER_NAME = WebSocketDecoder.class.getSimpleName();
-    private Logger logger = LoggerFactory.getLogger(getClass());
-    private WebSocketCmdResolver webSocketCmdResolver;
+    private final WebSocketCmdResolver webSocketCmdResolver;
 
     public WebSocketDecoder(WebSocketCmdResolver webSocketCmdResolver) {
         Preconditions.checkNotNull(webSocketCmdResolver);

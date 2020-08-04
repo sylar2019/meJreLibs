@@ -19,7 +19,7 @@ import com.serotonin.modbus4j.ip.IpParameters;
  * *******************************************************************************************
  */
 public class IpParam {
-    private String host;
+    private final String host;
     private int port = 502;
 
     public IpParam(String host, int port) {

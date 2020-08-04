@@ -17,17 +17,22 @@ include ":io"
 include ":io:io-base"
 include ":io:io-core"
 include ":io:io-mq"
+
 include ":io:io-store"
 include ":io:io-store:socket"
+include ":io:io-store:websocket"
+
+include ":io:io-store:mqtt"
 include ":io:io-store:coap"
 include ":io:io-store:lwm2m"
+include ":io:io-store:lwm2m:lwm2m-common"
 include ":io:io-store:lwm2m:lwm2m-client"
 include ":io:io-store:lwm2m:lwm2m-server"
-include ":io:io-store:modbus"
-include ":io:io-store:mqtt"
-include ":io:io-store:opc"
+
 include ":io:io-store:rxtx"
-include ":io:io-store:websocket"
+include ":io:io-store:modbus"
+include ":io:io-store:opc"
+
 
 
 include ":mq"

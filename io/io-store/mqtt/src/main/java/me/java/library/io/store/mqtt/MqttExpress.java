@@ -1,6 +1,6 @@
 package me.java.library.io.store.mqtt;
 
-import me.java.library.io.store.mqtt.client.MqttClientOptions;
+import me.java.library.io.store.mqtt.client.MqttClientParam;
 import me.java.library.io.store.mqtt.client.MqttClientPipe;
 
 /**
@@ -19,7 +19,7 @@ import me.java.library.io.store.mqtt.client.MqttClientPipe;
  * *******************************************************************************************
  */
 public class MqttExpress {
-    public static MqttClientPipe client(MqttClientOptions options) {
+    public static MqttClientPipe client(MqttClientParam options) {
         return new MqttClientPipe(options);
     }
 }

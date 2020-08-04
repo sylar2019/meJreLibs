@@ -7,9 +7,9 @@ import com.serotonin.modbus4j.msg.ModbusResponse;
 import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
-import me.java.library.io.store.modbus.MaskValue;
-import me.java.library.io.store.modbus.ModbusRequestCmd;
-import me.java.library.io.store.modbus.ModbusResponseCmd;
+import me.java.library.io.store.modbus.cmd.MaskValue;
+import me.java.library.io.store.modbus.cmd.ModbusRequestCmd;
+import me.java.library.io.store.modbus.cmd.ModbusResponseCmd;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.concurrent.TimeUnit;

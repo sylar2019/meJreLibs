@@ -33,19 +33,19 @@ public class MqttClientPipe extends BasePipe {
 
     protected MqttClient client;
     protected MqttClientPersistence persistence;
-    protected MqttClientOptions options;
+    protected MqttClientParam param;
 
-    public MqttClientPipe(MqttClientOptions options) {
-        this.options = options;
-        Preconditions.checkNotNull(options.getBroker());
-        Preconditions.checkNotNull(options.getClientId());
+    public MqttClientPipe(MqttClientParam param) {
+        this.param = param;
+        Preconditions.checkNotNull(param.getBroker());
+        Preconditions.checkNotNull(param.getClientId());
     }
 
     @Override
     protected boolean onStart() throws Exception {
         persistence = new MemoryPersistence();
-        client = new MqttClient(options.getBroker(),
-                options.getClientId(),
+        client = new MqttClient(param.getBroker(),
+                param.getClientId(),
                 persistence);
         client.setCallback(new MqttCallback() {
             @Override
@@ -65,9 +65,9 @@ public class MqttClientPipe extends BasePipe {
 
         MqttConnectOptions connOpts = new MqttConnectOptions();
         connOpts.setAutomaticReconnect(isDaemon);
-        connOpts.setUserName(options.getUsername());
-        if (!Strings.isNullOrEmpty(options.getPassword())) {
-            connOpts.setPassword(options.getPassword().toCharArray());
+        connOpts.setUserName(param.getUsername());
+        if (!Strings.isNullOrEmpty(param.getPassword())) {
+            connOpts.setPassword(param.getPassword().toCharArray());
         }
 
         client.connect(connOpts);

@@ -1,5 +1,4 @@
 dependencies {
-    compile project(":io:io-base")
-    compile ("commons-cli:commons-cli:+")
+    compile project(":io:io-store:lwm2m:lwm2m-common")
     compile ("org.eclipse.leshan:leshan-client-cf:1.1.0")
 }

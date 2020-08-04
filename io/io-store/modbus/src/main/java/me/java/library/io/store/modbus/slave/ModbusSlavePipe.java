@@ -23,28 +23,12 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class ModbusSlavePipe extends BasePipe {
+public class ModbusSlavePipe extends BasePipe implements ModbusSlave {
 
     private ModbusSlaveSet slave;
 
     public ModbusSlavePipe(ModbusSlaveSet slave) {
         this.slave = slave;
-    }
-
-    public void add(ProcessImage processImage) {
-        slave.addProcessImage(processImage);
-    }
-
-    public boolean removeProcessImage(int slaveId) {
-        return slave.removeProcessImage(slaveId);
-    }
-
-    public boolean removeProcessImage(ProcessImage processImage) {
-        return slave.removeProcessImage(processImage);
-    }
-
-    public ProcessImage getProcessImage(int slaveId) {
-        return slave.getProcessImage(slaveId);
     }
 
     @Override
@@ -69,5 +53,25 @@ public class ModbusSlavePipe extends BasePipe {
     protected Cmd onSyncSend(Cmd request, long timeout, TimeUnit unit) throws Exception {
         ExceptionUtils.notSupportMethod();
         return null;
+    }
+
+    @Override
+    public void addProcessImage(ProcessImage processImage) {
+        slave.addProcessImage(processImage);
+    }
+
+    @Override
+    public boolean removeProcessImage(ProcessImage processImage) {
+        return slave.removeProcessImage(processImage);
+    }
+
+    @Override
+    public boolean removeProcessImage(int slaveId) {
+        return slave.removeProcessImage(slaveId);
+    }
+
+    @Override
+    public ProcessImage getProcessImage(int slaveId) {
+        return slave.getProcessImage(slaveId);
     }
 }

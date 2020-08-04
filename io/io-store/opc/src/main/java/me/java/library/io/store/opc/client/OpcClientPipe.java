@@ -95,7 +95,10 @@ public class OpcClientPipe extends BasePipe {
 
             onReceived(readResponseCmd);
 
-        } else if (request instanceof OpcStartSubscribeCmd) {
+        }else if (request instanceof OpcWriteRequestCmd) {
+            ExceptionUtils.throwException("OPC官写操不支持异步方式");
+        }
+        else if (request instanceof OpcStartSubscribeCmd) {
             startSub((OpcStartSubscribeCmd) request);
         } else if (request instanceof OpcStopSubscribeCmd) {
             stopSub((OpcStopSubscribeCmd) request);
@@ -141,6 +144,8 @@ public class OpcClientPipe extends BasePipe {
                 }
             });
             return writeResponseCmd;
+        }else{
+            ExceptionUtils.notSupportMethod();
         }
         return null;
     }
