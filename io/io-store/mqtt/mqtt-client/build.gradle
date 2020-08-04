@@ -1,4 +1,4 @@
 dependencies {
-    compile project(":io:io-base")
+    compile project(":io:io-store:mqtt:mqtt-common")
     compile ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
 }

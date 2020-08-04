@@ -1,4 +1,4 @@
-package me.java.library.io.store.mqtt;
+package me.java.library.io.store.mqtt.common;
 
 /**
  * File Name             :  MqttQoS

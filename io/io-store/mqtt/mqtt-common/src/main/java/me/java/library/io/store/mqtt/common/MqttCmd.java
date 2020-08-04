@@ -1,4 +1,4 @@
-package me.java.library.io.store.mqtt;
+package me.java.library.io.store.mqtt.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.java.library.io.base.cmd.CmdNode;

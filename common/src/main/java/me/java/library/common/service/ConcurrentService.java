@@ -110,7 +110,6 @@ public class ConcurrentService implements Serviceable {
 
     /**
      * 执行异步任务（有超时及重试机制），任务有返回值
-     * Retryer 参见 https://blog.csdn.net/noaman_wgs/article/details/85940207
      *
      * @param callable
      * @param timeout
