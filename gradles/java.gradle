@@ -16,9 +16,21 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    //支持jar包以文件形式引入
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    //支持 guava logging
+    compile("com.google.guava:guava:${guavaVersion}")
     compile("org.springframework.boot:spring-boot-starter-logging:${springBootVersion}")
+
+    //支持 junit
     testCompile("junit:junit:${junitVersion}")
+
+    //支持 lombok
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
 /** ******************************************************************************************/
