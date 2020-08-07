@@ -1,0 +1,18 @@
+
+ext{
+    jettyVersion = "9.4.26.v20200117"
+}
+
+
+dependencies {
+    compile project(":io:io-store:io-store-lwm2m:io-store-lwm2m-common")
+    compile ("org.eclipse.leshan:leshan-server-cf:1.1.0")
+    compile ("org.eclipse.leshan:leshan-server-redis:1.1.0")
+    compile ("org.eclipse.californium:californium-core:2.3.0")
+    compile ("org.jmdns:jmdns:3.5.5")
+    compile ("org.eclipse.jetty:jetty-webapp:${jettyVersion}")
+    compile ("org.eclipse.jetty:jetty-servlets:${jettyVersion}")
+    compile ("com.google.code.gson:gson:2.8.6")
+    compile ("commons-io:commons-io:2.6")
+    compile ("commons-lang:commons-lang:2.6")
+}

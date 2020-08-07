@@ -5,7 +5,7 @@ ext{
 
 
 dependencies {
-    compile project(":io:io-store:lwm2m:lwm2m-common")
+    compile project(":io:io-store:io-store-lwm2m:io-store-lwm2m-common")
     compile ("org.eclipse.leshan:leshan-server-cf:1.1.0")
     compile ("org.eclipse.leshan:leshan-server-redis:1.1.0")
     compile ("org.eclipse.californium:californium-core:2.3.0")

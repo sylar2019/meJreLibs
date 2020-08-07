@@ -1,0 +1,3 @@
+dependencies {
+    compile project(":io:io-store:io-store-mqtt:io-store-mqtt-common")
+}
