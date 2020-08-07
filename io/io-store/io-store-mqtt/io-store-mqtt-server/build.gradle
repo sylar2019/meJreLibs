@@ -1,3 +1,11 @@
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.hivemq.hivemq-community-edition:hivemq-community-edition-embedded:master-SNAPSHOT'
+}
+
 dependencies {
     compile project(":io:io-store:io-store-mqtt:io-store-mqtt-common")
 }

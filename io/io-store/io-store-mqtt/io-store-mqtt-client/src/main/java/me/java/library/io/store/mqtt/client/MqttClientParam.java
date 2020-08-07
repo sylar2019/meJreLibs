@@ -21,7 +21,8 @@ public class MqttClientParam {
 
     /**
      * uri of mqtt server
-     * eg: {@code tcp://ip:port}
+     * eg: {@code tcp://127.0.0.1:1883}
+     * eg: {@code ssl://127.0.0.1:1884}
      */
     String broker;
     String clientId;

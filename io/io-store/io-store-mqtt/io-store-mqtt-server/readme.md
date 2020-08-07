@@ -17,6 +17,8 @@
 
 - Java 实现
 
+[hivemq-ce](https://github.com/hivemq/hivemq-community-edition)
+
 [Cicizz/jmqtt](https://github.com/Cicizz/jmqtt)
 
 [Amazingwujun/mqttx](https://github.com/Amazingwujun/mqttx)
