@@ -19,7 +19,7 @@ import gnu.io.SerialPort;
  * *******************************************************************************************
  */
 public class RxtxParam {
-    private String commPortId;
+    private String commPortId = "COM1";
     private int baudRate = 9600;
     private int dataBits = SerialPort.DATABITS_8;
     private int stopBits = SerialPort.STOPBITS_1;
