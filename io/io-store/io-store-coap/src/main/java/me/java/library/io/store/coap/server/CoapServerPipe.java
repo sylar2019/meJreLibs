@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class CoapServerPipe extends BasePipe {
+public class CoapServerPipe extends BasePipe implements CoapServer {
 
     private Server server;
 
@@ -62,16 +62,13 @@ public class CoapServerPipe extends BasePipe {
         return null;
     }
 
-    public void add(Resource... resources) {
-        if (server != null) {
-            server.add(resources);
-        }
+    @Override
+    public void addResources(Resource... resources) {
+        this.server.add(resources);
     }
 
-    public void remove(Resource resource) {
-        if (server != null) {
-            server.remove(resource);
-        }
+    @Override
+    public void removeResource(Resource resource) {
+        this.server.remove(resource);
     }
-
 }
