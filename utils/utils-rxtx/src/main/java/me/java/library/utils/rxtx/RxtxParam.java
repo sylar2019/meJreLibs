@@ -31,8 +31,16 @@ public class RxtxParam {
     private boolean RTS;
 
     public RxtxParam() {
-        this("COM1",
-                9600,
+        this("COM1");
+    }
+
+    public RxtxParam(String commPortId) {
+        this(commPortId, 9600);
+    }
+
+    public RxtxParam(String commPortId, int baudRate) {
+        this(commPortId,
+                baudRate,
                 SerialPort.DATABITS_8,
                 SerialPort.STOPBITS_1,
                 SerialPort.PARITY_NONE);

@@ -21,6 +21,11 @@ import me.java.library.utils.base.ShellUtils;
  */
 public class RxtxUtils {
 
+    /**
+     * 系统授权
+     *
+     * @param rxtxPath
+     */
     public static void preparePermisson(String rxtxPath) {
 
         System.setProperty("gnu.io.rxtx.SerialPorts", rxtxPath);
