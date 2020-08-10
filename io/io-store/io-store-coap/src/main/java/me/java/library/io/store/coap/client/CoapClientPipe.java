@@ -94,10 +94,10 @@ public class CoapClientPipe extends BasePipe {
                 client.get(coapHandler);
                 break;
             case PUT:
-                client.put(coapHandler, req.getContent(), req.getFormat());
+                client.put(coapHandler, req.getContent(), req.getFormat().getValue());
                 break;
             case POST:
-                client.post(coapHandler, req.getContent(), req.getFormat());
+                client.post(coapHandler, req.getContent(), req.getFormat().getValue());
                 break;
             case DELETE:
                 client.delete(coapHandler);
@@ -120,10 +120,10 @@ public class CoapClientPipe extends BasePipe {
                 response = client.get();
                 break;
             case PUT:
-                response = client.put(cmd.getContent(), cmd.getFormat());
+                response = client.put(cmd.getContent(), cmd.getFormat().getValue());
                 break;
             case POST:
-                response = client.post(cmd.getContent(), cmd.getFormat());
+                response = client.post(cmd.getContent(), cmd.getFormat().getValue());
                 break;
             case DELETE:
                 response = client.delete();

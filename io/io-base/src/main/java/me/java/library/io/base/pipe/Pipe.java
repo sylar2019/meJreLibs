@@ -93,6 +93,12 @@ public interface Pipe extends Serviceable {
      */
     Host getHost();
 
+    /***
+     * 观察者
+     * @return
+     */
+    PipeWatcher getWatcher();
+
     /**
      * 设置观察者
      *

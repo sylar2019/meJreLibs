@@ -30,6 +30,14 @@ class Server extends CoapServer {
     private static final int TCP_THREADS = NetworkConfig.getStandard().getInt(NetworkConfig.Keys.TCP_WORKER_THREADS);
     private static final int TCP_IDLE_TIMEOUT = NetworkConfig.getStandard().getInt(NetworkConfig.Keys.TCP_CONNECTION_IDLE_TIMEOUT);
 
+    public Server() {
+        super();
+    }
+
+    public Server(int... ports) {
+        super(ports);
+    }
+
     /**
      * Add individual endpoints listening on default CoAP port on all IPv4
      * addresses of all network interfaces.

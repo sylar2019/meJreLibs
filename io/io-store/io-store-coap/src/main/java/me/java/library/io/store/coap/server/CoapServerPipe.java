@@ -3,9 +3,9 @@ package me.java.library.io.store.coap.server;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.utils.base.ExceptionUtils;
-import org.eclipse.californium.core.server.resources.Resource;
 
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 /**
  * File Name             :  CoapServerPipe
@@ -27,12 +27,13 @@ public class CoapServerPipe extends BasePipe implements CoapServer {
     private Server server;
 
     public CoapServerPipe() {
-        this(false, true);
+        server = new Server();
+        server.addEndpoints(true, false);
     }
 
-    public CoapServerPipe(boolean tcp, boolean udp) {
-        server = new Server();
-        server.addEndpoints(udp, tcp);
+    public CoapServerPipe(int port) {
+        server = new Server(port);
+        server.addEndpoints(true, false);
     }
 
     @Override
@@ -63,12 +64,13 @@ public class CoapServerPipe extends BasePipe implements CoapServer {
     }
 
     @Override
-    public void addResources(Resource... resources) {
+    public void addResources(ServerResource... resources) {
         this.server.add(resources);
+        Stream.of(resources).forEach(r -> r.setPipe(this));
     }
 
     @Override
-    public void removeResource(Resource resource) {
+    public void removeResource(ServerResource resource) {
         this.server.remove(resource);
     }
 }

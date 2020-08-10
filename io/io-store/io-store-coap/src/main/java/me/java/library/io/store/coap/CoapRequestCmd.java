@@ -22,10 +22,10 @@ import org.eclipse.californium.core.coap.MediaTypeRegistry;
 public class CoapRequestCmd extends CoapCmd {
     private final static String ATTR_URI = "coap-uri";
     private final static String ATTR_METHOD = "coap-method";
+    private final static String ATTR_FORMAT = "coap-format";
     private final static String ATTR_CONTENT = "coap-content";
-    private final static String ATTR_FORMAT = "content-format";
 
-    public CoapRequestCmd(String uri, CoapMethod method, int format) {
+    public CoapRequestCmd(String uri, CoapMethod method, CoapFormat format) {
         this(uri, method);
         setFormat(format);
     }
@@ -78,8 +78,8 @@ public class CoapRequestCmd extends CoapCmd {
     }
 
     @JsonIgnore
-    public int getFormat() {
-        return getOrDefault(ATTR_FORMAT, MediaTypeRegistry.APPLICATION_JSON);
+    public CoapFormat getFormat() {
+        return getOrDefault(ATTR_FORMAT, CoapFormat.json);
     }
 
     /**
@@ -88,7 +88,7 @@ public class CoapRequestCmd extends CoapCmd {
      * @param format
      * @see MediaTypeRegistry
      */
-    public void setFormat(int format) {
+    public void setFormat(CoapFormat format) {
         setAttr(ATTR_FORMAT, format);
     }
 

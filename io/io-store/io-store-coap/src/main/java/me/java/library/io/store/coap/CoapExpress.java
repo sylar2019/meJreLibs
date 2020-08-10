@@ -19,6 +19,11 @@ import me.java.library.io.store.coap.server.CoapServerPipe;
  * *******************************************************************************************
  */
 public class CoapExpress {
+
+    public static CoapServerPipe server(int port) {
+        return new CoapServerPipe(port);
+    }
+
     public static CoapServerPipe server() {
         return new CoapServerPipe();
     }

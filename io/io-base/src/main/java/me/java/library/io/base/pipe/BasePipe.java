@@ -205,6 +205,11 @@ public abstract class BasePipe implements Pipe {
     }
 
     @Override
+    public PipeWatcher getWatcher() {
+        return watcher;
+    }
+
+    @Override
     public void setWatcher(PipeWatcher watcher) {
         this.watcher = watcher;
     }

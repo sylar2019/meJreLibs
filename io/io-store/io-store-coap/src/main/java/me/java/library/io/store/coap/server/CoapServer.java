@@ -11,7 +11,7 @@ import org.eclipse.californium.core.server.resources.Resource;
  * *******************************************************************************************
  */
 public interface CoapServer {
-    void addResources(Resource... resources);
+    void addResources(ServerResource... resources);
 
-    void removeResource(Resource resource);
+    void removeResource(ServerResource resource);
 }
