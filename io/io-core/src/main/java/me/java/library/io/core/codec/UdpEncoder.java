@@ -9,6 +9,7 @@ import me.java.library.io.base.cmd.Cmd;
 
 import java.net.InetSocketAddress;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author :  sylar
@@ -37,6 +38,7 @@ public class UdpEncoder extends SimpleEncoder {
 
         InetSocketAddress address = cmd.getTo().getInetSocketAddress();
         Preconditions.checkNotNull(address, "udp 报文需要目标套接字地址");
+        Preconditions.checkState(!address.isUnresolved(), "udp 报文地址不可识别");
 
         //build DatagramPacket
         List<Object> raw = Lists.newArrayList(out);

@@ -4,7 +4,7 @@ repositories {
 
 dependencies {
     //TODO 要求JDK 11 以上
-    implementation 'com.github.hivemq.hivemq-community-edition:hivemq-community-edition-embedded:master-SNAPSHOT'
+//    implementation 'com.github.hivemq.hivemq-community-edition:hivemq-community-edition-embedded:master-SNAPSHOT'
 }
 
 dependencies {

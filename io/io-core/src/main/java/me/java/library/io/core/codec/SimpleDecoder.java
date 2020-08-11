@@ -7,7 +7,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import me.java.library.io.base.cmd.Cmd;
 
+import java.net.InetSocketAddress;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author :  sylar
@@ -40,5 +42,17 @@ public class SimpleDecoder extends MessageToMessageDecoder<ByteBuf> {
         if (msgList != null && !msgList.isEmpty()) {
             out.addAll(msgList);
         }
+
+        //设置发送端的socketAddress
+        assert msgList != null;
+        msgList.forEach(cmd -> {
+            if (cmd.getFrom().getInetSocketAddress().getPort() == 0) {
+                Optional.ofNullable(ctx.channel().remoteAddress()).ifPresent(v -> {
+                    if (v instanceof InetSocketAddress) {
+                        cmd.getFrom().setInetSocketAddress((InetSocketAddress) v);
+                    }
+                });
+            }
+        });
     }
 }

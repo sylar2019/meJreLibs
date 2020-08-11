@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.java.library.common.Attributable;
 import me.java.library.common.Identifiable;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.UUID;
 
@@ -23,7 +24,8 @@ import java.util.UUID;
  * *******************************************************************************************
  */
 public interface Terminal extends Identifiable<String>, Attributable {
-    String ATTR_SOCKET_ADDRESS = "socketAddress";
+    String ATTR_SOCKET_HOST = "host";
+    String ATTR_SOCKET_PORT = "port";
 
     Terminal UNKNOWN = new TerminalNode(UUID.randomUUID().toString(), "unknown");
     Terminal SERVER = new TerminalNode(UUID.randomUUID().toString(), "server");
@@ -35,10 +37,14 @@ public interface Terminal extends Identifiable<String>, Attributable {
 
     @JsonIgnore
     default InetSocketAddress getInetSocketAddress() {
-        return getAttr(ATTR_SOCKET_ADDRESS);
+        String host = getOrDefault(ATTR_SOCKET_HOST, "0.0.0.0");
+        int port = getOrDefault(ATTR_SOCKET_PORT, 0);
+        return InetSocketAddress.createUnresolved(host, port);
     }
 
     default void setInetSocketAddress(InetSocketAddress address) {
-        setAttr(ATTR_SOCKET_ADDRESS, address);
+        setAttr(ATTR_SOCKET_HOST, address.getHostString());
+        setAttr(ATTR_SOCKET_PORT, address.getPort());
     }
+
 }

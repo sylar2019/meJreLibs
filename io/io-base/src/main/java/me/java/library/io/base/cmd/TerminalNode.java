@@ -24,7 +24,7 @@ public class TerminalNode extends AbstractIdPojo<String> implements Terminal {
 
     protected final static String DEFAULT_TYPE = "default";
 
-    private String type;
+    private final String type;
 
     public TerminalNode() {
         this(UUID.randomUUID().toString(), DEFAULT_TYPE);
@@ -43,7 +43,6 @@ public class TerminalNode extends AbstractIdPojo<String> implements Terminal {
     public String getType() {
         return type;
     }
-
 
     @Override
     public int hashCode() {

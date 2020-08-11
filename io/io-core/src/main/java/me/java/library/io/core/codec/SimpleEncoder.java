@@ -7,7 +7,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import me.java.library.io.base.cmd.Cmd;
 
+import java.net.InetSocketAddress;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author :  sylar
@@ -36,6 +38,15 @@ public class SimpleEncoder extends MessageToMessageEncoder<Cmd> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Cmd cmd, List<Object> out) throws Exception {
+        //设置发送端的socketAddress
+        if (cmd.getFrom().getInetSocketAddress().getPort() == 0) {
+            Optional.ofNullable(ctx.channel().localAddress()).ifPresent(v -> {
+                if (v instanceof InetSocketAddress) {
+                    cmd.getFrom().setInetSocketAddress((InetSocketAddress) v);
+                }
+            });
+        }
+
         ByteBuf buf = simpleCmdResolver.cmdToBuf(cmd);
         out.add(buf);
     }
