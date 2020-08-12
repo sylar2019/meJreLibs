@@ -68,13 +68,14 @@ public class SocketExpress {
     /**
      * 快速创建 UdpMulticastPipe
      *
-     * @param localPort
-     * @param groupAddress 224.0.2.0～238.255.255.255 为用户可用的组播地址（临时组地址），全网范围内有效；
+     * @param networkInterfaceName 网络接口名称
+     * @param multicastPort        组播的收发端口
+     * @param groupAddress         224.0.2.0～238.255.255.255 为用户可用的组播地址（临时组地址），全网范围内有效；
      * @param cmdResolver
      * @return
      */
-    public static UdpMulticastPipe multicast(String networkInterfaceName, int localPort, String groupAddress, SimpleCmdResolver cmdResolver) {
-        UdpMulticastParams params = new UdpMulticastParams(localPort, groupAddress);
+    public static UdpMulticastPipe multicast(String networkInterfaceName, int multicastPort, String groupAddress, SimpleCmdResolver cmdResolver) {
+        UdpMulticastParams params = new UdpMulticastParams(multicastPort, groupAddress);
         params.setNetworkInterfaceName(networkInterfaceName);
         UdpCodec codec = new UdpCodec(cmdResolver);
         return new UdpMulticastPipe(params, codec);

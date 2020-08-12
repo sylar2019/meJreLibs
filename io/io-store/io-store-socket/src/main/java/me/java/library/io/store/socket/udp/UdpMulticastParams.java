@@ -24,8 +24,8 @@ public class UdpMulticastParams extends BasePipeParams {
     boolean reuseAddress = true;
     String networkInterfaceName;
 
-    public UdpMulticastParams(int localPort, String groupAddress) {
-        this.localPort = localPort;
+    public UdpMulticastParams(int multicastPort, String groupAddress) {
+        this.localPort = multicastPort;
         this.groupAddress = groupAddress;
     }
 
