@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Leshan Server Demo</title>
 
-    <link rel="stylesheet" href="vendor/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/lw-app.css" />
-    <link rel="icon" type="image/png" href="img/fav_icon.png" />
+    <link href="vendor/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/lw-app.css" rel="stylesheet"/>
+    <link href="img/fav_icon.png" rel="icon" type="image/png"/>
 
     <script src="vendor/js/jquery-2.2.4.min.js"></script>
     <script src="vendor/js/FileSaver.min.js"></script>
@@ -31,59 +31,60 @@
 </head>
 
 <body>
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- <a class="navbar-brand" href="#">Project name</a> -->
-                <a class="navbar-brand" href="#"><img src="img/logo.png" alt="Leshan" title="Leshan"></a>    
-            </div>  
-
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right" id="navbar">
-                    <li id="client-navlink" class="navlink"><a href="#/clients">Clients</a></li>
-                    <li id="security-navlink" class="navlink"><a href="#/security">Security</a></li>
-                </ul>
-            </div>
-
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- <a class="navbar-brand" href="#">Project name</a> -->
+            <a class="navbar-brand" href="#"><img alt="Leshan" src="img/logo.png" title="Leshan"></a>
         </div>
-    </div>
-    <div class="container container-view">
-        <div ng-view></div>
-    </div>
 
-    <div id="footer">
-      <div class="container">
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right" id="navbar">
+                <li class="navlink" id="client-navlink"><a href="#/clients">Clients</a></li>
+                <li class="navlink" id="security-navlink"><a href="#/security">Security</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div class="container container-view">
+    <div ng-view></div>
+</div>
+
+<div id="footer">
+    <div class="container">
         <p class="text-muted text-center"><small>
-        Powered by: <a href="http://eclipse.org/leshan">Lightweight M2M Leshan Project</a>
-        - <a href="https://github.com/eclipse/leshan/issues/">Report a bug</a>
-        - Version : <a href="https://github.com/eclipse/leshan/tree/@commit-id@">@version@</a>
+            Powered by: <a href="http://eclipse.org/leshan">Lightweight M2M Leshan Project</a>
+            - <a href="https://github.com/eclipse/leshan/issues/">Report a bug</a>
+            - Version : <a href="https://github.com/eclipse/leshan/tree/@commit-id@">@version@</a>
         </small></p>
-      </div>
     </div>
+</div>
 
 
-    <!-- Message Dialog  -->
-    <div class="modal bs-example-modal-sm" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Alert</h4>
-                </div>
-                <div class="modal-body">
-                    <label id="messageModalLabel"></label>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+<!-- Message Dialog  -->
+<div aria-hidden="true" aria-labelledby="messageModalLabel" class="modal bs-example-modal-sm" id="messageModal" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+                <label id="messageModalLabel"></label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
             </div>
         </div>
     </div>
+</div>
 
 </body>
 </html>

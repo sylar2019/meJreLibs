@@ -24,7 +24,7 @@ public abstract class AbstractSimpleDatagramCodec extends AbstractSimpleCodec {
     }
 
     @Override
-    public void initPipeLine(Channel channel) throws Exception{
+    public void initPipeLine(Channel channel) throws Exception {
         super.initPipeLine(channel);
 
         //in

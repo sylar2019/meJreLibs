@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.java.library.common.Attributable;
 import me.java.library.common.Identifiable;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.UUID;
 
@@ -39,7 +38,7 @@ public interface Terminal extends Identifiable<String>, Attributable {
     default InetSocketAddress getInetSocketAddress() {
         String host = getOrDefault(ATTR_SOCKET_HOST, "0.0.0.0");
         int port = getOrDefault(ATTR_SOCKET_PORT, 0);
-        return InetSocketAddress.createUnresolved(host, port);
+        return new InetSocketAddress(host, port);
     }
 
     default void setInetSocketAddress(InetSocketAddress address) {

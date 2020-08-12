@@ -15,5 +15,5 @@ package me.java.library.io.mq.msg;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public interface EventMsg extends MqMsg  {
+public interface EventMsg extends MqMsg {
 }

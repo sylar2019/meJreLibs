@@ -31,10 +31,12 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
     <Object ObjectType="MODefinition">
         <Name>Communications Activity Time Readings</Name>
-        <Description1><![CDATA[Measures the total duration that the meter was activating its radio for packet transmission or receipt for the period. Used to monitor for excess poower usage over time.]]></Description1>
+        <Description1>
+            <![CDATA[Measures the total duration that the meter was activating its radio for packet transmission or receipt for the period. Used to monitor for excess poower usage over time.]]></Description1>
         <ObjectID>10271</ObjectID>
         <ObjectURN>urn:oma:lwm2m:x:10271</ObjectURN>
         <MultipleInstances>Multiple</MultipleInstances>
@@ -67,7 +69,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>Integer</Type>
                 <RangeEnumeration>0..86399</RangeEnumeration>
                 <Units>s</Units>
-                <Description><![CDATA[The Interval Start Offset resource is a read only resource representing the number of seconds past midnight for which the first interval is recorded. If this resource is empty, it is assumed that the intervals are midnight aligned. This can be used to adjust interval boundaries. As an example, an Interval Period of 3600 seconds and an Interval Start time of 300 represents hourly interval data, starting at 00:05.]]></Description>
+                <Description>
+                    <![CDATA[The Interval Start Offset resource is a read only resource representing the number of seconds past midnight for which the first interval is recorded. If this resource is empty, it is assumed that the intervals are midnight aligned. This can be used to adjust interval boundaries. As an example, an Interval Period of 3600 seconds and an Interval Start time of 300 represents hourly interval data, starting at 00:05.]]></Description>
             </Item>
             <Item ID="6002">
                 <Name>Interval UTC Offset</Name>
@@ -77,7 +80,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>String</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[The Interval UTC Offset resource is a read only resource representing the time zone offset for this Interval Data instance. If this resource is empty, the application should use the UTC offset provided in the Device [/3/0/14] object instance resource or UTC if not provided. UTC+X [ISO 8601].]]></Description>
+                <Description>
+                    <![CDATA[The Interval UTC Offset resource is a read only resource representing the time zone offset for this Interval Data instance. If this resource is empty, the application should use the UTC offset provided in the Device [/3/0/14] object instance resource or UTC if not provided. UTC+X [ISO 8601].]]></Description>
             </Item>
             <Item ID="6003">
                 <Name>Interval Collection Start Time</Name>
@@ -87,7 +91,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>Time</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[The Collection Start Time resource is a read only resource representing the time when the first interval was recorded on the device. Interval times represent the end of the interval, not the beginning. As an example, the first four hourly interval past midnight will have a timestamp of 04:00 (adjusting for UTC offset). ]]></Description>
+                <Description>
+                    <![CDATA[The Collection Start Time resource is a read only resource representing the time when the first interval was recorded on the device. Interval times represent the end of the interval, not the beginning. As an example, the first four hourly interval past midnight will have a timestamp of 04:00 (adjusting for UTC offset). ]]></Description>
             </Item>
             <Item ID="6004">
                 <Name>Oldest Recorded Interval</Name>
@@ -97,7 +102,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>Time</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[The Oldest Recorded Interval resource is a read-only resource representing the oldest available interval on the device. Interval times represent the end of the interval, not the beginning.]]></Description>
+                <Description>
+                    <![CDATA[The Oldest Recorded Interval resource is a read-only resource representing the oldest available interval on the device. Interval times represent the end of the interval, not the beginning.]]></Description>
             </Item>
             <Item ID="6005">
                 <Name>Last Delivered Interval</Name>
@@ -107,7 +113,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>Time</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[The Last Delivered Interval is a readable and writable resource used to represent the last interval delivered to the LwM2M server. Interval times represent the end of the interval, not the beginning. The setting of this resource is implementation specific but should be updated based on, either a Read request of the Latest Payload from the LwM2M server or via a confirmed delivery of Notify operation of the Latest Payload resource. This resource is writable to allow the server to adjust the Last Delivered Interval value if the server and client is out of sync.]]></Description>
+                <Description>
+                    <![CDATA[The Last Delivered Interval is a readable and writable resource used to represent the last interval delivered to the LwM2M server. Interval times represent the end of the interval, not the beginning. The setting of this resource is implementation specific but should be updated based on, either a Read request of the Latest Payload from the LwM2M server or via a confirmed delivery of Notify operation of the Latest Payload resource. This resource is writable to allow the server to adjust the Last Delivered Interval value if the server and client is out of sync.]]></Description>
             </Item>
             <Item ID="6006">
                 <Name>Latest Recorded Interval</Name>
@@ -117,7 +124,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>Time</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[The Latest Recorded Interval is a readable resource representing the currently highest recorded interval on the device. Interval times represent the end of the interval, not the beginning.]]></Description>
+                <Description>
+                    <![CDATA[The Latest Recorded Interval is a readable resource representing the currently highest recorded interval on the device. Interval times represent the end of the interval, not the beginning.]]></Description>
             </Item>
             <Item ID="6007">
                 <Name>Interval Delivery Midnight Aligned</Name>
@@ -127,7 +135,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>Boolean</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[The Delivery Midnight Aligned is a readable and writable resource used to indicate if data is delivered only to the previous midnight (1) or if part-day data can be delivered (0). Calculating Midnight should consider the Interval UTC Offset resource, or if empty, the Device [/3/0/14] object instance resource.]]></Description>
+                <Description>
+                    <![CDATA[The Delivery Midnight Aligned is a readable and writable resource used to indicate if data is delivered only to the previous midnight (1) or if part-day data can be delivered (0). Calculating Midnight should consider the Interval UTC Offset resource, or if empty, the Device [/3/0/14] object instance resource.]]></Description>
             </Item>
             <Item ID="6008">
                 <Name>Interval Historical Read</Name>
@@ -154,7 +163,8 @@ As an example, the Argument List to retrieve data from Midnight 2nd March (UTC+1
                 <Type>Opaque</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[The Historical Read Payload resource is the representation of the data requested by the Historical Interval Read executable resource. The format of this Opaque value should be identical to the Latest Payload resource. If no Historical Interval Read has been executed, this resource should return and empty Opaque value. This resource can either be Read from the Server or set up as an observation and Notified to the server as soon as the historical data is available. When this payload is delivered to the LwM2M server, via either a read request or a confirmed observation on this Object, Object Instance or Resource, the Historical Read Payload should be set to an empty Opaque value.]]></Description>
+                <Description>
+                    <![CDATA[The Historical Read Payload resource is the representation of the data requested by the Historical Interval Read executable resource. The format of this Opaque value should be identical to the Latest Payload resource. If no Historical Interval Read has been executed, this resource should return and empty Opaque value. This resource can either be Read from the Server or set up as an observation and Notified to the server as soon as the historical data is available. When this payload is delivered to the LwM2M server, via either a read request or a confirmed observation on this Object, Object Instance or Resource, the Historical Read Payload should be set to an empty Opaque value.]]></Description>
             </Item>
             <Item ID="6010">
                 <Name>Interval Change Configuration</Name>
@@ -183,7 +193,8 @@ As an example, the Argument List to change an interval data object instance from
                 <Type></Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Start is an executable resource that enables the recording of interval data. The first interval recorded will have a timestamp based on the Interval Start Offset resource. This executable resource takes no arguments. Refer to re-usable resource LogStart for further details.]]></Description>
+                <Description>
+                    <![CDATA[Start is an executable resource that enables the recording of interval data. The first interval recorded will have a timestamp based on the Interval Start Offset resource. This executable resource takes no arguments. Refer to re-usable resource LogStart for further details.]]></Description>
             </Item>
             <Item ID="6027">
                 <Name>Stop</Name>
@@ -193,7 +204,8 @@ As an example, the Argument List to change an interval data object instance from
                 <Type></Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Stop (LogStop) is an executable resource that disables the recording of interval data for this object instance. This executable resource takes no arguments. Refer to re-usable resource LogStop for further details.]]></Description>
+                <Description>
+                    <![CDATA[Stop (LogStop) is an executable resource that disables the recording of interval data for this object instance. This executable resource takes no arguments. Refer to re-usable resource LogStop for further details.]]></Description>
             </Item>
             <Item ID="6028">
                 <Name>Status</Name>
@@ -203,7 +215,8 @@ As an example, the Argument List to change an interval data object instance from
                 <Type>Integer</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Recording Enabled is a read-only resource providing an indication of if interval data is currently being recorded for this object instance. Refer to re-usable resource LogStatus for further details.]]></Description>
+                <Description>
+                    <![CDATA[Recording Enabled is a read-only resource providing an indication of if interval data is currently being recorded for this object instance. Refer to re-usable resource LogStatus for further details.]]></Description>
             </Item>
             <Item ID="6029">
                 <Name>Latest Payload</Name>

@@ -1,7 +1,5 @@
 package me.java.library.io.store.coap.server;
 
-import org.eclipse.californium.core.server.resources.Resource;
-
 /**
  * @author : sylar
  * @fullName : me.java.library.io.store.coap.server.CoapServer

@@ -2,7 +2,6 @@ package me.java.library.io.store.rxtx;
 
 import io.netty.handler.codec.ByteToMessageDecoder;
 import me.java.library.io.core.codec.SimpleCmdResolver;
-import me.java.library.utils.rxtx.RxtxParam;
 
 /**
  * File Name             :  RxtxExpress
@@ -23,19 +22,16 @@ public class RxtxExpress {
     /**
      * 快速创建 RxtxPipe
      *
-     * @param param        串口参数
+     * @param params       串口参数
      * @param frameDecoder 帧解析器
      * @param cmdResolver  指令编解码器
      * @return
      */
-    public static RxtxPipe rxtx(RxtxParam param,
-                                ByteToMessageDecoder frameDecoder,
-                                SimpleCmdResolver cmdResolver) {
-        RxtxBus bus = new RxtxBus();
-        bus.setRxtxParam(param);
-
+    public static RxtxPipe create(RxtxParams params,
+                                  ByteToMessageDecoder frameDecoder,
+                                  SimpleCmdResolver cmdResolver) {
         RxtxCodec codec = new RxtxCodec(cmdResolver, frameDecoder);
-        return new RxtxPipe(bus, codec);
+        return new RxtxPipe(params, codec);
     }
 
 }

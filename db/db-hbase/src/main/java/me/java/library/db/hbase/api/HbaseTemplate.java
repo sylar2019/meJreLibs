@@ -17,9 +17,7 @@ import org.springframework.util.StopWatch;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Central class for accessing the HBase API. Simplifies the use of HBase and helps to avoid common errors.

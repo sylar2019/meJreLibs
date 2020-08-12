@@ -1,5 +1,5 @@
 dependencies {
     compile project(":io:io-base")
-    compile ("org.eclipse.californium:californium-core:2.3.0")
-    compile ("org.eclipse.californium:element-connector-tcp-netty:2.3.0")
+    compile("org.eclipse.californium:californium-core:2.3.0")
+    compile("org.eclipse.californium:element-connector-tcp-netty:2.3.0")
 }

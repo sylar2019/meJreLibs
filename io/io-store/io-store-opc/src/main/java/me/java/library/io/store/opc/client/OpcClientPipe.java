@@ -3,7 +3,6 @@ package me.java.library.io.store.opc.client;
 import com.google.common.base.Preconditions;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
-import me.java.library.io.store.opc.OpcParam;
 import me.java.library.io.store.opc.cmd.*;
 import me.java.library.utils.base.ConcurrentUtils;
 import me.java.library.utils.base.ExceptionUtils;
@@ -30,20 +29,21 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class OpcClientPipe extends BasePipe {
+public class OpcClientPipe extends BasePipe<OpcClientParams> {
 
     Server server;
     AutoReconnectController controller;
     AccessBase subSccess;
 
-    public OpcClientPipe(OpcParam param) {
-        server = new Server(param.convert(), ConcurrentUtils.simpleScheduledThreadPool());
+    public OpcClientPipe(OpcClientParams params) {
+        super(params);
+        server = new Server(params.convert(), ConcurrentUtils.simpleScheduledThreadPool());
         controller = new AutoReconnectController(server);
     }
 
     @Override
     protected boolean onStart() throws Exception {
-        if (isDaemon) {
+        if (params.isDaemon()) {
             controller.connect();
         } else {
             server.connect();
@@ -53,7 +53,7 @@ public class OpcClientPipe extends BasePipe {
 
     @Override
     protected boolean onStop() throws Exception {
-        if (isDaemon) {
+        if (params.isDaemon()) {
             controller.disconnect();
         } else {
             server.disconnect();
@@ -95,10 +95,9 @@ public class OpcClientPipe extends BasePipe {
 
             onReceived(readResponseCmd);
 
-        }else if (request instanceof OpcWriteRequestCmd) {
+        } else if (request instanceof OpcWriteRequestCmd) {
             ExceptionUtils.throwException("OPC官写操不支持异步方式");
-        }
-        else if (request instanceof OpcStartSubscribeCmd) {
+        } else if (request instanceof OpcStartSubscribeCmd) {
             startSub((OpcStartSubscribeCmd) request);
         } else if (request instanceof OpcStopSubscribeCmd) {
             stopSub((OpcStopSubscribeCmd) request);
@@ -144,7 +143,7 @@ public class OpcClientPipe extends BasePipe {
                 }
             });
             return writeResponseCmd;
-        }else{
+        } else {
             ExceptionUtils.notSupportMethod();
         }
         return null;

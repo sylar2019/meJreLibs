@@ -67,14 +67,14 @@ public class CoapRequestCmd extends CoapCmd {
         setAttr(ATTR_CONTENT, content);
     }
 
+    public void setContent(String content) {
+        setAttr(ATTR_CONTENT, content.getBytes(Charsets.UTF_8));
+    }
+
     @JsonIgnore
     public String getContentText() {
         byte[] bytes = getAttr(ATTR_CONTENT);
         return new String(bytes, Charsets.UTF_8);
-    }
-
-    public void setContent(String content) {
-        setAttr(ATTR_CONTENT, content.getBytes(Charsets.UTF_8));
     }
 
     @JsonIgnore

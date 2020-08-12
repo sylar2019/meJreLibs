@@ -22,18 +22,15 @@ import java.util.stream.Stream;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class CoapServerPipe extends BasePipe implements CoapServer {
+public class CoapServerPipe extends BasePipe<CoapServerParams> implements CoapServer {
 
     private Server server;
 
-    public CoapServerPipe() {
-        server = new Server();
-        server.addEndpoints(true, false);
-    }
+    public CoapServerPipe(CoapServerParams params) {
+        super(params);
 
-    public CoapServerPipe(int port) {
-        server = new Server(port);
-        server.addEndpoints(true, false);
+        server = new Server(params.getPorts());
+        server.addEndpoints(params.isUdp(), params.isTcp());
     }
 
     @Override
@@ -61,6 +58,11 @@ public class CoapServerPipe extends BasePipe implements CoapServer {
     protected Cmd onSyncSend(Cmd request, long timeout, TimeUnit unit) throws Exception {
         ExceptionUtils.notSupportMethod();
         return null;
+    }
+
+    @Override
+    protected void onReceived(Cmd cmd) {
+        super.onReceived(cmd);
     }
 
     @Override

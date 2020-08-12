@@ -1,24 +1,18 @@
-package me.java.library.io.store.opc;
+package me.java.library.io.store.opc.client;
 
+import me.java.library.io.base.pipe.BasePipeParams;
 import org.openscada.opc.lib.common.ConnectionInformation;
 
 /**
- * File Name             :  OpcParam
- *
- * @author :  sylar
- * Create                :  2020/7/23
- * Description           :
- * Reviewed By           :
- * Reviewed On           :
- * Version History       :
- * Modified By           :
- * Modified Date         :
- * Comments              :
- * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
+ * @author : sylar
+ * @fullName : me.java.library.io.store.opc.client.OpcClientParams
+ * @createDate : 2020/8/12
+ * @description :
+ * @copyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
  * *******************************************************************************************
  */
-public class OpcParam {
-    private String host = "localhost";
+public class OpcClientParams extends BasePipeParams {
+    private String server = "localhost";
     private String domain = "localhost";
     private String user;
     private String password;
@@ -27,7 +21,7 @@ public class OpcParam {
 
     public ConnectionInformation convert() {
         ConnectionInformation ci = new ConnectionInformation();
-        ci.setHost(host);
+        ci.setHost(server);
         ci.setDomain(domain);
         ci.setUser(user);
         ci.setPassword(password);
@@ -36,12 +30,12 @@ public class OpcParam {
         return ci;
     }
 
-    public String getHost() {
-        return host;
+    public String getServer() {
+        return server;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setServer(String server) {
+        this.server = server;
     }
 
     public String getDomain() {

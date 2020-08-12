@@ -8,10 +8,7 @@ import me.java.library.io.store.coap.CoapResponseCmd;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapResponse;
-import org.eclipse.californium.core.network.config.NetworkConfig;
-import org.eclipse.californium.core.network.config.NetworkConfigDefaultHandler;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -30,29 +27,11 @@ import java.util.concurrent.TimeoutException;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class CoapClientPipe extends BasePipe {
-
-    private static final File CONFIG_FILE = new File("Californium.properties");
-    private static final String CONFIG_HEADER = "Californium CoAP Properties file for Fileclient";
-    private static final int DEFAULT_MAX_RESOURCE_SIZE = 2 * 1024 * 1024;
-    private static final int DEFAULT_BLOCK_SIZE = 512;
-
-    private static NetworkConfigDefaultHandler DEFAULTS = new NetworkConfigDefaultHandler() {
-
-        @Override
-        public void applyDefaults(NetworkConfig config) {
-            config.setInt(NetworkConfig.Keys.MAX_RESOURCE_BODY_SIZE, DEFAULT_MAX_RESOURCE_SIZE);
-            config.setInt(NetworkConfig.Keys.MAX_MESSAGE_SIZE, DEFAULT_BLOCK_SIZE);
-            config.setInt(NetworkConfig.Keys.PREFERRED_BLOCK_SIZE, DEFAULT_BLOCK_SIZE);
-            config.setInt(NetworkConfig.Keys.MULTICAST_BASE_MID, 65000);
-        }
-    };
-
+public class CoapClientPipe extends BasePipe<CoapClientParams> {
     protected CoapClient client;
 
-    public CoapClientPipe() {
-        NetworkConfig config = NetworkConfig.createWithFile(CONFIG_FILE, CONFIG_HEADER, DEFAULTS);
-        NetworkConfig.setStandard(config);
+    public CoapClientPipe(CoapClientParams params) {
+        super(params);
     }
 
     @Override

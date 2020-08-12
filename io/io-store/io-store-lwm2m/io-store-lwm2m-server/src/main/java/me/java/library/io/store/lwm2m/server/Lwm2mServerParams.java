@@ -1,5 +1,7 @@
 package me.java.library.io.store.lwm2m.server;
 
+import me.java.library.io.base.pipe.BasePipeParams;
+
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
@@ -8,17 +10,16 @@ import java.util.List;
 
 /**
  * @author : sylar
- * @fullName : me.java.library.io.store.lwm2m.server.Lwm2mServerParam
- * @createDate : 2020/8/4
+ * @fullName : me.java.library.io.store.lwm2m.server.Lwm2mServerParams
+ * @createDate : 2020/8/12
  * @description :
  * @copyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
  * *******************************************************************************************
  */
-public class Lwm2mServerParam {
+public class Lwm2mServerParams extends BasePipeParams {
     String webAddress;
     int webPort;
     String localAddress;
-    Integer localPort;
     String secureLocalAddress;
     Integer secureLocalPort;
     String modelsFolderPath;
@@ -57,14 +58,6 @@ public class Lwm2mServerParam {
 
     public void setLocalAddress(String localAddress) {
         this.localAddress = localAddress;
-    }
-
-    public Integer getLocalPort() {
-        return localPort;
-    }
-
-    public void setLocalPort(Integer localPort) {
-        this.localPort = localPort;
     }
 
     public String getSecureLocalAddress() {

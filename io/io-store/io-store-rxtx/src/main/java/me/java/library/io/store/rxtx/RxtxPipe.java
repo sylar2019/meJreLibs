@@ -7,7 +7,6 @@ import io.netty.channel.rxtx.RxtxChannelConfig;
 import io.netty.channel.rxtx.RxtxChannelOption;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 import me.java.library.io.core.pipe.AbstractPipe;
-import me.java.library.utils.rxtx.RxtxParam;
 import me.java.library.utils.rxtx.RxtxUtils;
 
 /**
@@ -26,30 +25,31 @@ import me.java.library.utils.rxtx.RxtxUtils;
  * *******************************************************************************************
  */
 @SuppressWarnings({"deprecation"})
-public class RxtxPipe extends AbstractPipe<RxtxBus, RxtxCodec> {
-    public RxtxPipe(RxtxBus bus, RxtxCodec codec) {
-        super(bus, codec);
+public class RxtxPipe extends AbstractPipe<RxtxParams, RxtxCodec> {
+
+    public RxtxPipe(RxtxParams params, RxtxCodec codec) {
+        super(params, codec);
     }
 
     @Override
     protected boolean onStart() throws Exception {
-        RxtxParam param = bus.getRxtxParam();
-        RxtxUtils.preparePermisson(param.getCommPortId());
+        RxtxUtils.preparePermisson(params.getCommPortId());
 
         masterLoop = new OioEventLoopGroup();
-        RxtxDeviceAddress rxtxDeviceAddress = new RxtxDeviceAddress(param.getCommPortId());
+        RxtxDeviceAddress rxtxDeviceAddress = new RxtxDeviceAddress(params.getCommPortId());
 
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(masterLoop)
                 .channel(RxtxChannel.class)
-                .option(RxtxChannelOption.BAUD_RATE, param.getBaudRate())
-                .option(RxtxChannelOption.DATA_BITS, RxtxChannelConfig.Databits.valueOf(param.getDataBits()))
-                .option(RxtxChannelOption.STOP_BITS, RxtxChannelConfig.Stopbits.valueOf(param.getStopBits()))
-                .option(RxtxChannelOption.PARITY_BIT, RxtxChannelConfig.Paritybit.valueOf(param.getParity()))
-                .option(RxtxChannelOption.DTR, param.isDTR())
-                .option(RxtxChannelOption.RTS, param.isRTS())
+                .option(RxtxChannelOption.BAUD_RATE, params.getBaudRate())
+                .option(RxtxChannelOption.DATA_BITS, RxtxChannelConfig.Databits.valueOf(params.getDataBits()))
+                .option(RxtxChannelOption.STOP_BITS, RxtxChannelConfig.Stopbits.valueOf(params.getStopBits()))
+                .option(RxtxChannelOption.PARITY_BIT, RxtxChannelConfig.Paritybit.valueOf(params.getParity()))
+                .option(RxtxChannelOption.DTR, params.isDTR())
+                .option(RxtxChannelOption.RTS, params.isRTS())
                 .handler(channelInitializer);
 
         return bootstrap.connect(rxtxDeviceAddress).sync().isDone();
     }
+
 }

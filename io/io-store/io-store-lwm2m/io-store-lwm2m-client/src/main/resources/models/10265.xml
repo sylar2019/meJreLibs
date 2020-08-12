@@ -31,10 +31,12 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
     <Object ObjectType="MODefinition">
         <Name>Leakage Detection Configuration</Name>
-        <Description1><![CDATA[The leakage detection configuration object provides a means for configuring the timing and sampling frequency of a vibration based network leak detector]]></Description1>
+        <Description1>
+            <![CDATA[The leakage detection configuration object provides a means for configuring the timing and sampling frequency of a vibration based network leak detector]]></Description1>
         <ObjectID>10265</ObjectID>
         <ObjectURN>urn:oma:lwm2m:x:10265</ObjectURN>
         <MultipleInstances>Single</MultipleInstances>
@@ -48,7 +50,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>Integer</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Sample Times is a readable and writable multi value resource used to control when leak detection vibration sampling should occur. This is an integer value representing seconds since midnight]]></Description>
+                <Description>
+                    <![CDATA[Sample Times is a readable and writable multi value resource used to control when leak detection vibration sampling should occur. This is an integer value representing seconds since midnight]]></Description>
             </Item>
             <Item ID="1">
                 <Name>Sample UTC Offset</Name>
@@ -58,7 +61,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>String</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[The Sample UTC Offset resource is a readable and writable resource representing the time zone offset for this Leakage Detection Schedule instance. If this resource is empty, the application should use the UTC offset provided in the Device [/3/0/14] object instance resource or UTC if not provided.]]></Description>
+                <Description>
+                    <![CDATA[The Sample UTC Offset resource is a readable and writable resource representing the time zone offset for this Leakage Detection Schedule instance. If this resource is empty, the application should use the UTC offset provided in the Device [/3/0/14] object instance resource or UTC if not provided.]]></Description>
             </Item>
             <Item ID="2">
                 <Name>Detection Mode</Name>
@@ -88,7 +92,8 @@ All Frequency Values(3)  for this mode, all frequency values for all frequency b
                 <Type>Integer</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Top Frequency Count is a readable and writeable resource used represent the number of samples to provide if the Detection Mode is set to Mode 2 (Top Frequency Values). If not provided, this value should default to 3]]></Description>
+                <Description>
+                    <![CDATA[Top Frequency Count is a readable and writeable resource used represent the number of samples to provide if the Detection Mode is set to Mode 2 (Top Frequency Values). If not provided, this value should default to 3]]></Description>
             </Item>
             <Item ID="4">
                 <Name>Frequency Thresholds</Name>
@@ -127,7 +132,8 @@ This resource can either be observed by the LwM2M server (and subsequently notif
                 <Type>String</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Firmware Version is a readonly resource representing the current firmware version of the Daughter Board.]]></Description>
+                <Description>
+                    <![CDATA[Firmware Version is a readonly resource representing the current firmware version of the Daughter Board.]]></Description>
             </Item>
         </Resources>
         <Description2></Description2>

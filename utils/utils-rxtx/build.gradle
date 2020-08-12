@@ -2,5 +2,5 @@ dependencies {
     compile project(":utils:utils-base")
 
     //@see https://github.com/NeuronRobotics/nrjavaserial
-    compile ("com.neuronrobotics:nrjavaserial:5.2.1")
+    compile("com.neuronrobotics:nrjavaserial:5.2.1")
 }

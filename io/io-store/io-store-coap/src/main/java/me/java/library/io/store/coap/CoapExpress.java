@@ -1,6 +1,8 @@
 package me.java.library.io.store.coap;
 
+import me.java.library.io.store.coap.client.CoapClientParams;
 import me.java.library.io.store.coap.client.CoapClientPipe;
+import me.java.library.io.store.coap.server.CoapServerParams;
 import me.java.library.io.store.coap.server.CoapServerPipe;
 
 /**
@@ -21,13 +23,14 @@ import me.java.library.io.store.coap.server.CoapServerPipe;
 public class CoapExpress {
 
     public static CoapServerPipe server(int port) {
-        return new CoapServerPipe(port);
+        return new CoapServerPipe(new CoapServerParams(port));
     }
 
     public static CoapServerPipe server() {
-        return new CoapServerPipe();
+        return new CoapServerPipe(new CoapServerParams());
     }
+
     public static CoapClientPipe client() {
-        return new CoapClientPipe();
+        return new CoapClientPipe(new CoapClientParams());
     }
 }

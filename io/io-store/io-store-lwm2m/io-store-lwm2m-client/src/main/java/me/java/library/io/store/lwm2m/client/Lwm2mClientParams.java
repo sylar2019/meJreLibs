@@ -1,5 +1,7 @@
 package me.java.library.io.store.lwm2m.client;
 
+import me.java.library.io.base.pipe.BasePipeParams;
+
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -7,14 +9,13 @@ import java.util.Map;
 
 /**
  * @author : sylar
- * @fullName : me.java.library.io.store.lwm2m.client.Lwm2mClientParam
- * @createDate : 2020/8/4
+ * @fullName : me.java.library.io.store.lwm2m.client.Lwm2mClientParams
+ * @createDate : 2020/8/12
  * @description :
  * @copyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
  * *******************************************************************************************
  */
-public class Lwm2mClientParam {
-
+public class Lwm2mClientParams extends BasePipeParams {
     String endpoint;
     String localAddress;
     int localPort;
@@ -53,10 +54,12 @@ public class Lwm2mClientParam {
         this.localAddress = localAddress;
     }
 
+    @Override
     public int getLocalPort() {
         return localPort;
     }
 
+    @Override
     public void setLocalPort(int localPort) {
         this.localPort = localPort;
     }

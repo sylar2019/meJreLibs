@@ -4,9 +4,9 @@ import com.serotonin.modbus4j.ModbusFactory;
 import com.serotonin.modbus4j.ModbusMaster;
 import com.serotonin.modbus4j.ModbusSlaveSet;
 import com.serotonin.modbus4j.serial.SerialPortWrapper;
-import me.java.library.utils.rxtx.RxtxParam;
 import me.java.library.io.store.modbus.master.ModbusMasterPipe;
 import me.java.library.io.store.modbus.slave.ModbusSlavePipe;
+import me.java.library.utils.rxtx.RxtxParam;
 
 /**
  * File Name             :  MasterPipeFactory
@@ -23,7 +23,7 @@ import me.java.library.io.store.modbus.slave.ModbusSlavePipe;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class ModebusExpress {
+public class ModbusExpress {
 
     static ModbusFactory factory = new ModbusFactory();
 

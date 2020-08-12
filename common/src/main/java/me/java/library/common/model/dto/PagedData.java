@@ -44,6 +44,5 @@ public class PagedData<T> extends AbstractPojo {
     public void setItems(List<T> items) {
         this.items = items;
     }
-
 }
 

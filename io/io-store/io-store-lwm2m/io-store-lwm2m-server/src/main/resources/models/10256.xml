@@ -28,90 +28,96 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
-  <Object ObjectType="MODefinition">
-    <Name>ECID-Signal Measurement Information</Name>
-    <Description1><![CDATA[This LWM2M Object provides ECID signal measurements of a device.]]></Description1>
-    <ObjectID>10256</ObjectID>
-    <ObjectURN>urn:oma:lwm2m:x:10256</ObjectURN>
-    <LWM2MVersion>1.0</LWM2MVersion>
-    <ObjectVersion>1.0</ObjectVersion>
-    <MultipleInstances>Multiple</MultipleInstances>
-    <Mandatory>Optional</Mandatory>
-    <Resources>
-      <Item ID="0">
-        <Name>physCellId</Name>
-        <Operations>R</Operations>
-        <MultipleInstances>Single</MultipleInstances>
-        <Mandatory>Mandatory</Mandatory>
-        <Type>Integer</Type>
-        <RangeEnumeration>
-        </RangeEnumeration>
-        <Units>
-        </Units>
-        <Description><![CDATA[This field specifies the physical cell identity of the measured cell.]]></Description>
-      </Item>
-      <Item ID="1">
-        <Name>ECGI</Name>
-        <Operations>R</Operations>
-        <MultipleInstances>Single</MultipleInstances>
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+    <Object ObjectType="MODefinition">
+        <Name>ECID-Signal Measurement Information</Name>
+        <Description1><![CDATA[This LWM2M Object provides ECID signal measurements of a device.]]></Description1>
+        <ObjectID>10256</ObjectID>
+        <ObjectURN>urn:oma:lwm2m:x:10256</ObjectURN>
+        <LWM2MVersion>1.0</LWM2MVersion>
+        <ObjectVersion>1.0</ObjectVersion>
+        <MultipleInstances>Multiple</MultipleInstances>
         <Mandatory>Optional</Mandatory>
-        <Type>Integer</Type>
-        <RangeEnumeration>
-        </RangeEnumeration>
-        <Units>
-        </Units>
-        <Description><![CDATA[This field specifies cell global ID of the measured cell. The target device shall provide this field if it was able to determine the ECGI of the measured cell at the time of measurement.]]></Description>
-      </Item>
-      <Item ID="2">
-        <Name>arfcnEUTRA</Name>
-        <Operations>R</Operations>
-        <MultipleInstances>Single</MultipleInstances>
-        <Mandatory>Mandatory</Mandatory>
-        <Type>Integer</Type>
-        <RangeEnumeration>
-        </RangeEnumeration>
-        <Units>
-        </Units>
-        <Description><![CDATA[This field specifies the ARFCN of the measured E-UTRA carrier frequency.]]></Description>
-      </Item>
-      <Item ID="3">
-        <Name>rsrp-Result </Name>
-        <Operations>R</Operations>
-        <MultipleInstances>Single</MultipleInstances>
-        <Mandatory>Mandatory</Mandatory>
-        <Type>Integer</Type>
-        <RangeEnumeration>
-        </RangeEnumeration>
-        <Units>
-        </Units>
-        <Description><![CDATA[This field specifies the reference signal received power (RSRP) measurement.]]></Description>
-      </Item>
-      <Item ID="4">
-        <Name>rsrq-Result</Name>
-        <Operations>R</Operations>
-        <MultipleInstances>Single</MultipleInstances>
-        <Mandatory>Optional</Mandatory>
-        <Type>Integer</Type>
-        <RangeEnumeration>
-        </RangeEnumeration>
-        <Units>
-        </Units>
-        <Description><![CDATA[This field specifies the reference signal received quality (RSRQ) measurement.]]></Description>
-      </Item>
-      <Item ID="5">
-        <Name>ue-RxTxTimeDiff</Name>
-        <Operations>R</Operations>
-        <MultipleInstances>Single</MultipleInstances>
-        <Mandatory>Optional</Mandatory>
-        <Type>Integer</Type>
-        <RangeEnumeration>
-        </RangeEnumeration>
-        <Units>
-        </Units>
-        <Description><![CDATA[This field specifies the UE Rx–Tx time difference measurement.]]></Description>
-      </Item>
-    </Resources>
-    <Description2><![CDATA[]]></Description2>
-  </Object>
+        <Resources>
+            <Item ID="0">
+                <Name>physCellId</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>
+                </RangeEnumeration>
+                <Units>
+                </Units>
+                <Description>
+                    <![CDATA[This field specifies the physical cell identity of the measured cell.]]></Description>
+            </Item>
+            <Item ID="1">
+                <Name>ECGI</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>
+                </RangeEnumeration>
+                <Units>
+                </Units>
+                <Description>
+                    <![CDATA[This field specifies cell global ID of the measured cell. The target device shall provide this field if it was able to determine the ECGI of the measured cell at the time of measurement.]]></Description>
+            </Item>
+            <Item ID="2">
+                <Name>arfcnEUTRA</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>
+                </RangeEnumeration>
+                <Units>
+                </Units>
+                <Description>
+                    <![CDATA[This field specifies the ARFCN of the measured E-UTRA carrier frequency.]]></Description>
+            </Item>
+            <Item ID="3">
+                <Name>rsrp-Result</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>
+                </RangeEnumeration>
+                <Units>
+                </Units>
+                <Description>
+                    <![CDATA[This field specifies the reference signal received power (RSRP) measurement.]]></Description>
+            </Item>
+            <Item ID="4">
+                <Name>rsrq-Result</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>
+                </RangeEnumeration>
+                <Units>
+                </Units>
+                <Description>
+                    <![CDATA[This field specifies the reference signal received quality (RSRQ) measurement.]]></Description>
+            </Item>
+            <Item ID="5">
+                <Name>ue-RxTxTimeDiff</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>
+                </RangeEnumeration>
+                <Units>
+                </Units>
+                <Description><![CDATA[This field specifies the UE Rx–Tx time difference measurement.]]></Description>
+            </Item>
+        </Resources>
+        <Description2><![CDATA[]]></Description2>
+    </Object>
 </LWM2M>

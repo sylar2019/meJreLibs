@@ -24,20 +24,6 @@ public class WebSocketCmd extends CmdNode {
 
     private WebSocketFrameType webSocketFrameType;
 
-    public WebSocketFrameType getWebSocketFrameType() {
-        return webSocketFrameType;
-    }
-
-    @JsonIgnore
-    public String getTextContent() {
-        return getAttr(ATTR_CONTENT);
-    }
-
-    @JsonIgnore
-    public ByteBuf getBinaryContent() {
-        return getAttr(ATTR_CONTENT);
-    }
-
     public static WebSocketCmd fromText(String text) {
         WebSocketCmd cmd = new WebSocketCmd();
         cmd.webSocketFrameType = WebSocketFrameType.Text;
@@ -50,6 +36,20 @@ public class WebSocketCmd extends CmdNode {
         cmd.webSocketFrameType = WebSocketFrameType.Binary;
         cmd.setAttr(ATTR_CONTENT, buf);
         return cmd;
+    }
+
+    public WebSocketFrameType getWebSocketFrameType() {
+        return webSocketFrameType;
+    }
+
+    @JsonIgnore
+    public String getTextContent() {
+        return getAttr(ATTR_CONTENT);
+    }
+
+    @JsonIgnore
+    public ByteBuf getBinaryContent() {
+        return getAttr(ATTR_CONTENT);
     }
 
 }

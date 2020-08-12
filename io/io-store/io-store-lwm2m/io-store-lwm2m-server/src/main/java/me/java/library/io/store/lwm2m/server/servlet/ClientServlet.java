@@ -1,15 +1,15 @@
 /*******************************************************************************
  * Copyright (c) 2013-2015 Sierra Wireless and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * and Eclipse Distribution License v1.0 which accompany this distribution.
- * 
+ *
  * The Eclipse Public License is available at
  *    http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *    http://www.eclipse.org/org/documents/edl-v10.html.
- * 
+ *
  * Contributors:
  *     Sierra Wireless - initial API and implementation
  *******************************************************************************/
@@ -18,7 +18,10 @@ package me.java.library.io.store.lwm2m.server.servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import me.java.library.io.store.lwm2m.server.servlet.json.*;
+import me.java.library.io.store.lwm2m.server.servlet.json.LwM2mNodeDeserializer;
+import me.java.library.io.store.lwm2m.server.servlet.json.LwM2mNodeSerializer;
+import me.java.library.io.store.lwm2m.server.servlet.json.RegistrationSerializer;
+import me.java.library.io.store.lwm2m.server.servlet.json.ResponseSerializer;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.leshan.core.attributes.AttributeSet;
@@ -87,11 +90,11 @@ public class ClientServlet extends HttpServlet {
         if (req.getPathInfo() == null) {
             Collection<Registration> registrations = new ArrayList<>();
             for (Iterator<Registration> iterator = server.getRegistrationService().getAllRegistrations(); iterator
-                    .hasNext();) {
+                    .hasNext(); ) {
                 registrations.add(iterator.next());
             }
 
-            String json = this.gson.toJson(registrations.toArray(new Registration[] {}));
+            String json = this.gson.toJson(registrations.toArray(new Registration[]{}));
             resp.setContentType("application/json");
             resp.getOutputStream().write(json.getBytes(StandardCharsets.UTF_8));
             resp.setStatus(HttpServletResponse.SC_OK);

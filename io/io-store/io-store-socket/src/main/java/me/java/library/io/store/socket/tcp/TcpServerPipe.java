@@ -20,11 +20,11 @@ import me.java.library.io.core.pipe.AbstractPipe;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
+public class TcpServerPipe extends AbstractPipe<TcpServerParams, TcpCodec> {
     protected NioEventLoopGroup childGroup;
 
-    public TcpServerPipe(TcpServerBus bus, TcpCodec codec) {
-        super(bus, codec);
+    public TcpServerPipe(TcpServerParams params, TcpCodec codec) {
+        super(params, codec);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class TcpServerPipe extends AbstractPipe<TcpServerBus, TcpCodec> {
                 .channel(NioServerSocketChannel.class)
                 .childHandler(channelInitializer);
 
-       return bind(bootstrap, bus.getHost(), bus.getPort()).sync().isDone();
+        return bind(bootstrap, params.getLocalHost(), params.getLocalPort()).sync().isDone();
     }
 
 

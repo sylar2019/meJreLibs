@@ -15,14 +15,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="client in clients" ng-click="showClient(client)">
+			<tr ng-click="showClient(client)" ng-repeat="client in clients">
 				<td><a ng-href="#/clients/{{client.endpoint}}"> <strong>{{client.endpoint}}</strong></a> </td>
 				<td>{{client.registrationId}}</td>
 				<td>{{client.registrationDate | date:'medium'}}</td>
 				<td>{{client.lastUpdate | date:'medium'}}</td>
 				<td><i class="glyphicon glyphicon-info-sign" tooltip-html-unsafe="{{clientTooltip(client)}}"></i></td>
-				<td><span ng-style="{'visibility': client.secure ? 'visible': 'hidden'}" class="glyphicon glyphicon-lock" tooltip-html-unsafe="Communication over DTLS"></span></td>
-				<td><span ng-style="{'visibility': client.sleeping ? 'visible': 'hidden'}" class="glyphicon glyphicon-log-out" tooltip-html-unsafe="Device using queue mode is absent"></span></td>
+				<td><span class="glyphicon glyphicon-lock"
+                          ng-style="{'visibility': client.secure ? 'visible': 'hidden'}" tooltip-html-unsafe="Communication over DTLS"></span></td>
+				<td><span class="glyphicon glyphicon-log-out"
+                          ng-style="{'visibility': client.sleeping ? 'visible': 'hidden'}"
+                          tooltip-html-unsafe="Device using queue mode is absent"></span></td>
 			</tr>
 		</tbody>
 		</table>

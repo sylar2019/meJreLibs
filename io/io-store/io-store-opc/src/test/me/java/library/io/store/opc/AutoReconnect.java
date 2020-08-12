@@ -2,7 +2,6 @@ package me.java.library.io.store.opc;
 
 
 import org.openscada.opc.lib.common.ConnectionInformation;
-import org.openscada.opc.lib.da.*;
 
 import java.util.concurrent.Executors;
 
@@ -22,6 +21,7 @@ public class AutoReconnect {
 
     /**
      * 自动重连Item异步读取
+     *
      * @param args
      * @throws Exception
      */

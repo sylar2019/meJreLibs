@@ -37,7 +37,7 @@ import java.util.Date;
  */
 public class MagicLwM2mValueConverter implements LwM2mValueConverter {
 
-    private Logger LOG = LoggerFactory.getLogger(getClass());
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     @Override
     public Object convertValue(Object value, Type currentType, Type expectedType, LwM2mPath resourcePath)

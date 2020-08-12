@@ -32,11 +32,9 @@ public class SocketExpress {
      * @return
      */
     public static TcpClientPipe tcpClient(String serverHost, int serverPort, ByteToMessageDecoder frameDecoder, SimpleCmdResolver cmdResolver) {
-        TcpClientBus bus = new TcpClientBus();
-        bus.setUrl(String.format("tcp://%s:%d", serverHost, serverPort));
-
+        TcpClientParams params = new TcpClientParams(serverHost, serverPort);
         TcpCodec codec = new TcpCodec(cmdResolver, frameDecoder);
-        return new TcpClientPipe(bus, codec);
+        return new TcpClientPipe(params, codec);
     }
 
     /**
@@ -48,60 +46,37 @@ public class SocketExpress {
      * @return
      */
     public static TcpServerPipe tcpServer(int port, ByteToMessageDecoder frameDecoder, SimpleCmdResolver cmdResolver) {
-        TcpServerBus bus = new TcpServerBus();
-        bus.setUrl(String.format("tcp://localhost:%d", port));
-
+        TcpServerParams params = new TcpServerParams(port);
         TcpCodec codec = new TcpCodec(cmdResolver, frameDecoder);
-        return new TcpServerPipe(bus, codec);
+        return new TcpServerPipe(params, codec);
     }
-
-    /**
-     * 快速创建 UdpBroadcastPipe
-     *
-     * @param port        本地端口
-     * @param cmdResolver 指令编解码器
-     * @return
-     */
-    public static UdpBroadcastPipe udpBroadcast(int port, SimpleCmdResolver cmdResolver) {
-        UdpBroadcastBus bus = new UdpBroadcastBus();
-        bus.setUrl(String.format("udp://localhost:%d", port));
-
-        UdpCodec codec = new UdpCodec(cmdResolver);
-        return new UdpBroadcastPipe(bus, codec);
-    }
-
 
     /**
      * 快速创建 UdpMulticastPipe
      *
-     * @param networkInterfaceName 网络接口名称
-     * @param port                 本地端口
-     * @param cmdResolver          指令编解码器
+     * @param localPort
+     * @param groupAddress
+     * @param cmdResolver
      * @return
      */
-    public static UdpMulticastPipe udpMulticast(String networkInterfaceName, int port, SimpleCmdResolver cmdResolver) {
-        UdpMulticastBus bus = new UdpMulticastBus();
-        bus.setNetworkInterfaceName(networkInterfaceName);
-        bus.setUrl(String.format("udp://localhost:%d", port));
-
+    public static UdpMulticastPipe multicast(int localPort, String groupAddress, SimpleCmdResolver cmdResolver) {
+        UdpMulticastParams params = new UdpMulticastParams(localPort, groupAddress);
         UdpCodec codec = new UdpCodec(cmdResolver);
-        return new UdpMulticastPipe(bus, codec);
+        return new UdpMulticastPipe(params, codec);
     }
-
 
     /**
      * 快速创建 UdpUnicastPipe
      *
-     * @param port        本地端口
+     * @param localPort   本地端口
+     * @param isBroadcast 是否能广播
      * @param cmdResolver 指令编解码器
      * @return
      */
-    public static UdpUnicastPipe udpUnicast(int port, SimpleCmdResolver cmdResolver) {
-        UdpUnicastBus bus = new UdpUnicastBus();
-        bus.setUrl(String.format("udp://localhost:%d", port));
-
+    public static UdpPeerPipe peer(int localPort, boolean isBroadcast, SimpleCmdResolver cmdResolver) {
+        UdpPeerParams params = new UdpPeerParams(localPort, isBroadcast);
         UdpCodec codec = new UdpCodec(cmdResolver);
-        return new UdpUnicastPipe(bus, codec);
+        return new UdpPeerPipe(params, codec);
     }
 
 }

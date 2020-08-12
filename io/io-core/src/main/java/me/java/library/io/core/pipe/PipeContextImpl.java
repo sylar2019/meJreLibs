@@ -28,7 +28,6 @@ import java.util.Set;
 public class PipeContextImpl implements PipeContext {
 
     private final Pipe pipe;
-    private Channel initChannel;
     /**
      * 一个pipe可能有多个channel
      * 一个channel上可能连接多个terminal
@@ -38,6 +37,7 @@ public class PipeContextImpl implements PipeContext {
      * 一个terminal有且仅有与唯一的channel对应
      */
     private final Map<Terminal, Channel> terminalMap;
+    private Channel initChannel;
 
     public PipeContextImpl(Pipe pipe) {
         this.pipe = pipe;

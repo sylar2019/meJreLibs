@@ -71,40 +71,45 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
---><LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
-	<Object ObjectType="MODefinition">
-		<Name>rrcStateChangeEvent</Name>
-		<Description1><![CDATA[Current RRC state change information, including the event that triggered the state change]]></Description1>
-		<ObjectID>3357</ObjectID>
-		<ObjectURN>urn:oma:lwm2m:ext:3357</ObjectURN>
-		<LWM2MVersion>1.0</LWM2MVersion>
-		<ObjectVersion>1.0</ObjectVersion>
-		<MultipleInstances>Single</MultipleInstances>
-		<Mandatory>Optional</Mandatory>
-		<Resources>
-			<Item ID="0"><Name>rrcState</Name>
-				<Operations>R</Operations>
-				<MultipleInstances>Single</MultipleInstances>
-				<Mandatory>Mandatory</Mandatory>
-				<Type>Integer</Type>
-				<RangeEnumeration></RangeEnumeration>
-				<Units></Units>
-				<Description><![CDATA[RRC state
+-->
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+    <Object ObjectType="MODefinition">
+        <Name>rrcStateChangeEvent</Name>
+        <Description1>
+            <![CDATA[Current RRC state change information, including the event that triggered the state change]]></Description1>
+        <ObjectID>3357</ObjectID>
+        <ObjectURN>urn:oma:lwm2m:ext:3357</ObjectURN>
+        <LWM2MVersion>1.0</LWM2MVersion>
+        <ObjectVersion>1.0</ObjectVersion>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Resources>
+            <Item ID="0">
+                <Name>rrcState</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[RRC state
        0 =  null
         1 = idleCampedOnAnyCell
         2 = idleCampedNormally
        3 =  idlConnecting
         4 = connectedNormally
         5 = releasing(when going from connected to idle)]]></Description>
-			</Item>
-			<Item ID="1"><Name>rrcStateChangeCause</Name>
-				<Operations>R</Operations>
-				<MultipleInstances>Single</MultipleInstances>
-				<Mandatory>Mandatory</Mandatory>
-				<Type>Integer</Type>
-				<RangeEnumeration></RangeEnumeration>
-				<Units></Units>
-				<Description><![CDATA[Trigger for RRC state change
+            </Item>
+            <Item ID="1">
+                <Name>rrcStateChangeCause</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[Trigger for RRC state change
  0 = toNull (Generic cause for all state transitions to null state. From any stable state other than null to null state)
 1 = IdleFromUpperLayer (Camped due to connection aborted from upper layers. From any stable state to idlecampednormally)
 2 = idleT300Expiry (Camped due to T300expiry. From any stable state other than connectednormally to idlecampednormally)
@@ -124,8 +129,8 @@ limitations under the License.
 16 = releasingT301Expriry (Enter releasing due to T301 expiry. From connected normally to idlecampednormally)
 17 = releasingReject (Enter releasing due to RRC connection reestablishment reject. From connected normally to idlecampednormally)
 18 = connectingOther (From idlecampednormally to connectednormally for other procedures like Extended service request, TAU, or RRC reestablishment]]></Description>
-			</Item>
-			</Resources>
-		<Description2 />
-	</Object>
+            </Item>
+        </Resources>
+        <Description2/>
+    </Object>
 </LWM2M>

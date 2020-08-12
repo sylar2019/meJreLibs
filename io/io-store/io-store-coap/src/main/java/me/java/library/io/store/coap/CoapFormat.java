@@ -46,6 +46,16 @@ public enum CoapFormat implements BaseEnum {
         this.extension = extension;
     }
 
+    public static CoapFormat valueOf(int value) {
+        for (CoapFormat coapFormat : CoapFormat.values()) {
+            if (coapFormat.getValue() == value) {
+                return coapFormat;
+            }
+        }
+
+        throw new IllegalArgumentException("invalid CoapFormat");
+    }
+
     @Override
     public String getName() {
         return name;
@@ -58,15 +68,5 @@ public enum CoapFormat implements BaseEnum {
 
     public String getExtension() {
         return extension;
-    }
-
-    public static CoapFormat valueOf(int value) {
-        for (CoapFormat coapFormat : CoapFormat.values()) {
-            if (coapFormat.getValue() == value) {
-                return coapFormat;
-            }
-        }
-
-        throw new IllegalArgumentException("invalid CoapFormat");
     }
 }

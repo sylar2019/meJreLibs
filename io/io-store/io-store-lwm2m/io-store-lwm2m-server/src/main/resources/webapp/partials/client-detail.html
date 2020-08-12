@@ -1,13 +1,15 @@
 <div ng-if='client'>
-	<ol class="breadcrumb">
-		<li><a href="#/clients/">Clients</a></li>
-		<li class="active">{{ clientId }}</li>
+    <ol class="breadcrumb">
+        <li><a href="#/clients/">Clients</a></li>
+        <li class="active">{{ clientId }}</li>
 
-		<span class="pull-right">
+        <span class="pull-right">
 			<form class="form-inline">
-			<abbr title="Timeout used to send request"><a href="https://github.com/eclipse/leshan/wiki/Request-Timeout" target="_blank"=>Response Timeout</a></abbr>
+			<abbr title="Timeout used to send request"><a href="https://github.com/eclipse/leshan/wiki/Request-Timeout"
+                                                          target="_blank"=>Response Timeout</a></abbr>
 			<div class="btn-group" dropdown is-open="timeout.status.isopen">
-				<button type="button" class="btn btn-xs btn-default dropdown-toggle dropdown-menu-contentformat" dropdown-toggle ng-disabled="disabled">
+				<button class="btn btn-xs btn-default dropdown-toggle dropdown-menu-contentformat" dropdown-toggle
+                        ng-disabled="disabled" type="button">
 					{{settings.timeout.format}} <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-contentformat" role="menu">
@@ -20,7 +22,8 @@
 			</div>
 			<abbr title="Content Format used for object, object instance and multi-resource instance">Multi-value</abbr>
 			<div class="btn-group" dropdown is-open="multi.status.isopen">
-				<button type="button" class="btn btn-xs btn-default dropdown-toggle dropdown-menu-contentformat" dropdown-toggle ng-disabled="disabled">
+				<button class="btn btn-xs btn-default dropdown-toggle dropdown-menu-contentformat" dropdown-toggle
+                        ng-disabled="disabled" type="button">
 					{{settings.multi.format}} <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-contentformat" role="menu">
@@ -30,7 +33,8 @@
 			</div>
 			<abbr title="Content Format used for single resource">Single-value</abbr>
 			<div class="btn-group" dropdown is-open="single.status.isopen">
-				<button type="button" class="btn btn-xs btn-default dropdown-toggle dropdown-menu-contentformat" dropdown-toggle ng-disabled="disabled">
+				<button class="btn btn-xs btn-default dropdown-toggle dropdown-menu-contentformat" dropdown-toggle
+                        ng-disabled="disabled" type="button">
 					{{settings.single.format}} <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-contentformat" role="menu">
@@ -42,85 +46,90 @@
 			</div>
 			</form>
 		</span>
-	</ol>
+    </ol>
 
-	<accordion close-others=false>
-		<object ng-repeat='object in objects' object='object' settings='settings'></object>
-	</accordion>
+    <accordion close-others=false>
+        <object ng-repeat='object in objects' object='object' settings='settings'></object>
+    </accordion>
 
-	<!-- CoAP logs -->
-	
-	<div class="coaplogs">
-		<div class="row">
-			<div class="col-md-11"></div>
-			<div class="col-md-1">
-				<button class="btn btn-default btn-xs coaplogs-button" ng-click="toggleCoapLogs()">CoAP messages</button>
-			</div>
-		</div> 
-		<div collapse="coapLogsCollapsed" class="coaplogs-panel">
-			<table class="table coaplogs-header">
-				<thead>
-					<tr>
-						<th class="col-md-1">Time</th>
-						<th class="col-md-1">CoAP Message</th>
-						<th class="col-md-1">MID</th>
-						<th class="col-md-1">Token</th>
-						<th class="col-md-4">Options</th>
-						<th class="col-md-4">Payload</th>
-					</tr>
-				</thead>
-			</table>
-			<div class="coaplogs-table">
-				<table class="table table-striped">
-					<tbody>
-						<tr ng-repeat="log in coaplogs">
-							<td class="col-md-1">{{log.date}}</td>
-							<td class="col-md-1"><span class="glyphicon" ng-class="{'glyphicon-arrow-left' : !log.incoming, 'glyphicon-arrow-right' : log.incoming}" aria-hidden="true"></span>  {{log.type}}-{{log.code}}</td>
-							<td class="col-md-1">{{log.mId}}</td>
-							<td class="col-md-1">{{log.token}}</td>
-							<td class="col-md-4">{{log.options}}</td>
-							<td class="col-md-4">{{log.payload}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+    <!-- CoAP logs -->
+
+    <div class="coaplogs">
+        <div class="row">
+            <div class="col-md-11"></div>
+            <div class="col-md-1">
+                <button class="btn btn-default btn-xs coaplogs-button" ng-click="toggleCoapLogs()">CoAP messages
+                </button>
+            </div>
+        </div>
+        <div class="coaplogs-panel" collapse="coapLogsCollapsed">
+            <table class="table coaplogs-header">
+                <thead>
+                <tr>
+                    <th class="col-md-1">Time</th>
+                    <th class="col-md-1">CoAP Message</th>
+                    <th class="col-md-1">MID</th>
+                    <th class="col-md-1">Token</th>
+                    <th class="col-md-4">Options</th>
+                    <th class="col-md-4">Payload</th>
+                </tr>
+                </thead>
+            </table>
+            <div class="coaplogs-table">
+                <table class="table table-striped">
+                    <tbody>
+                    <tr ng-repeat="log in coaplogs">
+                        <td class="col-md-1">{{log.date}}</td>
+                        <td class="col-md-1"><span aria-hidden="true"
+                                                   class="glyphicon"
+                                                   ng-class="{'glyphicon-arrow-left' : !log.incoming, 'glyphicon-arrow-right' : log.incoming}"></span> {{log.type}}-{{log.code}}
+                        </td>
+                        <td class="col-md-1">{{log.mId}}</td>
+                        <td class="col-md-1">{{log.token}}</td>
+                        <td class="col-md-4">{{log.options}}</td>
+                        <td class="col-md-4">{{log.payload}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 <div ng-if='error'>
-	<div class="alert alert-danger">{{error}}</div>
+    <div class="alert alert-danger">{{error}}</div>
 </div>
 
 <div ng-if='deregistered'>
-	<h4>Client <b>{{clientId}}</b> is no more registered.</h4>
+    <h4>Client <b>{{clientId}}</b> is no more registered.</h4>
 </div>
 
 <!-- Write modal -->
-<div class="modal bs-example-modal-sm" id="writeModal" tabindex="-1" role="dialog"
-	aria-labelledby="writeModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="writeModalLabel"></h4>
-			</div>
-			<div class="modal-body">
-				<form class="form-horizontal" role="form">
-					<div class="form-group">
-						<label for="inputEmail3" class="col-sm-2 control-label">Value</label>
-						<div class="col-sm-10">
-							<input class="form-control" id="writeInputValue">
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal" id="writeSubmit">Update</button>
-			</div>
-		</div>
-	</div>
+<div aria-hidden="true" aria-labelledby="writeModalLabel" class="modal bs-example-modal-sm" id="writeModal"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" class="close" data-dismiss="modal"
+                        type="button">&times;
+                </button>
+                <h4 class="modal-title" id="writeModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputEmail3">Value</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="writeInputValue">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" data-dismiss="modal" id="writeSubmit" type="button">Update</button>
+            </div>
+        </div>
+    </div>
 </div>

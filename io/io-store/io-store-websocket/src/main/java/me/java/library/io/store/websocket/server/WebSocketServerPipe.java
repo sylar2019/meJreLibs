@@ -1,7 +1,6 @@
 package me.java.library.io.store.websocket.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import me.java.library.io.core.pipe.AbstractPipe;
@@ -21,17 +20,16 @@ import me.java.library.io.core.pipe.AbstractPipe;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class WebSocketServerPipe extends AbstractPipe<WebSocketServerBus, WebSocketServerCodec> {
+public class WebSocketServerPipe extends AbstractPipe<WebSocketServerParams, WebSocketServerCodec> {
     protected NioEventLoopGroup childGroup;
 
-    public WebSocketServerPipe(WebSocketServerBus bus, WebSocketServerCodec codec) {
-        super(bus, codec);
+    public WebSocketServerPipe(WebSocketServerParams params, WebSocketServerCodec codec) {
+        super(params, codec);
+        codec.setParams(params);
     }
 
     @Override
     protected boolean onStart() throws Exception {
-        codec.setBus(bus);
-
         masterLoop = new NioEventLoopGroup();
         childGroup = new NioEventLoopGroup();
 
@@ -40,7 +38,7 @@ public class WebSocketServerPipe extends AbstractPipe<WebSocketServerBus, WebSoc
                 .channel(NioServerSocketChannel.class)
                 .childHandler(channelInitializer);
 
-        return bind(bootstrap, bus.getHost(), bus.getPort()).sync().isDone();
+        return bind(bootstrap, null, params.getLocalPort()).sync().isDone();
     }
 
     @Override

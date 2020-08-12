@@ -21,6 +21,8 @@ import java.util.concurrent.Executors;
  */
 public class SyncWrite {
 
+    private static int count;
+
     /**
      * 同步写入
      *
@@ -60,6 +62,4 @@ public class SyncWrite {
         System.out.println("[" + (++count) + "],ItemName:[" + item.getId()
                 + "],value:" + item.read(true).getValue());
     }
-
-    private static int count;
 }

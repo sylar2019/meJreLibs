@@ -94,7 +94,7 @@ public abstract class AbstractSyncPairity implements SyncPairity {
             if (pairs(cache.getTerminal(), request, response)) {
                 bean.getFuture().set(response);
                 return request;
-        }
+            }
         }
         return null;
     }

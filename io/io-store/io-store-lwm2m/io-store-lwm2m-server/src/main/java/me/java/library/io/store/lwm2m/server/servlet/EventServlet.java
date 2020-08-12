@@ -184,6 +184,22 @@ public class EventServlet extends EventSourceServlet {
         }
     }
 
+    private void cleanCoapListener(String endpoint) {
+        // remove the listener if there is no more eventSources for this endpoint
+        for (LeshanEventSource eventSource : eventSources) {
+            if (eventSource.getEndpoint() == null || eventSource.getEndpoint().equals(endpoint)) {
+                return;
+            }
+        }
+        coapMessageTracer.removeListener(endpoint);
+    }
+
+    @Override
+    protected EventSource newEventSource(HttpServletRequest req) {
+        String endpoint = req.getParameter(QUERY_PARAM_ENDPOINT);
+        return new LeshanEventSource(endpoint);
+    }
+
     class ClientCoapListener implements CoapMessageListener {
 
         private final String endpoint;
@@ -200,22 +216,6 @@ public class EventServlet extends EventSourceServlet {
             sendEvent(EVENT_COAP_LOG, coapLogWithEndPoint, endpoint);
         }
 
-    }
-
-    private void cleanCoapListener(String endpoint) {
-        // remove the listener if there is no more eventSources for this endpoint
-        for (LeshanEventSource eventSource : eventSources) {
-            if (eventSource.getEndpoint() == null || eventSource.getEndpoint().equals(endpoint)) {
-                return;
-            }
-        }
-        coapMessageTracer.removeListener(endpoint);
-    }
-
-    @Override
-    protected EventSource newEventSource(HttpServletRequest req) {
-        String endpoint = req.getParameter(QUERY_PARAM_ENDPOINT);
-        return new LeshanEventSource(endpoint);
     }
 
     private class LeshanEventSource implements EventSource {

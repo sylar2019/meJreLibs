@@ -1,17 +1,17 @@
 package me.java.library.io.store.socket.udp;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import me.java.library.io.core.pipe.AbstractPipe;
 
 /**
- * File Name             :  UdpUnicastPipe
+ * File Name             :  UdpBroadcastPipe
  *
  * @author :  sylar
  * Create :  2019-10-05
- * Description           :  UDP单播
+ * Description           :  UDP广播
  * Reviewed By           :
  * Reviewed On           :
  * Version History       :
@@ -21,9 +21,10 @@ import me.java.library.io.core.pipe.AbstractPipe;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class UdpUnicastPipe extends AbstractPipe<UdpUnicastBus, UdpCodec> {
-    public UdpUnicastPipe(UdpUnicastBus bus, UdpCodec codec) {
-        super(bus, codec);
+public class UdpPeerPipe extends AbstractPipe<UdpPeerParams, UdpCodec> {
+
+    public UdpPeerPipe(UdpPeerParams params, UdpCodec codec) {
+        super(params, codec);
     }
 
     @Override
@@ -33,10 +34,10 @@ public class UdpUnicastPipe extends AbstractPipe<UdpUnicastBus, UdpCodec> {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(masterLoop)
                 .channel(NioDatagramChannel.class)
-                .handler(channelInitializer);
+                .handler(channelInitializer)
+                .option(ChannelOption.SO_BROADCAST, params.isBroadcast());
 
-        return bind(bootstrap, bus.getHost(), bus.getPort()).sync().isDone();
+        return bind(bootstrap, null, params.getLocalPort()).sync().isDone();
     }
-
 
 }

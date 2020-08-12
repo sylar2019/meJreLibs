@@ -1,23 +1,18 @@
 package me.java.library.io.store.mqtt.client;
 
+import me.java.library.io.base.pipe.BasePipeParams;
+
 import java.util.UUID;
 
 /**
- * File Name             :  MqttClientConfig
- *
- * @author :  sylar
- * Create                :  2020/7/20
- * Description           :
- * Reviewed By           :
- * Reviewed On           :
- * Version History       :
- * Modified By           :
- * Modified Date         :
- * Comments              :
- * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
+ * @author : sylar
+ * @fullName : me.java.library.io.store.mqtt.client.MqttClientParams
+ * @createDate : 2020/8/12
+ * @description :
+ * @copyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
  * *******************************************************************************************
  */
-public class MqttClientParam {
+public class MqttClientParams extends BasePipeParams {
 
     /**
      * uri of mqtt server
@@ -29,11 +24,11 @@ public class MqttClientParam {
     String username;
     String password;
 
-    public MqttClientParam(String broker) {
+    public MqttClientParams(String broker) {
         this(broker, UUID.randomUUID().toString());
     }
 
-    public MqttClientParam(String broker, String clientId) {
+    public MqttClientParams(String broker, String clientId) {
         this.broker = broker;
         this.clientId = clientId;
     }

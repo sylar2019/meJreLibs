@@ -24,6 +24,7 @@ public class SyncRead {
 
     /**
      * Item的同步查询
+     *
      * @param args
      * @throws Exception
      */

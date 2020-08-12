@@ -31,10 +31,12 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<LWM2M  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
     <Object ObjectType="MODefinition">
         <Name>Multi-state Selector</Name>
-        <Description1>This IPSO object is used to represent the state of a Multi-state selector switch with a number of fixed positions.
+        <Description1>This IPSO object is used to represent the state of a Multi-state selector switch with a number of
+            fixed positions.
         </Description1>
         <ObjectID>3348</ObjectID>
         <ObjectURN>urn:oma:lwm2m:ext:3348</ObjectURN>
@@ -61,9 +63,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>String</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description>The application type of the sensor or actuator as a string depending on the use case.</Description>
+                <Description>The application type of the sensor or actuator as a string depending on the use case.
+                </Description>
             </Item>
-         </Resources>
+        </Resources>
         <Description2></Description2>
     </Object>
 </LWM2M>

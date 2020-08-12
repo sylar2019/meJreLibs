@@ -2,7 +2,6 @@ package me.java.library.io.base.pipe;
 
 import me.java.library.common.service.Serviceable;
 import me.java.library.io.base.cmd.Cmd;
-import me.java.library.io.base.cmd.Host;
 
 import java.util.concurrent.TimeUnit;
 
@@ -87,29 +86,9 @@ public interface Pipe extends Serviceable {
     boolean isRunning();
 
     /**
-     * 宿主主机信息
-     *
-     * @return
-     */
-    Host getHost();
-
-    /***
-     * 观察者
-     * @return
-     */
-    PipeWatcher getWatcher();
-
-    /**
      * 设置观察者
      *
      * @param watcher
      */
     void setWatcher(PipeWatcher watcher);
-
-    /**
-     * 设置是否启用守护线程
-     *
-     * @param enabled
-     */
-    void setDaemon(boolean enabled);
 }

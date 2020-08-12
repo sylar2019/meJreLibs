@@ -6,10 +6,9 @@ import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.*;
 import io.netty.handler.timeout.IdleStateEvent;
 import me.java.library.io.base.cmd.Cmd;
-import me.java.library.io.base.cmd.Host;
 import me.java.library.io.base.cmd.Terminal;
 import me.java.library.io.base.pipe.BasePipe;
-import me.java.library.io.core.bus.Bus;
+import me.java.library.io.base.pipe.PipeParams;
 import me.java.library.io.core.codec.Codec;
 import me.java.library.io.core.codec.ExceptionHandler;
 import me.java.library.io.core.codec.InboundHandler;
@@ -32,22 +31,72 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BasePipe {
-    protected B bus;
-    protected C codec;
+public abstract class AbstractPipe<Params extends PipeParams, C extends Codec>
+        extends BasePipe<Params> {
 
+    protected C codec;
     protected EventLoopGroup masterLoop;
     protected SyncPairity syncPairity;
     protected PipeContext pipeContext = new PipeContextImpl(this);
+    protected ChannelKeeper channelKeeper = new ChannelKeeper() {
+        @Override
+        public void onChannleActive(ChannelHandlerContext ctx) {
+            pipeContext.activeChannel(ctx.channel());
+        }
 
-    public AbstractPipe(B bus, C codec) {
-        this(Host.LOCAL, bus, codec);
-    }
+        @Override
+        public void onChannleInactive(ChannelHandlerContext ctx) {
+            pipeContext.getTerminalsByChannel(ctx.channel()).forEach(terminal -> {
+                AbstractPipe.this.onConnectionChanged(terminal, false);
+            });
 
-    public AbstractPipe(Host host, B bus, C codec) {
-        super(host);
+            pipeContext.inactiveChannel(ctx.channel());
+        }
 
-        this.bus = bus;
+        @Override
+        public void onIdleStateEvent(ChannelHandlerContext ctx, IdleStateEvent event) {
+            System.out.println("### onChannelIdle: " + event);
+            //空闲时断开(可能是死连接),释放连接资源
+            ctx.close();
+        }
+
+        @Override
+        public void onReceived(ChannelHandlerContext ctx, Cmd cmd) {
+            Terminal terminal = cmd.getFrom();
+            boolean hasTerminal = pipeContext.containsTerminal(terminal);
+            pipeContext.addTerminal(ctx.channel(), terminal);
+            if (!hasTerminal) {
+                AbstractPipe.this.onConnectionChanged(terminal, true);
+            }
+
+            AbstractPipe.this.onReceived(cmd);
+        }
+
+        @Override
+        public void onException(ChannelHandlerContext ctx, Throwable cause, boolean isInbound) {
+            AbstractPipe.this.onException(cause);
+        }
+    };
+    protected ChannelInitializer<Channel> channelInitializer = new ChannelInitializer<Channel>() {
+        @Override
+        protected void initChannel(Channel channel) throws Exception {
+            pipeContext.initChannel(channel);
+            codec.initPipeLine(channel);
+
+            InboundHandler inboundHandler = (InboundHandler) channel.pipeline().get(InboundHandler.HANDLER_NAME);
+            if (inboundHandler != null) {
+                inboundHandler.setChannelKeeper(channelKeeper);
+            }
+
+            ExceptionHandler exceptionHandler = (ExceptionHandler) channel.pipeline().get(ExceptionHandler.HANDLER_NAME);
+            if (exceptionHandler != null) {
+                exceptionHandler.setChannelKeeper(channelKeeper);
+            }
+        }
+    };
+
+    public AbstractPipe(Params params, C codec) {
+        super(params);
         this.codec = codec;
     }
 
@@ -62,7 +111,6 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
     @Override
     protected void checkOnStart() {
         super.checkOnStart();
-        Preconditions.checkNotNull(bus, "bus is null");
         Preconditions.checkNotNull(codec, "codec is null");
     }
 
@@ -114,7 +162,6 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
         pipeContext.dispose();
     }
 
-
     protected ChannelFuture bind(AbstractBootstrap<?, ?> bootstrap, String host, int port) {
         ChannelFuture future;
         if (!Strings.isNullOrEmpty(host) && port >= 0) {
@@ -127,63 +174,5 @@ public abstract class AbstractPipe<B extends Bus, C extends Codec> extends BaseP
 
         return future;
     }
-
-    protected ChannelInitializer<Channel> channelInitializer = new ChannelInitializer<Channel>() {
-        @Override
-        protected void initChannel(Channel channel) throws Exception {
-            pipeContext.initChannel(channel);
-            codec.initPipeLine(channel);
-
-            InboundHandler inboundHandler = (InboundHandler) channel.pipeline().get(InboundHandler.HANDLER_NAME);
-            if (inboundHandler != null) {
-                inboundHandler.setChannelKeeper(channelKeeper);
-            }
-
-            ExceptionHandler exceptionHandler = (ExceptionHandler) channel.pipeline().get(ExceptionHandler.HANDLER_NAME);
-            if (exceptionHandler != null) {
-                exceptionHandler.setChannelKeeper(channelKeeper);
-            }
-        }
-    };
-
-    protected ChannelKeeper channelKeeper = new ChannelKeeper() {
-        @Override
-        public void onChannleActive(ChannelHandlerContext ctx) {
-            pipeContext.activeChannel(ctx.channel());
-        }
-
-        @Override
-        public void onChannleInactive(ChannelHandlerContext ctx) {
-            pipeContext.getTerminalsByChannel(ctx.channel()).forEach(terminal -> {
-                AbstractPipe.this.onConnectionChanged(terminal, false);
-            });
-
-            pipeContext.inactiveChannel(ctx.channel());
-        }
-
-        @Override
-        public void onIdleStateEvent(ChannelHandlerContext ctx, IdleStateEvent event) {
-            System.out.println("### onChannelIdle: " + event);
-            //空闲时断开(可能是死连接),释放连接资源
-            ctx.close();
-        }
-
-        @Override
-        public void onReceived(ChannelHandlerContext ctx, Cmd cmd) {
-            Terminal terminal = cmd.getFrom();
-            boolean hasTerminal = pipeContext.containsTerminal(terminal);
-            pipeContext.addTerminal(ctx.channel(), terminal);
-            if (!hasTerminal) {
-                AbstractPipe.this.onConnectionChanged(terminal, true);
-            }
-
-            AbstractPipe.this.onReceived(cmd);
-        }
-
-        @Override
-        public void onException(ChannelHandlerContext ctx, Throwable cause, boolean isInbound) {
-            AbstractPipe.this.onException(cause);
-        }
-    };
 
 }

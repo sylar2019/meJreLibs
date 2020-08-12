@@ -21,9 +21,10 @@ import me.java.library.io.core.pipe.AbstractPipe;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public class TcpClientPipe extends AbstractPipe<TcpClientBus, TcpCodec> {
-    public TcpClientPipe(TcpClientBus bus, TcpCodec codec) {
-        super(bus, codec);
+public class TcpClientPipe extends AbstractPipe<TcpClientParams, TcpCodec> {
+
+    public TcpClientPipe(TcpClientParams params, TcpCodec codec) {
+        super(params, codec);
     }
 
     @Override
@@ -36,6 +37,6 @@ public class TcpClientPipe extends AbstractPipe<TcpClientBus, TcpCodec> {
                 .handler(channelInitializer)
                 .option(ChannelOption.SO_KEEPALIVE, true);
 
-        return bootstrap.connect(bus.getHost(), bus.getPort()).sync().isDone();
+        return bootstrap.connect(params.getRemoteHost(), params.getRemotePort()).sync().isDone();
     }
 }

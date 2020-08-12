@@ -40,8 +40,8 @@ public interface WebSocketCmdResolver {
             }
 
             if (cmd != null) {
-                cmd.getFrom().setInetSocketAddress((InetSocketAddress)ctx.channel().remoteAddress());
-                cmd.getTo().setInetSocketAddress((InetSocketAddress)ctx.channel().localAddress());
+                cmd.getFrom().setInetSocketAddress((InetSocketAddress) ctx.channel().remoteAddress());
+                cmd.getTo().setInetSocketAddress((InetSocketAddress) ctx.channel().localAddress());
             }
 
             return cmd;
@@ -76,7 +76,6 @@ public interface WebSocketCmdResolver {
      * @return
      */
     WebSocketFrame cmdToFrame(WebSocketCmd cmd);
-
 
 
 }

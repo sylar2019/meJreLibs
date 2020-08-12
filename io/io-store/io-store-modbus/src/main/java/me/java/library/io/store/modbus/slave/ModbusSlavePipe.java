@@ -4,6 +4,7 @@ import com.serotonin.modbus4j.ModbusSlaveSet;
 import com.serotonin.modbus4j.ProcessImage;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
+import me.java.library.io.store.modbus.ModbusParams;
 import me.java.library.utils.base.ExceptionUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -23,11 +24,12 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class ModbusSlavePipe extends BasePipe implements ModbusSlave {
+public class ModbusSlavePipe extends BasePipe<ModbusParams> implements ModbusSlave {
 
-    private ModbusSlaveSet slave;
+    private final ModbusSlaveSet slave;
 
     public ModbusSlavePipe(ModbusSlaveSet slave) {
+        super(new ModbusParams());
         this.slave = slave;
     }
 

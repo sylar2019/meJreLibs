@@ -35,10 +35,6 @@ public class PipeAssistant {
         return SingletonHolder.INSTANCE;
     }
 
-    private static class SingletonHolder {
-        private static final PipeAssistant INSTANCE = new PipeAssistant();
-    }
-
     public void add(PipeContext pipeContext) {
         map.put(pipeContext.getPipe(), pipeContext);
     }
@@ -58,6 +54,10 @@ public class PipeAssistant {
 
     public PipeContext getPipeContext(Pipe pipe) {
         return map.get(pipe);
+    }
+
+    private static class SingletonHolder {
+        private static final PipeAssistant INSTANCE = new PipeAssistant();
     }
 
 }

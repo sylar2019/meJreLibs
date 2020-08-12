@@ -9,7 +9,6 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import me.java.library.io.core.bus.Scheme;
 import me.java.library.io.core.codec.AbstractCodecWithLogAndIdle;
 import me.java.library.io.core.codec.InboundHandler;
 import me.java.library.io.store.websocket.WebSocketCmdResolver;
@@ -34,17 +33,21 @@ import java.io.File;
  * *******************************************************************************************
  */
 public class WebSocketServerCodec extends AbstractCodecWithLogAndIdle {
-    private WebSocketServerBus bus;
-    private WebSocketCmdResolver webSocketCmdResolver;
+    private final WebSocketCmdResolver webSocketCmdResolver;
+    private WebSocketServerParams params;
 
     public WebSocketServerCodec(WebSocketCmdResolver webSocketCmdResolver) {
         this.webSocketCmdResolver = webSocketCmdResolver;
     }
 
+    public void setParams(WebSocketServerParams params) {
+        this.params = params;
+    }
+
     @Override
     public void initPipeLine(Channel channel) throws Exception {
         super.initPipeLine(channel);
-        Preconditions.checkNotNull(bus);
+        Preconditions.checkNotNull(params);
 
         final SslHandler sslHandler = getSslHandler();
         if (sslHandler != null) {
@@ -59,7 +62,7 @@ public class WebSocketServerCodec extends AbstractCodecWithLogAndIdle {
         channel.pipeline().addLast(new HttpObjectAggregator(1024 * 8));
         //WebSocketServerProtocolHandler处理器可以处理了 webSocket 协议的握手请求处理，以及 Close、Ping、Pong控制帧的处理。
         //对于文本和二进制的数据帧需要我们自己处理。
-        channel.pipeline().addLast(new WebSocketServerProtocolHandler(bus.getPath()));
+        channel.pipeline().addLast(new WebSocketServerProtocolHandler(params.getContextPath()));
         //业务层解码
         channel.pipeline().addLast(WebSocketDecoder.HANDLER_NAME, new WebSocketDecoder(webSocketCmdResolver));
         //加上默认的入站处理器 InboundCmdHandler
@@ -70,18 +73,11 @@ public class WebSocketServerCodec extends AbstractCodecWithLogAndIdle {
         channel.pipeline().addLast(WebSocketEncoder.HANDLER_NAME, new WebSocketEncoder(webSocketCmdResolver));
     }
 
-    public WebSocketServerBus getBus() {
-        return bus;
-    }
-
-    public void setBus(WebSocketServerBus bus) {
-        this.bus = bus;
-    }
 
     private SslHandler getSslHandler() throws Exception {
-        if (Scheme.wss.match(bus.getScheme())) {
-            File keyCertChainFile = new File(bus.getSslCertFilePath());
-            File keyFile = new File(bus.getSslKeyFilePath());
+        if (params.isSsl()) {
+            File keyCertChainFile = new File(params.getSslCertFile());
+            File keyFile = new File(params.getSslKeyFile());
 
             SslContext sslCtx = SslContextBuilder
                     .forServer(keyCertChainFile, keyFile)

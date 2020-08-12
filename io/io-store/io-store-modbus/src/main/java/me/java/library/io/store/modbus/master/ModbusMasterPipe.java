@@ -7,6 +7,7 @@ import com.serotonin.modbus4j.msg.ModbusResponse;
 import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
+import me.java.library.io.store.modbus.ModbusParams;
 import me.java.library.io.store.modbus.cmd.MaskValue;
 import me.java.library.io.store.modbus.cmd.ModbusRequestCmd;
 import me.java.library.io.store.modbus.cmd.ModbusResponseCmd;
@@ -29,10 +30,11 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class ModbusMasterPipe extends BasePipe {
-    protected ModbusMaster master;
+public class ModbusMasterPipe extends BasePipe<ModbusParams> {
+    private final ModbusMaster master;
 
     public ModbusMasterPipe(ModbusMaster master) {
+        super(new ModbusParams());
         this.master = master;
     }
 

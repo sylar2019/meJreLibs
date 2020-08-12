@@ -14,7 +14,6 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import me.java.library.io.core.bus.Scheme;
 import me.java.library.io.core.codec.AbstractCodecWithLogAndIdle;
 import me.java.library.io.core.codec.InboundHandler;
 import me.java.library.io.store.websocket.WebSocketCmdResolver;
@@ -41,17 +40,21 @@ import java.net.URI;
  */
 public class WebSocketClientCodec extends AbstractCodecWithLogAndIdle {
 
-    private WebSocketClientBus bus;
-    private WebSocketCmdResolver webSocketCmdResolver;
+    private final WebSocketCmdResolver webSocketCmdResolver;
+    private WebSocketClientParams params;
 
     public WebSocketClientCodec(WebSocketCmdResolver webSocketCmdResolver) {
         this.webSocketCmdResolver = webSocketCmdResolver;
     }
 
+    public void setParams(WebSocketClientParams params) {
+        this.params = params;
+    }
+
     @Override
     public void initPipeLine(Channel channel) throws Exception {
         super.initPipeLine(channel);
-        Preconditions.checkNotNull(bus);
+        Preconditions.checkNotNull(params);
 
         final SslHandler sslHandler = getSslHandler();
         if (sslHandler != null) {
@@ -77,17 +80,9 @@ public class WebSocketClientCodec extends AbstractCodecWithLogAndIdle {
         channel.pipeline().addLast(WebSocketEncoder.HANDLER_NAME, new WebSocketEncoder(webSocketCmdResolver));
     }
 
-    public WebSocketClientBus getBus() {
-        return bus;
-    }
-
-    public void setBus(WebSocketClientBus bus) {
-        this.bus = bus;
-    }
-
     private WebSocketClientHandler getWebSocketClientHandler() {
         WebSocketClientHandshaker handshaker = WebSocketClientHandshakerFactory.newHandshaker(
-                URI.create(bus.getUrl()),
+                URI.create(params.getUriPath()),
                 WebSocketVersion.V13,
                 null,
                 true,
@@ -96,12 +91,12 @@ public class WebSocketClientCodec extends AbstractCodecWithLogAndIdle {
     }
 
     private SslHandler getSslHandler() throws SSLException {
-        if (Scheme.wss.match(bus.getScheme())) {
+        if (params.isSsl()) {
             SslContext sslCtx = SslContextBuilder
                     .forClient()
                     .trustManager(InsecureTrustManagerFactory.INSTANCE)
                     .build();
-            return sslCtx.newHandler(channel.alloc(), bus.getHost(), bus.getPort());
+            return sslCtx.newHandler(channel.alloc(), params.getRemoteHost(), params.getRemotePort());
         }
         return null;
     }

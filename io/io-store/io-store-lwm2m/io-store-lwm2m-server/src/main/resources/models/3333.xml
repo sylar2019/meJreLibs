@@ -30,10 +30,12 @@ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 -->
-<LWM2M  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
     <Object ObjectType="MODefinition">
         <Name>Time</Name>
-        <Description1>This IPSO object is used to report the current time in seconds since January 1, 1970 UTC. There is also a fractional time counter that has a range of less than one second.
+        <Description1>This IPSO object is used to report the current time in seconds since January 1, 1970 UTC. There is
+            also a fractional time counter that has a range of less than one second.
         </Description1>
         <ObjectID>3333</ObjectID>
         <ObjectURN>urn:oma:lwm2m:ext:3333</ObjectURN>
@@ -50,7 +52,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>Time</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description>Unix Time. A signed integer representing the number of seconds since Jan 1st, 1970 in the UTC time zone.</Description>
+                <Description>Unix Time. A signed integer representing the number of seconds since Jan 1st, 1970 in the
+                    UTC time zone.
+                </Description>
             </Item>
             <Item ID="5507">
                 <Name>Fractional Time</Name>
@@ -60,7 +64,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>Float</Type>
                 <RangeEnumeration>0..1</RangeEnumeration>
                 <Units>s</Units>
-                <Description>Fractional part of the time when sub-second precision is used (e.g., 0.23 for 230 ms).</Description>
+                <Description>Fractional part of the time when sub-second precision is used (e.g., 0.23 for 230 ms).
+                </Description>
             </Item>
             <Item ID="5750">
                 <Name>Application Type</Name>
@@ -70,7 +75,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <Type>String</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description>The application type of the sensor or actuator as a string depending on the use case.</Description>
+                <Description>The application type of the sensor or actuator as a string depending on the use case.
+                </Description>
             </Item>
         </Resources>
         <Description2></Description2>

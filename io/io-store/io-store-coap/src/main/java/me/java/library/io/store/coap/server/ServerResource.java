@@ -1,14 +1,10 @@
 package me.java.library.io.store.coap.server;
 
-import me.java.library.io.base.pipe.Pipe;
 import me.java.library.io.store.coap.CoapFormat;
 import me.java.library.io.store.coap.CoapMethod;
 import me.java.library.io.store.coap.CoapRequestCmd;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.network.Exchange;
-import org.eclipse.californium.core.server.resources.CoapExchange;
-
-import java.util.Optional;
 
 /**
  * @author : sylar
@@ -20,7 +16,7 @@ import java.util.Optional;
  */
 public abstract class ServerResource extends CoapResource {
 
-    Pipe pipe;
+    CoapServerPipe pipe;
 
     public ServerResource(String name) {
         super(name);
@@ -30,26 +26,16 @@ public abstract class ServerResource extends CoapResource {
         super(name, visible);
     }
 
-    public Pipe getPipe() {
-        return pipe;
-    }
-
-    public void setPipe(Pipe pipe) {
+    public void setPipe(CoapServerPipe pipe) {
         this.pipe = pipe;
     }
 
     @Override
     public void handleRequest(Exchange exchange) {
-        Optional.ofNullable(pipe)
-                .flatMap(p -> Optional.ofNullable(p.getWatcher()))
-                .ifPresent(w -> {
-                    Optional.of(exchange)
-                            .map(v -> new CoapExchange(exchange, this))
-                            .ifPresent(v -> {
-                                CoapRequestCmd reqCmd = fromExchange(exchange);
-                                w.onReceived(pipe, reqCmd);
-                            });
-                });
+        if (pipe != null) {
+            CoapRequestCmd cmd = fromExchange(exchange);
+            pipe.onReceived(cmd);
+        }
 
         super.handleRequest(exchange);
     }
@@ -59,8 +45,8 @@ public abstract class ServerResource extends CoapResource {
         CoapMethod coapMethod = CoapMethod.valueOf(exchange.getRequest().getCode().toString());
         CoapFormat coapFormat = CoapFormat.valueOf(exchange.getRequest().getOptions().getContentFormat());
 
-        CoapRequestCmd reqCmd = new CoapRequestCmd(uri, coapMethod, coapFormat);
-        reqCmd.setContent(exchange.getRequest().getPayloadString());
-        return reqCmd;
+        CoapRequestCmd cmd = new CoapRequestCmd(uri, coapMethod, coapFormat);
+        cmd.setContent(exchange.getRequest().getPayloadString());
+        return cmd;
     }
 }

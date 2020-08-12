@@ -28,6 +28,28 @@ public class Ddf2JsonGenerator {
     static final String DEFAULT_DDF_FILES_PATH = "ddffiles";
     static final String DEFAULT_OUTPUT_PATH = "src/main/resources/objectspec.json";
 
+    public static void main(String[] args)
+            throws FileNotFoundException, IOException, JsonException, InvalidDDFFileException {
+        // default value
+        String ddfFilesPath = DEFAULT_DDF_FILES_PATH;
+        String outputPath = DEFAULT_OUTPUT_PATH;
+
+        // use arguments if they exit
+        if (args.length >= 1) {
+            // the path to a DDF file or a folder which contains DDF files.
+            ddfFilesPath = args[0];
+        }
+        if (args.length >= 2) {
+            // the path of the output file.
+            outputPath = args[1];
+        }
+        // generate object spec file
+        Ddf2JsonGenerator ddfJsonGenerator = new Ddf2JsonGenerator();
+        try (FileOutputStream fileOutputStream = new FileOutputStream(outputPath)) {
+            ddfJsonGenerator.generate(new File(ddfFilesPath), fileOutputStream);
+        }
+    }
+
     private void generate(Collection<ObjectModel> objectModels, OutputStream output) throws IOException, JsonException {
         try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(output)) {
             outputStreamWriter.write(new ObjectModelSerDes().sSerialize(objectModels));
@@ -67,27 +89,5 @@ public class Ddf2JsonGenerator {
 
         // generate json
         generate(objectModels, output);
-    }
-
-    public static void main(String[] args)
-            throws FileNotFoundException, IOException, JsonException, InvalidDDFFileException {
-        // default value
-        String ddfFilesPath = DEFAULT_DDF_FILES_PATH;
-        String outputPath = DEFAULT_OUTPUT_PATH;
-
-        // use arguments if they exit
-        if (args.length >= 1) {
-            // the path to a DDF file or a folder which contains DDF files.
-            ddfFilesPath = args[0];
-        }
-        if (args.length >= 2) {
-            // the path of the output file.
-            outputPath = args[1];
-        }
-        // generate object spec file
-        Ddf2JsonGenerator ddfJsonGenerator = new Ddf2JsonGenerator();
-        try (FileOutputStream fileOutputStream = new FileOutputStream(outputPath)) {
-            ddfJsonGenerator.generate(new File(ddfFilesPath), fileOutputStream);
-        }
     }
 }

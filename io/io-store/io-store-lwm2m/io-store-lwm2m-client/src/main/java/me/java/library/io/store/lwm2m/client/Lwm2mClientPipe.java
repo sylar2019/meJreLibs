@@ -48,40 +48,39 @@ import static org.eclipse.leshan.core.LwM2mId.SERVER;
  * @copyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
  * *******************************************************************************************
  */
-public class Lwm2mClientPipe extends BasePipe implements Lwm2mClient {
+public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2mClient {
 
     LeshanClient client;
     LwM2mModel model;
-    Lwm2mClientParam param;
 
-    public Lwm2mClientPipe(Lwm2mClientParam param) {
-        this.param = param;
+    public Lwm2mClientPipe(Lwm2mClientParams params) {
+        super(params);
     }
 
     @Override
     protected boolean onStart() throws Exception {
         startClient(
-                param.getEndpoint(),
-                param.getLocalAddress(),
-                param.getLocalPort(),
-                param.isNeedBootstrap(),
-                param.getAdditionalAttributes(),
-                param.getBsAdditionalAttributes(),
-                param.getLifetime(),
-                param.getCommunicationPeriod(),
-                param.getServerUri(),
-                param.getPskIdentity(),
-                param.getPskKey(),
-                param.getClientPrivateKey(),
-                param.getClientPublicKey(),
-                param.getServerPublicKey(),
-                param.getClientCertificate(),
-                param.getServerCertificate(),
-                param.isSupportOldFormat(),
-                param.isSupportDeprecatedCiphers(),
-                param.isReconnectOnUpdate(),
-                param.isForceFullhandshake(),
-                param.getModelsFolderPath()
+                params.getEndpoint(),
+                params.getLocalAddress(),
+                params.getLocalPort(),
+                params.isNeedBootstrap(),
+                params.getAdditionalAttributes(),
+                params.getBsAdditionalAttributes(),
+                params.getLifetime(),
+                params.getCommunicationPeriod(),
+                params.getServerUri(),
+                params.getPskIdentity(),
+                params.getPskKey(),
+                params.getClientPrivateKey(),
+                params.getClientPublicKey(),
+                params.getServerPublicKey(),
+                params.getClientCertificate(),
+                params.getServerCertificate(),
+                params.isSupportOldFormat(),
+                params.isSupportDeprecatedCiphers(),
+                params.isReconnectOnUpdate(),
+                params.isForceFullhandshake(),
+                params.getModelsFolderPath()
         );
         return true;
     }

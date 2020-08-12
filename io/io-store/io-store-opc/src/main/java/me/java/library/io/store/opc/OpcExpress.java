@@ -1,5 +1,6 @@
 package me.java.library.io.store.opc;
 
+import me.java.library.io.store.opc.client.OpcClientParams;
 import me.java.library.io.store.opc.client.OpcClientPipe;
 
 /**
@@ -18,7 +19,7 @@ import me.java.library.io.store.opc.client.OpcClientPipe;
  * *******************************************************************************************
  */
 public class OpcExpress {
-    public static OpcClientPipe client(OpcParam param) {
+    public static OpcClientPipe client(OpcClientParams param) {
         return new OpcClientPipe(param);
     }
 }

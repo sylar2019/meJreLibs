@@ -29,23 +29,23 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class MqttClientPipe extends BasePipe {
+public class MqttClientPipe extends BasePipe<MqttClientParams> {
 
     protected MqttClient client;
     protected MqttClientPersistence persistence;
-    protected MqttClientParam param;
 
-    public MqttClientPipe(MqttClientParam param) {
-        this.param = param;
-        Preconditions.checkNotNull(param.getBroker());
-        Preconditions.checkNotNull(param.getClientId());
+    public MqttClientPipe(MqttClientParams params) {
+        super(params);
+
+        Preconditions.checkNotNull(params.getBroker());
+        Preconditions.checkNotNull(params.getClientId());
     }
 
     @Override
     protected boolean onStart() throws Exception {
         persistence = new MemoryPersistence();
-        client = new MqttClient(param.getBroker(),
-                param.getClientId(),
+        client = new MqttClient(params.getBroker(),
+                params.getClientId(),
                 persistence);
         client.setCallback(new MqttCallback() {
             @Override
@@ -64,10 +64,10 @@ public class MqttClientPipe extends BasePipe {
         });
 
         MqttConnectOptions connOpts = new MqttConnectOptions();
-        connOpts.setAutomaticReconnect(isDaemon);
-        connOpts.setUserName(param.getUsername());
-        if (!Strings.isNullOrEmpty(param.getPassword())) {
-            connOpts.setPassword(param.getPassword().toCharArray());
+        connOpts.setAutomaticReconnect(params.isDaemon());
+        connOpts.setUserName(params.getUsername());
+        if (!Strings.isNullOrEmpty(params.getPassword())) {
+            connOpts.setPassword(params.getPassword().toCharArray());
         }
 
         client.connect(connOpts);

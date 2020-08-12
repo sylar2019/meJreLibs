@@ -30,41 +30,42 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
-  <Object ObjectType="MODefinition">
-    <Name>Fan PM</Name>
-    <Description1><![CDATA[This LWM2M Object includes all PM items belongs to Fans.]]></Description1>
-    <ObjectID>10358</ObjectID>
-    <ObjectURN>urn:oma:lwm2m:x:10358</ObjectURN>
-    <LWM2MVersion>1.0</LWM2MVersion>
-    <ObjectVersion>1.0</ObjectVersion>
-    <MultipleInstances>Multiple</MultipleInstances>
-    <Mandatory>Optional</Mandatory>
-    <Resources>
-		<Item ID="1">
-			<Name>Fan Name</Name>
-			<Operations>R</Operations>
-			<MultipleInstances>Single</MultipleInstances>
-			<Mandatory>Mandatory</Mandatory>
-			<Type>String</Type>
-			<RangeEnumeration/>
-			<Units/>
-			<Description>
-			  <![CDATA[The name of the Fan.]]>
-			</Description>
-		</Item>
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+    <Object ObjectType="MODefinition">
+        <Name>Fan PM</Name>
+        <Description1><![CDATA[This LWM2M Object includes all PM items belongs to Fans.]]></Description1>
+        <ObjectID>10358</ObjectID>
+        <ObjectURN>urn:oma:lwm2m:x:10358</ObjectURN>
+        <LWM2MVersion>1.0</LWM2MVersion>
+        <ObjectVersion>1.0</ObjectVersion>
+        <MultipleInstances>Multiple</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Resources>
+            <Item ID="1">
+                <Name>Fan Name</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>String</Type>
+                <RangeEnumeration/>
+                <Units/>
+                <Description>
+                    <![CDATA[The name of the Fan.]]>
+                </Description>
+            </Item>
 
-	    <Item ID="609">
-			<Name>Fan Speed</Name>
-			<Operations>R</Operations>
-			<MultipleInstances>Single</MultipleInstances>
-			<Mandatory>Optional</Mandatory>
-			<Type>Integer</Type>
-			<RangeEnumeration/>
-			<Units>1/min</Units>
-			<Description><![CDATA[The speed of the Fan.]]></Description>
-        </Item>
-    </Resources>
-    <Description2 />
-  </Object>
+            <Item ID="609">
+                <Name>Fan Speed</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration/>
+                <Units>1/min</Units>
+                <Description><![CDATA[The speed of the Fan.]]></Description>
+            </Item>
+        </Resources>
+        <Description2/>
+    </Object>
 </LWM2M>

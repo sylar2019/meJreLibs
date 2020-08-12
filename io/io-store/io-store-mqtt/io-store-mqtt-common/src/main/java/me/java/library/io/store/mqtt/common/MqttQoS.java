@@ -31,16 +31,16 @@ public enum MqttQoS {
         this.value = value;
     }
 
-    public int value() {
-        return value;
-    }
-
     public static MqttQoS valueOf(int value) {
-        for (MqttQoS q: values()) {
+        for (MqttQoS q : values()) {
             if (q.value == value) {
                 return q;
             }
         }
         throw new IllegalArgumentException("invalid QoS: " + value);
+    }
+
+    public int value() {
+        return value;
     }
 }

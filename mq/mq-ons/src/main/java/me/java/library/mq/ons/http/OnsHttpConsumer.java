@@ -1,6 +1,5 @@
 package me.java.library.mq.ons.http;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import me.java.library.mq.ons.AbstractOnsConsumer;
@@ -8,9 +7,6 @@ import me.java.library.utils.base.ConcurrentUtils;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by sylar on 2017/1/6.

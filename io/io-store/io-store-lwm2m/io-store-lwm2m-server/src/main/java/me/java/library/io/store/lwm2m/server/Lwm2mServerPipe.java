@@ -55,38 +55,36 @@ import java.util.concurrent.TimeUnit;
  * @copyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
  * *******************************************************************************************
  */
-public class Lwm2mServerPipe extends BasePipe {
-
+public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
     Server jettyServer;
     LeshanServer lwServer;
-    Lwm2mServerParam param;
 
-    public Lwm2mServerPipe(Lwm2mServerParam param) {
-        this.param = param;
+    public Lwm2mServerPipe(Lwm2mServerParams params) {
+        super(params);
     }
 
     @Override
     protected boolean onStart() throws Exception {
         initServer(
-                param.getWebAddress(),
-                param.getWebPort(),
-                param.getLocalAddress(),
-                param.getLocalPort(),
-                param.getSecureLocalAddress(),
-                param.getSecureLocalPort(),
-                param.getModelsFolderPath(),
-                param.getRedisUrl(),
-                param.getPublicKey(),
-                param.getPrivateKey(),
-                param.getCertificate(),
-                param.getTrustStore(),
-                param.getKeyStorePath(),
-                param.getKeyStoreType(),
-                param.getKeyStorePass(),
-                param.getKeyStoreAlias(),
-                param.getKeyStoreAliasPass(),
-                param.getPublishDnssdServices(),
-                param.getPublishDnssdServices()
+                params.getWebAddress(),
+                params.getWebPort(),
+                params.getLocalAddress(),
+                params.getLocalPort(),
+                params.getSecureLocalAddress(),
+                params.getSecureLocalPort(),
+                params.getModelsFolderPath(),
+                params.getRedisUrl(),
+                params.getPublicKey(),
+                params.getPrivateKey(),
+                params.getCertificate(),
+                params.getTrustStore(),
+                params.getKeyStorePath(),
+                params.getKeyStoreType(),
+                params.getKeyStorePass(),
+                params.getKeyStoreAlias(),
+                params.getKeyStoreAliasPass(),
+                params.getPublishDnssdServices(),
+                params.getPublishDnssdServices()
         );
         return true;
     }

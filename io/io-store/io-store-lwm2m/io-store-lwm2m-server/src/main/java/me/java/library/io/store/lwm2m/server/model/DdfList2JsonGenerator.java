@@ -51,6 +51,38 @@ public class DdfList2JsonGenerator {
         factory = DocumentBuilderFactory.newInstance();
     }
 
+    public static void main(String[] args) throws IOException, JsonException, InvalidDDFFileException {
+        // default values
+        String ddfFilesPath = Ddf2JsonGenerator.DEFAULT_DDF_FILES_PATH;
+        String outputPath = Ddf2JsonGenerator.DEFAULT_OUTPUT_PATH;
+        String ddfListUrl = "http://www.openmobilealliance.org/wp/OMNA/LwM2M/DDF.xml";
+
+        // use arguments if they exist
+        if (args.length >= 1) {
+            ddfFilesPath = args[0];
+            // the path to a DDF file or a folder which contains DDF files.
+        }
+        if (args.length >= 2) {
+            outputPath = args[1];
+            // the path of the output file.
+        }
+        if (args.length >= 3) {
+            ddfListUrl = args[2];
+            // the path of the DDF list file.
+        }
+
+        new DdfList2JsonGenerator().processDdfList(ddfListUrl, ddfFilesPath);
+
+        LOG.error("DDF list {} processed to {}, proceeding with JSON generation in {}", ddfListUrl, ddfFilesPath,
+                outputPath);
+
+        // generate object spec file
+        Ddf2JsonGenerator ddfJsonGenerator = new Ddf2JsonGenerator();
+        try (FileOutputStream fileOutputStream = new FileOutputStream(outputPath)) {
+            ddfJsonGenerator.generate(new File(ddfFilesPath), fileOutputStream);
+        }
+    }
+
     private URLConnection openConnection(URL url) throws IOException {
         URLConnection conn = url.openConnection();
         // The default Java User-Agent gets 403 Forbidden from OMA website
@@ -102,38 +134,6 @@ public class DdfList2JsonGenerator {
             try (InputStream in = openConnection(parsedUrl).getInputStream()) {
                 Files.copy(in, outPath);
             }
-        }
-    }
-
-    public static void main(String[] args) throws IOException, JsonException, InvalidDDFFileException {
-        // default values
-        String ddfFilesPath = Ddf2JsonGenerator.DEFAULT_DDF_FILES_PATH;
-        String outputPath = Ddf2JsonGenerator.DEFAULT_OUTPUT_PATH;
-        String ddfListUrl = "http://www.openmobilealliance.org/wp/OMNA/LwM2M/DDF.xml";
-
-        // use arguments if they exist
-        if (args.length >= 1) {
-            ddfFilesPath = args[0];
-            // the path to a DDF file or a folder which contains DDF files.
-        }
-        if (args.length >= 2) {
-            outputPath = args[1];
-            // the path of the output file.
-        }
-        if (args.length >= 3) {
-            ddfListUrl = args[2];
-            // the path of the DDF list file.
-        }
-
-        new DdfList2JsonGenerator().processDdfList(ddfListUrl, ddfFilesPath);
-
-        LOG.error("DDF list {} processed to {}, proceeding with JSON generation in {}", ddfListUrl, ddfFilesPath,
-                outputPath);
-
-        // generate object spec file
-        Ddf2JsonGenerator ddfJsonGenerator = new Ddf2JsonGenerator();
-        try (FileOutputStream fileOutputStream = new FileOutputStream(outputPath)) {
-            ddfJsonGenerator.generate(new File(ddfFilesPath), fileOutputStream);
         }
     }
 }

@@ -31,10 +31,12 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
     <Object ObjectType="MODefinition">
         <Name>Device Reboot Event</Name>
-        <Description1><![CDATA[This binary status should indicate that the meter MCU can no longer communicate with a daughter board]]></Description1>
+        <Description1>
+            <![CDATA[This binary status should indicate that the meter MCU can no longer communicate with a daughter board]]></Description1>
         <ObjectID>10283</ObjectID>
         <ObjectURN>urn:oma:lwm2m:x:10283</ObjectURN>
         <MultipleInstances>Multiple</MultipleInstances>
@@ -70,7 +72,8 @@ See the Event Log Payload for examples of each of these modes.
                 <Type>Boolean</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Realtime is a readable and writable resource used to indicate if an event should report immediately (1) at the point of occurrence, or delivered periodically as part of the Latest Eventlog Payload.]]></Description>
+                <Description>
+                    <![CDATA[Realtime is a readable and writable resource used to indicate if an event should report immediately (1) at the point of occurrence, or delivered periodically as part of the Latest Eventlog Payload.]]></Description>
             </Item>
             <Item ID="6013">
                 <Name>Alarm State</Name>
@@ -80,7 +83,8 @@ See the Event Log Payload for examples of each of these modes.
                 <Type>Boolean</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Alarm State is a read-only resource used to indicate the current alarm state for this Event configuration. This is only applicable if the Event Type is Alarm Current State (1) or Alarm State Change (2).  ]]></Description>
+                <Description>
+                    <![CDATA[Alarm State is a read-only resource used to indicate the current alarm state for this Event configuration. This is only applicable if the Event Type is Alarm Current State (1) or Alarm State Change (2).  ]]></Description>
             </Item>
             <Item ID="6014">
                 <Name>Alarm Set Threshold</Name>
@@ -90,7 +94,8 @@ See the Event Log Payload for examples of each of these modes.
                 <Type>Float</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Set Threshold is a readable and writable resource used to represent the threshold for when an alarm is triggered. This resource is used in conjunction with the Set Operator resource. ]]></Description>
+                <Description>
+                    <![CDATA[Set Threshold is a readable and writable resource used to represent the threshold for when an alarm is triggered. This resource is used in conjunction with the Set Operator resource. ]]></Description>
             </Item>
             <Item ID="6015">
                 <Name>Alarm Set Operator</Name>
@@ -114,7 +119,8 @@ By setting the Set Operator to Less Than (1), when the measured value for this e
                 <Type>Float</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Clear Threshold is a readable and writable resource used to represent the threshold for when an alarm is cleared. This resource is used in conjunction with the Clear Operator resource.  ]]></Description>
+                <Description>
+                    <![CDATA[Clear Threshold is a readable and writable resource used to represent the threshold for when an alarm is cleared. This resource is used in conjunction with the Clear Operator resource.  ]]></Description>
             </Item>
             <Item ID="6017">
                 <Name>Alarm Clear Operator</Name>
@@ -138,7 +144,8 @@ By setting the Clear Operator to Less Than (1), when the measured value for this
                 <Type>Integer</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Maximum Event Count is a readable and writable resource used provide a ceiling on the number of events that can be raised within the time period defined in Maximum Event Period resource. If no Maximum Event Count is set, the number of events recorded is unconstrained. The intent of this resource is to control the number of events reported, particularly in the case of a faulty sensor.]]></Description>
+                <Description>
+                    <![CDATA[Maximum Event Count is a readable and writable resource used provide a ceiling on the number of events that can be raised within the time period defined in Maximum Event Period resource. If no Maximum Event Count is set, the number of events recorded is unconstrained. The intent of this resource is to control the number of events reported, particularly in the case of a faulty sensor.]]></Description>
             </Item>
             <Item ID="6019">
                 <Name>Alarm Maximum Event Period</Name>
@@ -148,7 +155,8 @@ By setting the Clear Operator to Less Than (1), when the measured value for this
                 <Type>Integer</Type>
                 <RangeEnumeration>1..864000</RangeEnumeration>
                 <Units>s</Units>
-                <Description><![CDATA[Maximum Event Period is a readable and writable resource used in conjunction with the Maximum Event Count resource to control the number of events that can be raised in a given period. Maximum Event Period is an integer value representing the number of seconds for which the Maximum Event Count is measured. If no Maximum Event Period is set, the number of events recorded is unconstrained. The intent of this resource is to control the number of events reported, particularly in the case of a faulty sensor.]]></Description>
+                <Description>
+                    <![CDATA[Maximum Event Period is a readable and writable resource used in conjunction with the Maximum Event Count resource to control the number of events that can be raised in a given period. Maximum Event Period is an integer value representing the number of seconds for which the Maximum Event Count is measured. If no Maximum Event Period is set, the number of events recorded is unconstrained. The intent of this resource is to control the number of events reported, particularly in the case of a faulty sensor.]]></Description>
             </Item>
             <Item ID="6020">
                 <Name>Latest Delivered Event Time</Name>
@@ -158,7 +166,8 @@ By setting the Clear Operator to Less Than (1), when the measured value for this
                 <Type>Time</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Latest Delivered Event Time is a readable and writable resource to represent the last recorded time that an event was delivered for this event code to the LwM2M server. The setting of this resource is implementation specific but should be updated based on, either a Read request of the Latest Eventlog Payload from the LwM2M server or via a confirmed delivery of Notify operation of the Latest Eventlog Payload resource. This resource is writable to allow the server to adjust the Last Delivered Event Time value if the server and client is out of sync.]]></Description>
+                <Description>
+                    <![CDATA[Latest Delivered Event Time is a readable and writable resource to represent the last recorded time that an event was delivered for this event code to the LwM2M server. The setting of this resource is implementation specific but should be updated based on, either a Read request of the Latest Eventlog Payload from the LwM2M server or via a confirmed delivery of Notify operation of the Latest Eventlog Payload resource. This resource is writable to allow the server to adjust the Last Delivered Event Time value if the server and client is out of sync.]]></Description>
             </Item>
             <Item ID="6021">
                 <Name>Latest Recorded Event Time</Name>
@@ -168,7 +177,8 @@ By setting the Clear Operator to Less Than (1), when the measured value for this
                 <Type>Time</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Latest Recorded Event Time is a readonly resource used to represent the last recorded event time for this object instance on the device]]></Description>
+                <Description>
+                    <![CDATA[Latest Recorded Event Time is a readonly resource used to represent the last recorded event time for this object instance on the device]]></Description>
             </Item>
             <Item ID="6022">
                 <Name>Alarm Clear</Name>
@@ -178,7 +188,8 @@ By setting the Clear Operator to Less Than (1), when the measured value for this
                 <Type></Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Clear Alarm is an executable resource used to allow the LwM2M server to clear alarms when they need to be manually acknowledged.]]></Description>
+                <Description>
+                    <![CDATA[Clear Alarm is an executable resource used to allow the LwM2M server to clear alarms when they need to be manually acknowledged.]]></Description>
             </Item>
             <Item ID="6023">
                 <Name>Alarm Auto Clear</Name>
@@ -188,7 +199,8 @@ By setting the Clear Operator to Less Than (1), when the measured value for this
                 <Type>Boolean</Type>
                 <RangeEnumeration></RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Auto Clear Alarm is a readable and writable resource used to indicate if an alarm is automatically cleared once the delivery of the event data payload is complete ]]></Description>
+                <Description>
+                    <![CDATA[Auto Clear Alarm is a readable and writable resource used to indicate if an alarm is automatically cleared once the delivery of the event data payload is complete ]]></Description>
             </Item>
             <Item ID="6024">
                 <Name>Event Code</Name>
@@ -198,7 +210,8 @@ By setting the Clear Operator to Less Than (1), when the measured value for this
                 <Type>Integer</Type>
                 <RangeEnumeration>100..255</RangeEnumeration>
                 <Units></Units>
-                <Description><![CDATA[Event Code is a read-only resource used as an identifier to represent this class of event. The allocation of event codes is implementation specific but ideally be unique across the implementation. Event Codes use vendor specific LogClass value 100...255]]></Description>
+                <Description>
+                    <![CDATA[Event Code is a read-only resource used as an identifier to represent this class of event. The allocation of event codes is implementation specific but ideally be unique across the implementation. Event Codes use vendor specific LogClass value 100...255]]></Description>
             </Item>
             <Item ID="6025">
                 <Name>Latest Payload</Name>

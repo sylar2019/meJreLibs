@@ -1,6 +1,5 @@
 package me.java.library.mq.kafka.loop;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import me.java.library.utils.base.ConcurrentUtils;
@@ -9,7 +8,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
 
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**

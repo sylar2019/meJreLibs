@@ -2,8 +2,6 @@ package me.java.library.utils.excel;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * @author : sylar
  * @fullName : me.java.library.utils.excel.ExcelUtilsTest

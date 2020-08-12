@@ -5,7 +5,6 @@ import com.google.common.util.concurrent.FutureCallback;
 import me.java.library.common.service.ConcurrentService;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.cmd.CmdUtils;
-import me.java.library.io.base.cmd.Host;
 import me.java.library.io.base.cmd.Terminal;
 import me.java.library.io.base.event.*;
 import me.java.library.utils.base.guava.AsyncEventUtils;
@@ -30,23 +29,16 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class BasePipe implements Pipe {
-    protected final static int DAEMON_PERIOD_SECONDS = 5;
+public abstract class BasePipe<Params extends PipeParams> implements Pipe {
+
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected Host host;
+    protected Params params;
     protected PipeWatcher watcher;
     protected boolean isRunning;
-    protected boolean isDaemon;
-    protected boolean isEventEnabled;
 
-    public BasePipe() {
-        this(Host.LOCAL);
-    }
-
-    public BasePipe(Host host) {
-        this.host = host;
-
+    public BasePipe(Params params) {
+        this.params = params;
         onHostStateChanged(true);
         registHook();
     }
@@ -65,6 +57,7 @@ public abstract class BasePipe implements Pipe {
     /**
      * 拆除通讯链路
      *
+     * @return
      * @throws Exception
      */
     protected abstract boolean onStop() throws Exception;
@@ -73,6 +66,7 @@ public abstract class BasePipe implements Pipe {
      * 异步发送
      *
      * @param request
+     * @return
      * @throws Exception
      */
     protected abstract boolean onSend(Cmd request) throws Exception;
@@ -105,8 +99,10 @@ public abstract class BasePipe implements Pipe {
             @Override
             public void onFailure(Throwable t) {
                 onException(t);
-                if (isDaemon) {
-                    ConcurrentService.getInstance().schedule(() -> onStart(), getDaemonSeconds(), TimeUnit.SECONDS);
+                if (params.isDaemon()) {
+                    ConcurrentService.getInstance().schedule(() -> onStart(),
+                            params.getDaemonDaurtion().getSeconds(),
+                            TimeUnit.SECONDS);
                 }
             }
         });
@@ -168,7 +164,7 @@ public abstract class BasePipe implements Pipe {
 
     @Override
     public Cmd syncSend(Cmd request) throws Exception {
-        return syncSend(request, 1, TimeUnit.SECONDS);
+        return syncSend(request, 3, TimeUnit.SECONDS);
     }
 
     @Override
@@ -200,23 +196,8 @@ public abstract class BasePipe implements Pipe {
     }
 
     @Override
-    public Host getHost() {
-        return host;
-    }
-
-    @Override
-    public PipeWatcher getWatcher() {
-        return watcher;
-    }
-
-    @Override
     public void setWatcher(PipeWatcher watcher) {
         this.watcher = watcher;
-    }
-
-    @Override
-    public void setDaemon(boolean enabled) {
-        isDaemon = enabled;
     }
 
     @Override
@@ -231,9 +212,9 @@ public abstract class BasePipe implements Pipe {
     }
 
     protected void onHostStateChanged(boolean isRunning) {
-        postEvent(new HostStateChangedEvent(host, isRunning));
+        postEvent(new HostStateChangedEvent(params.getHost(), isRunning));
         if (watcher != null) {
-            ConcurrentService.getInstance().postRunnable(() -> watcher.onHostStateChanged(host, isRunning));
+            ConcurrentService.getInstance().postRunnable(() -> watcher.onHostStateChanged(params.getHost(), isRunning));
         }
     }
 
@@ -272,12 +253,9 @@ public abstract class BasePipe implements Pipe {
     }
 
     protected void postEvent(Object event) {
-        if (isEventEnabled) {
+        if (params.isEventEnabled()) {
             AsyncEventUtils.postEvent(event);
         }
     }
 
-    protected int getDaemonSeconds() {
-        return DAEMON_PERIOD_SECONDS;
-    }
 }
