@@ -1,9 +1,9 @@
 package me.java.library.io.store.socket.udp;
 
 import me.java.library.io.base.pipe.BasePipeParams;
+import me.java.library.utils.base.NetworkUtils;
 
 import java.net.NetworkInterface;
-import java.net.SocketException;
 
 /**
  * @author : sylar
@@ -15,6 +15,9 @@ import java.net.SocketException;
  */
 public class UdpMulticastParams extends BasePipeParams {
 
+    /**
+     * 224.0.2.0～238.255.255.255 为用户可用的组播地址（临时组地址），全网范围内有效；
+     */
     String groupAddress;
     boolean loopbackModeDisabled = true;
     int ttl = 255;
@@ -66,16 +69,15 @@ public class UdpMulticastParams extends BasePipeParams {
         this.networkInterfaceName = networkInterfaceName;
     }
 
-
     public NetworkInterface getNetworkInterface() {
-        if (networkInterfaceName != null) {
-            try {
+        try {
+            if (networkInterfaceName != null) {
                 return NetworkInterface.getByName(networkInterfaceName);
-            } catch (SocketException e) {
-                e.printStackTrace();
-                return null;
+            } else {
+                return NetworkUtils.getFirstNetworkInterface();
             }
+        } catch (Exception e) {
+            return NetworkUtils.getFirstNetworkInterface();
         }
-        return null;
     }
 }

@@ -9,8 +9,7 @@ import io.netty.channel.socket.InternetProtocolFamily;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import me.java.library.io.core.pipe.AbstractPipe;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
+import java.net.InetSocketAddress;
 
 /**
  * File Name             :  UdpMulticastPipe
@@ -55,8 +54,8 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastParams, UdpCodec>
 
         ChannelFuture future = bind(bootstrap, null, params.getLocalPort()).sync();
 
-        InetAddress groupAddress = InetAddress.getByName(params.getGroupAddress());
-        future = ((NioDatagramChannel) future.channel()).joinGroup(groupAddress);
+        InetSocketAddress groupAddress = new InetSocketAddress(params.getGroupAddress(), params.getLocalPort());
+        future = ((NioDatagramChannel) future.channel()).joinGroup(groupAddress, params.getNetworkInterface());
         return future.sync().isDone();
     }
 }
