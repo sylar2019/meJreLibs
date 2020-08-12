@@ -50,7 +50,7 @@ public class UdpMulticastPipe extends AbstractPipe<UdpMulticastParams, UdpCodec>
                 .handler(channelInitializer)
                 .option(ChannelOption.IP_MULTICAST_LOOP_DISABLED, params.isLoopbackModeDisabled())
                 .option(ChannelOption.IP_MULTICAST_TTL, params.getTtl())
-                .option(ChannelOption.IP_MULTICAST_IF, NetworkInterface.getByName(params.getNetworkInterfaceName()))
+                .option(ChannelOption.IP_MULTICAST_IF, params.getNetworkInterface())
                 .option(ChannelOption.SO_REUSEADDR, params.isReuseAddress());
 
         ChannelFuture future = bind(bootstrap, null, params.getLocalPort()).sync();

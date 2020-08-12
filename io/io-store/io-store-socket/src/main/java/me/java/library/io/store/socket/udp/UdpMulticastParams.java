@@ -2,6 +2,9 @@ package me.java.library.io.store.socket.udp;
 
 import me.java.library.io.base.pipe.BasePipeParams;
 
+import java.net.NetworkInterface;
+import java.net.SocketException;
+
 /**
  * @author : sylar
  * @fullName : me.java.library.io.store.socket.udp.UdpMulticastParams
@@ -61,5 +64,18 @@ public class UdpMulticastParams extends BasePipeParams {
 
     public void setNetworkInterfaceName(String networkInterfaceName) {
         this.networkInterfaceName = networkInterfaceName;
+    }
+
+
+    public NetworkInterface getNetworkInterface() {
+        if (networkInterfaceName != null) {
+            try {
+                return NetworkInterface.getByName(networkInterfaceName);
+            } catch (SocketException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return null;
     }
 }
