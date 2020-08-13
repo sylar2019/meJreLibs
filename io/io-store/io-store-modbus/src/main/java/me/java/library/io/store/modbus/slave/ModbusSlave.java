@@ -1,6 +1,6 @@
 package me.java.library.io.store.modbus.slave;
 
-import com.serotonin.modbus4j.ProcessImage;
+import java.util.List;
 
 /**
  * @author : sylar
@@ -12,11 +12,11 @@ import com.serotonin.modbus4j.ProcessImage;
  */
 public interface ModbusSlave {
 
-    void addProcessImage(ProcessImage processImage);
+    List<SlaveImage> getImages();
 
-    boolean removeProcessImage(ProcessImage processImage);
+    SlaveImage getImage(int slaveId);
 
-    boolean removeProcessImage(int slaveId);
+    void addImage(SlaveImage image);
 
-    ProcessImage getProcessImage(int slaveId);
+    boolean removeImage(int slaveId);
 }

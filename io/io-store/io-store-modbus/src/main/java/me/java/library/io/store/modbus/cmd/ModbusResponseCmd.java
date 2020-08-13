@@ -29,7 +29,7 @@ public class ModbusResponseCmd extends ModbusCmd {
     }
 
     @JsonIgnore
-    public ModbusResponse getResponse() {
+    public <T extends ModbusResponse> T getResponse() {
         return getAttr(ATTR_RESPONSE);
     }
 

@@ -1,13 +1,15 @@
 package me.java.library.io.store.modbus.slave;
 
 import com.serotonin.modbus4j.ModbusSlaveSet;
-import com.serotonin.modbus4j.ProcessImage;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.io.store.modbus.ModbusParams;
 import me.java.library.utils.base.ExceptionUtils;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * File Name             :  ModbusClientPipe
@@ -58,22 +60,27 @@ public class ModbusSlavePipe extends BasePipe<ModbusParams> implements ModbusSla
     }
 
     @Override
-    public void addProcessImage(ProcessImage processImage) {
-        slave.addProcessImage(processImage);
+    public List<SlaveImage> getImages() {
+        return Stream.of(slave.getProcessImages().toArray())
+                .filter(o -> o instanceof SlaveImage)
+                .map(o -> (SlaveImage) o)
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     @Override
-    public boolean removeProcessImage(ProcessImage processImage) {
-        return slave.removeProcessImage(processImage);
+    public SlaveImage getImage(int slaveId) {
+        return (SlaveImage) slave.getProcessImage(slaveId);
     }
 
     @Override
-    public boolean removeProcessImage(int slaveId) {
+    public void addImage(SlaveImage image) {
+        slave.addProcessImage(image);
+    }
+
+    @Override
+    public boolean removeImage(int slaveId) {
         return slave.removeProcessImage(slaveId);
     }
 
-    @Override
-    public ProcessImage getProcessImage(int slaveId) {
-        return slave.getProcessImage(slaveId);
-    }
 }

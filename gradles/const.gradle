@@ -21,7 +21,7 @@ ext {
     lombokVersion = "1.18.8"
     fastjsonVersion = "1.2.8"
     jacksonVersion = "2.9.7"
-    guavaVersion = "28.1-jre"
+    guavaVersion = "29.0-jre"
     jodatimeVersion = "2.9.9"
     nettyVersion = "4.1.43.Final"
     feignVersion = "8.18.0"

@@ -32,9 +32,19 @@ public class ModbusExpress {
         return new ModbusMasterPipe(master);
     }
 
+    public static ModbusSlavePipe rtuSlave(RxtxParam rxtxParam) {
+        ModbusSlaveSet slaveSet = factory.createRtuSlave(createWrapper(rxtxParam));
+        return new ModbusSlavePipe(slaveSet);
+    }
+
     public static ModbusMasterPipe asciiMaster(RxtxParam rxtxParam) {
         ModbusMaster master = factory.createAsciiMaster(createWrapper(rxtxParam));
         return new ModbusMasterPipe(master);
+    }
+
+    public static ModbusSlavePipe asciiSlave(RxtxParam rxtxParam) {
+        ModbusSlaveSet slaveSet = factory.createAsciiSlave(createWrapper(rxtxParam));
+        return new ModbusSlavePipe(slaveSet);
     }
 
     public static ModbusMasterPipe tcpListener(IpParam ipParam) {
@@ -47,24 +57,14 @@ public class ModbusExpress {
         return new ModbusMasterPipe(master);
     }
 
-    public static ModbusMasterPipe udpMaster(IpParam ipParam) {
-        ModbusMaster master = factory.createUdpMaster(ipParam.convert());
-        return new ModbusMasterPipe(master);
-    }
-
-    public static ModbusSlavePipe rtuSlave(RxtxParam rxtxParam) {
-        ModbusSlaveSet slaveSet = factory.createRtuSlave(createWrapper(rxtxParam));
-        return new ModbusSlavePipe(slaveSet);
-    }
-
-    public static ModbusSlavePipe asciiSlave(RxtxParam rxtxParam) {
-        ModbusSlaveSet slaveSet = factory.createAsciiSlave(createWrapper(rxtxParam));
-        return new ModbusSlavePipe(slaveSet);
-    }
-
     public static ModbusSlavePipe tcpSlave(boolean encapsulated) {
         ModbusSlaveSet slaveSet = factory.createTcpSlave(encapsulated);
         return new ModbusSlavePipe(slaveSet);
+    }
+
+    public static ModbusMasterPipe udpMaster(IpParam ipParam) {
+        ModbusMaster master = factory.createUdpMaster(ipParam.convert());
+        return new ModbusMasterPipe(master);
     }
 
     public static ModbusSlavePipe udpSlave(boolean encapsulated) {
