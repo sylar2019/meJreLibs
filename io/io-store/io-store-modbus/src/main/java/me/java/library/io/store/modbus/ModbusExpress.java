@@ -3,6 +3,8 @@ package me.java.library.io.store.modbus;
 import com.serotonin.modbus4j.ModbusFactory;
 import com.serotonin.modbus4j.ModbusMaster;
 import com.serotonin.modbus4j.ModbusSlaveSet;
+import com.serotonin.modbus4j.ip.tcp.TcpSlave;
+import com.serotonin.modbus4j.ip.udp.UdpSlave;
 import com.serotonin.modbus4j.serial.SerialPortWrapper;
 import me.java.library.io.store.modbus.master.ModbusMasterPipe;
 import me.java.library.io.store.modbus.slave.ModbusSlavePipe;
@@ -57,8 +59,8 @@ public class ModbusExpress {
         return new ModbusMasterPipe(master);
     }
 
-    public static ModbusSlavePipe tcpSlave(boolean encapsulated) {
-        ModbusSlaveSet slaveSet = factory.createTcpSlave(encapsulated);
+    public static ModbusSlavePipe tcpSlave(int port, boolean encapsulated) {
+        ModbusSlaveSet slaveSet = new TcpSlave(port, encapsulated);
         return new ModbusSlavePipe(slaveSet);
     }
 
@@ -67,8 +69,8 @@ public class ModbusExpress {
         return new ModbusMasterPipe(master);
     }
 
-    public static ModbusSlavePipe udpSlave(boolean encapsulated) {
-        ModbusSlaveSet slaveSet = factory.createUdpSlave(encapsulated);
+    public static ModbusSlavePipe udpSlave(int port, boolean encapsulated) {
+        ModbusSlaveSet slaveSet = new UdpSlave(port, encapsulated);
         return new ModbusSlavePipe(slaveSet);
     }
 

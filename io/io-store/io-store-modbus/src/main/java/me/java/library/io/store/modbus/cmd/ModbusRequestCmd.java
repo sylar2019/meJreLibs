@@ -1,6 +1,7 @@
 package me.java.library.io.store.modbus.cmd;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Preconditions;
 import me.java.library.io.store.modbus.FunctionType;
 
 /**
@@ -36,30 +37,45 @@ public class ModbusRequestCmd extends ModbusCmd {
         setLength(length);
     }
 
+    public void checkState() {
+        FunctionType functionType = getFunctionType();
+        Preconditions.checkNotNull(functionType, "invalid FunctionType");
+        Preconditions.checkNotNull(getSlaveId(), "invalid slaveId");
+        switch (functionType) {
+            case REPORT_SLAVE_ID:
+            case READ_EXCEPTION_STATUS:
+                break;
+            default:
+                Preconditions.checkNotNull(getStart(), "invalid offset");
+                Preconditions.checkNotNull(getLength(), "invalid length");
+                break;
+        }
+    }
+
     @JsonIgnore
-    public int getSlaveId() {
+    public Integer getSlaveId() {
         return getAttr(ATTR_SLAVEID);
     }
 
-    public void setSlaveId(int slaveId) {
+    public void setSlaveId(Integer slaveId) {
         setAttr(ATTR_SLAVEID, slaveId);
     }
 
     @JsonIgnore
-    public int getStart() {
+    public Integer getStart() {
         return getAttr(ATTR_START);
     }
 
-    public void setStart(int start) {
+    public void setStart(Integer start) {
         setAttr(ATTR_START, start);
     }
 
     @JsonIgnore
-    public int getLength() {
+    public Integer getLength() {
         return getAttr(ATTR_LENGTH);
     }
 
-    public void setLength(int length) {
+    public void setLength(Integer length) {
         setAttr(ATTR_LENGTH, length);
     }
 

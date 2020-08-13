@@ -42,16 +42,6 @@ public class MasterUtils {
 
     }
 
-    public static WriteCoilResponse writeCoil(ModbusMaster master, int slaveId, int offset, boolean value) throws ModbusTransportException {
-        WriteCoilRequest request = new WriteCoilRequest(slaveId, offset, value);
-        return (WriteCoilResponse) master.send(request);
-    }
-
-    public static WriteRegisterResponse writeRegister(ModbusMaster master, int slaveId, int offset, int value) throws ModbusTransportException {
-        WriteRegisterRequest request = new WriteRegisterRequest(slaveId, offset, value);
-        return (WriteRegisterResponse) master.send(request);
-    }
-
     public static ReadExceptionStatusResponse readExceptionStatus(ModbusMaster master, int slaveId) throws ModbusTransportException {
         ReadExceptionStatusRequest request = new ReadExceptionStatusRequest(slaveId);
         return (ReadExceptionStatusResponse) master.send(request);
@@ -60,6 +50,16 @@ public class MasterUtils {
     public static ReportSlaveIdResponse reportSlaveId(ModbusMaster master, int slaveId) throws ModbusTransportException {
         ReportSlaveIdRequest request = new ReportSlaveIdRequest(slaveId);
         return (ReportSlaveIdResponse) master.send(request);
+    }
+
+    public static WriteCoilResponse writeCoil(ModbusMaster master, int slaveId, int offset, boolean value) throws ModbusTransportException {
+        WriteCoilRequest request = new WriteCoilRequest(slaveId, offset, value);
+        return (WriteCoilResponse) master.send(request);
+    }
+
+    public static WriteRegisterResponse writeRegister(ModbusMaster master, int slaveId, int offset, int value) throws ModbusTransportException {
+        WriteRegisterRequest request = new WriteRegisterRequest(slaveId, offset, value);
+        return (WriteRegisterResponse) master.send(request);
     }
 
     public static WriteCoilsResponse writeCoils(ModbusMaster master, int slaveId, int start, boolean[] values) throws ModbusTransportException {

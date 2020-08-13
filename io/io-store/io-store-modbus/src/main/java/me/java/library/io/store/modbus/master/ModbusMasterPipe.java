@@ -131,9 +131,6 @@ public class ModbusMasterPipe extends BasePipe<ModbusParams> {
 
         Preconditions.checkState(request instanceof ModbusRequestCmd);
         ModbusRequestCmd cmd = (ModbusRequestCmd) request;
-        Preconditions.checkNotNull(cmd.getFunctionType());
-        Preconditions.checkState(cmd.getSlaveId() > 0);
-        Preconditions.checkState(cmd.getStart() > 0);
-        Preconditions.checkState(cmd.getLength() > 0);
+        cmd.checkState();
     }
 }
