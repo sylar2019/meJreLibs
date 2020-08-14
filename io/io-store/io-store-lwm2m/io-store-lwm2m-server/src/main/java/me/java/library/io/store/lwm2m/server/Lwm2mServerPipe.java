@@ -7,6 +7,7 @@ import me.java.library.io.store.lwm2m.server.servlet.ClientServlet;
 import me.java.library.io.store.lwm2m.server.servlet.EventServlet;
 import me.java.library.io.store.lwm2m.server.servlet.ObjectSpecServlet;
 import me.java.library.io.store.lwm2m.server.servlet.SecurityServlet;
+import me.java.library.utils.base.ExceptionUtils;
 import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.eclipse.californium.scandium.config.DtlsConnectorConfig;
 import org.eclipse.jetty.server.Server;
@@ -83,8 +84,8 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
                 params.getKeyStorePass(),
                 params.getKeyStoreAlias(),
                 params.getKeyStoreAliasPass(),
-                params.getPublishDnssdServices(),
-                params.getPublishDnssdServices()
+                params.isPublishDnssdServices(),
+                params.isSupportDeprecatedCiphers()
         );
         return true;
     }
@@ -98,11 +99,13 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
 
     @Override
     protected boolean onSend(Cmd request) throws Exception {
+        ExceptionUtils.notSupportMethod();
         return false;
     }
 
     @Override
     protected Cmd onSyncSend(Cmd request, long timeout, TimeUnit unit) throws Exception {
+        ExceptionUtils.notSupportMethod();
         return null;
     }
 
@@ -123,7 +126,7 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
                     String keyStorePass,
                     String keyStoreAlias,
                     String keyStoreAliasPass,
-                    Boolean publishDnssdServices,
+                    boolean publishDnssdServices,
                     boolean supportDeprecatedCiphers) throws Exception {
         // Prepare LWM2M server
         LeshanServerBuilder builder = new LeshanServerBuilder();

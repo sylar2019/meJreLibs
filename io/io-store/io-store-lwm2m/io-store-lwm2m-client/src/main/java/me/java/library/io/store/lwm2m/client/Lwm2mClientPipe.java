@@ -1,8 +1,10 @@
 package me.java.library.io.store.lwm2m.client;
 
+import com.google.common.collect.Maps;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.io.store.lwm2m.common.LeshanUtils;
+import me.java.library.utils.base.ExceptionUtils;
 import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.eclipse.californium.elements.Connector;
 import org.eclipse.californium.scandium.DTLSConnector;
@@ -12,6 +14,7 @@ import org.eclipse.leshan.client.californium.LeshanClient;
 import org.eclipse.leshan.client.californium.LeshanClientBuilder;
 import org.eclipse.leshan.client.engine.DefaultRegistrationEngineFactory;
 import org.eclipse.leshan.client.object.Server;
+import org.eclipse.leshan.client.resource.LwM2mInstanceEnabler;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
 import org.eclipse.leshan.client.resource.ObjectsInitializer;
 import org.eclipse.leshan.client.resource.listener.ObjectsListenerAdapter;
@@ -52,9 +55,20 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
 
     LeshanClient client;
     LwM2mModel model;
+    Map<Integer, LwM2mInstanceEnabler[]> instances = Maps.newHashMap();
 
     public Lwm2mClientPipe(Lwm2mClientParams params) {
         super(params);
+    }
+
+    /**
+     * 初始化客户端设备实例、传感器实例
+     *
+     * @param objectId @see eg: {LwM2mId#DEVICE}
+     * @param enablers
+     */
+    public void initInstances(int objectId, LwM2mInstanceEnabler... enablers) {
+        instances.put(objectId, enablers);
     }
 
     @Override
@@ -93,11 +107,13 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
 
     @Override
     protected boolean onSend(Cmd request) throws Exception {
+        ExceptionUtils.notSupportMethod();
         return false;
     }
 
     @Override
     protected Cmd onSyncSend(Cmd request, long timeout, TimeUnit unit) throws Exception {
+        ExceptionUtils.notSupportMethod();
         return null;
     }
 
@@ -142,6 +158,11 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
         }
 
         client.triggerRegistrationUpdate();
+    }
+
+    @Override
+    public void addInstanceEnabler(int objectId, AbstractInstanceEnabler instanceEnabler) {
+
     }
 
     private void startClient(String endpoint,
@@ -203,6 +224,8 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
             initializer.setInstancesForObject(SERVER, new Server(123, lifetime, BindingMode.U, false));
         }
 
+        //注册实例（设备、传感器...）
+        instances.forEach(initializer::setInstancesForObject);
         //generate LwM2mObjectEnabler
         List<LwM2mObjectEnabler> enablers = initializer.createAll();
 

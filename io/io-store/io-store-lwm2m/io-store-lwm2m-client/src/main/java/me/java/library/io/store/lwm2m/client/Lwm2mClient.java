@@ -14,4 +14,6 @@ public interface Lwm2mClient {
     void deleteObject(int objectId);
 
     void update();
+
+    void addInstanceEnabler(int objectId, AbstractInstanceEnabler instanceEnabler);
 }

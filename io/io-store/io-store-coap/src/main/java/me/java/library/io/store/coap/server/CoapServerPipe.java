@@ -28,9 +28,7 @@ public class CoapServerPipe extends BasePipe<CoapServerParams> implements CoapSe
 
     public CoapServerPipe(CoapServerParams params) {
         super(params);
-
-        server = new Server(params.getPorts());
-        server.addEndpoints(params.isUdp(), params.isTcp());
+        server = new Server(params.isUdp(), params.isTcp(), params.getPorts());
     }
 
     @Override

@@ -22,12 +22,12 @@ import me.java.library.io.store.coap.server.CoapServerPipe;
  */
 public class CoapExpress {
 
-    public static CoapServerPipe server(int port) {
-        return new CoapServerPipe(new CoapServerParams(port));
+    public static CoapServerPipe server() {
+        return new CoapServerPipe(new CoapServerParams(false, true));
     }
 
-    public static CoapServerPipe server() {
-        return new CoapServerPipe(new CoapServerParams());
+    public static CoapServerPipe server(int port) {
+        return new CoapServerPipe(new CoapServerParams(false, true, port));
     }
 
     public static CoapClientPipe client() {

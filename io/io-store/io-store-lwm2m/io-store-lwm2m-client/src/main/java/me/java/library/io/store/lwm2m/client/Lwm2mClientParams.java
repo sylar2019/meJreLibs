@@ -1,7 +1,10 @@
 package me.java.library.io.store.lwm2m.client;
 
 import me.java.library.io.base.pipe.BasePipeParams;
+import org.eclipse.californium.core.coap.CoAP;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -18,11 +21,11 @@ import java.util.Map;
 public class Lwm2mClientParams extends BasePipeParams {
     String endpoint;
     String localAddress;
-    int localPort;
+    Integer localPort = 0;
     boolean needBootstrap;
     Map<String, String> additionalAttributes;
     Map<String, String> bsAdditionalAttributes;
-    int lifetime;
+    int lifetime = 300;
     Integer communicationPeriod;
     String serverUri;
     byte[] pskIdentity;
@@ -37,6 +40,16 @@ public class Lwm2mClientParams extends BasePipeParams {
     boolean reconnectOnUpdate;
     boolean forceFullhandshake;
     String modelsFolderPath;
+
+    public Lwm2mClientParams() {
+        remotePort = CoAP.DEFAULT_COAP_PORT;
+        serverUri = String.format("coap://%s:%d", remoteHost, remotePort);
+        try {
+            endpoint = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
 
     public String getEndpoint() {
         return endpoint;
@@ -55,12 +68,12 @@ public class Lwm2mClientParams extends BasePipeParams {
     }
 
     @Override
-    public int getLocalPort() {
+    public Integer getLocalPort() {
         return localPort;
     }
 
     @Override
-    public void setLocalPort(int localPort) {
+    public void setLocalPort(Integer localPort) {
         this.localPort = localPort;
     }
 

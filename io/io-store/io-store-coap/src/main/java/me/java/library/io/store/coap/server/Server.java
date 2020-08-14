@@ -3,6 +3,7 @@ package me.java.library.io.store.coap.server;
 import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.network.CoapEndpoint;
 import org.eclipse.californium.core.network.config.NetworkConfig;
+import org.eclipse.californium.core.network.interceptors.MessageTracer;
 import org.eclipse.californium.elements.tcp.netty.TcpServerConnector;
 import org.eclipse.californium.elements.util.NetworkInterfacesUtil;
 
@@ -31,18 +32,20 @@ class Server extends CoapServer {
     private static final int TCP_IDLE_TIMEOUT = NetworkConfig.getStandard().getInt(NetworkConfig.Keys.TCP_CONNECTION_IDLE_TIMEOUT);
 
     public Server() {
-        super();
+        this(true, false);
     }
 
-    public Server(int... ports) {
+    public Server(boolean udp, boolean tcp, int... ports) {
         super(ports);
+        addEndpoints(udp, tcp);
+        getEndpoints().forEach(endpoint -> endpoint.addInterceptor(new MessageTracer()));
     }
 
     /**
      * Add individual endpoints listening on default CoAP port on all IPv4
      * addresses of all network interfaces.
      */
-    public void addEndpoints(boolean udp, boolean tcp) {
+    private void addEndpoints(boolean udp, boolean tcp) {
         NetworkConfig config = NetworkConfig.getStandard();
         for (InetAddress addr : NetworkInterfacesUtil.getNetworkInterfaces()) {
             InetSocketAddress bindToAddress = new InetSocketAddress(addr, COAP_PORT);
@@ -62,4 +65,5 @@ class Server extends CoapServer {
 
         }
     }
+
 }

@@ -15,14 +15,6 @@ public class CoapServerParams extends BasePipeParams {
     boolean udp;
     int[] ports;
 
-    public CoapServerParams() {
-        this(false, true);
-    }
-
-    public CoapServerParams(int port) {
-        this(false, true, port);
-    }
-
     public CoapServerParams(boolean tcp, boolean udp, int... ports) {
         this.tcp = tcp;
         this.udp = udp;

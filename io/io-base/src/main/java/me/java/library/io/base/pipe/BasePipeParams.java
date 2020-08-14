@@ -19,9 +19,9 @@ public class BasePipeParams implements PipeParams {
     protected boolean isEventEnabled = true;
 
     protected String localHost = "0.0.0.0";
-    protected int localPort = 0;
+    protected Integer localPort = 0;
     protected String remoteHost = "0.0.0.0";
-    protected int remotePort = 0;
+    protected Integer remotePort = 0;
 
     @Override
     public Host getHost() {
@@ -66,11 +66,11 @@ public class BasePipeParams implements PipeParams {
         this.localHost = localHost;
     }
 
-    public int getLocalPort() {
+    public Integer getLocalPort() {
         return localPort;
     }
 
-    public void setLocalPort(int localPort) {
+    public void setLocalPort(Integer localPort) {
         this.localPort = localPort;
     }
 
@@ -82,11 +82,11 @@ public class BasePipeParams implements PipeParams {
         this.remoteHost = remoteHost;
     }
 
-    public int getRemotePort() {
+    public Integer getRemotePort() {
         return remotePort;
     }
 
-    public void setRemotePort(int remotePort) {
+    public void setRemotePort(Integer remotePort) {
         this.remotePort = remotePort;
     }
 }
