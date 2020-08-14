@@ -24,12 +24,19 @@ public class Lwm2mServerParams extends BasePipeParams {
     String secureLocalAddress;
     Integer secureLocalPort;
     String modelsFolderPath;
+    /**
+     * 集群模式下，需配置redis连接安
+     * {@code redis://localhost:6379}
+     */
     String redisUrl;
     PublicKey publicKey;
     PrivateKey privateKey;
     X509Certificate certificate;
     List<Certificate> trustStore;
     String keyStorePath;
+    /**
+     * 默认JKS
+     */
     String keyStoreType;
     String keyStorePass;
     String keyStoreAlias;

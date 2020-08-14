@@ -19,13 +19,17 @@ import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.node.codec.DefaultLwM2mNodeDecoder;
 import org.eclipse.leshan.core.node.codec.DefaultLwM2mNodeEncoder;
 import org.eclipse.leshan.core.node.codec.LwM2mNodeDecoder;
+import org.eclipse.leshan.core.observation.Observation;
+import org.eclipse.leshan.core.response.ObserveResponse;
 import org.eclipse.leshan.core.util.SecurityUtil;
 import org.eclipse.leshan.server.californium.LeshanServer;
 import org.eclipse.leshan.server.californium.LeshanServerBuilder;
 import org.eclipse.leshan.server.model.LwM2mModelProvider;
 import org.eclipse.leshan.server.model.VersionedModelProvider;
+import org.eclipse.leshan.server.observation.ObservationListener;
 import org.eclipse.leshan.server.redis.RedisRegistrationStore;
 import org.eclipse.leshan.server.redis.RedisSecurityStore;
+import org.eclipse.leshan.server.registration.Registration;
 import org.eclipse.leshan.server.security.EditableSecurityStore;
 import org.eclipse.leshan.server.security.FileSecurityStore;
 import redis.clients.jedis.Jedis;
@@ -87,6 +91,37 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
                 params.isPublishDnssdServices(),
                 params.isSupportDeprecatedCiphers()
         );
+
+        lwServer.getObservationService().addListener(new ObservationListener() {
+            @Override
+            public void newObservation(Observation observation, Registration registration) {
+                System.out.println("New Observation");
+            }
+
+            @Override
+            public void cancelled(Observation observation) {
+                System.out.println("Observation cancellation");
+            }
+
+            @Override
+            public void onResponse(Observation observation, Registration registration, ObserveResponse response) {
+                System.out.println("Observation Response");
+                if (registration != null && response.isSuccess()) {
+                    int resourceId = response.getContent().getId();
+                    String endpoint = registration.getEndpoint();
+                    String resourceInstancePath = observation.getPath().toString();
+                    Object data = response.getContent();
+
+                    //TODO do something ,eg: save to DB or send to MQ
+                }
+            }
+
+            @Override
+            public void onError(Observation observation, Registration registration, Exception error) {
+                System.out.println("Observation Error");
+            }
+        });
+
         return true;
     }
 
@@ -339,5 +374,6 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
         lwServer.start();
         jettyServer.start();
         logger.info("Web server started at {}.", jettyServer.getURI());
+
     }
 }
