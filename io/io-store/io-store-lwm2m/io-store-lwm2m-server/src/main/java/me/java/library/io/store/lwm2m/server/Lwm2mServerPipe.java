@@ -3,6 +3,7 @@ package me.java.library.io.store.lwm2m.server;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.io.store.lwm2m.common.LeshanUtils;
+import me.java.library.io.store.lwm2m.common.Lwm2mCmd;
 import me.java.library.io.store.lwm2m.server.servlet.ClientServlet;
 import me.java.library.io.store.lwm2m.server.servlet.EventServlet;
 import me.java.library.io.store.lwm2m.server.servlet.ObjectSpecServlet;
@@ -107,12 +108,11 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
             public void onResponse(Observation observation, Registration registration, ObserveResponse response) {
                 System.out.println("Observation Response");
                 if (registration != null && response.isSuccess()) {
-                    int resourceId = response.getContent().getId();
-                    String endpoint = registration.getEndpoint();
-                    String resourceInstancePath = observation.getPath().toString();
-                    Object data = response.getContent();
+                    Lwm2mCmd cmd = new Lwm2mCmd();
+                    cmd.setPath(observation.getPath());
+                    cmd.setContent(response.getContent());
 
-                    //TODO do something ,eg: save to DB or send to MQ
+                    onReceived(cmd);
                 }
             }
 
