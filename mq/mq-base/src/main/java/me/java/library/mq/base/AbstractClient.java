@@ -1,7 +1,6 @@
 package me.java.library.mq.base;
 
 import com.google.common.base.Preconditions;
-import me.java.library.utils.base.NetworkUtils;
 
 import java.util.Properties;
 
@@ -22,8 +21,8 @@ import java.util.Properties;
 public abstract class AbstractClient extends Properties implements Client {
 
     protected String brokers;
-    protected String groupId = "DEFAULT";
-    protected String clientId = NetworkUtils.getHostMac();
+    protected String groupId;
+    protected String clientId;
 
     @Override
     public String getBrokers() {
@@ -62,5 +61,4 @@ public abstract class AbstractClient extends Properties implements Client {
         Preconditions.checkNotNull(this.groupId, "groupId is null");
         Preconditions.checkNotNull(this.clientId, "clientId is null");
     }
-
 }

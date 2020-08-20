@@ -32,7 +32,6 @@ public class RedisStack {
      */
     public void push(String stackName, String value) {
         redisOperations.opsList(stackName).rightPush(value);
-
     }
 
     /**

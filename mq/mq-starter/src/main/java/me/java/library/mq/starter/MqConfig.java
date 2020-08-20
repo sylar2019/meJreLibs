@@ -2,9 +2,11 @@ package me.java.library.mq.starter;
 
 import me.java.library.mq.base.Factory;
 import me.java.library.mq.kafka.KafkaFactory;
+import me.java.library.mq.local.LocalFactory;
 import me.java.library.mq.ons.http.OnsHttpFactory;
 import me.java.library.mq.ons.mqtt.OnsMqttFactory;
 import me.java.library.mq.ons.tcp.OnsTcpFactory;
+import me.java.library.mq.redis.RedisFactory;
 import me.java.library.mq.rocketmq.RocketmqFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,7 +30,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(MqProperties.class)
-public class MqAutoConfiguration {
+public class MqConfig {
 
     @Autowired
     private MqProperties mqProperties;
@@ -39,14 +41,20 @@ public class MqAutoConfiguration {
         switch (mqProperties.getProvider()) {
             case MqProperties.PROVIDER_KAFKA:
                 return new KafkaFactory();
+            case MqProperties.PROVIDER_ROCKETMQ:
+                return new RocketmqFactory();
             case MqProperties.PROVIDER_ONS_TCP:
                 return new OnsTcpFactory(mqProperties.getAccessKey(), mqProperties.getSecretKey());
             case MqProperties.PROVIDER_ONS_HTTP:
                 return new OnsHttpFactory(mqProperties.getAccessKey(), mqProperties.getSecretKey());
             case MqProperties.PROVIDER_ONS_MQTT:
                 return new OnsMqttFactory(mqProperties.getAccessKey(), mqProperties.getSecretKey());
+            case MqProperties.PROVIDER_REDIS:
+                mqProperties.setBrokers("REDIS");
+                return new RedisFactory();
             default:
-                return new RocketmqFactory();
+                mqProperties.setBrokers("LOCAL");
+                return new LocalFactory();
         }
     }
 }

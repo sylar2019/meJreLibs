@@ -27,10 +27,10 @@ public interface Consumer extends Client {
      * 订阅
      *
      * @param topic           主题
-     * @param tags            tags, 可选参数
      * @param messageListener 消息监听器
+     * @param tags            tags, 可选参数
      */
-    void subscribe(String topic, String[] tags, MessageListener messageListener);
+    void subscribe(String topic, MessageListener messageListener, String... tags);
 
 
     /**

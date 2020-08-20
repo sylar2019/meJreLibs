@@ -1,0 +1,4 @@
+dependencies {
+//    compile project(":common")
+    compile project(":mq:mq-base")
+}

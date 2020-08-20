@@ -2,6 +2,7 @@ package me.java.library.mq.starter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author :  sylar
@@ -17,6 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
+@ComponentScan("me.java.**")
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {

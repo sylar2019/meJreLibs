@@ -5,6 +5,8 @@ import me.java.library.mq.base.Factory;
 import me.java.library.utils.base.NetworkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.UUID;
+
 /**
  * File Name             :  AbstractMqClient
  *
@@ -26,12 +28,17 @@ public abstract class AbstractMqClient implements Disposable {
 
     protected abstract String getGroupId();
 
-    @Override
-    public void dispose() {
-
-    }
-
     protected String getClientId() {
-        return NetworkUtils.getHostMac();
+        String hostName = NetworkUtils.getHostName();
+        if (hostName != null) {
+            return hostName;
+        }
+
+        String hostMac = NetworkUtils.getHostMac();
+        if (hostMac != null) {
+            return hostMac;
+        }
+
+        return UUID.randomUUID().toString();
     }
 }

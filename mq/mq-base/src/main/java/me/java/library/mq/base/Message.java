@@ -1,8 +1,7 @@
 package me.java.library.mq.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.java.library.utils.base.JsonUtils;
-
-import java.util.Properties;
 
 /**
  * @author :  sylar
@@ -18,7 +17,7 @@ import java.util.Properties;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
-public class Message extends Properties {
+public class Message {
     private String topic;
     private String content;
     private String tags;
@@ -74,6 +73,7 @@ public class Message extends Properties {
         this.content = content;
     }
 
+    @JsonIgnore
     public Object getExt() {
         return ext;
     }

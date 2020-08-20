@@ -43,7 +43,7 @@ public class RocketmqConsumerTest {
 
     @Test
     public void subscribe() throws Exception {
-        consumer.subscribe(topic, null, new MessageListener() {
+        consumer.subscribe(topic, new MessageListener() {
             @Override
             public void onSuccess(Message message) {
 

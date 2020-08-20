@@ -19,7 +19,7 @@ import com.google.common.base.Preconditions;
 public abstract class AbstractConsumer extends AbstractClient implements Consumer {
 
     @Override
-    public void subscribe(String topic, String[] tags, MessageListener messageListener) {
+    public void subscribe(String topic, MessageListener messageListener, String... tags) {
         checkOnSubscribe(topic, messageListener);
     }
 

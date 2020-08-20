@@ -58,11 +58,11 @@ public class Dcs2Dms extends AbstractMqProducer {
 
     @Override
     protected String getGroupId() {
-        return String.join("-", MqConstants.GROUP_DCS_TO_DMS, this.getClass().getCanonicalName());
+        return String.join("-", MqGroupPrefix.GROUP_DCS_TO_DMS, this.getClass().getCanonicalName());
     }
 
     @Override
     protected String getTopic() {
-        return MqConstants.TOPIC_DCS_TO_DMS;
+        return MqTopic.DCS_TO_DMS;
     }
 }

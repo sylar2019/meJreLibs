@@ -21,7 +21,7 @@ import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
  */
 @Configuration
 @EnableJpaAuditing
-public class JpaAutoConfiguration {
+public class JpaConfig {
     @Bean
     public OpenEntityManagerInViewFilter openEntityManagerInViewFilter() {
         return new OpenEntityManagerInViewFilter();

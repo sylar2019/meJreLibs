@@ -12,15 +12,6 @@ public class OnsConst {
     public static List<OnsConst> onsConsts = Lists.newArrayList();
 
     static {
-
-        onsConsts.add(new OnsConst("envcloud",
-                "公网测试",
-                "LTAIVgkRm7xSeYHr",
-                "QfgsIgVVitRSqddlmzin4eHChFoXTj",
-                "TOP_VORTEX_TEST",
-                "PID_VORTEX_TEST",
-                "CID_VORTEX_TEST"));
-
         onsConsts.add(new OnsConst("15057182808",
                 "公网测试",
                 "XXXXXXXXXXXXXXXXXXXXX",
@@ -28,7 +19,6 @@ public class OnsConst {
                 "DRH_TEST",
                 "PID_DRH_TEST",
                 "CID_DRH_TEST"));
-
 
     }
 

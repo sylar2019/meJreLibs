@@ -30,9 +30,11 @@ public class MqProperties {
     final public static String PROVIDER_ONS_TCP = "ons.tcp";
     final public static String PROVIDER_ONS_HTTP = "ons.http";
     final public static String PROVIDER_ONS_MQTT = "ons.mqtt";
+    final public static String PROVIDER_REDIS = "redis";
+    final public static String PROVIDER_LOCAL = "local";
 
-    private String provider = "rocketmq";
-    private String brokers = "localhost:9876";
+    private String provider;
+    private String brokers;
     private String accessKey;
     private String secretKey;
 

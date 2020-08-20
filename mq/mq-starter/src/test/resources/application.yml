@@ -1,3 +1,35 @@
 spring.output.ansi.enabled: ALWAYS
-me.mq.provider: rocketmq
-me.mq.brokers: localhost:9876
+
+#rocketmq
+mq.provider: rocketmq
+mq.brokers: localhost:9876
+
+##kafka
+#mq.provider: kafka
+#mq.brokers: localhost:9092
+
+##ons.tcp
+#mq.provider: ons.tcp
+#mq.accessKey:
+#mq.secretKey:
+
+##ons.http
+#mq.provider: ons.http
+#mq.accessKey:
+#mq.secretKey:
+
+##ons.mqtt
+#mq.provider: ons.mqtt
+#mq.accessKey:
+#mq.secretKey:
+
+##redis
+#mq.provider: redis
+#spring.redis:
+#  host: localhost
+#  port: 6379
+
+##local
+#mq.provider: local
+
+

@@ -20,5 +20,5 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  */
 @Configuration
 @EnableMongoRepositories(basePackages = "me", repositoryBaseClass = BaseMongoRepositoryImpl.class)
-public class MongoAutoConfiguration {
+public class MongoConfig {
 }
