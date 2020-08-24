@@ -47,6 +47,7 @@ public class MqAssistantTest {
     public void dispose() {
         producer.stop();
         consumer.unsubscribe();
+        ConcurrentService.getInstance().dispose();
         System.out.println("### dispose");
     }
 
@@ -54,17 +55,7 @@ public class MqAssistantTest {
     public void startTest() throws Exception {
         System.out.println("### being");
 
-        consumer.subscribe(TOPIC, new MessageListener() {
-            @Override
-            public void onSuccess(Message message) {
-                System.out.println("### 接收 ###\t" + message +"\n");
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        startSubscribe();
 
         CountDownLatch cd = new CountDownLatch(10);
         ListenableScheduledFuture<?> future = ConcurrentService.getInstance().scheduleAtFixedRate(new Runnable() {
@@ -79,6 +70,21 @@ public class MqAssistantTest {
         future.cancel(false);
 
         System.out.println("### end");
+    }
+
+
+    void startSubscribe() {
+        ConcurrentService.getInstance().postRunnable(() -> consumer.subscribe(TOPIC, new MessageListener() {
+            @Override
+            public void onSuccess(Message message) {
+                System.out.println("### 接收 ###\t" + message + "\n");
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        }));
     }
 
 

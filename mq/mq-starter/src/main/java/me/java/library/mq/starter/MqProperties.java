@@ -26,6 +26,7 @@ public class MqProperties {
     final public static String PREFIX_SERCET_KEY = PREFIX_MQ + ".secretKey";
 
     final public static String PROVIDER_ROCKETMQ = "rocketmq";
+    final public static String PROVIDER_RABBITMQ = "rabbitmq";
     final public static String PROVIDER_KAFKA = "kafka";
     final public static String PROVIDER_ONS_TCP = "ons.tcp";
     final public static String PROVIDER_ONS_HTTP = "ons.http";

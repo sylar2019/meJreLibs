@@ -1,9 +1,14 @@
 package me.java.library.mq.rabbitmq;
 
+import com.rabbitmq.client.BuiltinExchangeType;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import me.java.library.mq.base.AbstractProducer;
 import me.java.library.mq.base.Message;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import me.java.library.utils.spring.SpringBeanUtils;
+
+import java.io.IOException;
 
 
 /**
@@ -21,28 +26,46 @@ import org.springframework.beans.factory.annotation.Autowired;
  * *******************************************************************************************
  */
 public class RabbitProducer extends AbstractProducer {
+    private ConnectionFactory factory;
+    Connection connection;
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    public RabbitProducer() {
+        factory = SpringBeanUtils.getBean(ConnectionFactory.class);
+    }
 
     @Override
     protected void onStart() throws Exception {
-
+        connection = factory.newConnection();
     }
 
     @Override
     protected void onStop() {
-
+        try {
+            connection.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Object getNativeProducer() {
-        return rabbitTemplate;
+        return connection;
     }
 
     @Override
     public Object send(Message message) throws Exception {
-        rabbitTemplate.convertAndSend(message);
+        assert message != null;
+        assert message.getTopic() != null;
+        assert message.getContent() != null;
+
+        String exchangeName = RabbitConfig.EXCHANGE_NAME;
+        String queueName = message.getTopic();
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(exchangeName, BuiltinExchangeType.DIRECT);
+        channel.queueDeclare(queueName, false, false, false, null);
+        channel.basicPublish(exchangeName, queueName, null, message.getContent().getBytes());
+        channel.close();
+
         return null;
     }
 }

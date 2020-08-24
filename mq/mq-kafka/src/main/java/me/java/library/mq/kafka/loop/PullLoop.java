@@ -8,6 +8,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
 
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,6 +36,8 @@ public class PullLoop implements Runnable {
     private ExecutorService executorService;
 
     public PullLoop(KafkaConsumer<String, String> consumer, MessageListener listener) {
+        assert consumer != null;
+        assert listener != null;
         this.consumer = consumer;
         this.listener = listener;
     }
@@ -67,7 +70,7 @@ public class PullLoop implements Runnable {
     public void run() {
         try {
             while (!shutdown.get()) {
-                ConsumerRecords<String, String> records = consumer.poll(Long.MAX_VALUE);
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(Long.MAX_VALUE));
                 if (onProcessMessagesAndConfirm(records)) {
 //                    consumer.commitAsync();     //异步确认
                     doCommitSync();             //同步确认
@@ -117,8 +120,6 @@ public class PullLoop implements Runnable {
     }
 
     void onError(Throwable t) {
-        if (listener != null) {
-            listener.onFailure(t);
-        }
+        listener.onFailure(t);
     }
 }

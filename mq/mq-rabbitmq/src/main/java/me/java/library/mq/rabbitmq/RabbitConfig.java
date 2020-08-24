@@ -1,7 +1,8 @@
 package me.java.library.mq.rabbitmq;
 
-import org.springframework.amqp.core.*;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.rabbitmq.client.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,22 +16,20 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitConfig {
-    public static final String IOT_EXCHANGE = "iot_exchange";
-    public static final String IOT_QUEUE = "iot_queue";
+    public static final String EXCHANGE_NAME = "me.mq";
 
-    @Bean(IOT_EXCHANGE)
-    public Exchange iotExchange() {
-        return ExchangeBuilder.topicExchange(IOT_EXCHANGE).durable(true).build();
-    }
-
-    @Bean(IOT_QUEUE)
-    public Queue iotQueue() {
-        return QueueBuilder.durable(IOT_QUEUE).build();
-    }
+    @Autowired
+    RabbitProperties properties;
 
     @Bean
-    public Binding binding(@Qualifier(IOT_QUEUE) Queue queue,
-                           @Qualifier(IOT_EXCHANGE) Exchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("iot.#").noargs();
+    public ConnectionFactory factory() {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost(properties.getHost());
+        factory.setPort(properties.getPort());
+        factory.setVirtualHost(properties.getVirtualHost());
+        factory.setUsername(properties.getUsername());
+        factory.setPassword(properties.getPassword());
+        return factory;
     }
+
 }

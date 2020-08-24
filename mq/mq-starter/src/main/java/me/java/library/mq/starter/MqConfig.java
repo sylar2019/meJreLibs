@@ -6,6 +6,7 @@ import me.java.library.mq.local.LocalFactory;
 import me.java.library.mq.ons.http.OnsHttpFactory;
 import me.java.library.mq.ons.mqtt.OnsMqttFactory;
 import me.java.library.mq.ons.tcp.OnsTcpFactory;
+import me.java.library.mq.rabbitmq.RabbitFactory;
 import me.java.library.mq.redis.RedisFactory;
 import me.java.library.mq.rocketmq.RocketmqFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ public class MqConfig {
                 return new KafkaFactory();
             case MqProperties.PROVIDER_ROCKETMQ:
                 return new RocketmqFactory();
+            case MqProperties.PROVIDER_RABBITMQ:
+                return new RabbitFactory();
             case MqProperties.PROVIDER_ONS_TCP:
                 return new OnsTcpFactory(mqProperties.getAccessKey(), mqProperties.getSecretKey());
             case MqProperties.PROVIDER_ONS_HTTP:
