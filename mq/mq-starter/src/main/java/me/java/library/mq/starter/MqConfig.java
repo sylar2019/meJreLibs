@@ -39,7 +39,7 @@ public class MqConfig {
     @Bean
     @ConditionalOnMissingBean(Factory.class)
     public Factory getFactory() {
-        switch (mqProperties.getProvider()) {
+        switch (mqProperties.getProvider().toLowerCase()) {
             case MqProperties.PROVIDER_KAFKA:
                 return new KafkaFactory();
             case MqProperties.PROVIDER_ROCKETMQ:
@@ -55,9 +55,11 @@ public class MqConfig {
             case MqProperties.PROVIDER_REDIS:
                 mqProperties.setBrokers("REDIS");
                 return new RedisFactory();
-            default:
+            case MqProperties.PROVIDER_LOCAL:
                 mqProperties.setBrokers("LOCAL");
                 return new LocalFactory();
+            default:
+                return null;
         }
     }
 }
