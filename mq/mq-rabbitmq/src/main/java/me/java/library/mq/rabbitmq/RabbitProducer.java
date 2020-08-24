@@ -26,8 +26,8 @@ import java.io.IOException;
  * *******************************************************************************************
  */
 public class RabbitProducer extends AbstractProducer {
-    private ConnectionFactory factory;
     Connection connection;
+    private final ConnectionFactory factory;
 
     public RabbitProducer() {
         factory = SpringBeanUtils.getBean(ConnectionFactory.class);

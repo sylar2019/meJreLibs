@@ -6,9 +6,6 @@ import me.java.library.mq.base.AbstractConsumer;
 import me.java.library.mq.base.MessageListener;
 import me.java.library.utils.redis.RedisNotice;
 import me.java.library.utils.spring.SpringBeanUtils;
-import org.springframework.beans.factory.annotation.Autowire;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.redis.connection.Message;
 
 import java.util.Collections;

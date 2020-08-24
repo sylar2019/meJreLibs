@@ -4,7 +4,6 @@ import me.java.library.mq.base.Factory;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.Producer;
 import org.apache.rocketmq.client.producer.SendResult;
-import org.apache.rocketmq.common.MixAll;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

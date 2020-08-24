@@ -30,10 +30,10 @@ import java.util.Set;
  */
 public class RabbitConsumer extends AbstractConsumer {
 
-    private ConnectionFactory factory;
     Connection connection;
     Channel channel;
     Map<String, Set<String>> subscribers = Maps.newHashMap();
+    private final ConnectionFactory factory;
 
     public RabbitConsumer() {
         factory = SpringBeanUtils.getBean(ConnectionFactory.class);

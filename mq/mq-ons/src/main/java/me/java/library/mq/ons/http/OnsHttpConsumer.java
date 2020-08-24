@@ -23,7 +23,7 @@ public class OnsHttpConsumer extends AbstractOnsConsumer {
     }
 
     @Override
-    public void subscribe(String topic,  MessageListener messageListener, String... tags) {
+    public void subscribe(String topic, MessageListener messageListener, String... tags) {
         super.subscribe(topic, messageListener, tags);
 
         executorService = ConcurrentUtils.simpleThreadPool();

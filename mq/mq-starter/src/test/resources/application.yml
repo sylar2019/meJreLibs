@@ -8,11 +8,11 @@ spring.output.ansi.enabled: ALWAYS
 mq.provider: rabbitmq
 mq.brokers: localhost:5672
 spring.rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    virtual-host: /
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+  virtual-host: /
 
 #kafka
 #mq.provider: kafka
