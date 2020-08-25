@@ -40,7 +40,7 @@ import java.net.URI;
 public class MqConfig {
 
     @Autowired
-    private MqProperties mqProperties;
+    private DefaultMqProperties mqProperties;
 
     @Autowired
     ApplicationContext ctx;
@@ -66,6 +66,7 @@ public class MqConfig {
                 injectRedisProperties();
                 return new RedisFactory(mqProperties);
             case MqProperties.PROVIDER_LOCAL:
+                mqProperties.setBrokers("LOCAL");
                 return new LocalFactory(mqProperties);
             default:
                 return null;

@@ -35,8 +35,8 @@ public class MqAssistantTest {
 
     @Before
     public void init() throws Exception {
-        producer = factory.createProducer("PID_001", "CLIENT_001");
-        consumer = factory.createConsumer("CID_1001", "CLIENT_001");
+        producer = factory.createProducer("GID_001", "CLIENT_001");
+        consumer = factory.createConsumer("GID_001", "CLIENT_002");
         producer.start();
     }
 
@@ -54,7 +54,7 @@ public class MqAssistantTest {
 
         startSubscribe();
 
-        CountDownLatch cd = new CountDownLatch(10);
+        CountDownLatch cd = new CountDownLatch(3);
         ListenableScheduledFuture<?> future = ConcurrentService.getInstance().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {

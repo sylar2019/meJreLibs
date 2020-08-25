@@ -1,50 +1,50 @@
 spring.output.ansi.enabled: ALWAYS
 
 #rocketmq
-#mq.provider: rocketmq
-#mq.brokers: localhost:9876
+#mq:
+#  provider: rocketmq
+#  brokers: localhost:9876
 
 ##rabbittmq
-mq.provider: rabbitmq
-mq.brokers: localhost:5672
-mq.user: guest
-mq.password: guest
-mq.attrs:
-  virtualHost: \
-#spring.rabbitmq:
-#  host: localhost
-#  port: 5672
-#  username: guest
+#mq:
+#  provider: rabbitmq
+#  brokers: localhost:5672
+#  user: guest
 #  password: guest
-#  virtual-host: /
+#  attrs:
+#    virtualHost: \
+
 
 #kafka
-#mq.provider: kafka
-#mq.brokers: localhost:9092
+#mq:
+#  provider: kafka
+#  brokers: localhost:9092
 
 ##ons.tcp
-#mq.provider: ons.tcp
-#mq.accessKey:
-#mq.secretKey:
+#mq:
+#  provider: ons.tcp
+#  brokers:
+#  accessKey: LTAIY82mHGE1tmxN
+#  secretKey: ujq6XTqpRNCnVvEJpvseovMTdeFxKO
 
 ##ons.http
-#mq.provider: ons.http
-#mq.accessKey:
-#mq.secretKey:
+#mq:
+#  provider: ons.http
+#  brokers: http://1618413161456011.mqrest.cn-hangzhou.aliyuncs.com
+#  accessKey: LTAIY82mHGE1tmxN
+#  secretKey: ujq6XTqpRNCnVvEJpvseovMTdeFxKO
 
 ##ons.mqtt
-#mq.provider: ons.mqtt
-#mq.accessKey:
-#mq.secretKey:
+#mq:
+#  provider: ons.mqtt
+#  brokers:
+#  accessKey: LTAIY82mHGE1tmxN
+#  secretKey: ujq6XTqpRNCnVvEJpvseovMTdeFxKO
 
 ##redis
-#mq.provider: redis
-#mq.brokers: localhost:6379
-#spring.redis:
-#  host: localhost
-#  port: 6379
+#mq:
+#  provider: redis
+#  brokers: localhost:6379
 
-##local
-#mq.provider: local
 
 

@@ -69,7 +69,7 @@ public class OnsTcpConsumer extends AbstractOnsConsumer {
         properties.put(PropertyKeyConst.AccessKey, mqProperties.getAccessKey());
         properties.put(PropertyKeyConst.SecretKey, mqProperties.getSecretKey());
         properties.put(PropertyKeyConst.ONSAddr, mqProperties.getBrokers());
-        properties.put(PropertyKeyConst.ConsumerId, groupId);
+        properties.put(PropertyKeyConst.GROUP_ID, groupId);
         consumer = ONSFactory.createConsumer(properties);
     }
 

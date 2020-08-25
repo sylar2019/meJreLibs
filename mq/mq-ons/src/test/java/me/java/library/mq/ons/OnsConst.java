@@ -13,12 +13,12 @@ public class OnsConst {
 
     static {
         onsConsts.add(new OnsConst("15057182808",
-                "公网测试",
-                "XXXXXXXXXXXXXXXXXXXXX",
+                "公网",
+                "LTAIY82mHGE1tmxN",
                 "ujq6XTqpRNCnVvEJpvseovMTdeFxKO",
-                "DRH_TEST",
-                "PID_DRH_TEST",
-                "CID_DRH_TEST"));
+                "TOPIC_001",
+                "GID_001",
+                "GID_001"));
 
     }
 
