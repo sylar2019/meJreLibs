@@ -2,6 +2,7 @@ package me.java.library.mq.rabbitmq;
 
 import me.java.library.mq.base.AbstractFactory;
 import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.base.Producer;
 
 /**
@@ -19,18 +20,18 @@ import me.java.library.mq.base.Producer;
  * *******************************************************************************************
  */
 public class RabbitFactory extends AbstractFactory {
-
-    @Override
-    public Producer createProducer(String brokers, String groupId, String clientId) {
-        RabbitProducer producer = new RabbitProducer();
-        setClient(producer, brokers, groupId, clientId);
-        return producer;
+    public RabbitFactory(MqProperties mqProperties) {
+        super(mqProperties);
     }
 
     @Override
-    public Consumer createConsumer(String brokers, String groupId, String clientId) {
-        RabbitConsumer consumer = new RabbitConsumer();
-        setClient(consumer, brokers, groupId, clientId);
-        return consumer;
+    public Producer createProducer(String producerGroupId, String clientId) {
+        return new RabbitProducer(mqProperties, producerGroupId, clientId);
     }
+
+    @Override
+    public Consumer createConsumer(String consumerGroupId, String clientId) {
+        return new RabbitConsumer(mqProperties, consumerGroupId, clientId);
+    }
+
 }

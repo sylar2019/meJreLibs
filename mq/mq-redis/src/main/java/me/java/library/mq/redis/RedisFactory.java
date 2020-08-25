@@ -2,6 +2,7 @@ package me.java.library.mq.redis;
 
 import me.java.library.mq.base.AbstractFactory;
 import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.base.Producer;
 
 /**
@@ -20,17 +21,17 @@ import me.java.library.mq.base.Producer;
  */
 public class RedisFactory extends AbstractFactory {
 
-    @Override
-    public Producer createProducer(String brokers, String groupId, String clientId) {
-        RedisProducer producer = new RedisProducer();
-        setClient(producer, brokers, groupId, clientId);
-        return producer;
+    public RedisFactory(MqProperties mqProperties) {
+        super(mqProperties);
     }
 
     @Override
-    public Consumer createConsumer(String brokers, String groupId, String clientId) {
-        RedisConsumer consumer = new RedisConsumer();
-        setClient(consumer, brokers, groupId, clientId);
-        return consumer;
+    public Producer createProducer(String producerGroupId, String clientId) {
+        return new RedisProducer(mqProperties, producerGroupId, clientId);
+    }
+
+    @Override
+    public Consumer createConsumer(String consumerGroupId, String clientId) {
+        return new RedisConsumer(mqProperties, consumerGroupId, clientId);
     }
 }

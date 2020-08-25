@@ -1,10 +1,8 @@
 package me.java.library.mq.ons.mqtt;
 
-import me.java.library.mq.base.Consumer;
-import me.java.library.mq.base.Factory;
-import me.java.library.mq.base.Message;
-import me.java.library.mq.base.MessageListener;
+import me.java.library.mq.base.*;
 import me.java.library.mq.ons.OnsConst;
+import me.java.library.mq.ons.OnsProperties;
 import me.java.library.mq.ons.OnsServerConst;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.junit.After;
@@ -32,9 +30,10 @@ public class OnsMqttConsumerTest {
 
     @Before
     public void setUp() throws Exception {
-        onsConst = OnsConst.getFirst();
-        factory = new OnsMqttFactory(onsConst.getAccessKey(), onsConst.getSecretKey());
-        consumer = factory.createConsumer(OnsServerConst.TCP_TEST, onsConst.getConsumerId(), MqttConst.ClientId2);
+        OnsProperties op = new OnsProperties(MqProperties.PROVIDER_ONS_TCP, OnsServerConst.MQTT_TEST);
+        factory = new OnsMqttFactory(op);
+
+        consumer = factory.createConsumer(onsConst.getConsumerId(), MqttConst.ClientId2);
     }
 
     @After
@@ -50,7 +49,7 @@ public class OnsMqttConsumerTest {
          * */
         String[] tags = new String[]{"/notice", "/p2p/" + MqttConst.ClientId2};
 
-        consumer.subscribe(onsConst.getTopic(), tags, new MessageListener() {
+        consumer.subscribe(onsConst.getTopic(), new MessageListener() {
             @Override
             public void onSuccess(Message message) {
 
@@ -66,7 +65,7 @@ public class OnsMqttConsumerTest {
             public void onFailure(Throwable t) {
                 System.out.println(t.getMessage());
             }
-        });
+        }, tags);
 
         Thread.sleep(1000 * 60 * 5);
         System.out.println("test over");

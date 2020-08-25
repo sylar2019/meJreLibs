@@ -1,4 +1,5 @@
 dependencies {
+    compile project(":common")
     compile project(":mq:mq-base")
 
     //by ons  http

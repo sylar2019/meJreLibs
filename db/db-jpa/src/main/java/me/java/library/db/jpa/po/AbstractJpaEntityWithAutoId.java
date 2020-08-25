@@ -52,4 +52,9 @@ public abstract class AbstractJpaEntityWithAutoId extends AbstractJpaEntity impl
         return id.hashCode();
     }
 
+    @Override
+    public int compareTo(Identifiable<Long> o) {
+        assert o != null;
+        return (int) (o.getId() - this.id);
+    }
 }

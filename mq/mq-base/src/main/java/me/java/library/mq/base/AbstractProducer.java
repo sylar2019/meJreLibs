@@ -20,32 +20,57 @@ public abstract class AbstractProducer extends AbstractClient implements Produce
 
     protected boolean isRunning;
 
-    /**
-     * @throws Exception
-     */
+    public AbstractProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
+    }
+
     protected abstract void onStart() throws Exception;
 
-    /**
-     *
-     */
-    protected abstract void onStop();
+    protected abstract void onStop() throws Exception;
+
+    protected abstract Object onSend(Message message) throws Exception;
 
     @Override
-    public void start() throws Exception {
-        if (!isRunning) {
-            stop();
+    final public void start() {
+        if (isRunning) {
+            return;
+        }
+
+        try {
             checkParameters();
             onStart();
             isRunning = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void stop() {
-        if (isRunning) {
+    final public void stop() {
+        if (!isRunning) {
+            return;
+        }
+
+        try {
             onStop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             isRunning = false;
         }
+    }
+
+    @Override
+    final public Object send(Message message) {
+
+        try {
+            Preconditions.checkState(isRunning, "producer is not ready");
+            checkOnSend(message);
+            return onSend(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     protected void checkOnSend(Message message) {

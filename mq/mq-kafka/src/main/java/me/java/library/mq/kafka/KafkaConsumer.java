@@ -2,11 +2,13 @@ package me.java.library.mq.kafka;
 
 import me.java.library.mq.base.AbstractConsumer;
 import me.java.library.mq.base.MessageListener;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.kafka.loop.PullLoop;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.util.Collections;
+import java.util.Properties;
 
 /**
  * @author :  sylar
@@ -27,51 +29,40 @@ public class KafkaConsumer extends AbstractConsumer {
     protected org.apache.kafka.clients.consumer.KafkaConsumer<String, String> consumer;
     protected PullLoop loop;
 
-    @Override
-    public Object getNativeConsumer() {
-        return consumer;
+    public KafkaConsumer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
     }
 
     @Override
-    public void subscribe(String topic, MessageListener messageListener, String... tags) {
-        super.subscribe(topic, messageListener, tags);
-
-        try {
-            initConsumer();
-            consumer.subscribe(Collections.singleton(topic));
-            loop = new PullLoop(consumer, messageListener);
-            loop.start();
-        } catch (Exception e) {
-            messageListener.onFailure(e);
-        }
-
+    protected void onSubscribe(String topic, MessageListener messageListener, String... tags) throws Exception {
+        initConsumer();
+        consumer.subscribe(Collections.singleton(topic));
+        loop = new PullLoop(consumer, messageListener);
+        loop.start();
     }
 
     @Override
-    public void unsubscribe() {
-        if (consumer != null) {
-            consumer.unsubscribe();
-            consumer.close();
-            consumer = null;
-        }
+    protected void onUnsubscribe() throws Exception {
+        loop.stop();
+        loop = null;
 
-        if (loop != null) {
-            loop.stop();
-            loop = null;
-        }
+        consumer.unsubscribe();
+        consumer.close();
+        consumer = null;
     }
 
     private void initConsumer() {
-        this.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
-        this.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        this.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
+        Properties properties = new Properties();
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, mqProperties.getBrokers());
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        properties.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
 
         /* 是否自动确认offset, 强制由业务层来确认 */
-        this.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
 
-        this.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        this.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
-        consumer = new org.apache.kafka.clients.consumer.KafkaConsumer<>(this);
+        consumer = new org.apache.kafka.clients.consumer.KafkaConsumer<>(properties);
     }
 }

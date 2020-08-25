@@ -1,38 +1,36 @@
 package me.java.library.mq.ons.mqtt;
 
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.ons.AbstractOnsProducer;
-import org.eclipse.paho.client.mqttv3.MqttException;
 
 /**
  * Created by sylar on 2017/1/6.
  */
 public class OnsMqttProducer extends AbstractOnsProducer {
 
-    private OnsMqttClient client;
+    OnsMqttClient client;
+
+    public OnsMqttProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
+    }
 
     @Override
     protected void onStart() throws Exception {
-        client = new OnsMqttClient(brokers, clientId, accessKey, secretKey);
+        client = new OnsMqttClient(mqProperties.getBrokers(),
+                clientId,
+                mqProperties.getAccessKey(),
+                mqProperties.getSecretKey());
         client.start();
     }
 
     @Override
-    protected void onStop() {
-        try {
-            client.stop();
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+    protected void onStop() throws Exception {
+        client.stop();
     }
 
     @Override
-    public Object getNativeProducer() {
-        return client;
-    }
-
-    @Override
-    public Object send(Message message) throws Exception {
+    protected Object onSend(Message message) throws Exception {
         return client.send(message);
     }
 

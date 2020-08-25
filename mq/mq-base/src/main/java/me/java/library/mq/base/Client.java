@@ -1,7 +1,5 @@
 package me.java.library.mq.base;
 
-import java.util.Properties;
-
 /**
  * @author :  sylar
  * @FileName :  Client
@@ -17,13 +15,12 @@ import java.util.Properties;
  * *******************************************************************************************
  */
 public interface Client {
-
     /**
-     * 获取MQ服务端地址
+     * 获取MQ配置信息
      *
-     * @return 服务端地址列表，多个地址一般是逗号分隔
+     * @return MQ配置信息
      */
-    String getBrokers();
+    MqProperties getMqProperties();
 
     /**
      * 获取当前client端所属groups标识, 即 producerId 或 consumerId
@@ -39,12 +36,4 @@ public interface Client {
      * @return client标识
      */
     String getClientId();
-
-    /**
-     * 获取Client属性配置
-     *
-     * @return Client属性配置
-     */
-    Properties getProperties();
-
 }

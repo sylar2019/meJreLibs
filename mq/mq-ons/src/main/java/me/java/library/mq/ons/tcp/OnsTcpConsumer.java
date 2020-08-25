@@ -6,6 +6,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.ons.AbstractOnsConsumer;
 
 import java.util.Properties;
@@ -17,69 +18,57 @@ public class OnsTcpConsumer extends AbstractOnsConsumer {
 
     Consumer consumer;
 
-    @Override
-    public Object getNativeConsumer() {
-        return consumer;
+    public OnsTcpConsumer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
     }
 
     @Override
-    public void subscribe(String topic, MessageListener messageListener, String... tags) {
-        super.subscribe(topic, messageListener, tags);
+    protected void onSubscribe(String topic, MessageListener messageListener, String... tags) throws Exception {
+        initConsumer();
 
-        try {
-            initConsumer();
+        String subExpression = "*";
+        if (tags != null && tags.length > 0) {
+            subExpression = Joiner.on("||").skipNulls().join(tags);
+        }
 
-            String subExpression = "*";
-            if (tags != null && tags.length > 0) {
-                subExpression = Joiner.on("||").skipNulls().join(tags);
-            }
+        consumer.subscribe(topic, subExpression, new com.aliyun.openservices.ons.api.MessageListener() {
+            @Override
+            public Action consume(com.aliyun.openservices.ons.api.Message message, ConsumeContext context) {
+                String content = new String(message.getBody(), Charsets.UTF_8);
+                System.out.println("Receive Msg: " + message);
 
-            consumer.subscribe(topic, subExpression, new com.aliyun.openservices.ons.api.MessageListener() {
-                @Override
-                public Action consume(com.aliyun.openservices.ons.api.Message message, ConsumeContext context) {
-                    String content = new String(message.getBody(), Charsets.UTF_8);
-                    System.out.println("Receive Msg: " + message);
+                try {
+                    Message msg = new Message(topic, content);
+                    msg.setExt(message);
+                    msg.setKeys(message.getKey());
+                    msg.setTags(message.getTag());
+                    messageListener.onSuccess(msg);
+                    return Action.CommitMessage;
+                } catch (Exception e) {
+                    String err = String.format("处理消息发生异常. msgId:%s\ncontent:%s\n%s", message.getMsgID(), content, e
+                            .getMessage());
+                    System.out.println(err);
+                    e.printStackTrace();
 
-                    try {
-                        Message msg = new Message(topic, content);
-                        msg.setExt(message);
-                        msg.setKeys(message.getKey());
-                        msg.setTags(message.getTag());
-                        messageListener.onSuccess(msg);
-                        return Action.CommitMessage;
-                    } catch (Exception e) {
-                        String err = String.format("处理消息发生异常. msgId:%s\ncontent:%s\n%s", message.getMsgID(), content, e
-                                .getMessage());
-                        System.out.println(err);
-                        e.printStackTrace();
-
-                        return Action.ReconsumeLater;
-                    }
+                    return Action.ReconsumeLater;
                 }
-            });
+            }
+        });
 
-            consumer.start();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            messageListener.onFailure(e.getCause());
-        }
+        consumer.start();
     }
 
-
     @Override
-    public void unsubscribe() {
-        if (consumer != null) {
-            consumer.shutdown();
-            consumer = null;
-        }
+    protected void onUnsubscribe() throws Exception {
+        consumer.shutdown();
+        consumer = null;
     }
 
     private void initConsumer() {
         Properties properties = new Properties();
-        properties.put(PropertyKeyConst.AccessKey, getAccessKey());
-        properties.put(PropertyKeyConst.SecretKey, getSecretKey());
-        properties.put(PropertyKeyConst.ONSAddr, brokers);
+        properties.put(PropertyKeyConst.AccessKey, mqProperties.getAccessKey());
+        properties.put(PropertyKeyConst.SecretKey, mqProperties.getSecretKey());
+        properties.put(PropertyKeyConst.ONSAddr, mqProperties.getBrokers());
         properties.put(PropertyKeyConst.ConsumerId, groupId);
         consumer = ONSFactory.createConsumer(properties);
     }

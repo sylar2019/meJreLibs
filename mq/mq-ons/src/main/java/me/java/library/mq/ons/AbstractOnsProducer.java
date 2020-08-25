@@ -2,6 +2,7 @@ package me.java.library.mq.ons;
 
 import com.google.common.base.Preconditions;
 import me.java.library.mq.base.AbstractProducer;
+import me.java.library.mq.base.MqProperties;
 
 /**
  * File Name             :  AbstractOnsProducer
@@ -17,34 +18,16 @@ import me.java.library.mq.base.AbstractProducer;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractOnsProducer extends AbstractProducer implements OnsClient {
+public abstract class AbstractOnsProducer extends AbstractProducer {
 
-    protected String accessKey;
-    protected String secretKey;
-
+    public AbstractOnsProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
+    }
 
     @Override
     public void checkParameters() {
         super.checkParameters();
-        Preconditions.checkNotNull(getAccessKey(), "accessKey is null");
-        Preconditions.checkNotNull(getSecretKey(), "secretKey is null");
-    }
-
-    @Override
-    public String getAccessKey() {
-        return accessKey;
-    }
-
-    public void setAccessKey(String accessKey) {
-        this.accessKey = accessKey;
-    }
-
-    @Override
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
+        Preconditions.checkNotNull(mqProperties.getAccessKey(), "accessKey is null");
+        Preconditions.checkNotNull(mqProperties.getSecretKey(), "secretKey is null");
     }
 }

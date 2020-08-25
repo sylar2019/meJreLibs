@@ -3,6 +3,7 @@ package me.java.library.utils.disruptor.event;
 import com.google.common.collect.Lists;
 import com.lmax.disruptor.EventTranslatorTwoArg;
 import com.lmax.disruptor.ExceptionHandler;
+import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 import me.java.library.common.service.ConcurrentService;

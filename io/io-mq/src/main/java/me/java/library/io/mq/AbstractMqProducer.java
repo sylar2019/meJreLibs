@@ -23,7 +23,7 @@ public abstract class AbstractMqProducer extends AbstractMqClient {
     protected Producer producer;
 
     public AbstractMqProducer(String brokers) {
-        this.producer = factory.createProducer(brokers, getGroupId(), getClientId());
+        this.producer = factory.createProducer(getGroupId(), getClientId());
     }
 
     protected abstract String getTopic();

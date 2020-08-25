@@ -1,5 +1,6 @@
 package me.java.library.db.jpa.mysql;
 
+import me.java.library.common.Identifiable;
 import me.java.library.db.jpa.po.AbstractJpaEntityWithAutoId;
 
 import javax.persistence.Column;
@@ -47,5 +48,6 @@ public class Foo extends AbstractJpaEntityWithAutoId {
         this.count = count;
         return this;
     }
+
 
 }

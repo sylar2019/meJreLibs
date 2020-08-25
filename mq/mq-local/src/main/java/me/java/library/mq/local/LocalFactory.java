@@ -2,6 +2,7 @@ package me.java.library.mq.local;
 
 import me.java.library.mq.base.AbstractFactory;
 import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.base.Producer;
 
 /**
@@ -19,17 +20,17 @@ import me.java.library.mq.base.Producer;
  * *******************************************************************************************
  */
 public class LocalFactory extends AbstractFactory {
-    @Override
-    public Producer createProducer(String brokers, String groupId, String clientId) {
-        LocalProducer producer = new LocalProducer();
-        setClient(producer, brokers, groupId, clientId);
-        return producer;
+    public LocalFactory(MqProperties mqProperties) {
+        super(mqProperties);
     }
 
     @Override
-    public Consumer createConsumer(String brokers, String groupId, String clientId) {
-        LocalConsumer consumer = new LocalConsumer();
-        setClient(consumer, brokers, groupId, clientId);
-        return consumer;
+    public Producer createProducer(String producerGroupId, String clientId) {
+        return new LocalProducer(mqProperties, producerGroupId, clientId);
+    }
+
+    @Override
+    public Consumer createConsumer(String consumerGroupId, String clientId) {
+        return new LocalConsumer(mqProperties, consumerGroupId, clientId);
     }
 }

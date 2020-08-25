@@ -1,6 +1,7 @@
 package me.java.library.mq.ons.http;
 
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.ons.AbstractOnsProducer;
 
 /**
@@ -8,10 +9,8 @@ import me.java.library.mq.ons.AbstractOnsProducer;
  */
 public class OnsHttpProducer extends AbstractOnsProducer {
 
-
-    @Override
-    public Object getNativeProducer() {
-        return null;
+    public OnsHttpProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
     }
 
     @Override
@@ -20,17 +19,17 @@ public class OnsHttpProducer extends AbstractOnsProducer {
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop() throws Exception {
 
     }
 
     @Override
-    public Object send(Message message) throws Exception {
+    protected Object onSend(Message message) throws Exception {
 
         HttpResult result = HttpUtil.sendMsg(
-                brokers,
-                getAccessKey(),
-                getSecretKey(),
+                mqProperties.getBrokers(),
+                mqProperties.getAccessKey(),
+                mqProperties.getSecretKey(),
                 groupId,
                 message.getTopic(),
                 message.getTags(),

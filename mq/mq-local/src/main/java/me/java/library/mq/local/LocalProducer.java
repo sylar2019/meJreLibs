@@ -2,6 +2,7 @@ package me.java.library.mq.local;
 
 import me.java.library.mq.base.AbstractProducer;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.utils.base.guava.AsyncEventUtils;
 
 
@@ -20,24 +21,25 @@ import me.java.library.utils.base.guava.AsyncEventUtils;
  * *******************************************************************************************
  */
 public class LocalProducer extends AbstractProducer {
+
+    public LocalProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
+    }
+
     @Override
     protected void onStart() throws Exception {
 
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop() throws Exception {
 
     }
 
     @Override
-    public Object getNativeProducer() {
-        return null;
-    }
-
-    @Override
-    public Object send(Message message) throws Exception {
+    protected Object onSend(Message message) throws Exception {
         AsyncEventUtils.postEvent(message);
         return null;
     }
+
 }

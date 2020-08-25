@@ -16,15 +16,10 @@ package me.java.library.mq.base;
  */
 public interface Consumer extends Client {
 
-    /**
-     * 获取内部原生的consumer
-     *
-     * @return 原生的consumer
-     */
-    Object getNativeConsumer();
 
     /**
      * 订阅
+     * 【重要】：每个消费者只允许订阅一个topic，若需订阅多个topic，请使用多个消费者实例
      *
      * @param topic           主题
      * @param messageListener 消息监听器

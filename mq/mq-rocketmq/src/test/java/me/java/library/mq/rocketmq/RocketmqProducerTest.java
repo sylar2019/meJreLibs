@@ -2,6 +2,7 @@ package me.java.library.mq.rocketmq;
 
 import me.java.library.mq.base.Factory;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.base.Producer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.junit.After;
@@ -34,8 +35,45 @@ public class RocketmqProducerTest {
 
     @Before
     public void setUp() throws Exception {
-        factory = new RocketmqFactory();
-        producer = factory.createProducer(brokers, "ProducerGroup_1", "ProducerClient_1");
+        MqProperties mqProperties = new MqProperties() {
+            @Override
+            public String getProvider() {
+                return MqProperties.PROVIDER_ROCKETMQ;
+            }
+
+            @Override
+            public String getBrokers() {
+                return brokers;
+            }
+
+            @Override
+            public String getUser() {
+                return null;
+            }
+
+            @Override
+            public String getPassword() {
+                return null;
+            }
+
+            @Override
+            public String getAccessKey() {
+                return null;
+            }
+
+            @Override
+            public String getSecretKey() {
+                return null;
+            }
+
+            @Override
+            public <T> T getAttr(String attrKey) {
+                return null;
+            }
+        };
+
+        factory = new RocketmqFactory(mqProperties);
+        producer = factory.createProducer("ProducerGroup_1", "ProducerClient_1");
         producer.start();
     }
 

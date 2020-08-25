@@ -4,15 +4,19 @@ spring.output.ansi.enabled: ALWAYS
 #mq.provider: rocketmq
 #mq.brokers: localhost:9876
 
-#rabbittmq
+##rabbittmq
 mq.provider: rabbitmq
 mq.brokers: localhost:5672
-spring.rabbitmq:
-  host: localhost
-  port: 5672
-  username: guest
-  password: guest
-  virtual-host: /
+mq.user: guest
+mq.password: guest
+mq.attrs:
+  virtualHost: \
+#spring.rabbitmq:
+#  host: localhost
+#  port: 5672
+#  username: guest
+#  password: guest
+#  virtual-host: /
 
 #kafka
 #mq.provider: kafka
@@ -35,6 +39,7 @@ spring.rabbitmq:
 
 ##redis
 #mq.provider: redis
+#mq.brokers: localhost:6379
 #spring.redis:
 #  host: localhost
 #  port: 6379

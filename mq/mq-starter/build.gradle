@@ -8,4 +8,10 @@ dependencies {
     compile project(":mq:mq-rabbitmq")
     compile project(":mq:mq-redis")
     compile project(":mq:mq-local")
+
+    compileOnly("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
+
 }
+
+compileJava.dependsOn(processResources)

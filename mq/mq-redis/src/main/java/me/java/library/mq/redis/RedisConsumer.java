@@ -1,15 +1,14 @@
 package me.java.library.mq.redis;
 
 
-import com.google.common.collect.Maps;
 import me.java.library.mq.base.AbstractConsumer;
 import me.java.library.mq.base.MessageListener;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.utils.redis.RedisNotice;
 import me.java.library.utils.spring.SpringBeanUtils;
 import org.springframework.data.redis.connection.Message;
 
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * @author :  sylar
@@ -27,33 +26,23 @@ import java.util.Map;
  */
 public class RedisConsumer extends AbstractConsumer {
 
-    private final RedisNotice redisNotice;
-    private final Map<String, RedisListener> listeners = Maps.newHashMap();
+    RedisNotice redisNotice;
+    RedisListener listener;
 
-    public RedisConsumer() {
+    public RedisConsumer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
         redisNotice = SpringBeanUtils.getBean(RedisNotice.class);
     }
 
     @Override
-    public Object getNativeConsumer() {
-        return redisNotice;
-    }
-
-    @Override
-    public void subscribe(String topic, MessageListener messageListener, String... tags) {
-        super.subscribe(topic, messageListener, tags);
-        if (messageListener == null || listeners.containsKey(topic)) {
-            return;
-        }
-
-        RedisListener listener = new RedisListener(topic, messageListener);
+    protected void onSubscribe(String topic, MessageListener messageListener, String... tags) throws Exception {
+        listener = new RedisListener(topic, messageListener);
         redisNotice.subscribe(listener, Collections.singletonList(topic));
-        listeners.put(topic, listener);
     }
 
     @Override
-    public void unsubscribe() {
-        listeners.values().forEach(l -> redisNotice.unsubscribe(l, null));
+    protected void onUnsubscribe() throws Exception {
+        redisNotice.unsubscribe(listener, Collections.singletonList(topic));
     }
 
     static class RedisListener implements org.springframework.data.redis.connection.MessageListener {

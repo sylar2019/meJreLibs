@@ -1,15 +1,14 @@
 package me.java.library.mq.local;
 
 
-import com.google.common.collect.Maps;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import me.java.library.mq.base.AbstractConsumer;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.utils.base.guava.AsyncEventUtils;
 
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -28,28 +27,21 @@ import java.util.Optional;
  */
 public class LocalConsumer extends AbstractConsumer {
 
-    private final Map<String, GuavaListener> listeners = Maps.newHashMap();
+    GuavaListener listener;
 
-    @Override
-    public Object getNativeConsumer() {
-        return null;
+    public LocalConsumer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
     }
 
     @Override
-    public void subscribe(String topic, MessageListener messageListener, String... tags) {
-        super.subscribe(topic, messageListener, tags);
-        if (topic == null || messageListener == null || listeners.containsKey(topic)) {
-            return;
-        }
-
-        GuavaListener listener = new GuavaListener(topic, messageListener);
-        listeners.put(topic, listener);
+    protected void onSubscribe(String topic, MessageListener messageListener, String... tags) throws Exception {
+        listener = new GuavaListener(topic, messageListener);
         AsyncEventUtils.regist(listener);
     }
 
     @Override
-    public void unsubscribe() {
-        listeners.values().forEach(AsyncEventUtils::unregist);
+    protected void onUnsubscribe() throws Exception {
+        AsyncEventUtils.unregist(listener);
     }
 
     static class GuavaListener {

@@ -3,8 +3,10 @@ package me.java.library.mq.ons.tcp;
 import com.aliyun.openservices.ons.api.SendResult;
 import me.java.library.mq.base.Factory;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.base.Producer;
 import me.java.library.mq.ons.OnsConst;
+import me.java.library.mq.ons.OnsProperties;
 import me.java.library.mq.ons.OnsServerConst;
 import org.junit.After;
 import org.junit.Before;
@@ -32,9 +34,9 @@ public class OnsTcpProducerTest {
 
     @Before
     public void setUp() throws Exception {
-        onsConst = OnsConst.getFirst();
-        factory = new OnsTcpFactory(onsConst.getAccessKey(), onsConst.getSecretKey());
-        producer = factory.createProducer(OnsServerConst.TCP_TEST, onsConst.getProducerId(), "ProducerClient_1");
+        OnsProperties op = new OnsProperties(MqProperties.PROVIDER_ONS_TCP, OnsServerConst.TCP_TEST);
+        factory = new OnsTcpFactory(op);
+        producer = factory.createProducer(onsConst.getProducerId(), "ProducerClient_1");
 
         producer.start();
     }

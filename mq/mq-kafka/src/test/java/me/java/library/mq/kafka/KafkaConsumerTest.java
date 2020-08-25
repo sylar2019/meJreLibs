@@ -1,9 +1,6 @@
 package me.java.library.mq.kafka;
 
-import me.java.library.mq.base.Consumer;
-import me.java.library.mq.base.Factory;
-import me.java.library.mq.base.Message;
-import me.java.library.mq.base.MessageListener;
+import me.java.library.mq.base.*;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.After;
 import org.junit.Before;
@@ -32,8 +29,45 @@ public class KafkaConsumerTest {
 
     @Before
     public void setUp() throws Exception {
-        factory = new KafkaFactory();
-        consumer = factory.createConsumer(brokers, "ConsumerGroup_1", "ConsumerClient_1");
+        MqProperties mqProperties = new MqProperties() {
+            @Override
+            public String getProvider() {
+                return MqProperties.PROVIDER_KAFKA;
+            }
+
+            @Override
+            public String getBrokers() {
+                return brokers;
+            }
+
+            @Override
+            public String getUser() {
+                return null;
+            }
+
+            @Override
+            public String getPassword() {
+                return null;
+            }
+
+            @Override
+            public String getAccessKey() {
+                return null;
+            }
+
+            @Override
+            public String getSecretKey() {
+                return null;
+            }
+
+            @Override
+            public <T> T getAttr(String attrKey) {
+                return null;
+            }
+        };
+
+        factory = new KafkaFactory(mqProperties);
+        consumer = factory.createConsumer("ConsumerGroup_1", "ConsumerClient_1");
     }
 
     @After
@@ -42,13 +76,13 @@ public class KafkaConsumerTest {
 
     @Test
     public void subscribe() throws Exception {
-        consumer.subscribe(topic, null, new MessageListener() {
+        consumer.subscribe(topic, new MessageListener() {
             @Override
             public void onSuccess(Message message) {
                 System.out.println(String.format("[TOPIC]:%s [MESSAGE]:%s", message.getTopic(), message.getContent()));
 
                 if (message.getExt() instanceof ConsumerRecord) {
-                    ConsumerRecord<String, String> ext = (ConsumerRecord<String, String>) message.getExt();
+                    ConsumerRecord ext = (ConsumerRecord) message.getExt();
                     System.out.println("offset:" + ext.offset());
                 }
             }

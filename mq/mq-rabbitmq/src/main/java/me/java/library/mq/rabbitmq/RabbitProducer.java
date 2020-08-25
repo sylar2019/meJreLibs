@@ -6,9 +6,8 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import me.java.library.mq.base.AbstractProducer;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.utils.spring.SpringBeanUtils;
-
-import java.io.IOException;
 
 
 /**
@@ -26,10 +25,12 @@ import java.io.IOException;
  * *******************************************************************************************
  */
 public class RabbitProducer extends AbstractProducer {
-    Connection connection;
-    private final ConnectionFactory factory;
 
-    public RabbitProducer() {
+    ConnectionFactory factory;
+    Connection connection;
+
+    public RabbitProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
         factory = SpringBeanUtils.getBean(ConnectionFactory.class);
     }
 
@@ -39,21 +40,12 @@ public class RabbitProducer extends AbstractProducer {
     }
 
     @Override
-    protected void onStop() {
-        try {
-            connection.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    protected void onStop() throws Exception {
+        connection.close();
     }
 
     @Override
-    public Object getNativeProducer() {
-        return connection;
-    }
-
-    @Override
-    public Object send(Message message) throws Exception {
+    protected Object onSend(Message message) throws Exception {
         assert message != null;
         assert message.getTopic() != null;
         assert message.getContent() != null;
@@ -68,4 +60,5 @@ public class RabbitProducer extends AbstractProducer {
 
         return null;
     }
+
 }

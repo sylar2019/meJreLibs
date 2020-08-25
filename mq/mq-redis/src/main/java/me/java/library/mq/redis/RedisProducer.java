@@ -2,6 +2,7 @@ package me.java.library.mq.redis;
 
 import me.java.library.mq.base.AbstractProducer;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.utils.redis.RedisNotice;
 import me.java.library.utils.spring.SpringBeanUtils;
 
@@ -22,16 +23,13 @@ import me.java.library.utils.spring.SpringBeanUtils;
  */
 public class RedisProducer extends AbstractProducer {
 
-    private final RedisNotice redisNotice;
+    RedisNotice redisNotice;
 
-    public RedisProducer() {
+    public RedisProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
         redisNotice = SpringBeanUtils.getBean(RedisNotice.class);
     }
 
-    @Override
-    public Object getNativeProducer() {
-        return redisNotice;
-    }
 
     @Override
     protected void onStart() throws Exception {
@@ -39,15 +37,13 @@ public class RedisProducer extends AbstractProducer {
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop() throws Exception {
 
     }
 
     @Override
-    public Object send(Message message) throws Exception {
-        checkOnSend(message);
+    protected Object onSend(Message message) throws Exception {
         redisNotice.publish(message.getTopic(), message.getContent());
         return null;
     }
-
 }

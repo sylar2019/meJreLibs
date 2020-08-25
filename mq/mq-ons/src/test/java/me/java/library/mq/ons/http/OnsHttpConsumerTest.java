@@ -1,10 +1,8 @@
 package me.java.library.mq.ons.http;
 
-import me.java.library.mq.base.Consumer;
-import me.java.library.mq.base.Factory;
-import me.java.library.mq.base.Message;
-import me.java.library.mq.base.MessageListener;
+import me.java.library.mq.base.*;
 import me.java.library.mq.ons.OnsConst;
+import me.java.library.mq.ons.OnsProperties;
 import me.java.library.mq.ons.OnsServerConst;
 import org.junit.After;
 import org.junit.Before;
@@ -31,9 +29,9 @@ public class OnsHttpConsumerTest {
 
     @Before
     public void setUp() throws Exception {
-        onsConst = OnsConst.getFirst();
-        factory = new OnsHttpFactory(onsConst.getAccessKey(), onsConst.getSecretKey());
-        consumer = factory.createConsumer(OnsServerConst.TCP_TEST, onsConst.getConsumerId(), "ConsumerClient_1");
+        OnsProperties op = new OnsProperties(MqProperties.PROVIDER_ONS_TCP, OnsServerConst.HTTP_TEST);
+        factory = new OnsHttpFactory(op);
+        consumer = factory.createConsumer(onsConst.getConsumerId(), "ConsumerClient_1");
 
     }
 
@@ -43,7 +41,7 @@ public class OnsHttpConsumerTest {
 
     @Test
     public void subscribe() throws Exception {
-        consumer.subscribe(onsConst.getTopic(), null, new MessageListener() {
+        consumer.subscribe(onsConst.getTopic(), new MessageListener() {
             @Override
             public void onSuccess(Message message) {
 

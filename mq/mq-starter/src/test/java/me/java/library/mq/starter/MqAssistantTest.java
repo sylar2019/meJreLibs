@@ -2,10 +2,7 @@ package me.java.library.mq.starter;
 
 import com.google.common.util.concurrent.ListenableScheduledFuture;
 import me.java.library.common.service.ConcurrentService;
-import me.java.library.mq.base.Consumer;
-import me.java.library.mq.base.Message;
-import me.java.library.mq.base.MessageListener;
-import me.java.library.mq.base.Producer;
+import me.java.library.mq.base.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,14 +29,14 @@ public class MqAssistantTest {
     final static String TOPIC = "TOPIC_001";
 
     @Autowired
-    MqAssistant assistant;
+    Factory factory;
     Producer producer;
     Consumer consumer;
 
     @Before
     public void init() throws Exception {
-        producer = assistant.createProducer("PID_001", "CLIENT_001");
-        consumer = assistant.createConsumer("CID_1001", "CLIENT_001");
+        producer = factory.createProducer("PID_001", "CLIENT_001");
+        consumer = factory.createConsumer("CID_1001", "CLIENT_001");
         producer.start();
     }
 

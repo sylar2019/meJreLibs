@@ -3,6 +3,7 @@ package me.java.library.mq.rocketmq;
 import com.google.common.base.Charsets;
 import me.java.library.mq.base.AbstractProducer;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 
 
@@ -24,15 +25,14 @@ public class RocketmqProducer extends AbstractProducer {
 
     protected DefaultMQProducer producer;
 
-    @Override
-    public Object getNativeProducer() {
-        return producer;
+    public RocketmqProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
     }
 
     @Override
     protected void onStart() throws Exception {
         producer = new DefaultMQProducer();
-        producer.setNamesrvAddr(brokers);
+        producer.setNamesrvAddr(mqProperties.getBrokers());
         producer.setProducerGroup(groupId);
         producer.setInstanceName(clientId);
         producer.setVipChannelEnabled(false);
@@ -47,16 +47,13 @@ public class RocketmqProducer extends AbstractProducer {
         }
     }
 
-
     @Override
-    public Object send(Message message) throws Exception {
-        checkOnSend(message);
+    protected Object onSend(Message message) throws Exception {
         return producer.send(new org.apache.rocketmq.common.message.Message(
                 message.getTopic(),
                 message.getTags(),
                 message.getKeys(),
-                message.getContent()
-                        .getBytes(Charsets.UTF_8)));
+                message.getContent().getBytes(Charsets.UTF_8)));
     }
 
 }

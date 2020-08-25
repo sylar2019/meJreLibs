@@ -2,8 +2,10 @@ package me.java.library.mq.ons.mqtt;
 
 import me.java.library.mq.base.Factory;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.base.Producer;
 import me.java.library.mq.ons.OnsConst;
+import me.java.library.mq.ons.OnsProperties;
 import me.java.library.mq.ons.OnsServerConst;
 import org.junit.After;
 import org.junit.Before;
@@ -30,9 +32,9 @@ public class OnsMqttProducerTest {
 
     @Before
     public void setUp() throws Exception {
-        onsConst = OnsConst.getFirst();
-        factory = new OnsMqttFactory(onsConst.getAccessKey(), onsConst.getSecretKey());
-        producer = factory.createProducer(OnsServerConst.TCP_TEST, onsConst.getProducerId(), MqttConst.ClientId1);
+        OnsProperties op = new OnsProperties(MqProperties.PROVIDER_ONS_TCP, OnsServerConst.MQTT_TEST);
+        factory = new OnsMqttFactory(op);
+        producer = factory.createProducer(onsConst.getProducerId(), MqttConst.ClientId1);
 
         producer.start();
     }

@@ -21,7 +21,7 @@ public abstract class AbstractMqConsumer extends AbstractMqClient {
     protected Consumer consumer;
 
     public AbstractMqConsumer(String brokers) {
-        this.consumer = factory.createConsumer(brokers, getGroupId(), getClientId());
+        this.consumer = factory.createConsumer(getGroupId(), getClientId());
     }
 
     @Override
