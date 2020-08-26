@@ -8,6 +8,7 @@ import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.ons.AbstractOnsConsumer;
+import me.java.library.mq.ons.Utils;
 
 import java.util.Properties;
 
@@ -26,16 +27,12 @@ public class OnsTcpConsumer extends AbstractOnsConsumer {
     protected void onSubscribe(String topic, MessageListener messageListener, String... tags) throws Exception {
         initConsumer();
 
-        String subExpression = "*";
-        if (tags != null && tags.length > 0) {
-            subExpression = Joiner.on("||").skipNulls().join(tags);
-        }
+        String subExpression = Utils.tagsFromArray(tags);
 
         consumer.subscribe(topic, subExpression, new com.aliyun.openservices.ons.api.MessageListener() {
             @Override
             public Action consume(com.aliyun.openservices.ons.api.Message message, ConsumeContext context) {
                 String content = new String(message.getBody(), Charsets.UTF_8);
-                System.out.println("Receive Msg: " + message);
 
                 try {
                     Message msg = new Message(topic, content);
@@ -68,8 +65,10 @@ public class OnsTcpConsumer extends AbstractOnsConsumer {
         Properties properties = new Properties();
         properties.put(PropertyKeyConst.AccessKey, mqProperties.getAccessKey());
         properties.put(PropertyKeyConst.SecretKey, mqProperties.getSecretKey());
-        properties.put(PropertyKeyConst.ONSAddr, mqProperties.getBrokers());
+        properties.put(PropertyKeyConst.NAMESRV_ADDR, mqProperties.getBrokers());
         properties.put(PropertyKeyConst.GROUP_ID, groupId);
+        //集群订阅方式（默认）
+        properties.put(PropertyKeyConst.MessageModel, PropertyValueConst.CLUSTERING);
         consumer = ONSFactory.createConsumer(properties);
     }
 

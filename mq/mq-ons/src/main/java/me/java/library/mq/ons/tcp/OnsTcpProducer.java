@@ -26,7 +26,7 @@ public class OnsTcpProducer extends AbstractOnsProducer {
         Properties properties = new Properties();
         properties.put(PropertyKeyConst.AccessKey, mqProperties.getAccessKey());
         properties.put(PropertyKeyConst.SecretKey, mqProperties.getSecretKey());
-        properties.put(PropertyKeyConst.ONSAddr, mqProperties.getBrokers());
+        properties.put(PropertyKeyConst.NAMESRV_ADDR, mqProperties.getBrokers());
         properties.put(PropertyKeyConst.GROUP_ID, groupId);
         producer = ONSFactory.createProducer(properties);
         producer.start();

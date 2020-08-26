@@ -35,8 +35,8 @@ public class MqAssistantTest {
 
     @Before
     public void init() throws Exception {
-        producer = factory.createProducer("GID_001", "CLIENT_001");
-        consumer = factory.createConsumer("GID_001", "CLIENT_002");
+        producer = factory.createProducer("GID_HTTP_001", "CLIENT_001");
+        consumer = factory.createConsumer("GID_HTTP_001", "CLIENT_002");
         producer.start();
     }
 
@@ -66,6 +66,7 @@ public class MqAssistantTest {
         cd.await();
         future.cancel(false);
 
+        Thread.sleep(5000);
         System.out.println("### end");
     }
 
