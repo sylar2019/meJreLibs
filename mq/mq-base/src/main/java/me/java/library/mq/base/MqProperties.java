@@ -17,7 +17,6 @@ public interface MqProperties {
     String PROVIDER_KAFKA = "kafka";
     String PROVIDER_ONS_TCP = "ons.tcp";
     String PROVIDER_ONS_HTTP = "ons.http";
-    String PROVIDER_ONS_MQTT = "ons.mqtt";
     String PROVIDER_REDIS = "redis";
     String PROVIDER_LOCAL = "local";
 

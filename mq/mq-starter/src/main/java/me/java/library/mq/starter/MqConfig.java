@@ -5,7 +5,6 @@ import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.kafka.KafkaFactory;
 import me.java.library.mq.local.LocalFactory;
 import me.java.library.mq.ons.http.OnsHttpFactory;
-import me.java.library.mq.ons.mqtt.OnsMqttFactory;
 import me.java.library.mq.ons.tcp.OnsTcpFactory;
 import me.java.library.mq.rabbitmq.RabbitFactory;
 import me.java.library.mq.redis.RedisFactory;
@@ -60,8 +59,6 @@ public class MqConfig {
                 return new OnsTcpFactory(mqProperties);
             case MqProperties.PROVIDER_ONS_HTTP:
                 return new OnsHttpFactory(mqProperties);
-            case MqProperties.PROVIDER_ONS_MQTT:
-                return new OnsMqttFactory(mqProperties);
             case MqProperties.PROVIDER_REDIS:
                 injectRedisProperties();
                 return new RedisFactory(mqProperties);

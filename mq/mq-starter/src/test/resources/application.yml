@@ -48,5 +48,3 @@ mq:
 #  provider: redis
 #  brokers: localhost:6379
 
-
-

@@ -7,9 +7,4 @@ dependencies {
 
     //for http
     compile("com.aliyun.mq:mq-http-sdk:1.0.2")
-
-    compile("org.eclipse.jetty:jetty-client:9.4.9.v20180320")
-
-    //for mqtt
-    compile("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
 }

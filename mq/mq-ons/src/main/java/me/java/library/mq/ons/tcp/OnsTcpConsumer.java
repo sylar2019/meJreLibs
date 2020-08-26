@@ -3,7 +3,6 @@ package me.java.library.mq.ons.tcp;
 
 import com.aliyun.openservices.ons.api.*;
 import com.google.common.base.Charsets;
-import com.google.common.base.Joiner;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import me.java.library.mq.base.MqProperties;
