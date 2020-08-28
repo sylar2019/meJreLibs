@@ -42,8 +42,8 @@ public class OnsTcpProducer extends AbstractOnsProducer {
     protected Object onSend(Message message) throws Exception {
         return producer.send(new com.aliyun.openservices.ons.api.Message(
                 message.getTopic(),
-                message.getTags(),
-                message.getKeys(),
+                message.getTag(),
+                message.getKey(),
                 message.getContent().getBytes(Charsets.UTF_8))
         );
     }

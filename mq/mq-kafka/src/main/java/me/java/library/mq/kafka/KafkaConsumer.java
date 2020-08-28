@@ -53,15 +53,18 @@ public class KafkaConsumer extends AbstractConsumer {
 
     private void initConsumer() {
         Properties properties = new Properties();
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, mqProperties.getBrokers());
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        properties.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
-
-        /* 是否自动确认offset, 强制由业务层来确认 */
-        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
-
+        //序列化类型配置
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        //服务端地址
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, mqProperties.getBrokers());
+        //消费组ID
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        //客户端ID
+        properties.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
+        //是否自动确认offset, 强制由业务层来确认
+        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+
 
         consumer = new org.apache.kafka.clients.consumer.KafkaConsumer<>(properties);
     }

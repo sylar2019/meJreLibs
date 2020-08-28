@@ -24,8 +24,7 @@ import me.java.library.io.base.pipe.PipeWatcher;
 public class Dcs2Dms extends AbstractMqProducer {
     protected final Pipe pipe;
 
-    public Dcs2Dms(String brokers, Pipe pipe) {
-        super(brokers);
+    public Dcs2Dms(Pipe pipe) {
         this.pipe = pipe;
 
         pipe.setWatcher(new PipeWatcher() {

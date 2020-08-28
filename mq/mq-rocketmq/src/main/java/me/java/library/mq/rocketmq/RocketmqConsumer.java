@@ -10,6 +10,7 @@ import me.java.library.mq.base.MqProperties;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 
 /**
  * @author :  sylar
@@ -42,8 +43,8 @@ public class RocketmqConsumer extends AbstractConsumer {
                         messageExt.getTopic(),
                         new String(messageExt.getBody(), Charsets.UTF_8));
                 message.setExt(messageExt);
-                message.setKeys(messageExt.getKeys());
-                message.setTags(messageExt.getTags());
+                message.setKey(messageExt.getKeys());
+                message.setTag(messageExt.getTags());
                 messageListener.onSuccess(message);
             });
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
@@ -71,5 +72,7 @@ public class RocketmqConsumer extends AbstractConsumer {
         consumer.setConsumerGroup(groupId);
         consumer.setInstanceName(clientId);
         consumer.setVipChannelEnabled(false);
+        //默认是集群消费
+        consumer.setMessageModel(MessageModel.CLUSTERING);
     }
 }

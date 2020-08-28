@@ -82,8 +82,8 @@ public class OnsHttpConsumer extends AbstractOnsConsumer {
         try {
             Message msg = new Message(topic, message.getMessageBodyString());
             msg.setExt(message);
-            msg.setKeys(message.getMessageKey());
-            msg.setTags(message.getMessageTag());
+            msg.setKey(message.getMessageKey());
+            msg.setTag(message.getMessageTag());
             messageListener.onSuccess(msg);
 
             //同步确认

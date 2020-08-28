@@ -20,8 +20,8 @@ import me.java.library.utils.base.JsonUtils;
 public class Message {
     private String topic;
     private String content;
-    private String tags;
-    private String keys;
+    private String tag;
+    private String key;
     private Object ext;
 
     public Message(String topic) {
@@ -33,11 +33,11 @@ public class Message {
         this.content = content;
     }
 
-    public Message(String topic, String content, String tags, String keys) {
+    public Message(String topic, String content, String tag, String key) {
         this.topic = topic;
         this.content = content;
-        this.tags = tags;
-        this.keys = keys;
+        this.tag = tag;
+        this.key = key;
     }
 
     @Override
@@ -70,20 +70,20 @@ public class Message {
         this.ext = ext;
     }
 
-    public String getTags() {
-        return tags;
+    public String getTag() {
+        return tag;
     }
 
-    public void setTags(String tags) {
-        this.tags = tags;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
-    public String getKeys() {
-        return keys;
+    public String getKey() {
+        return key;
     }
 
-    public void setKeys(String keys) {
-        this.keys = keys;
+    public void setKey(String key) {
+        this.key = key;
     }
 
 }

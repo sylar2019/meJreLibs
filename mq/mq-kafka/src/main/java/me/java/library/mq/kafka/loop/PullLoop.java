@@ -93,7 +93,7 @@ public class PullLoop implements Runnable {
             records.forEach(record -> {
                 Message message = new Message(record.topic(), record.value());
                 message.setExt(record);
-                message.setKeys(record.key());
+                message.setKey(record.key());
                 listener.onSuccess(message);
             });
             return true;

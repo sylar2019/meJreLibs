@@ -51,8 +51,8 @@ public class RocketmqProducer extends AbstractProducer {
     protected Object onSend(Message message) throws Exception {
         return producer.send(new org.apache.rocketmq.common.message.Message(
                 message.getTopic(),
-                message.getTags(),
-                message.getKeys(),
+                message.getTag(),
+                message.getKey(),
                 message.getContent().getBytes(Charsets.UTF_8)));
     }
 

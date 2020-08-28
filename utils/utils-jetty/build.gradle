@@ -1,8 +1,0 @@
-dependencies {
-    //boot
-    compile("org.springframework.boot:spring-boot-starter:${springBootVersion}")
-
-    //jetty
-    compile("org.eclipse.jetty:jetty-http:9.4.6.v20170531")
-    compile("org.eclipse.jetty:jetty-server:9.4.2.v20170220")
-}

@@ -3,9 +3,9 @@ apply from: gradlesPath + "springboot-web.gradle"
 dependencies {
     compile project(":common")
     //security
-    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
     //thymeleaf
-//    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+//    compile("org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}")
 //    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4")
 
     //test

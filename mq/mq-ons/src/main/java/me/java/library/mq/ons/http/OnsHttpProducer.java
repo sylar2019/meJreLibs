@@ -51,9 +51,9 @@ public class OnsHttpProducer extends AbstractOnsProducer {
         }
 
         byte[] body = message.getContent().getBytes(Charsets.UTF_8);
-        TopicMessage pubMsg = new TopicMessage(body, message.getTags());
-        if (message.getKeys() != null) {
-            pubMsg.setMessageKey(message.getKeys());
+        TopicMessage pubMsg = new TopicMessage(body, message.getTag());
+        if (message.getKey() != null) {
+            pubMsg.setMessageKey(message.getKey());
         }
 
         return producer.publishMessage(pubMsg);

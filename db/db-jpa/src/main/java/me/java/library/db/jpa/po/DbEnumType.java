@@ -2,7 +2,7 @@ package me.java.library.db.jpa.po;
 
 import me.java.library.common.model.po.BaseEnum;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.DynamicParameterizedType;
 import org.hibernate.usertype.UserType;
 
@@ -36,6 +36,7 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
     private static final int[] SQL_TYPES = new int[]{Types.INTEGER};
     private Class enumClass;
 
+
     @Override
     public void setParameterValues(Properties parameters) {
         final ParameterType reader = (ParameterType) parameters.get(PARAMETER_TYPE);
@@ -44,9 +45,10 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
         }
     }
 
-    //枚举存储int值
+
     @Override
     public int[] sqlTypes() {
+        //枚举存储int值
         return SQL_TYPES;
     }
 
@@ -55,9 +57,10 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
         return enumClass;
     }
 
-    //是否相等，不相等会触发JPA update操作
+
     @Override
     public boolean equals(Object x, Object y) throws HibernateException {
+        //是否相等，不相等会触发JPA update操作
         if (x == null && y == null) {
             return true;
         }
@@ -69,10 +72,9 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
         return x == null ? 0 : x.hashCode();
     }
 
-    //返回枚举
-    @SuppressWarnings("unchecked")
+
     @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException {
         String value = rs.getString(names[0]);
         if (value == null) {
             return null;
@@ -85,10 +87,8 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
         throw new RuntimeException(String.format("Unknown name value [%s] for enum class [%s]", value, enumClass.getName()));
     }
 
-    //保存枚举值
-    @SuppressWarnings("unchecked")
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
         if (value == null) {
             st.setNull(index, SQL_TYPES[0]);
         } else if (value instanceof Integer) {
@@ -97,6 +97,7 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
             st.setInt(index, ((BaseEnum) value).getValue());
         }
     }
+
 
     @Override
     public Object deepCopy(Object value) throws HibernateException {
