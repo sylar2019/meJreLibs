@@ -20,8 +20,13 @@ import me.java.library.mq.base.Consumer;
 public abstract class AbstractMqConsumer extends AbstractMqClient {
     protected Consumer consumer;
 
-    public AbstractMqConsumer(String brokers) {
+    public AbstractMqConsumer() {
         this.consumer = factory.createConsumer(getGroupId(), getClientId());
+    }
+
+    @Override
+    protected String getGroupId() {
+        return "default_consumer_group";
     }
 
     @Override

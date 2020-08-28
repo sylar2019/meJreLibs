@@ -22,11 +22,17 @@ import me.java.library.mq.base.Producer;
 public abstract class AbstractMqProducer extends AbstractMqClient {
     protected Producer producer;
 
-    public AbstractMqProducer(String brokers) {
+    public AbstractMqProducer() {
         this.producer = factory.createProducer(getGroupId(), getClientId());
+        this.producer.start();
     }
 
     protected abstract String getTopic();
+
+    @Override
+    protected String getGroupId() {
+        return "default_producer_group";
+    }
 
     @Override
     public void dispose() {

@@ -22,18 +22,6 @@ public class Message {
     private String content;
     private String tags;
     private String keys;
-
-    /**
-     * 当使用mqtt p2p 方式 发送MQ消息时，需要对端的clientId
-     * <p>
-     * 如果发送P2P消息，二级Topic必须是“p2p”，三级Topic是目标的ClientID
-     * 此处设置的三级Topic需要是接收方的ClientID
-     * <p>
-     * notice
-     * 消息发送到某个主题Topic，所有订阅这个Topic的设备都能收到这个消息。
-     * 遵循MQTT的发布订阅规范，Topic也可以是多级Topic。此处设置了发送到二级Topic
-     */
-    private String targetClientId;
     private Object ext;
 
     public Message(String topic) {
@@ -98,11 +86,4 @@ public class Message {
         this.keys = keys;
     }
 
-    public String getTargetClientId() {
-        return targetClientId;
-    }
-
-    public void setTargetClientId(String targetClientId) {
-        this.targetClientId = targetClientId;
-    }
 }

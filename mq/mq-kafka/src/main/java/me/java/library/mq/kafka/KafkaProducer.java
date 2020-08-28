@@ -55,7 +55,7 @@ public class KafkaProducer extends AbstractProducer {
 
     @Override
     protected Object onSend(Message message) throws Exception {
-        return producer.send(new ProducerRecord<>(message.getTopic(), message.getContent()));
+        return producer.send(new ProducerRecord<>(message.getTopic(), message.getKeys(), message.getContent()));
     }
 
 }

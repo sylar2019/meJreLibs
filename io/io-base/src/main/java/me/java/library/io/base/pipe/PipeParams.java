@@ -13,8 +13,6 @@ import java.time.Duration;
  * *******************************************************************************************
  */
 public interface PipeParams {
-    PipeParams DEFAULT = new PipeParams() {
-    };
 
     /**
      * 宿主主机信息
