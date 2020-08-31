@@ -39,10 +39,11 @@ public class RocketmqConsumer extends AbstractConsumer {
         initConsumer();
         consumer.registerMessageListener((MessageListenerConcurrently) (list, consumeConcurrentlyContext) -> {
             list.forEach(messageExt -> {
+                System.out.println("### MessageExt: " + messageExt);
+
                 Message message = new Message(
                         messageExt.getTopic(),
                         new String(messageExt.getBody(), Charsets.UTF_8));
-                message.setExt(messageExt);
                 message.setKey(messageExt.getKeys());
                 message.setTag(messageExt.getTags());
                 messageListener.onSuccess(message);

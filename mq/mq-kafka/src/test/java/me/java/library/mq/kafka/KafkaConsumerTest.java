@@ -1,7 +1,6 @@
 package me.java.library.mq.kafka;
 
 import me.java.library.mq.base.*;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -80,11 +79,6 @@ public class KafkaConsumerTest {
             @Override
             public void onSuccess(Message message) {
                 System.out.println(String.format("[TOPIC]:%s [MESSAGE]:%s", message.getTopic(), message.getContent()));
-
-                if (message.getExt() instanceof ConsumerRecord) {
-                    ConsumerRecord ext = (ConsumerRecord) message.getExt();
-                    System.out.println("offset:" + ext.offset());
-                }
             }
 
             @Override

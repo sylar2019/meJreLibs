@@ -91,8 +91,8 @@ public class PullLoop implements Runnable {
     protected boolean onProcessMessagesAndConfirm(ConsumerRecords<String, String> records) {
         if (listener != null) {
             records.forEach(record -> {
+                System.out.println("### ConsumerRecord: " + record);
                 Message message = new Message(record.topic(), record.value());
-                message.setExt(record);
                 message.setKey(record.key());
                 listener.onSuccess(message);
             });

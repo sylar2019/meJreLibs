@@ -1,6 +1,5 @@
 package me.java.library.mq.base;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.java.library.utils.base.JsonUtils;
 
 /**
@@ -22,7 +21,6 @@ public class Message {
     private String content;
     private String tag;
     private String key;
-    private Object ext;
 
     public Message(String topic) {
         this.topic = topic;
@@ -61,14 +59,6 @@ public class Message {
         this.content = content;
     }
 
-    @JsonIgnore
-    public Object getExt() {
-        return ext;
-    }
-
-    public void setExt(Object ext) {
-        this.ext = ext;
-    }
 
     public String getTag() {
         return tag;

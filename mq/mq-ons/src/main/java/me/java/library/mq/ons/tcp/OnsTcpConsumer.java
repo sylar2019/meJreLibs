@@ -35,7 +35,6 @@ public class OnsTcpConsumer extends AbstractOnsConsumer {
 
                 try {
                     Message msg = new Message(topic, content);
-                    msg.setExt(message);
                     msg.setKey(message.getKey());
                     msg.setTag(message.getTag());
                     messageListener.onSuccess(msg);

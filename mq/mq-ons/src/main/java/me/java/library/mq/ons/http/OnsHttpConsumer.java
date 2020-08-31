@@ -81,7 +81,6 @@ public class OnsHttpConsumer extends AbstractOnsConsumer {
         List<String> handles = Collections.singletonList(message.getReceiptHandle());
         try {
             Message msg = new Message(topic, message.getMessageBodyString());
-            msg.setExt(message);
             msg.setKey(message.getMessageKey());
             msg.setTag(message.getMessageTag());
             messageListener.onSuccess(msg);

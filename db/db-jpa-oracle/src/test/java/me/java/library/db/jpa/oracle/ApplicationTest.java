@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -74,8 +75,8 @@ public class ApplicationTest {
 
     @Test
     public void findById() {
-        Foo foo = fooJpaRepository.findOne(101L);
-        System.out.println(foo == null ? "nothing" : foo);
+        Foo foo = fooJpaRepository.getOne(101L);
+        System.out.println(foo);
     }
 
     @Test
@@ -91,7 +92,7 @@ public class ApplicationTest {
             public Predicate toPredicate(Root<Foo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 return cb.like(root.get("name").as(String.class), "%sylar%");
             }
-        }, new Sort(new Sort.Order(Sort.Direction.DESC, "name")));
+        }, Sort.by(Sort.Order.desc("name")));
 
         list.forEach(foo ->
                 System.out.println(foo == null ? "nothing" : foo)

@@ -80,11 +80,6 @@ public class RocketmqConsumerTest {
         consumer.subscribe(topic, new MessageListener() {
             @Override
             public void onSuccess(Message message) {
-                if (message.getExt() instanceof MessageExt) {
-                    MessageExt ext = (MessageExt) message.getExt();
-                    System.out.println("msgId:" + ext.getMsgId());
-                }
-
                 System.out.println(String.format("[TOPIC]:%s [MESSAGE]:%s", message.getTopic(), message.getContent()));
             }
 
