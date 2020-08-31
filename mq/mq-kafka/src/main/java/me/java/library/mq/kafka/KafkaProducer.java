@@ -1,5 +1,6 @@
 package me.java.library.mq.kafka;
 
+import com.google.common.base.Charsets;
 import me.java.library.mq.base.AbstractProducer;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MqProperties;
@@ -61,7 +62,11 @@ public class KafkaProducer extends AbstractProducer {
 
     @Override
     protected Object onSend(Message message) throws Exception {
-        return producer.send(new ProducerRecord<>(message.getTopic(), message.getKey(), message.getContent()));
+        ProducerRecord<String, String> record = new ProducerRecord<>(message.getTopic(), message.getKey(), message.getContent());
+        if (message.getTag() != null) {
+            record.headers().add(KafkaConst.MESSAGE_TAG, message.getTag().getBytes(Charsets.UTF_8));
+        }
+        return producer.send(record);
     }
 
 }

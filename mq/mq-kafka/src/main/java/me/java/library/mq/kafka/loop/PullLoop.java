@@ -1,17 +1,25 @@
 package me.java.library.mq.kafka.loop;
 
+import com.google.common.base.Charsets;
+import com.google.common.base.Predicate;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
+import me.java.library.mq.kafka.KafkaConst;
 import me.java.library.utils.base.ConcurrentUtils;
-import org.apache.kafka.clients.consumer.CommitFailedException;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.errors.WakeupException;
+import org.apache.kafka.common.header.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 /**
  * @author :  sylar
@@ -28,22 +36,26 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * *******************************************************************************************
  */
 public class PullLoop implements Runnable {
-    protected KafkaConsumer<String, String> consumer;
-    protected MessageListener listener;
+    private static final Logger LOG = LoggerFactory.getLogger(PullLoop.class);
 
-    private AtomicBoolean shutdown;
-    private CountDownLatch shutdownLatch;
-    private ExecutorService executorService;
+    KafkaConsumer<String, String> consumer;
+    MessageListener listener;
+    String[] tags;
 
-    public PullLoop(KafkaConsumer<String, String> consumer, MessageListener listener) {
+
+    AtomicBoolean shutdown;
+    CountDownLatch shutdownLatch;
+    ExecutorService executorService;
+
+    public PullLoop(KafkaConsumer<String, String> consumer, MessageListener listener, String... tags) {
         assert consumer != null;
         assert listener != null;
         this.consumer = consumer;
         this.listener = listener;
+        this.tags = tags;
     }
 
     public void start() {
-
         this.shutdown = new AtomicBoolean(false);
         this.shutdownLatch = new CountDownLatch(1);
 
@@ -56,7 +68,6 @@ public class PullLoop implements Runnable {
             shutdown.set(true);
             shutdownLatch.await();
             executorService.shutdown();
-
         } catch (Exception e) {
             onError(e);
         } finally {
@@ -70,56 +81,58 @@ public class PullLoop implements Runnable {
     public void run() {
         try {
             while (!shutdown.get()) {
-                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(Long.MAX_VALUE));
-                if (onProcessMessagesAndConfirm(records)) {
-//                    consumer.commitAsync();     //异步确认
-                    doCommitSync();             //同步确认
-                }
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(200));
+                //处理收到的消息
+                records.forEach(record -> {
+                    System.out.println("### ConsumerRecord: " + record);
+                    onRecord(record);
+                });
+
+                //异步确认
+                consumer.commitAsync();
             }
-        } catch (WakeupException e) {
-            // ignore, we're closing
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
             onError(e);
         } finally {
-            consumer.close();
-            shutdownLatch.countDown();
-        }
-    }
-
-    protected boolean onProcessMessagesAndConfirm(ConsumerRecords<String, String> records) {
-        if (listener != null) {
-            records.forEach(record -> {
-                System.out.println("### ConsumerRecord: " + record);
-                Message message = new Message(record.topic(), record.value());
-                message.setKey(record.key());
-                listener.onSuccess(message);
-            });
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    private void doCommitSync() {
-        try {
-            consumer.commitSync();
-        } catch (WakeupException e) {
-            // we're shutting down, but finish the commit first and then
-            // rethrow the exception so that the main loop can exit
-            doCommitSync();
-            throw e;
-        } catch (CommitFailedException e) {
-            // the commit failed with an unrecoverable error. if there is any
-            // internal state which depended on the commit, you can clean it
-            // up here. otherwise it's reasonable to ignore the error and go on
-//            log.debug("Commit failed", e);
+            try {
+                //同步确认
+                consumer.commitSync();
+            } catch (Exception e) {
+                LOG.error("【kafka】消息同步确认异常。", e);
+            } finally {
+                consumer.close();
+                shutdownLatch.countDown();
+            }
         }
     }
 
     void onError(Throwable t) {
         listener.onFailure(t);
     }
+
+
+    void onRecord(ConsumerRecord<String, String> record) {
+        String tag = getTagValue(record);
+        boolean isMatched = tags == null || Stream.of(tags).anyMatch((Predicate<String>) input -> Objects.equals(input, tag));
+
+        if (isMatched) {
+            Message message = new Message(record.topic(), record.value());
+            message.setKey(record.key());
+            message.setTag(tag);
+            listener.onSuccess(message);
+        } else {
+            //收到的消息，与订阅的tag不匹配
+            LOG.warn(String.format("【kakfa】订阅的tag不匹配。 订阅的tags: %s , 收到的tag: %s", Arrays.toString(tags), tag));
+        }
+    }
+
+    String getTagValue(ConsumerRecord<String, String> record) {
+        Header header = record.headers().lastHeader(KafkaConst.MESSAGE_TAG);
+        if (header != null && header.value() != null) {
+            return new String(header.value(), Charsets.UTF_8);
+        }
+        return null;
+    }
+
+
 }

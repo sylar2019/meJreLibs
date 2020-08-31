@@ -28,27 +28,26 @@ public class OnsTcpConsumer extends AbstractOnsConsumer {
 
         String subExpression = Utils.tagsFromArray(tags);
 
-        consumer.subscribe(topic, subExpression, new com.aliyun.openservices.ons.api.MessageListener() {
-            @Override
-            public Action consume(com.aliyun.openservices.ons.api.Message message, ConsumeContext context) {
-                String content = new String(message.getBody(), Charsets.UTF_8);
+        consumer.subscribe(
+                topic,
+                subExpression,
+                (message, context) -> {
+                    String content = new String(message.getBody(), Charsets.UTF_8);
+                    try {
+                        Message msg = new Message(topic, content);
+                        msg.setKey(message.getKey());
+                        msg.setTag(message.getTag());
+                        messageListener.onSuccess(msg);
+                        return Action.CommitMessage;
+                    } catch (Exception e) {
+                        String err = String.format("处理消息发生异常. msgId:%s\ncontent:%s\n%s", message.getMsgID(), content, e
+                                .getMessage());
+                        System.out.println(err);
+                        e.printStackTrace();
 
-                try {
-                    Message msg = new Message(topic, content);
-                    msg.setKey(message.getKey());
-                    msg.setTag(message.getTag());
-                    messageListener.onSuccess(msg);
-                    return Action.CommitMessage;
-                } catch (Exception e) {
-                    String err = String.format("处理消息发生异常. msgId:%s\ncontent:%s\n%s", message.getMsgID(), content, e
-                            .getMessage());
-                    System.out.println(err);
-                    e.printStackTrace();
-
-                    return Action.ReconsumeLater;
-                }
-            }
-        });
+                        return Action.ReconsumeLater;
+                    }
+                });
 
         consumer.start();
     }

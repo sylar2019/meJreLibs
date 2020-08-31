@@ -1,5 +1,7 @@
 package me.java.library.mq.rabbitmq;
 
+//import com.rabbitmq.client.*;
+
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

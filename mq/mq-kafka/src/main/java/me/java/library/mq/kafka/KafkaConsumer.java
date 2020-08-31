@@ -37,8 +37,10 @@ public class KafkaConsumer extends AbstractConsumer {
     protected void onSubscribe(String topic, MessageListener messageListener, String... tags) throws Exception {
         initConsumer();
         consumer.subscribe(Collections.singleton(topic));
-        loop = new PullLoop(consumer, messageListener);
+        loop = new PullLoop(consumer, messageListener,tags);
         loop.start();
+
+        consumer.subscribe(Collections.singleton(topic), null);
     }
 
     @Override

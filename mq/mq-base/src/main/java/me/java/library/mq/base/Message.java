@@ -27,11 +27,13 @@ public class Message {
     }
 
     public Message(String topic, String content) {
-        this.topic = topic;
-        this.content = content;
+        this(topic, content, null, null);
     }
 
     public Message(String topic, String content, String tag, String key) {
+        assert topic != null;
+        assert content != null;
+
         this.topic = topic;
         this.content = content;
         this.tag = tag;
