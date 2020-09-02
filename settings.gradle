@@ -2,9 +2,8 @@ rootProject.name = "meJreLibs"
 
 include ":common"
 
-include ":component"
-include ":component:component-acl"
-include ":component:component-flowable"
+include ":bix"
+include ":biz:biz-acl"
 
 include ":db"
 include ":db:db-hbase"
