@@ -1,6 +1,7 @@
 <div class="well well-sm col-md-12" ng-if="certificate">
     <h4>The Leshan Certificate <small>(x509v3 der encoded)</small>
-        <button class="btn btn-default btn-xs" ng-click="saveFile('serverCertificate.der', certificate.bytesDer)" title="Download server certificate(.der)"
+        <button class="btn btn-default btn-xs" ng-click="saveFile('serverCertificate.der', certificate.bytesDer)"
+                title="Download server certificate(.der)"
                 type="button">
 		<span aria-hidden="true" class="glyphicon glyphicon-download-alt">
         </button>
@@ -19,7 +20,8 @@
 </div>
 <div class="well well-sm col-md-12" ng-if="pubkey">
     <h4>The Leshan Public Key <small>(SubjectPublicKeyInfo der encoded)</small>
-        <button class="btn btn-default btn-xs" ng-click="saveFile('serverPubKey.der',pubkey.bytesDer)" title="Download server public key(.der)"
+        <button class="btn btn-default btn-xs" ng-click="saveFile('serverPubKey.der',pubkey.bytesDer)"
+                title="Download server public key(.der)"
                 type="button">
 			<span aria-hidden="true" class="glyphicon glyphicon-download-alt">
         </button>
@@ -130,7 +132,8 @@
                     <div class="form-group" ng-class="{'hidden': securityMode!='psk'}" show-errors>
                         <label class="col-sm-4 control-label" for="pskValue">Key</label>
                         <div class="col-sm-8">
-							<textarea class="form-control" id="pskValue" name="pskValue" ng-maxlength="128" ng-model="pskValue"
+							<textarea class="form-control" id="pskValue" name="pskValue" ng-maxlength="128"
+                                      ng-model="pskValue"
                                       ng-pattern="/^[0-9a-fA-F]+$/"
                                       ng-required="securityMode=='psk'" rows="3"
                                       style="resize:none"></textarea>
@@ -148,7 +151,8 @@
                     <div class="form-group" ng-class="{'hidden': securityMode!='rpk'}" show-errors style="resize:none">
                         <label class="col-sm-4 control-label" for="rpkValue">Client Public Key</label>
                         <div class="col-sm-8">
-							<textarea class="form-control" id="rpkValue" name="rpkValue" ng-model="rpkValue" ng-pattern="/^[0-9a-fA-F]+$/"
+							<textarea class="form-control" id="rpkValue" name="rpkValue" ng-model="rpkValue"
+                                      ng-pattern="/^[0-9a-fA-F]+$/"
                                       ng-required="securityMode=='rpk'" rows="3"></textarea>
                             <p class="text-right text-muted small" style="margin:0">SubjectPublicKeyInfo der encoded in
                                 Hexadecimal</p>

@@ -39,16 +39,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class JSONFileBootstrapStore extends InMemoryBootstrapConfigStore {
 
+    // default location for persistence
+    public static final String DEFAULT_FILE = "data/bootstrap.json";
     private static final Logger LOG = LoggerFactory.getLogger(JSONFileBootstrapStore.class);
-
     // lock for the two maps
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private final Lock readLock = readWriteLock.readLock();
     private final Lock writeLock = readWriteLock.writeLock();
-
-    // default location for persistence
-    public static final String DEFAULT_FILE = "data/bootstrap.json";
-
     private final String filename;
     private final Gson gson;
     private final Type gsonType;

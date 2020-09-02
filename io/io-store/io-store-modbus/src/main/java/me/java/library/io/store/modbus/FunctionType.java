@@ -4,8 +4,8 @@ import com.serotonin.modbus4j.code.FunctionCode;
 
 /**
  * File Name             :  FunctionType
- *
- *
+ * <p>
+ * <p>
  * 数据类型 | 字节类型 | 读写
  * :--- | :---: | :---:
  * Discretes Input　　 |　  位变量　    |     只读
@@ -13,6 +13,7 @@ import com.serotonin.modbus4j.code.FunctionCode;
  * Input Registers　　 |　　16-bit整型  |　   只读
  * Holding Registers  |　  16-bit整型  |　   读写
  * ---
+ *
  * @author :  sylar
  * Create                :  2020/7/22
  * Description           :

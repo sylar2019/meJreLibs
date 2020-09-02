@@ -14,7 +14,8 @@
 								'btn-info': instance.observe.status == 'TIMEOUT',
 								'btn-danger': instance.observe.status == 'ERROR',
 								'btn-warning': instance.observe.status == 'INVALID',
-								'btn-success': instance.observe.status == 'SUCCESS'}" ng-click="instance.observe.status = null; startObserve()"
+								'btn-success': instance.observe.status == 'SUCCESS'}"
+                            ng-click="instance.observe.status = null; startObserve()"
                             tooltip-animation="false" tooltip-append-to-body="true"
                             tooltip-html-unsafe={{instance.observe.tooltip}} tooltip-placement="right"
                             type="button">Observe <span
@@ -35,7 +36,8 @@
 								'btn-info': instance.read.status == 'TIMEOUT',
 								'btn-danger': instance.read.status == 'ERROR',
 								'btn-warning': instance.read.status == 'INVALID',
-								'btn-success': instance.read.status == 'SUCCESS'}" ng-click="instance.read.status = null; read()"
+								'btn-success': instance.read.status == 'SUCCESS'}"
+                            ng-click="instance.read.status = null; read()"
                             tooltip-animation="false" tooltip-append-to-body="true"
                             tooltip-html-unsafe={{instance.read.tooltip}} tooltip-placement="right"
                             type="button">Read
@@ -49,7 +51,9 @@
 								'btn-info': instance.write.status == 'TIMEOUT',
 								'btn-danger': instance.write.status == 'ERROR',
 								'btn-warning': instance.write.status == 'INVALID',
-								'btn-success': instance.write.status == 'SUCCESS'}" ng-click="instance.write.status = null; write()" ng_show="writable()" tooltip-animation="false"
+								'btn-success': instance.write.status == 'SUCCESS'}"
+                            ng-click="instance.write.status = null; write()" ng_show="writable()"
+                            tooltip-animation="false"
                             tooltip-append-to-body="true" tooltip-html-unsafe={{instance.write.tooltip}}
                             tooltip-placement="right" type="button"
                             }>Write
@@ -63,7 +67,8 @@
 								'btn-info': instance.del.status == 'TIMEOUT',
 								'btn-danger': instance.del.status == 'ERROR',
 								'btn-warning': instance.del.status == 'INVALID',
-								'btn-success': instance.del.status == 'SUCCESS'}" ng-click="instance.del.status = null; del()"
+								'btn-success': instance.del.status == 'SUCCESS'}"
+                            ng-click="instance.del.status = null; del()"
                             tooltip-animation="false" tooltip-append-to-body="true"
                             tooltip-html-unsafe={{instance.del.tooltip}} tooltip-placement="right"
                             type="button">Delete

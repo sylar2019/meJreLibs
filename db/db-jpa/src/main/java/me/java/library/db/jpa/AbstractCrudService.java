@@ -9,8 +9,6 @@ import me.java.library.common.service.CrudService;
 import me.java.library.db.jpa.annotation.ReadTransactional;
 import me.java.library.db.jpa.annotation.WriteTransactional;
 import me.java.library.utils.base.JsonUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 

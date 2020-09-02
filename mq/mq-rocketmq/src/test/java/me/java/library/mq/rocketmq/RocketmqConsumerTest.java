@@ -1,7 +1,6 @@
 package me.java.library.mq.rocketmq;
 
 import me.java.library.mq.base.*;
-import org.apache.rocketmq.common.message.MessageExt;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

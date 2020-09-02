@@ -15,172 +15,173 @@
  */
 
 .container {
-	max-width: 980px;
+    max-width: 980px;
 }
 
 .container-view {
-	margin-bottom: 250px;
+    margin-bottom: 250px;
 }
 
 code {
-	color: #b11eb2;	
+    color: #b11eb2;
 }
 
 
 .navbar {
     text-transform: uppercase;
-    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 700;
     background: #333333;
 }
 
 .navbar-brand {
-	padding: 5px;
+    padding: 5px;
 }
 
 .navbar-default {
-	background-color:#2e2d2d;
-	border-color: #2e2d2d;
-	border-bottom-width: 0px;
+    background-color: #2e2d2d;
+    border-color: #2e2d2d;
+    border-bottom-width: 0px;
 }
 
 .navbar div a {
-	height: 60px;
+    height: 60px;
 }
 
-.navbar-default .navbar-nav>.active>a,
-.navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
-	background-color:#2e2d2d;
+    background-color: #2e2d2d;
 
 }
 
-li.navlink>a:focus{
-	outline: 0px none;
-	text-decoration: underline;
+li.navlink > a:focus {
+    outline: 0px none;
+    text-decoration: underline;
 }
 
-#bootstrap-navlink.active>a,
-#bootstrap-navlink>a:hover,
-#bootstrap-navlink>a:focus {
-		color:#876fd5;
-}
-.navbar-default .navbar-nav>li>a {
-	line-height: 35px;
-	text-align: center;
-	letter-spacing: 1px;
-	/*width: 150px; */
-	color: #F7FAFA;	
+#bootstrap-navlink.active > a,
+#bootstrap-navlink > a:hover,
+#bootstrap-navlink > a:focus {
+    color: #876fd5;
 }
 
-.navbar-default .navbar-nav>li>a:hover {
-	color: #979797;
+.navbar-default .navbar-nav > li > a {
+    line-height: 35px;
+    text-align: center;
+    letter-spacing: 1px;
+    /*width: 150px; */
+    color: #F7FAFA;
 }
 
-.breadcrumb{
-	border: 1px solid;
-	border-color: #DDD;	
+.navbar-default .navbar-nav > li > a:hover {
+    color: #979797;
+}
+
+.breadcrumb {
+    border: 1px solid;
+    border-color: #DDD;
 }
 
 /* Object level */
 .object {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .object-name {
-	font-size: 18px;
-	color: #25A79C;
+    font-size: 18px;
+    color: #25A79C;
 }
 
 /* Object instance level */
 
 .instance-name {
-	font-size: 16px;
-	padding-left: 30px;
+    font-size: 16px;
+    padding-left: 30px;
 }
 
 /* Resource level */
 .resource-name {
-	padding-left: 50px;
+    padding-left: 50px;
 }
 
 .resource-value {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .resource-value-supposed {
-	color: #AAAAAA;
+    color: #AAAAAA;
 }
 
 /* Security info */
 .security-table {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 
 /* add cursor on table row */
-table.table-href > tbody{
-	cursor: pointer;
+table.table-href > tbody {
+    cursor: pointer;
 }
 
 .panel-heading {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 /**
  * HACK for modal  see : http://stackoverflow.com/questions/17726641/bootstrap-how-to-disable-vertical-scrollbar
  * Maybe we should try to move modal to top level position in our document : http://getbootstrap.com/javascript/#modals
- */ 
+ */
 body.modal-open,
 .modal-open .navbar-fixed-top,
 .modal-open .navbar-fixed-bottom {
- margin-right: 0;
- overflow-y: auto;
+    margin-right: 0;
+    overflow-y: auto;
 }
 
 /**
  * HACK to disable modal animation : http://stackoverflow.com/questions/18873428/turn-off-animation-modal-angular-ui
  */
 .modal.fade {
-  opacity: 1;
+    opacity: 1;
 }
 
 .modal.fade .modal-dialog, .modal.in .modal-dialog {
-  -webkit-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    transform: translate(0, 0);
 }
 
 /* CoAP logs styles */
 
 .coaplogs {
-	position:fixed;
-	right: 0px;
-	left: 0px;
-	bottom:0px;
-	width:100%;
-	z-index: 2;
-	max-height: 250px;
-	padding: 0px;
+    position: fixed;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    z-index: 2;
+    max-height: 250px;
+    padding: 0px;
 }
 
 .coaplogs-button {
-	margin-bottom: 10px;
-	margin-left: -20px;
+    margin-bottom: 10px;
+    margin-left: -20px;
 }
 
 .coaplogs-panel {
-	background-color: #F5F5F5;
-	border: 1px solid;
+    background-color: #F5F5F5;
+    border: 1px solid;
     border-color: #DDD;
     padding-right: 20px;
-	padding-left: 20px;
+    padding-left: 20px;
 }
 
 .coaplogs-header {
-	table-layout: fixed;
-	margin-bottom: 0px;
-	padding-right: 20px;
+    table-layout: fixed;
+    margin-bottom: 0px;
+    padding-right: 20px;
 }
 
 .coaplogs-table {
@@ -190,34 +191,36 @@ body.modal-open,
 }
 
 .coaplogs-table > table {
-	table-layout: fixed;
+    table-layout: fixed;
 }
 
 .coaplogs-table > table > tbody > tr > td {
-	padding: 0px 0px 0px 10px;
-	white-space: nowrap;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
+    padding: 0px 0px 0px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
+
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-  background: #fafcfc;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background: #fafcfc;
 }
+
 #footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  background-color: #2e2d2d;
-  padding-top: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    background-color: #2e2d2d;
+    padding-top: 10px;
 }
 
 .text-muted {
@@ -225,5 +228,5 @@ body {
 }
 
 a {
-	color : #25A79C;
+    color: #25A79C;
 }

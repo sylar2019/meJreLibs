@@ -14,7 +14,8 @@
 								'btn-info': resource.observe.status == 'TIMEOUT',
 								'btn-danger': resource.observe.status == 'ERROR',
 								'btn-warning': resource.observe.status == 'INVALID',
-								'btn-success': resource.observe.status == 'SUCCESS' }" ng-click="resource.observe.status = null; startObserve()"
+								'btn-success': resource.observe.status == 'SUCCESS' }"
+                            ng-click="resource.observe.status = null; startObserve()"
                             tooltip-animation="false" tooltip-append-to-body="true"
                             tooltip-html-unsafe={{resource.observe.tooltip}} tooltip-placement="right"
                             type="button">Observe <span
@@ -35,7 +36,8 @@
 								'btn-info': resource.read.status == 'TIMEOUT',
 								'btn-danger': resource.read.status == 'ERROR',
 								'btn-warning': resource.read.status == 'INVALID',
-								'btn-success': resource.read.status == 'SUCCESS' }" ng-click="resource.read.status = null; read()"
+								'btn-success': resource.read.status == 'SUCCESS' }"
+                            ng-click="resource.read.status = null; read()"
                             tooltip-animation="false" tooltip-append-to-body="true"
                             tooltip-html-unsafe={{resource.read.tooltip}} tooltip-placement="right"
                             type="button">Read
@@ -49,7 +51,8 @@
 								'btn-info': resource.write.status == 'TIMEOUT',
 								'btn-danger': resource.write.status == 'ERROR',
 								'btn-warning': resource.write.status == 'INVALID',
-								'btn-success': resource.write.status == 'SUCCESS' }" ng-click="resource.write.status = null; write()"
+								'btn-success': resource.write.status == 'SUCCESS' }"
+                            ng-click="resource.write.status = null; write()"
                             tooltip-animation="false" tooltip-append-to-body="true"
                             tooltip-html-unsafe={{resource.write.tooltip}} tooltip-placement="right"
                             type="button">Write
@@ -63,7 +66,8 @@
 								'btn-info': resource.exec.status == 'TIMEOUT',
 								'btn-danger': resource.exec.status == 'ERROR',
 								'btn-warning': resource.exec.status == 'INVALID',
-								'btn-success': resource.exec.status == 'SUCCESS' }" ng-click="resource.exec.status = null; exec();"
+								'btn-success': resource.exec.status == 'SUCCESS' }"
+                            ng-click="resource.exec.status = null; exec();"
                             tooltip-animation="false" tooltip-append-to-body="true"
                             tooltip-html-unsafe={{resource.exec.tooltip}} tooltip-placement="right"
                             type="button">Exec
@@ -75,7 +79,8 @@
 								'btn-info': resource.exec.status == 'TIMEOUT',
 								'btn-danger': resource.exec.status == 'ERROR',
 								'btn-warning': resource.exec.status == 'INVALID',
-								'btn-success': resource.exec.status == 'SUCCESS' }" ng-click="resource.exec.status = null; execWithParams();"
+								'btn-success': resource.exec.status == 'SUCCESS' }"
+                            ng-click="resource.exec.status = null; execWithParams();"
                             tooltip-animation="false" tooltip-append-to-body="true"
                             tooltip-html-unsafe={{resource.execwithparams.tooltip}} tooltip-placement="right"
                             type="button"><span

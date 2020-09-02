@@ -7,7 +7,6 @@ ext {
 
 dependencies {
     compile project(":utils:utils-base")
-    compile("org.springframework.data:spring-data-commons:${springBootVersion}")
     compile("org.springframework.data:spring-data-hadoop:${springDataHadoopVersion}")
 
     compile("org.apache.hbase:hbase-client:${hbaseClientVersion}") {
