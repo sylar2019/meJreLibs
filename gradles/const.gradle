@@ -28,13 +28,8 @@ Spring Boot	    Spring Cloud
 
 ext {
     springBootVersion = "1.5.18.RELEASE"
-//    springBootVersion = "2.3.3.RELEASE"
-
     springBootAdminVersion = "1.5.7"
-//    springBootAdminVersion = "2.2.3"
-
     springCloudVersion = "Edgware.SR3"
-//    springCloudVersion = "Hoxton.SR7"
 
     junitVersion = "4.12"
     validationApiVersion = "2.0.1.Final"
