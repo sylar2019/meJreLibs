@@ -1,10 +1,10 @@
-#版本说明
+# 1.x 版本说明
 
-V1.0.1 :  
+1.x :  
 - springboot      1.5.18.RELEASE
 - springCloud     Edgware.SR3
 
-###项目库结构
+### 项目库结构
 
 ```
 
