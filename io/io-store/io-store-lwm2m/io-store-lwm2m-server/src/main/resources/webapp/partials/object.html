@@ -22,7 +22,8 @@
 								'btn-info': object.create.status == 'TIMEOUT',
 								'btn-danger': object.create.status == 'ERROR',
 								'btn-warning': object.create.status == 'INVALID',
-								'btn-success': object.create.status == 'SUCCESS' }" ng-click="object.create.status = null; create()"
+								'btn-success': object.create.status == 'SUCCESS' }"
+                        ng-click="object.create.status = null; create()"
                         tooltip-animation="false" tooltip-append-to-body="true"
                         tooltip-html-unsafe={{object.create.tooltip}} tooltip-placement="right"
                         type="button">Create New Instance

@@ -22,7 +22,8 @@
 				<td>{{client.lastUpdate | date:'medium'}}</td>
 				<td><i class="glyphicon glyphicon-info-sign" tooltip-html-unsafe="{{clientTooltip(client)}}"></i></td>
 				<td><span class="glyphicon glyphicon-lock"
-                          ng-style="{'visibility': client.secure ? 'visible': 'hidden'}" tooltip-html-unsafe="Communication over DTLS"></span></td>
+                          ng-style="{'visibility': client.secure ? 'visible': 'hidden'}"
+                          tooltip-html-unsafe="Communication over DTLS"></span></td>
 				<td><span class="glyphicon glyphicon-log-out"
                           ng-style="{'visibility': client.sleeping ? 'visible': 'hidden'}"
                           tooltip-html-unsafe="Device using queue mode is absent"></span></td>

@@ -3,7 +3,6 @@ package me.java.library.utils.spring;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,11 +18,6 @@ public class SpringBeanUtils implements ApplicationContextAware {
 
     private static ApplicationContext context;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
-    }
-
     public static Object getBean(String name) {
         return context.getBean(name);
     }
@@ -34,5 +28,10 @@ public class SpringBeanUtils implements ApplicationContextAware {
 
     public static <T> T getBean(String id, Class<T> type) {
         return context.getBean(id, type);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
     }
 }

@@ -1,7 +1,7 @@
 package me.java.library.biz.acl.model;
 
-import me.java.library.common.model.pojo.IdName;
 import me.java.library.biz.acl.AclResourceType;
+import me.java.library.common.model.pojo.IdName;
 
 /**
  * File Name             :

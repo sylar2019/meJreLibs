@@ -3,7 +3,6 @@ package me.java.library.biz.acl.config;
 import me.java.library.biz.acl.AclMode;
 import me.java.library.biz.acl.AclService;
 import me.java.library.biz.acl.core.*;
-import me.java.library.biz.acl.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

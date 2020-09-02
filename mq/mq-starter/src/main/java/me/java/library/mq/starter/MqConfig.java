@@ -39,10 +39,9 @@ import java.net.URI;
 public class MqConfig {
 
     @Autowired
-    private DefaultMqProperties mqProperties;
-
-    @Autowired
     ApplicationContext ctx;
+    @Autowired
+    private DefaultMqProperties mqProperties;
 
     @Bean
     @ConditionalOnMissingBean(Factory.class)

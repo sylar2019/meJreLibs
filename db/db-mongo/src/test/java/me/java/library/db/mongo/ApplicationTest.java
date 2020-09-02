@@ -76,7 +76,7 @@ public class ApplicationTest {
     @Test
     public void findById() {
         String id = "5ae6cc3507efe62dd4f87276";
-        Optional<Foo> foo = fooRepository.findById(id);
+        Optional<Foo>  foo = Optional.ofNullable(fooRepository.findOne(id));
         System.out.println(foo.isPresent() ? foo : "NULL");
     }
 
@@ -93,7 +93,7 @@ public class ApplicationTest {
         //模糊查询
         Criteria criteria = Criteria.where("name").regex(".*?" + "sylar" + ".*");
         query.addCriteria(criteria);
-        query.with(Sort.by(Sort.Order.desc("name")));
+        query.with(new Sort(new Sort.Order("name")));
 
         Page<Foo> page;
         page = fooRepository.find(query);
@@ -106,7 +106,7 @@ public class ApplicationTest {
 
 
         System.out.println("find with pageRequest");
-        page = fooRepository.find(query, PageRequest.of(0, 10));
+        page = fooRepository.find(query, new PageRequest(0, 10));
         System.out.println("getTotalPages:" + page.getTotalPages());
         System.out.println("getTotalElements:" + page.getTotalElements());
 

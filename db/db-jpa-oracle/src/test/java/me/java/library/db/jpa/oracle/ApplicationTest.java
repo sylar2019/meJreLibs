@@ -11,7 +11,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -92,7 +91,7 @@ public class ApplicationTest {
             public Predicate toPredicate(Root<Foo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 return cb.like(root.get("name").as(String.class), "%sylar%");
             }
-        }, Sort.by(Sort.Order.desc("name")));
+        }, new Sort(new Sort.Order("name")));
 
         list.forEach(foo ->
                 System.out.println(foo == null ? "nothing" : foo)

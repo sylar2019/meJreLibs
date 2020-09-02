@@ -37,23 +37,7 @@ import java.nio.charset.StandardCharsets;
 public class BootstrapServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-
-    private static class SignedByteUnsignedByteAdapter implements JsonSerializer<Byte>, JsonDeserializer<Byte> {
-
-        @Override
-        public Byte deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-            return json.getAsByte();
-        }
-
-        @Override
-        public JsonElement serialize(Byte src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive((int) src & 0xff);
-        }
-    }
-
     private final EditableBootstrapConfigStore bsStore;
-
     private final Gson gson;
 
     public BootstrapServlet(EditableBootstrapConfigStore bsStore) {
@@ -128,12 +112,25 @@ public class BootstrapServlet extends HttpServlet {
         return path[0];
     }
 
-
     private void sendError(HttpServletResponse resp, int statusCode, String errorMessage) throws IOException {
         resp.setStatus(statusCode);
         resp.setContentType("text/plain; charset=UTF-8");
         if (errorMessage != null) {
             resp.getOutputStream().write(errorMessage.getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    private static class SignedByteUnsignedByteAdapter implements JsonSerializer<Byte>, JsonDeserializer<Byte> {
+
+        @Override
+        public Byte deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            return json.getAsByte();
+        }
+
+        @Override
+        public JsonElement serialize(Byte src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive((int) src & 0xff);
         }
     }
 }
