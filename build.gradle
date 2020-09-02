@@ -12,7 +12,6 @@ buildscript {
         maven { url "https://maven.aliyun.com/repository/public/" }
         maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
         mavenLocal()
-        mavenCentral()
     }
 
     dependencies {
@@ -29,7 +28,6 @@ allprojects {
     repositories {
         maven { url "https://maven.aliyun.com/repository/public/" }
         mavenLocal()
-        mavenCentral()
     }
 }
 

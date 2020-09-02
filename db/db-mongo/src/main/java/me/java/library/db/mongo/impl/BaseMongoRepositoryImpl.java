@@ -58,7 +58,7 @@ public class BaseMongoRepositoryImpl<T, ID extends Serializable> extends SimpleM
 
     @Override
     public Page<T> find(Query query) {
-        return find(query, PageRequest.of(0,Integer.MAX_VALUE));
+        return find(query, new PageRequest(0, Integer.MAX_VALUE));
     }
 
     @Override

@@ -2,7 +2,7 @@ package me.java.library.db.jpa.po;
 
 import me.java.library.common.model.po.BaseEnum;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.DynamicParameterizedType;
 import org.hibernate.usertype.UserType;
 
@@ -72,9 +72,8 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
         return x == null ? 0 : x.hashCode();
     }
 
-
     @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
         String value = rs.getString(names[0]);
         if (value == null) {
             return null;
@@ -85,10 +84,12 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
             }
         }
         throw new RuntimeException(String.format("Unknown name value [%s] for enum class [%s]", value, enumClass.getName()));
+
+
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
         if (value == null) {
             st.setNull(index, SQL_TYPES[0]);
         } else if (value instanceof Integer) {
