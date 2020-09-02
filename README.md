@@ -1,7 +1,7 @@
 #版本说明
 V2.0 :  
-springboot      2.3.3.RELEASE
-springCloud     Hoxton.SR7
+- springboot      2.3.3.RELEASE
+- springCloud     Hoxton.SR7
 
 ###项目库结构
 ```
