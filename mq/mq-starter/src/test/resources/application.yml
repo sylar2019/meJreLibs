@@ -24,15 +24,15 @@ spring.output.ansi.enabled: ALWAYS
 #mq:
 #  provider: ons.tcp
 #  brokers: http://MQ_INST_1618413161456011_BXPCkaEX.mq-internet-access.mq-internet.aliyuncs.com:80
-#  accessKey: LTAIY82mHGE1tmxN
-#  secretKey: ujq6XTqpRNCnVvEJpvseovMTdeFxKO
+#  accessKey:
+#  secretKey:
 
 ##ons.http
 mq:
   provider: ons.http
   brokers: http://1618413161456011.mqrest.cn-qingdao-public.aliyuncs.com
-  accessKey: LTAIY82mHGE1tmxN
-  secretKey: ujq6XTqpRNCnVvEJpvseovMTdeFxKO
+  accessKey:
+  secretKey:
   attrs:
     instanceId: MQ_INST_1618413161456011_BXPCkaEX
 
@@ -40,8 +40,8 @@ mq:
 #mq:
 #  provider: ons.mqtt
 #  brokers:
-#  accessKey: LTAIY82mHGE1tmxN
-#  secretKey: ujq6XTqpRNCnVvEJpvseovMTdeFxKO
+#  accessKey:
+#  secretKey:
 
 ##redis
 #mq:
