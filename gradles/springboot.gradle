@@ -6,17 +6,18 @@
  *
  */
 apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
 
 dependencies {
     //boot
-    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
 
     compile("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     compile("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
     compile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
 
     //test
-    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 

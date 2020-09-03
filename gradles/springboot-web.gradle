@@ -6,6 +6,6 @@ configurations {
 
 dependencies {
     //替换web容器
-    compile("org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    compile("org.springframework.boot:spring-boot-starter-web")
 }

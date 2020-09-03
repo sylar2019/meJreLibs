@@ -1,0 +1,2 @@
+me.java.library.rpc.thrift.client.annotation.EnableThriftClient=\
+me.java.library.rpc.thrift.client.ThriftClientAutoConfiguration

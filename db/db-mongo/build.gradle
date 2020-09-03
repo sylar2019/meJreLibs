@@ -5,7 +5,7 @@ dependencies {
     compile("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")
 
     //mongo
-    compile("org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
 }
 
 

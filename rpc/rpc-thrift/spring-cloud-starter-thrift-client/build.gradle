@@ -1,0 +1,13 @@
+apply from: gradlesPath + "springcloud.gradle"
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter"
+    compile "org.springframework.boot:spring-boot-configuration-processor"
+    compile "org.springframework.cloud:spring-cloud-commons"
+    compile "org.apache.thrift:libthrift:${thriftVersion}"
+    compile "com.orbitz.consul:consul-client:${consulVersion}"
+
+    compile "org.apache.commons:commons-pool2:${commonsPool2Version}"
+    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    compile "org.apache.commons:commons-collections4:${commonsCollections4Version}"
+}

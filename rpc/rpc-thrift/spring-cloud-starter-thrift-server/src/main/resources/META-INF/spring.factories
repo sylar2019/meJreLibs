@@ -1,0 +1,3 @@
+me.java.library.rpc.thrift.server.annotation.EnableThriftServer=\
+me.java.library.rpc.thrift.server.ThriftServerAutoConfiguration,\
+me.java.library.rpc.thrift.server.ThriftServerDiscoveryConfiguration

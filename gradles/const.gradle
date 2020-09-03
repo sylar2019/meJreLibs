@@ -42,5 +42,13 @@ ext {
     jodatimeVersion = "2.9.9"
     nettyVersion = "4.1.43.Final"
     feignVersion = "8.18.0"
-    dubboVersion = "2.5.3"
+
+    dubboVersion = "2.6.9"
+    thriftVersion = "0.13.0"
+    grpcVersion = "1.9.1"
+    consulVersion = "1.4.2"
+
+    commonsPool2Version = "2.8.1"
+    commonsLang3Version = "3.9"
+    commonsCollections4Version = "4.4"
 }

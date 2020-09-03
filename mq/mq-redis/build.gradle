@@ -1,3 +1,5 @@
+apply from: gradlesPath + "springboot.gradle"
+
 dependencies {
     compile project(":mq:mq-base")
     compile project(":utils:utils-redis")
