@@ -1,0 +1,21 @@
+apply from: gradlesPath + "springcloud.gradle"
+
+dependencies {
+    compileOnly("org.springframework.cloud:spring-cloud-starter-sleuth")
+    compileOnly("org.springframework.cloud:spring-cloud-starter-consul-discovery")
+    compileOnly("org.springframework.cloud:spring-cloud-starter-eureka")
+    compile("io.grpc:grpc-netty:${grpcVersion}")
+    compile("io.grpc:grpc-protobuf:${grpcVersion}")
+    compile("io.grpc:grpc-stub:${grpcVersion}")
+}
+
+//dependencies {
+//    compileOnly("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
+//    compileOnly("org.springframework.boot:spring-boot-starter:${springBootVersion}")
+//    compileOnly("org.springframework.cloud:spring-cloud-starter-sleuth:${springSleuthVersion}")
+//    compileOnly("org.springframework.cloud:spring-cloud-starter-consul-discovery:${springCloudConsulVersion}")
+//    compileOnly("org.springframework.cloud:spring-cloud-starter-eureka:${springCloudEurekaVersion}")
+//    compile("io.grpc:grpc-netty:${grpcVersion}")
+//    compile("io.grpc:grpc-protobuf:${grpcVersion}")
+//    compile("io.grpc:grpc-stub:${grpcVersion}")
+//}

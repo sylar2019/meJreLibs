@@ -15,6 +15,8 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
+compileJava.dependsOn(processResources)
+
 dependencies {
     //支持jar包以文件形式引入
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -27,10 +29,10 @@ dependencies {
     testCompile("junit:junit:${junitVersion}")
 
     //支持 lombok
-//    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-//    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-//    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-//    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
 /** ******************************************************************************************/

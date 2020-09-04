@@ -11,6 +11,7 @@ apply plugin: "io.spring.dependency-management"
 dependencies {
     //boot
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compileOnly("org.springframework.boot:spring-boot-configuration-processor")
 
     compile("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     compile("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")

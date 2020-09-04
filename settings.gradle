@@ -37,6 +37,9 @@ include ":mq:mq-starter"
 
 include ":rpc"
 include ":rpc:rpc-grpc"
+include ":rpc:rpc-grpc:spring-cloud-starter-grpc-client"
+include ":rpc:rpc-grpc:spring-cloud-starter-grpc-server"
+
 include ":rpc:rpc-thrift"
 include ":rpc:rpc-thrift:spring-cloud-starter-thrift-client"
 include ":rpc:rpc-thrift:spring-cloud-starter-thrift-server"
