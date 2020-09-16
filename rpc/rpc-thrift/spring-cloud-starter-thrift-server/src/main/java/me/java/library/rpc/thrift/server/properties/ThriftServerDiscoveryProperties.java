@@ -31,7 +31,7 @@ public class ThriftServerDiscoveryProperties {
     /**
      * 服务健康检查
      */
-    private ThriftServerHealthCheckProperties healthCheck;
+    private ThriftServerHealthCheckProperties healthCheck = new ThriftServerHealthCheckProperties();
 
     public Boolean getEnabled() {
         return enabled;

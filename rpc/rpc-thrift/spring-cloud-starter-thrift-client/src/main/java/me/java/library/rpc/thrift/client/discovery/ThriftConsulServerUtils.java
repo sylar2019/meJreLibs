@@ -1,9 +1,7 @@
 package me.java.library.rpc.thrift.client.discovery;
 
-import com.orbitz.consul.model.health.HealthCheck;
-import com.orbitz.consul.model.health.Node;
-import com.orbitz.consul.model.health.Service;
-import com.orbitz.consul.model.health.ServiceHealth;
+import com.ecwid.consul.v1.health.model.Check;
+import com.ecwid.consul.v1.health.model.HealthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -25,9 +23,9 @@ public class ThriftConsulServerUtils {
     private ThriftConsulServerUtils() {
     }
 
-    public static String findHost(ServiceHealth serviceHealth) {
-        Service service = serviceHealth.getService();
-        Node node = serviceHealth.getNode();
+    public static String findHost(HealthService healthService) {
+        HealthService.Service service = healthService.getService();
+        HealthService.Node node = healthService.getNode();
         if (StringUtils.hasText(service.getAddress())) {
             return fixIPv6Address(service.getAddress());
         } else {
@@ -45,24 +43,23 @@ public class ThriftConsulServerUtils {
         }
     }
 
-    public static List<String> getTags(ServiceHealth serviceHealth) {
-        return serviceHealth.getService().getTags();
+    public static List<String> getTags(HealthService healthService) {
+        return healthService.getService().getTags();
     }
 
 
-    public static boolean isPassingCheck(ServiceHealth serviceHealth) {
-        List<HealthCheck> healthChecks = serviceHealth.getChecks();
-        for (HealthCheck healthCheck : healthChecks) {
-            if (!CHECK_STATUS_PASSING.equals(healthCheck.getStatus())) {
-                return false;
-            }
+    public static boolean isPassingCheck(HealthService healthService) {
+        List<Check> healthChecks = healthService.getChecks();
+        for (Check healthCheck : healthChecks) {
+            healthCheck.getStatus();
+            return false;
         }
         return true;
     }
 
 
-    public static Map<String, String> getMetadata(ServiceHealth serviceHealth) {
-        return getMetadata(serviceHealth.getService().getTags());
+    public static Map<String, String> getMetadata(HealthService healthService) {
+        return getMetadata(healthService.getService().getTags());
     }
 
     private static Map<String, String> getMetadata(List<String> tags) {

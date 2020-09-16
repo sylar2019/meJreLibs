@@ -13,12 +13,18 @@ public class ThriftServerHealthCheckProperties {
     /**
      * 服务健康检查时间间隔 (默认30s)
      */
-    private Long checkInterval = 30L;
+    private String checkInterval = "10s";
 
     /**
      * 服务健康检查超时时间（默认3m）
      */
-    private Long checkTimeout = 3L;
+    private String checkTimeout = "30s";
+
+    /**
+     * 服务下线后注销服务（默认0s,不注销）
+     */
+    private String checkCriticalTimeout = "0s";
+
 
     public Boolean getEnabled() {
         return enabled;
@@ -28,19 +34,27 @@ public class ThriftServerHealthCheckProperties {
         this.enabled = enabled;
     }
 
-    public Long getCheckInterval() {
+    public String getCheckInterval() {
         return checkInterval;
     }
 
-    public void setCheckInterval(Long checkInterval) {
+    public void setCheckInterval(String checkInterval) {
         this.checkInterval = checkInterval;
     }
 
-    public Long getCheckTimeout() {
+    public String getCheckTimeout() {
         return checkTimeout;
     }
 
-    public void setCheckTimeout(Long checkTimeout) {
+    public void setCheckTimeout(String checkTimeout) {
         this.checkTimeout = checkTimeout;
+    }
+
+    public String getCheckCriticalTimeout() {
+        return checkCriticalTimeout;
+    }
+
+    public void setCheckCriticalTimeout(String checkCriticalTimeout) {
+        this.checkCriticalTimeout = checkCriticalTimeout;
     }
 }

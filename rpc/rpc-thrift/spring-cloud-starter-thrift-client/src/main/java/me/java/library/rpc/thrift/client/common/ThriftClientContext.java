@@ -3,6 +3,7 @@ package me.java.library.rpc.thrift.client.common;
 import me.java.library.rpc.thrift.client.pool.TransportKeyedObjectPool;
 import me.java.library.rpc.thrift.client.properties.ThriftClientProperties;
 
+import java.net.URI;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -19,7 +20,7 @@ public class ThriftClientContext {
 
     private TransportKeyedObjectPool objectPool;
 
-    private String registryAddress;
+    private URI registryUri;
 
     public static ThriftClientContext context(ThriftClientProperties properties, TransportKeyedObjectPool objectPool) {
         context().properties = properties;
@@ -41,8 +42,8 @@ public class ThriftClientContext {
         return context;
     }
 
-    public static void registry(String registryAddress) {
-        context().registryAddress = registryAddress;
+    public static void registry(URI registryUri) {
+        context().registryUri = registryUri;
     }
 
     public ThriftClientProperties getProperties() {
@@ -53,7 +54,7 @@ public class ThriftClientContext {
         return context.objectPool;
     }
 
-    public String getRegistryAddress() {
-        return context.registryAddress;
+    public URI getRegistryUri() {
+        return context.registryUri;
     }
 }

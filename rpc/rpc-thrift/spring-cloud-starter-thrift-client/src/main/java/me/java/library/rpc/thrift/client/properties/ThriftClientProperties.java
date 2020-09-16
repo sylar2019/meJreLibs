@@ -19,7 +19,7 @@ public class ThriftClientProperties {
 
     private String packageToScan = DEFAULT_PACKAGE_TO_SCAN;
 
-    private ThriftClientPoolProperties pool;
+    private ThriftClientPoolProperties pool = new ThriftClientPoolProperties();
 
     /**
      * 客户端扫描的包名称/多个子包用逗号分割

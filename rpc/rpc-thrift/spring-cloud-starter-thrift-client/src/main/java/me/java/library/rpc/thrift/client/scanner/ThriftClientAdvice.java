@@ -1,7 +1,7 @@
 package me.java.library.rpc.thrift.client.scanner;
 
 
-import com.orbitz.consul.Consul;
+import com.ecwid.consul.v1.ConsulClient;
 import me.java.library.rpc.thrift.client.cache.ThriftServiceMethodCacheManager;
 import me.java.library.rpc.thrift.client.common.ThriftClientContext;
 import me.java.library.rpc.thrift.client.common.ThriftServiceSignature;
@@ -33,12 +33,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.util.Objects;
 
 public class ThriftClientAdvice implements MethodInterceptor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThriftClientAdvice.class);
-    private static final String DISCOVERY_ADDRESS = "http://%s";
 
     private ThriftServiceSignature serviceSignature;
 
@@ -55,19 +55,15 @@ public class ThriftClientAdvice implements MethodInterceptor {
         this.serviceSignature = serviceSignature;
         this.clientConstructor = clientConstructor;
 
-        String consulAddress = ThriftClientContext.context().getRegistryAddress();
-        Consul consul;
+        URI registryUri = ThriftClientContext.context().getRegistryUri();
+        ConsulClient consulClient;
         try {
-            consul = Consul.builder().withUrl(String.format(DISCOVERY_ADDRESS, consulAddress)).build();
+            consulClient = new ConsulClient(registryUri.getHost(), registryUri.getPort());
         } catch (Exception e) {
-            throw new ThriftClientRegistryException("Unable to access consul server, address is: " + consulAddress, e);
+            throw new ThriftClientRegistryException("Unable to access consul server, address is: " + registryUri.toString(), e);
         }
 
-        if (Objects.isNull(consul)) {
-            throw new ThriftClientRegistryException("Unable to access consul server, address is: " + consulAddress);
-        }
-
-        ThriftConsulServerNodeList serverNodeList = ThriftConsulServerNodeList.singleton(consul);
+        ThriftConsulServerNodeList serverNodeList = ThriftConsulServerNodeList.singleton(consulClient);
 
         IRule routerRule = new RoundRobinRule();
         this.loadBalancer = new ThriftConsulServerListLoadBalancer(serverNodeList, routerRule);

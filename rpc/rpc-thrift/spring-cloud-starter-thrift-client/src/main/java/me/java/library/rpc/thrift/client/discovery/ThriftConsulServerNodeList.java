@@ -1,20 +1,14 @@
 package me.java.library.rpc.thrift.client.discovery;
 
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.QueryParams;
+import com.ecwid.consul.v1.health.HealthServicesRequest;
+import com.ecwid.consul.v1.health.model.HealthService;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.orbitz.consul.CatalogClient;
-import com.orbitz.consul.Consul;
-import com.orbitz.consul.HealthClient;
-import com.orbitz.consul.async.ConsulResponseCallback;
-import com.orbitz.consul.model.ConsulResponse;
-import com.orbitz.consul.model.health.Node;
-import com.orbitz.consul.model.health.Service;
-import com.orbitz.consul.model.health.ServiceHealth;
-import com.orbitz.consul.option.QueryOptions;
 import me.java.library.rpc.thrift.client.common.ThriftServerNodeList;
-import me.java.library.rpc.thrift.client.exception.ThriftClientException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 
@@ -24,27 +18,23 @@ import java.util.Map;
 
 public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsulServerNode> {
 
-    private final Consul consul;
-    private final HealthClient healthClient;
-    private final CatalogClient catalogClient;
+    private final ConsulClient consulClient;
 
     private static ThriftConsulServerNodeList serverNodeList = null;
 
-    public static ThriftConsulServerNodeList singleton(Consul consul) {
+    public static ThriftConsulServerNodeList singleton(ConsulClient consulClient) {
         if (serverNodeList == null) {
             synchronized (ThriftConsulServerNodeList.class) {
                 if (serverNodeList == null) {
-                    serverNodeList = new ThriftConsulServerNodeList(consul);
+                    serverNodeList = new ThriftConsulServerNodeList(consulClient);
                 }
             }
         }
         return serverNodeList;
     }
 
-    private ThriftConsulServerNodeList(Consul consul) {
-        this.consul = consul;
-        this.healthClient = this.consul.healthClient();
-        this.catalogClient = this.consul.catalogClient();
+    private ThriftConsulServerNodeList(ConsulClient consulClient) {
+        this.consulClient = consulClient;
     }
 
     @Override
@@ -62,9 +52,8 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
     @Override
     public List<ThriftConsulServerNode> refreshThriftServer(String serviceName) {
         List<ThriftConsulServerNode> serverNodeList = Lists.newArrayList();
-        List<ServiceHealth> serviceHealthList = healthClient.getAllServiceInstances(serviceName).getResponse();
-
-        filterAndCompoServerNodes(serverNodeList, serviceHealthList);
+        List<HealthService> healthServices = getHealthServices(serviceName);
+        filterAndCompoServerNodes(serverNodeList, healthServices);
 
         if (CollectionUtils.isNotEmpty(serverNodeList)) {
             this.serverNodeMap.put(serviceName, Sets.newLinkedHashSet(serverNodeList));
@@ -72,6 +61,7 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
 
         return serverNodeList;
     }
+
 
     @Override
     public Map<String, LinkedHashSet<ThriftConsulServerNode>> getThriftServers() {
@@ -84,7 +74,7 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
 
     @Override
     public Map<String, LinkedHashSet<ThriftConsulServerNode>> refreshThriftServers() {
-        Map<String, List<String>> catalogServiceMap = catalogClient.getServices(QueryOptions.BLANK).getResponse();
+        Map<String, List<String>> catalogServiceMap = consulClient.getCatalogServices(QueryParams.DEFAULT).getValue();
         if (MapUtils.isEmpty(catalogServiceMap)) {
             return this.serverNodeMap;
         }
@@ -98,10 +88,10 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
                 continue;
             }
 
-            List<ServiceHealth> serviceHealthList = healthClient.getAllServiceInstances(serviceName).getResponse();
+            List<HealthService> healthServices = getHealthServices(serviceName);
             LinkedHashSet<ThriftConsulServerNode> serverNodeSet = Sets.newLinkedHashSet();
             List<ThriftConsulServerNode> serverNodes = Lists.newArrayList(serverNodeSet);
-            filterAndCompoServerNodes(serverNodes, serviceHealthList);
+            filterAndCompoServerNodes(serverNodes, healthServices);
 
             if (CollectionUtils.isNotEmpty(serverNodeSet)) {
                 serverNodeMap.put(serviceName, serverNodeSet);
@@ -114,31 +104,29 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
     }
 
 
-    private static ThriftConsulServerNode getThriftConsulServerNode(ServiceHealth serviceHealth) {
+    private static ThriftConsulServerNode getThriftConsulServerNode(HealthService healthService) {
         ThriftConsulServerNode serverNode = new ThriftConsulServerNode();
 
-        Node node = serviceHealth.getNode();
+        HealthService.Node node = healthService.getNode();
         serverNode.setNode(node.getNode());
 
-        Service service = serviceHealth.getService();
+        HealthService.Service service = healthService.getService();
         serverNode.setAddress(service.getAddress());
         serverNode.setPort(service.getPort());
-        serverNode.setHost(ThriftConsulServerUtils.findHost(serviceHealth));
+        serverNode.setHost(ThriftConsulServerUtils.findHost(healthService));
 
         serverNode.setServiceId(service.getService());
         serverNode.setTags(service.getTags());
-        serverNode.setHealth(ThriftConsulServerUtils.isPassingCheck(serviceHealth));
+        serverNode.setHealth(ThriftConsulServerUtils.isPassingCheck(healthService));
 
         return serverNode;
     }
 
 
-    private void filterAndCompoServerNodes(List<ThriftConsulServerNode> serverNodeList, List<ServiceHealth> serviceHealthList) {
-        for (ServiceHealth serviceHealth : serviceHealthList) {
-            ThriftConsulServerNode serverNode = getThriftConsulServerNode(serviceHealth);
-            if (serverNode == null) {
-                continue;
-            }
+    private void filterAndCompoServerNodes(List<ThriftConsulServerNode> serverNodeList, List<HealthService> healthServices) {
+
+        for (HealthService healthService : healthServices) {
+            ThriftConsulServerNode serverNode = getThriftConsulServerNode(healthService);
 
             if (!serverNode.isHealth()) {
                 continue;
@@ -151,28 +139,13 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
         }
     }
 
-    private static class ThriftConsulResponseCallback implements ConsulResponseCallback<List<ServiceHealth>> {
 
-        List<ThriftConsulServerNode> serverNodeList;
+    private List<HealthService> getHealthServices(String serviceName) {
+        HealthServicesRequest request = HealthServicesRequest.newBuilder()
+                .setPassing(true)
+                .setQueryParams(QueryParams.DEFAULT)
+                .build();
 
-        public ThriftConsulResponseCallback(List<ThriftConsulServerNode> serverNodeList) {
-            this.serverNodeList = serverNodeList;
-        }
-
-        @Override
-        public void onComplete(ConsulResponse<List<ServiceHealth>> consulResponse) {
-            List<ServiceHealth> response = consulResponse.getResponse();
-            for (ServiceHealth serviceHealth : response) {
-                ThriftConsulServerNode serverNode = getThriftConsulServerNode(serviceHealth);
-                serverNodeList.add(serverNode);
-            }
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            throw new ThriftClientException("Failed to query service instances from consul agent", throwable);
-        }
-
+        return consulClient.getHealthServices(serviceName, request).getValue();
     }
-
 }

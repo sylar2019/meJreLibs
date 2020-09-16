@@ -8,11 +8,13 @@ import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
+import java.net.URI;
+
 public class ConsulPropertiesCondition extends SpringBootCondition {
 
     private static final String SPRING_CLOUD_CONSUL_HOST = "spring.cloud.consul.host";
     private static final String SPRING_CLOUD_CONSUL_PORT = "spring.cloud.consul.port";
-    private static final String ADDRESS_TEMPLATE = "%s:%d";
+    private static final String REGISTRY_URI_TEMPLATE = "http://%s:%d";
 
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
@@ -20,11 +22,10 @@ public class ConsulPropertiesCondition extends SpringBootCondition {
         Environment environment = context.getEnvironment();
         String host = environment.getProperty(SPRING_CLOUD_CONSUL_HOST);
         int port = environment.getProperty(SPRING_CLOUD_CONSUL_PORT, int.class);
-        String consulAddress = String.format(ADDRESS_TEMPLATE, host, port);
-
-        ThriftClientContext.registry(consulAddress);
+        URI uri = URI.create(String.format(REGISTRY_URI_TEMPLATE, host, port));
+        ThriftClientContext.registry(uri);
 
         return new ConditionOutcome(StringUtils.isNotBlank(host) && port > 0,
-                "Consul server address is " + consulAddress);
+                "Consul server address is " + uri.toString());
     }
 }

@@ -18,7 +18,7 @@ public class ThriftServerProperties {
     /**
      * 服务注册信息（默认不开启）
      */
-    private ThriftServerDiscoveryProperties discovery;
+    private ThriftServerDiscoveryProperties discovery = new ThriftServerDiscoveryProperties();
 
     /**
      * 服务的工作线程队列容量
@@ -37,11 +37,11 @@ public class ThriftServerProperties {
      */
     private String serviceModel = TServiceModel.SERVICE_MODEL_DEFAULT;
 
-    private TThreadPoolServerProperties threadPool;
+    private TThreadPoolServerProperties threadPool = new TThreadPoolServerProperties();
 
-    private THsHaServerProperties hsHa;
+    private THsHaServerProperties hsHa = new THsHaServerProperties();
 
-    private TThreadedSelectorServerProperties threadedSelector;
+    private TThreadedSelectorServerProperties threadedSelector = new TThreadedSelectorServerProperties();
 
     public String getServiceId() {
         return serviceId;

@@ -9,9 +9,9 @@ buildscript {
     apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/const.gradle"
 
     repositories {
-        maven { url "https://maven.aliyun.com/repository/public/" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
         mavenLocal()
+        maven { url REPO_ALIYUN_PUBLIC }
+        maven { url REPO_ALIYUN_GRADLE_PLUGIN }
     }
 
     dependencies {
@@ -26,35 +26,48 @@ allprojects {
     version "1.0.0"
 
     repositories {
-        maven { url "https://maven.aliyun.com/repository/public/" }
         mavenLocal()
+        maven { url REPO_ALIYUN_PUBLIC }
+        maven { url REPO_NEXUS_PUBLIC }
     }
 }
 
 subprojects {
-    configurations {
-        all*.exclude group: "org.slf4j", module: "log4j-over-slf4j"
-        all*.exclude group: "ch.qos.logback"
-        all*.exclude group: "log4j"
-    }
 
-    configurations.all {
-        //不使用缓存，使用仓库中最新的包
-        resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds' // 动态版本 x.x.+
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'//  变化版本 x.x.x
-        resolutionStrategy {
-            force "com.google.guava:guava:${guavaVersion}"
-            force "io.netty:netty-all:${nettyVersion}"
-
-            force("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
-            force("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
-            force("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
-        }
-    }
 }
+/** ******************************************************************************************/
 
 configure(getJavaProjects()) {
     apply from: gradlesPath + "java.gradle"
 }
 
-/** ******************************************************************************************/
+configurations {
+    all*.exclude group: "org.slf4j", module: "log4j-over-slf4j"
+    all*.exclude group: "ch.qos.logback"
+    all*.exclude group: "log4j"
+}
+
+configurations.all {
+    //不使用缓存，使用仓库中最新的包
+    resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds' // 动态版本 x.x.+
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'//  变化版本 x.x.x
+
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.fasterxml.jackson.core') {
+            details.useVersion "${jacksonVersion}"
+        }
+        if (requested.group == 'com.google.guava') {
+            details.useVersion "${guavaVersion}"
+        }
+        if (requested.group == 'io.netty') {
+            details.useVersion "${nettyVersion}"
+        }
+        if (requested.group == 'com.squareup.retrofit2') {
+            details.useVersion "${retrofitVersion}"
+        }
+        if (requested.group == 'com.squareup.okhttp3') {
+            details.useVersion "${okhttpVersion}"
+        }
+    }
+}

@@ -5,6 +5,9 @@ configurations {
 }
 
 dependencies {
+    //应用监控与健康检查
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+
     //替换web容器
     compile("org.springframework.boot:spring-boot-starter-jetty")
     compile("org.springframework.boot:spring-boot-starter-web")
