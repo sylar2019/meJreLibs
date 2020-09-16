@@ -69,5 +69,8 @@ configurations.all {
         if (requested.group == 'com.squareup.okhttp3') {
             details.useVersion "${okhttpVersion}"
         }
+        if (requested.group == 'com.ecwid.consul') {
+            details.useVersion "${consulVersion}"
+        }
     }
 }

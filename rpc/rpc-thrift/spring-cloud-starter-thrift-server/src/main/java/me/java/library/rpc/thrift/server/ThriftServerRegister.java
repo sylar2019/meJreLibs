@@ -60,6 +60,7 @@ public class ThriftServerRegister {
         newService.setId(serviceId);
         newService.setName(serviceName);
         newService.setTags(serviceTags);
+        newService.setAddress(serverHostAddress);
         newService.setPort(servicePort);
 
         ThriftServerHealthCheckProperties healthCheckProperties = discoveryProperties.getHealthCheck();

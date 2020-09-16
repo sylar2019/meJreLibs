@@ -48,7 +48,7 @@ ext {
     dubboVersion = "2.6.9"
     thriftVersion = "0.13.0"
     grpcVersion = "1.12.0"
-    consulVersion = "1.4.2"
+    consulVersion = "1.4.5"
 
     commonsPool2Version = "2.8.1"
     commonsLang3Version = "3.9"

@@ -84,14 +84,14 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
             String serviceName = catalogServiceEntry.getKey();
             List<String> tags = catalogServiceEntry.getValue();
 
-            if (CollectionUtils.isEmpty(tags)) {
-                continue;
-            }
+//            if (CollectionUtils.isEmpty(tags)) {
+//                continue;
+//            }
 
             List<HealthService> healthServices = getHealthServices(serviceName);
-            LinkedHashSet<ThriftConsulServerNode> serverNodeSet = Sets.newLinkedHashSet();
-            List<ThriftConsulServerNode> serverNodes = Lists.newArrayList(serverNodeSet);
+            List<ThriftConsulServerNode> serverNodes = Lists.newArrayList();
             filterAndCompoServerNodes(serverNodes, healthServices);
+            LinkedHashSet<ThriftConsulServerNode> serverNodeSet = Sets.newLinkedHashSet(serverNodes);
 
             if (CollectionUtils.isNotEmpty(serverNodeSet)) {
                 serverNodeMap.put(serviceName, serverNodeSet);
@@ -132,9 +132,10 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
                 continue;
             }
 
-            if (CollectionUtils.isEmpty(serverNode.getTags())) {
-                continue;
-            }
+//            if (CollectionUtils.isEmpty(serverNode.getTags())) {
+//                continue;
+//            }
+
             serverNodeList.add(serverNode);
         }
     }

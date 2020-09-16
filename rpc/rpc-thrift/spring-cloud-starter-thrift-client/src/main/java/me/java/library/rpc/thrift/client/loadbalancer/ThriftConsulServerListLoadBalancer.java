@@ -87,7 +87,12 @@ public class ThriftConsulServerListLoadBalancer extends AbstractLoadBalancer {
             sb.setLength(0);
         }
 
-        log.info("Refreshed thrift serverList: [" + String.join(", ", serverList) + "]");
+        sb = new StringBuilder("\nRefreshed thrift serverList,count: 【");
+        sb.append(serverList.size()).append("】\n");
+        for (int i = 0; i < serverList.size(); i++) {
+            sb.append(String.format("###【%s】###\t %s \n", i + 1, serverList.get(i)));
+        }
+        log.info(sb.toString());
     }
 
     @Override

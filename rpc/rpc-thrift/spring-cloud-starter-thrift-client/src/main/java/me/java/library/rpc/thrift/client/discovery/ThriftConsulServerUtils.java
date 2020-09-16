@@ -9,10 +9,7 @@ import org.springframework.util.StringUtils;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ThriftConsulServerUtils {
 
@@ -51,8 +48,9 @@ public class ThriftConsulServerUtils {
     public static boolean isPassingCheck(HealthService healthService) {
         List<Check> healthChecks = healthService.getChecks();
         for (Check healthCheck : healthChecks) {
-            healthCheck.getStatus();
-            return false;
+            if (healthCheck.getStatus() != Check.CheckStatus.PASSING) {
+                return false;
+            }
         }
         return true;
     }

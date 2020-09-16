@@ -2,6 +2,9 @@ apply from: gradlesPath + "springboot-web.gradle"
 
 dependencies {
     compile "org.springframework.cloud:spring-cloud-starter"
+    implementation("com.ecwid.consul:consul-api:${consulVersion}") {
+        force = true
+    }
 
     //使用consul作为注册中心
     compile("org.springframework.cloud:spring-cloud-starter-consul-discovery")
