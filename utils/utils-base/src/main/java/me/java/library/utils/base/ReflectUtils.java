@@ -61,7 +61,7 @@ public class ReflectUtils {
             } else {
                 //单子模式
                 Method method = c.getMethod("getInstance");
-                if (method != null && Modifier.isStatic(method.getModifiers())) {
+                if (Modifier.isStatic(method.getModifiers())) {
                     obj = method.invoke(null);
                 }
             }
@@ -73,13 +73,11 @@ public class ReflectUtils {
     }
 
     static public <T> Class<?> getGenericType(List<T> list) {
-        Object[] array = list.toArray();
-        return array.getClass().getComponentType();
+        return list.toArray().getClass().getComponentType();
     }
 
     static public <T> Class<?> getGenericType(Collection<T> collection) {
-        Object[] array = Lists.newArrayList(collection).toArray();
-        return array.getClass().getComponentType();
+        return Lists.newArrayList(collection).toArray().getClass().getComponentType();
     }
 
     static public Class<?> getGenericType(Object obj) {
