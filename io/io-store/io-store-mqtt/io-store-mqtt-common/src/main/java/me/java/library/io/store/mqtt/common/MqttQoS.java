@@ -18,10 +18,10 @@ package me.java.library.io.store.mqtt.common;
 
 public enum MqttQoS {
     //@formatter:off
-    AT_MOST_ONCE    (0),
-    AT_LEAST_ONCE   (1),
-    EXACTLY_ONCE    (2),
-    FAILURE         (0x80),
+    AT_MOST_ONCE(0),
+    AT_LEAST_ONCE(1),
+    EXACTLY_ONCE(2),
+    FAILURE(0x80),
     //@formatter:on
     ;
 

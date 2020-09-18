@@ -91,7 +91,7 @@ public class ApplicationTest {
             public Predicate toPredicate(Root<Foo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 return cb.like(root.get("name").as(String.class), "%sylar%");
             }
-        }, new Sort(new Sort.Order(Sort.Direction.DESC,"name")));
+        }, new Sort(new Sort.Order(Sort.Direction.DESC, "name")));
 
         list.forEach(foo ->
                 System.out.println(foo == null ? "nothing" : foo)

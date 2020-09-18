@@ -1,5 +1,7 @@
 package me.java.library.rpc.grpc.client;
 
+import io.grpc.LoadBalancer;
+import io.grpc.util.RoundRobinLoadBalancerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -11,9 +13,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.grpc.LoadBalancer;
-import io.grpc.util.RoundRobinLoadBalancerFactory;
-
 /**
  * User: Michael
  * Email: yidongnan@gmail.com
@@ -23,6 +22,12 @@ import io.grpc.util.RoundRobinLoadBalancerFactory;
 @EnableConfigurationProperties
 @ConditionalOnClass({GrpcChannelFactory.class})
 public class GrpcClientAutoConfiguration {
+
+    @Bean
+    @ConditionalOnClass(GrpcClient.class)
+    public static GrpcClientBeanPostProcessor grpcClientBeanPostProcessor(final ApplicationContext applicationContext) {
+        return new GrpcClientBeanPostProcessor(applicationContext);
+    }
 
     @ConditionalOnMissingBean
     @Bean
@@ -47,12 +52,6 @@ public class GrpcClientAutoConfiguration {
         return new AddressChannelFactory(channels, loadBalancerFactory, globalClientInterceptorRegistry);
     }
 
-    @Bean
-    @ConditionalOnClass(GrpcClient.class)
-    public static GrpcClientBeanPostProcessor grpcClientBeanPostProcessor(final ApplicationContext applicationContext) {
-        return new GrpcClientBeanPostProcessor(applicationContext);
-    }
-
     @Configuration
     @ConditionalOnBean(DiscoveryClient.class)
     protected static class DiscoveryGrpcClientAutoConfiguration {
@@ -60,7 +59,7 @@ public class GrpcClientAutoConfiguration {
         @ConditionalOnMissingBean
         @Bean
         public GrpcChannelFactory discoveryClientChannelFactory(GrpcChannelsProperties channels, DiscoveryClient discoveryClient, LoadBalancer.Factory loadBalancerFactory,
-            GlobalClientInterceptorRegistry globalClientInterceptorRegistry) {
+                                                                GlobalClientInterceptorRegistry globalClientInterceptorRegistry) {
             return new DiscoveryClientChannelFactory(channels, discoveryClient, loadBalancerFactory, globalClientInterceptorRegistry);
         }
     }

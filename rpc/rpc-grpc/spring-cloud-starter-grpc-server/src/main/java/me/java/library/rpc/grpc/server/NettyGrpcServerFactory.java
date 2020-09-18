@@ -1,19 +1,17 @@
 package me.java.library.rpc.grpc.server;
 
-import java.io.File;
-import java.net.InetSocketAddress;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.google.common.collect.Lists;
 import com.google.common.net.InetAddresses;
-
 import io.grpc.Server;
 import io.grpc.health.v1.HealthCheckResponse;
 import io.grpc.netty.NettyServerBuilder;
 import io.grpc.services.HealthStatusManager;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.File;
+import java.net.InetSocketAddress;
+import java.util.List;
 
 /**
  * User: Michael
@@ -53,8 +51,8 @@ public class NettyGrpcServerFactory implements GrpcServerFactory {
             File certificate = new File(this.properties.getSecurity().getCertificatePath());
             builder.useTransportSecurity(certificateChain, certificate);
         }
-        if(properties.getMaxMessageSize() > 0) {
-        	builder.maxMessageSize(properties.getMaxMessageSize());
+        if (properties.getMaxMessageSize() > 0) {
+            builder.maxMessageSize(properties.getMaxMessageSize());
         }
 
         return builder.build();

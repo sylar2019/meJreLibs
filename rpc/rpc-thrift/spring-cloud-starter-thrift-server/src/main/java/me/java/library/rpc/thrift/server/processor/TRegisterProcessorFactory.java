@@ -19,10 +19,6 @@ public class TRegisterProcessorFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TRegisterProcessorFactory.class);
 
-    private static class TRegisterProcessorHolder {
-        private static final TRegisterProcessor REGISTER_PROCESSOR = new TRegisterProcessor();
-    }
-
     static TRegisterProcessor getRegisterProcessor() {
         return TRegisterProcessorHolder.REGISTER_PROCESSOR;
     }
@@ -71,5 +67,9 @@ public class TRegisterProcessorFactory {
             registerProcessor.registerProcessor(serviceSignature, singleProcessor);
             LOGGER.info("Single processor {} register onto multiplexed processor with signature [{}]", singleProcessor, serviceSignature);
         }
+    }
+
+    private static class TRegisterProcessorHolder {
+        private static final TRegisterProcessor REGISTER_PROCESSOR = new TRegisterProcessor();
     }
 }

@@ -2,19 +2,13 @@ package me.java.library.rpc.thrift.server.wrapper;
 
 public class ThriftServiceWrapper {
 
-    private String thriftServiceName;
-
-    private String thriftServiceSignature;
-
-    private Class<?> type;
-
-    private Class<?> ifaceType;
-
-    private double version;
-
-    private final Object thriftService;
-
     private final static Double DEFAULT_VERSION = 1.0;
+    private final Object thriftService;
+    private String thriftServiceName;
+    private String thriftServiceSignature;
+    private Class<?> type;
+    private Class<?> ifaceType;
+    private double version;
 
     public ThriftServiceWrapper(String thriftServiceName, Class<?> type, Object thriftService) {
         this(thriftServiceName, type, thriftService, DEFAULT_VERSION);

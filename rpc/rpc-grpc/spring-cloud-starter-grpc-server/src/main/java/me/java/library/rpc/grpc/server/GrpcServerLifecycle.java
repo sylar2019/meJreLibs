@@ -1,12 +1,11 @@
 package me.java.library.rpc.grpc.server;
 
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.springframework.context.SmartLifecycle;
-
 import io.grpc.Server;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.SmartLifecycle;
+
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * User: Michael
@@ -16,10 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GrpcServerLifecycle implements SmartLifecycle {
     private static AtomicInteger serverCounter = new AtomicInteger(-1);
-
+    private final GrpcServerFactory factory;
     private volatile Server server;
     private volatile int phase = Integer.MAX_VALUE;
-    private final GrpcServerFactory factory;
 
     public GrpcServerLifecycle(GrpcServerFactory factory) {
         this.factory = factory;

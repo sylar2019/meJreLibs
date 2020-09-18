@@ -1,13 +1,11 @@
 package me.java.library.rpc.grpc.client;
 
-import java.util.Map;
-
+import com.google.common.collect.Maps;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-import com.google.common.collect.Maps;
-
-import lombok.Data;
+import java.util.Map;
 
 /**
  * User: Michael

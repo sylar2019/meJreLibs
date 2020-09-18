@@ -1,9 +1,8 @@
 package me.java.library.rpc.grpc.server;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.SocketUtils;
-
-import lombok.Data;
 
 /**
  * User: Michael
@@ -14,24 +13,28 @@ import lombok.Data;
 @ConfigurationProperties("grpc.server")
 public class GrpcServerProperties {
     /**
+     * Security options for transport security. Defaults to disabled.
+     */
+    private final Security security = new Security();
+    /**
      * Server port to listen on. Defaults to 9090.
      */
     private int port = 9090;
-
     /**
      * Bind address for the server. Defaults to 0.0.0.0.
      */
     private String address = "0.0.0.0";
-    
     /**
      * The maximum message size allowed to be received for the server.
      */
     private int maxMessageSize;
 
-    /**
-     * Security options for transport security. Defaults to disabled. 
-     */
-    private final Security security = new Security();
+    public int getPort() {
+        if (this.port == 0) {
+            this.port = SocketUtils.findAvailableTcpPort();
+        }
+        return this.port;
+    }
 
     @Data
     public static class Security {
@@ -51,12 +54,5 @@ public class GrpcServerProperties {
          */
         private String certificatePath = "";
 
-    }
-
-    public int getPort() {
-        if (this.port == 0) {
-            this.port = SocketUtils.findAvailableTcpPort();
-        }
-        return this.port;
     }
 }

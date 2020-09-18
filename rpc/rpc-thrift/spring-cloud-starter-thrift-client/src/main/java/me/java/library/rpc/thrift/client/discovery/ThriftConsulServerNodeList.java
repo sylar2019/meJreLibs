@@ -18,9 +18,12 @@ import java.util.Map;
 
 public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsulServerNode> {
 
+    private static ThriftConsulServerNodeList serverNodeList = null;
     private final ConsulClient consulClient;
 
-    private static ThriftConsulServerNodeList serverNodeList = null;
+    private ThriftConsulServerNodeList(ConsulClient consulClient) {
+        this.consulClient = consulClient;
+    }
 
     public static ThriftConsulServerNodeList singleton(ConsulClient consulClient) {
         if (serverNodeList == null) {
@@ -33,8 +36,22 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
         return serverNodeList;
     }
 
-    private ThriftConsulServerNodeList(ConsulClient consulClient) {
-        this.consulClient = consulClient;
+    private static ThriftConsulServerNode getThriftConsulServerNode(HealthService healthService) {
+        ThriftConsulServerNode serverNode = new ThriftConsulServerNode();
+
+        HealthService.Node node = healthService.getNode();
+        serverNode.setNode(node.getNode());
+
+        HealthService.Service service = healthService.getService();
+        serverNode.setAddress(service.getAddress());
+        serverNode.setPort(service.getPort());
+        serverNode.setHost(ThriftConsulServerUtils.findHost(healthService));
+
+        serverNode.setServiceId(service.getService());
+        serverNode.setTags(service.getTags());
+        serverNode.setHealth(ThriftConsulServerUtils.isPassingCheck(healthService));
+
+        return serverNode;
     }
 
     @Override
@@ -61,7 +78,6 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
 
         return serverNodeList;
     }
-
 
     @Override
     public Map<String, LinkedHashSet<ThriftConsulServerNode>> getThriftServers() {
@@ -98,26 +114,6 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
         this.serverNodeMap.putAll(serverNodeMap);
         return ImmutableMap.copyOf(this.serverNodeMap);
     }
-
-
-    private static ThriftConsulServerNode getThriftConsulServerNode(HealthService healthService) {
-        ThriftConsulServerNode serverNode = new ThriftConsulServerNode();
-
-        HealthService.Node node = healthService.getNode();
-        serverNode.setNode(node.getNode());
-
-        HealthService.Service service = healthService.getService();
-        serverNode.setAddress(service.getAddress());
-        serverNode.setPort(service.getPort());
-        serverNode.setHost(ThriftConsulServerUtils.findHost(healthService));
-
-        serverNode.setServiceId(service.getService());
-        serverNode.setTags(service.getTags());
-        serverNode.setHealth(ThriftConsulServerUtils.isPassingCheck(healthService));
-
-        return serverNode;
-    }
-
 
     private void filterAndCompoServerNodes(List<ThriftConsulServerNode> serverNodeList, List<HealthService> healthServices) {
 

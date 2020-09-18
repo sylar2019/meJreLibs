@@ -27,6 +27,7 @@ public class DiscoveryClientChannelFactory implements GrpcChannelFactory {
     private final LoadBalancer.Factory loadBalancerFactory;
     private final GlobalClientInterceptorRegistry globalClientInterceptorRegistry;
     private HeartbeatMonitor monitor = new HeartbeatMonitor();
+    private List<DiscoveryClientNameResolver> discoveryClientNameResolvers = Lists.newArrayList();
 
     public DiscoveryClientChannelFactory(GrpcChannelsProperties properties, DiscoveryClient client, LoadBalancer.Factory loadBalancerFactory,
                                          GlobalClientInterceptorRegistry globalClientInterceptorRegistry) {
@@ -35,8 +36,6 @@ public class DiscoveryClientChannelFactory implements GrpcChannelFactory {
         this.loadBalancerFactory = loadBalancerFactory;
         this.globalClientInterceptorRegistry = globalClientInterceptorRegistry;
     }
-
-    private List<DiscoveryClientNameResolver> discoveryClientNameResolvers = Lists.newArrayList();
 
     public void addDiscoveryClientNameResolver(DiscoveryClientNameResolver discoveryClientNameResolver) {
         discoveryClientNameResolvers.add(discoveryClientNameResolver);
@@ -68,8 +67,8 @@ public class DiscoveryClientChannelFactory implements GrpcChannelFactory {
                     .keepAliveTime(channelProperties.getKeepAliveTime(), TimeUnit.SECONDS)
                     .keepAliveTimeout(channelProperties.getKeepAliveTimeout(), TimeUnit.SECONDS);
         }
-        if(channelProperties.getMaxInboundMessageSize() > 0) {
-        	builder.maxInboundMessageSize(channelProperties.getMaxInboundMessageSize());
+        if (channelProperties.getMaxInboundMessageSize() > 0) {
+            builder.maxInboundMessageSize(channelProperties.getMaxInboundMessageSize());
         }
         Channel channel = builder.build();
 

@@ -1,19 +1,18 @@
 package me.java.library.rpc.grpc.client;
 
-import java.net.InetSocketAddress;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import javax.annotation.concurrent.GuardedBy;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-
 import io.grpc.Attributes;
 import io.grpc.EquivalentAddressGroup;
 import io.grpc.NameResolver;
 import io.grpc.Status;
 import io.grpc.internal.SharedResourceHolder;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.annotation.concurrent.GuardedBy;
+import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * User: Michael
@@ -36,6 +35,44 @@ public class AddressChannelNameResolver extends NameResolver {
     private boolean resolving;
     @GuardedBy("this")
     private Listener listener;
+    private final Runnable resolutionRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Listener savedListener;
+            synchronized (AddressChannelNameResolver.this) {
+                if (shutdown) {
+                    return;
+                }
+                savedListener = listener;
+                resolving = true;
+            }
+            try {
+                int max = Math.max(properties.getHost().size(), properties.getPort().size());
+                replace(properties.getHost(), max, GrpcChannelProperties.DEFAULT_HOST);
+                replace(properties.getPort(), max, GrpcChannelProperties.DEFAULT_PORT);
+
+                if (properties.getHost().size() != properties.getPort().size()) {
+                    log.error("config gRPC server {} error, hosts length isn't equals ports length,hosts [{}], ports [{}]", properties.getHost(), properties.getPort());
+                    savedListener.onError(Status.UNAVAILABLE.withCause(new RuntimeException("gRPC config error")));
+                    return;
+                }
+
+                List<EquivalentAddressGroup> equivalentAddressGroups = Lists.newArrayList();
+                for (int i = 0; i < properties.getHost().size(); i++) {
+                    String host = properties.getHost().get(i);
+                    Integer port = properties.getPort().get(i);
+                    log.info("Found gRPC server {} {}:{}", name, host, port);
+                    EquivalentAddressGroup addressGroup = new EquivalentAddressGroup(new InetSocketAddress(host, port), Attributes.EMPTY);
+                    equivalentAddressGroups.add(addressGroup);
+                }
+                savedListener.onAddresses(equivalentAddressGroups, Attributes.EMPTY);
+            } finally {
+                synchronized (AddressChannelNameResolver.this) {
+                    resolving = false;
+                }
+            }
+        }
+    };
 
     public AddressChannelNameResolver(String name, GrpcChannelProperties properties, Attributes attributes, SharedResourceHolder.Resource<ExecutorService> executorResource) {
         this.name = name;
@@ -75,45 +112,6 @@ public class AddressChannelNameResolver extends NameResolver {
         Preconditions.checkState(listener != null, "not started");
         resolve();
     }
-
-    private final Runnable resolutionRunnable = new Runnable() {
-        @Override
-        public void run() {
-            Listener savedListener;
-            synchronized (AddressChannelNameResolver.this) {
-                if (shutdown) {
-                    return;
-                }
-                savedListener = listener;
-                resolving = true;
-            }
-            try {
-                int max = Math.max(properties.getHost().size(), properties.getPort().size());
-                replace(properties.getHost(), max, GrpcChannelProperties.DEFAULT_HOST);
-                replace(properties.getPort(), max, GrpcChannelProperties.DEFAULT_PORT);
-
-                if (properties.getHost().size() != properties.getPort().size()) {
-                    log.error("config gRPC server {} error, hosts length isn't equals ports length,hosts [{}], ports [{}]", properties.getHost(), properties.getPort());
-                    savedListener.onError(Status.UNAVAILABLE.withCause(new RuntimeException("gRPC config error")));
-                    return;
-                }
-
-                List<EquivalentAddressGroup> equivalentAddressGroups = Lists.newArrayList();
-                for (int i = 0; i < properties.getHost().size(); i++) {
-                    String host = properties.getHost().get(i);
-                    Integer port = properties.getPort().get(i);
-                    log.info("Found gRPC server {} {}:{}", name, host, port);
-                    EquivalentAddressGroup addressGroup = new EquivalentAddressGroup(new InetSocketAddress(host, port), Attributes.EMPTY);
-                    equivalentAddressGroups.add(addressGroup);
-                }
-                savedListener.onAddresses(equivalentAddressGroups, Attributes.EMPTY);
-            } finally {
-                synchronized (AddressChannelNameResolver.this) {
-                    resolving = false;
-                }
-            }
-        }
-    };
 
     @GuardedBy("this")
     private void resolve() {

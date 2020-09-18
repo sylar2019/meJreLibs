@@ -1,9 +1,9 @@
 package me.java.library.rpc.grpc.client;
 
-import java.util.List;
-
 import io.grpc.Channel;
 import io.grpc.ClientInterceptor;
+
+import java.util.List;
 
 /**
  * User: Michael

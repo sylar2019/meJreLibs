@@ -26,13 +26,13 @@ import java.io.Serializable;
 public enum CmdType implements BaseEnum, Serializable {
 
     //@formatter:off
-    General     (0,"General"),
-    Info        (1,"Info"),
-    Data        (2,"Data"),
-    Alarm       (3,"Alarm"),
-    Event       (4,"Event"),
-    Ota         (5,"Ota"),
-    McuLog      (6,"McuLog"),
+    General(0, "General"),
+    Info(1, "Info"),
+    Data(2, "Data"),
+    Alarm(3, "Alarm"),
+    Event(4, "Event"),
+    Ota(5, "Ota"),
+    McuLog(6, "McuLog"),
     //@formatter:on
     ;
 

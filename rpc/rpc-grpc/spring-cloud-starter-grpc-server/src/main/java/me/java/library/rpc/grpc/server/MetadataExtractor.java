@@ -1,11 +1,10 @@
 package me.java.library.rpc.grpc.server;
 
+import io.grpc.Metadata;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.SpanExtractor;
 import org.springframework.util.StringUtils;
-
-import io.grpc.Metadata;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * User: Michael

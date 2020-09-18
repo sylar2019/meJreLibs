@@ -47,39 +47,6 @@ public class DiscoveryClientNameResolver extends NameResolver {
     private Listener listener;
     @GuardedBy("this")
     private List<ServiceInstance> serviceInstanceList;
-
-    public DiscoveryClientNameResolver(String name, DiscoveryClient client, Attributes attributes, SharedResourceHolder.Resource<ScheduledExecutorService> timerServiceResource,
-                                       SharedResourceHolder.Resource<ExecutorService> executorResource) {
-        this.name = name;
-        this.client = client;
-        this.attributes = attributes;
-        this.timerServiceResource = timerServiceResource;
-        this.executorResource = executorResource;
-        this.serviceInstanceList = Lists.newArrayList();
-    }
-
-    @Override
-    public final String getServiceAuthority() {
-        return name;
-    }
-
-    @Override
-    public final synchronized void start(Listener listener) {
-        Preconditions.checkState(this.listener == null, "already started");
-        timerService = SharedResourceHolder.get(timerServiceResource);
-        this.listener = listener;
-        executor = SharedResourceHolder.get(executorResource);
-        this.listener = Preconditions.checkNotNull(listener, "listener");
-        resolve();
-    }
-
-    @Override
-    public final synchronized void refresh() {
-        if (listener != null) {
-            resolve();
-        }
-    }
-
     private final Runnable resolutionRunnable = new Runnable() {
         @Override
         public void run() {
@@ -134,6 +101,38 @@ public class DiscoveryClientNameResolver extends NameResolver {
             }
         }
     };
+
+    public DiscoveryClientNameResolver(String name, DiscoveryClient client, Attributes attributes, SharedResourceHolder.Resource<ScheduledExecutorService> timerServiceResource,
+                                       SharedResourceHolder.Resource<ExecutorService> executorResource) {
+        this.name = name;
+        this.client = client;
+        this.attributes = attributes;
+        this.timerServiceResource = timerServiceResource;
+        this.executorResource = executorResource;
+        this.serviceInstanceList = Lists.newArrayList();
+    }
+
+    @Override
+    public final String getServiceAuthority() {
+        return name;
+    }
+
+    @Override
+    public final synchronized void start(Listener listener) {
+        Preconditions.checkState(this.listener == null, "already started");
+        timerService = SharedResourceHolder.get(timerServiceResource);
+        this.listener = listener;
+        executor = SharedResourceHolder.get(executorResource);
+        this.listener = Preconditions.checkNotNull(listener, "listener");
+        resolve();
+    }
+
+    @Override
+    public final synchronized void refresh() {
+        if (listener != null) {
+            resolve();
+        }
+    }
 
     private boolean isNeedToUpdateServiceInstanceList(List<ServiceInstance> newServiceInstanceList) {
         if (serviceInstanceList.size() == newServiceInstanceList.size()) {

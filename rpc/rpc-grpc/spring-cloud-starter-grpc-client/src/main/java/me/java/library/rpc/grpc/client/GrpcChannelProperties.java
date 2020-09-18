@@ -1,9 +1,9 @@
 package me.java.library.rpc.grpc.client;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.Data;
 
 /**
  * User: Michael
@@ -58,7 +58,7 @@ public class GrpcChannelProperties {
      * Defaults to {@code 20}
      */
     private long keepAliveTimeout = 20;
-    
+
     /**
      * The maximum message size allowed to be received on the channel.
      */

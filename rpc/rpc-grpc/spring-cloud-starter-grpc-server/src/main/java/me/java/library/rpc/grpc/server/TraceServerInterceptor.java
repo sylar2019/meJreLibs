@@ -1,17 +1,11 @@
 package me.java.library.rpc.grpc.server;
 
+import io.grpc.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.SpanExtractor;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.cloud.sleuth.util.ExceptionUtils;
-
-import io.grpc.ForwardingServerCall;
-import io.grpc.Metadata;
-import io.grpc.ServerCall;
-import io.grpc.ServerCallHandler;
-import io.grpc.ServerInterceptor;
-import io.grpc.Status;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * User: Michael
@@ -21,10 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TraceServerInterceptor implements ServerInterceptor {
 
-    private Tracer tracer;
-
-    private SpanExtractor<Metadata> spanExtractor;
     private static final String GRPC_COMPONENT = "gRPC";
+    private Tracer tracer;
+    private SpanExtractor<Metadata> spanExtractor;
 
     public TraceServerInterceptor(Tracer tracer, SpanExtractor<Metadata> spanExtractor) {
         this.tracer = tracer;

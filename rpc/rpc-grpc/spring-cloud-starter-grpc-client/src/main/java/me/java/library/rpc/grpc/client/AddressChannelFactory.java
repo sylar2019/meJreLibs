@@ -2,17 +2,12 @@ package me.java.library.rpc.grpc.client;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import io.grpc.*;
+import io.grpc.netty.NettyChannelBuilder;
 
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import io.grpc.Channel;
-import io.grpc.ClientInterceptor;
-import io.grpc.ClientInterceptors;
-import io.grpc.LoadBalancer;
-import io.grpc.NameResolver;
-import io.grpc.netty.NettyChannelBuilder;
 
 /**
  * User: Michael
@@ -49,8 +44,8 @@ public class AddressChannelFactory implements GrpcChannelFactory {
                     .keepAliveTime(channelProperties.getKeepAliveTime(), TimeUnit.SECONDS)
                     .keepAliveTimeout(channelProperties.getKeepAliveTimeout(), TimeUnit.SECONDS);
         }
-        if(channelProperties.getMaxInboundMessageSize() > 0) {
-        	builder.maxInboundMessageSize(channelProperties.getMaxInboundMessageSize());
+        if (channelProperties.getMaxInboundMessageSize() > 0) {
+            builder.maxInboundMessageSize(channelProperties.getMaxInboundMessageSize());
         }
         Channel channel = builder.build();
 

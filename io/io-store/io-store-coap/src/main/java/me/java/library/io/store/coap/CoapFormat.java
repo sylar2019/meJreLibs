@@ -20,19 +20,19 @@ import me.java.library.common.model.po.BaseEnum;
 public enum CoapFormat implements BaseEnum {
     //@formatter:off
 
-    unknown         (-1, "unknown","???"),
-    text            (0,"text/plain","text"),
-    wlnk            (40, "application/link-format", "wlnk"),
-    xml             (41, "application/xml", "xml"),
-    bin             (42, "application/octet-stream", "bin"),
-    xmpp            (46, "application/xmpp+xml", "xmpp"),
-    exi             (47, "application/exi", "exi"),
-    json            (50, "application/json", "json"),
-    cbor            (60, "application/cbor", "cbor"),
-    senml_json      (110, "application/senml+json", "json"),
-    senml_cbor      (112, "application/senml+cbor", "cbor"),
-    lwm2m_tlv       (11542, "application/vnd.oma.lwm2m+tlv", "tlv"),
-    lwm2m_json      (11543, "application/vnd.oma.lwm2m+json", "json"),
+    unknown(-1, "unknown", "???"),
+    text(0, "text/plain", "text"),
+    wlnk(40, "application/link-format", "wlnk"),
+    xml(41, "application/xml", "xml"),
+    bin(42, "application/octet-stream", "bin"),
+    xmpp(46, "application/xmpp+xml", "xmpp"),
+    exi(47, "application/exi", "exi"),
+    json(50, "application/json", "json"),
+    cbor(60, "application/cbor", "cbor"),
+    senml_json(110, "application/senml+json", "json"),
+    senml_cbor(112, "application/senml+cbor", "cbor"),
+    lwm2m_tlv(11542, "application/vnd.oma.lwm2m+tlv", "tlv"),
+    lwm2m_json(11543, "application/vnd.oma.lwm2m+json", "json"),
     //@formatter:on
     ;
 

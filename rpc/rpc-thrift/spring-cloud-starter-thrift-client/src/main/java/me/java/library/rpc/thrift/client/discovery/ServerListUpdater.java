@@ -2,12 +2,12 @@ package me.java.library.rpc.thrift.client.discovery;
 
 public interface ServerListUpdater {
 
-    public interface UpdateAction {
-        void doUpdate();
-    }
-
     void start(UpdateAction updateAction);
 
     void stop();
+
+    public interface UpdateAction {
+        void doUpdate();
+    }
 
 }

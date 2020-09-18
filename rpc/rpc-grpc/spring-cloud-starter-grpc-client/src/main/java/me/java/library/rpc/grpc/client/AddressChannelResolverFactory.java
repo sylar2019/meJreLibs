@@ -1,13 +1,12 @@
 package me.java.library.rpc.grpc.client;
 
-import java.net.URI;
-
-import javax.annotation.Nullable;
-
 import io.grpc.Attributes;
 import io.grpc.NameResolver;
 import io.grpc.NameResolverProvider;
 import io.grpc.internal.GrpcUtil;
+
+import javax.annotation.Nullable;
+import java.net.URI;
 
 /**
  * User: Michael

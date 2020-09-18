@@ -1,7 +1,6 @@
 package me.java.library.rpc.grpc.server;
 
 import com.netflix.appinfo.EurekaInstanceConfig;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

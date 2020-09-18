@@ -6,8 +6,8 @@ public interface IRule {
 
     ThriftServerNode choose(String key);
 
-    void setLoadBalancer(ILoadBalancer lb);
-
     ILoadBalancer getLoadBalancer();
+
+    void setLoadBalancer(ILoadBalancer lb);
 
 }

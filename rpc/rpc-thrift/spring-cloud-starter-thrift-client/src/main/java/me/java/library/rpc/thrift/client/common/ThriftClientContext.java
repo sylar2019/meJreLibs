@@ -12,15 +12,12 @@ public class ThriftClientContext {
     private static final Lock lock = new ReentrantLock();
 
     private static ThriftClientContext context;
+    private ThriftClientProperties properties;
+    private TransportKeyedObjectPool objectPool;
+    private URI registryUri;
 
     private ThriftClientContext() {
     }
-
-    private ThriftClientProperties properties;
-
-    private TransportKeyedObjectPool objectPool;
-
-    private URI registryUri;
 
     public static ThriftClientContext context(ThriftClientProperties properties, TransportKeyedObjectPool objectPool) {
         context().properties = properties;

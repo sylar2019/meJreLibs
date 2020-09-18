@@ -76,7 +76,7 @@ public class ApplicationTest {
     @Test
     public void findById() {
         String id = "5ae6cc3507efe62dd4f87276";
-        Optional<Foo>  foo = Optional.ofNullable(fooRepository.findOne(id));
+        Optional<Foo> foo = Optional.ofNullable(fooRepository.findOne(id));
         System.out.println(foo.isPresent() ? foo : "NULL");
     }
 

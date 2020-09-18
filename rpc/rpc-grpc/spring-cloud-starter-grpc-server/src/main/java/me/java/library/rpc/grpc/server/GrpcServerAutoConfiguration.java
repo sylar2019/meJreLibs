@@ -1,5 +1,8 @@
 package me.java.library.rpc.grpc.server;
 
+import io.grpc.Server;
+import io.grpc.services.HealthStatusManager;
+import io.netty.channel.Channel;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -7,10 +10,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import io.grpc.Server;
-import io.grpc.services.HealthStatusManager;
-import io.netty.channel.Channel;
 
 /**
  * User: Michael

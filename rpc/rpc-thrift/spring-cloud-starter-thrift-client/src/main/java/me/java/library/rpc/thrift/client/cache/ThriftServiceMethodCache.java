@@ -10,9 +10,8 @@ import java.util.Map;
 
 public class ThriftServiceMethodCache {
 
-    private Map<String, Method> methodCachedMap = Maps.newHashMap();
-
     private final Class<?> cacheClass;
+    private Map<String, Method> methodCachedMap = Maps.newHashMap();
 
     public ThriftServiceMethodCache(Class<?> cacheClass) {
         this.cacheClass = cacheClass;

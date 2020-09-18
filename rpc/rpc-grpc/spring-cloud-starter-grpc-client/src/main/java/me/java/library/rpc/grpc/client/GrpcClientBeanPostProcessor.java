@@ -17,15 +17,10 @@
 
 package me.java.library.rpc.grpc.client;
 
-import static java.util.Objects.requireNonNull;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.util.List;
-
+import com.google.common.collect.Lists;
+import io.grpc.Channel;
+import io.grpc.ClientInterceptor;
+import io.grpc.stub.AbstractStub;
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
@@ -36,11 +31,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
 
-import com.google.common.collect.Lists;
+import java.lang.reflect.*;
+import java.util.List;
 
-import io.grpc.Channel;
-import io.grpc.ClientInterceptor;
-import io.grpc.stub.AbstractStub;
+import static java.util.Objects.requireNonNull;
 
 /**
  * This {@link BeanPostProcessor} searches for fields and methods in beans that are annotated with {@link GrpcClient}
@@ -99,14 +93,14 @@ public class GrpcClientBeanPostProcessor implements BeanPostProcessor {
     /**
      * Processes the given injection point and computes the appropriate value for the injection.
      *
-     * @param <T> The type of the value to be injected.
+     * @param <T>             The type of the value to be injected.
      * @param injectionTarget The target of the injection.
-     * @param injectionType The class that will be used to compute injection.
-     * @param annotation The annotation on the target with the metadata for the injection.
+     * @param injectionType   The class that will be used to compute injection.
+     * @param annotation      The annotation on the target with the metadata for the injection.
      * @return The value to be injected for the given injection point.
      */
     protected <T> T processInjectionPoint(final Member injectionTarget, final Class<T> injectionType,
-            final GrpcClient annotation) {
+                                          final GrpcClient annotation) {
         final List<ClientInterceptor> interceptors = interceptorsFromAnnotation(annotation);
         final String name = annotation.value();
         final Channel channel;
@@ -174,22 +168,21 @@ public class GrpcClientBeanPostProcessor implements BeanPostProcessor {
     /**
      * Creates the instance to be injected for the given member.
      *
-     * @param name The name that was used to create the channel.
-     * @param <T> The type of the instance to be injected.
+     * @param name            The name that was used to create the channel.
+     * @param <T>             The type of the instance to be injected.
      * @param injectionTarget The target member for the injection.
-     * @param injectionType The class that should injected.
-     * @param channel The channel that should be used to create the instance.
+     * @param injectionType   The class that should injected.
+     * @param channel         The channel that should be used to create the instance.
      * @return The value that matches the type of the given field.
      * @throws BeansException If the value of the field could not be created or the type of the field is unsupported.
      */
     protected <T> T valueForMember(final String name, final Member injectionTarget, final Class<T> injectionType,
-            final Channel channel) throws BeansException {
+                                   final Channel channel) throws BeansException {
         if (Channel.class.equals(injectionType)) {
             return injectionType.cast(channel);
         } else if (AbstractStub.class.isAssignableFrom(injectionType)) {
             try {
-                @SuppressWarnings("unchecked")
-                final Class<? extends AbstractStub<?>> stubClass =
+                @SuppressWarnings("unchecked") final Class<? extends AbstractStub<?>> stubClass =
                         (Class<? extends AbstractStub<?>>) injectionType.asSubclass(AbstractStub.class);
                 Constructor<? extends AbstractStub<?>> constructor = stubClass.getDeclaredConstructor(Channel.class);
                 ReflectionUtils.makeAccessible(constructor);

@@ -28,6 +28,9 @@ import org.apache.thrift.protocol.TProtocol;
  * across protocols and transports.
  */
 public abstract class TServiceClient {
+    protected TProtocol iprot_;
+    protected TProtocol oprot_;
+    protected int seqid_;
     public TServiceClient(TProtocol prot) {
         this(prot, prot);
     }
@@ -36,11 +39,6 @@ public abstract class TServiceClient {
         iprot_ = iprot;
         oprot_ = oprot;
     }
-
-    protected TProtocol iprot_;
-    protected TProtocol oprot_;
-
-    protected int seqid_;
 
     /**
      * Get the TProtocol being used as the input (read) protocol.

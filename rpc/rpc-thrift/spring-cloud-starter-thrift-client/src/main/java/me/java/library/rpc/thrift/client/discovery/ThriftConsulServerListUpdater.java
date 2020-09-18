@@ -32,44 +32,6 @@ public class ThriftConsulServerListUpdater implements ServerListUpdater {
         this.refreshIntervalMs = refreshIntervalMs;
     }
 
-    private static class LazyHolder {
-        private static final int CORE_THREAD = 2;
-        private static Thread shutdownThread;
-
-        static ScheduledThreadPoolExecutor serverListRefreshExecutor;
-
-        static {
-            ThreadFactory factory = new ThreadFactoryBuilder()
-                    .setNameFormat("ThriftConsulServerListUpdater-%d")
-                    .setDaemon(true)
-                    .build();
-
-            serverListRefreshExecutor = new ScheduledThreadPoolExecutor(CORE_THREAD, factory);
-
-            shutdownThread = new Thread(() -> {
-                LOGGER.info("Shutting down the Executor Pool for ThriftConsulServerListUpdater");
-                shutdownExecutorPool();
-            });
-
-            Runtime.getRuntime().addShutdownHook(shutdownThread);
-        }
-
-        private static void shutdownExecutorPool() {
-            if (serverListRefreshExecutor != null) {
-                serverListRefreshExecutor.shutdown();
-
-                if (shutdownThread != null) {
-                    try {
-                        Runtime.getRuntime().removeShutdownHook(shutdownThread);
-                    } catch (IllegalStateException e) {
-                        LOGGER.error("Failed to shutdown the Executor Pool for ThriftConsulServerListUpdater", e);
-                    }
-                }
-
-            }
-        }
-    }
-
     private static ScheduledThreadPoolExecutor getRefreshExecutor() {
         return LazyHolder.serverListRefreshExecutor;
     }
@@ -112,6 +74,43 @@ public class ThriftConsulServerListUpdater implements ServerListUpdater {
             }
         } else {
             LOGGER.info("Not active, no other operation");
+        }
+    }
+
+    private static class LazyHolder {
+        private static final int CORE_THREAD = 2;
+        static ScheduledThreadPoolExecutor serverListRefreshExecutor;
+        private static Thread shutdownThread;
+
+        static {
+            ThreadFactory factory = new ThreadFactoryBuilder()
+                    .setNameFormat("ThriftConsulServerListUpdater-%d")
+                    .setDaemon(true)
+                    .build();
+
+            serverListRefreshExecutor = new ScheduledThreadPoolExecutor(CORE_THREAD, factory);
+
+            shutdownThread = new Thread(() -> {
+                LOGGER.info("Shutting down the Executor Pool for ThriftConsulServerListUpdater");
+                shutdownExecutorPool();
+            });
+
+            Runtime.getRuntime().addShutdownHook(shutdownThread);
+        }
+
+        private static void shutdownExecutorPool() {
+            if (serverListRefreshExecutor != null) {
+                serverListRefreshExecutor.shutdown();
+
+                if (shutdownThread != null) {
+                    try {
+                        Runtime.getRuntime().removeShutdownHook(shutdownThread);
+                    } catch (IllegalStateException e) {
+                        LOGGER.error("Failed to shutdown the Executor Pool for ThriftConsulServerListUpdater", e);
+                    }
+                }
+
+            }
         }
     }
 }

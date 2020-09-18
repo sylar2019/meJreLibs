@@ -1,14 +1,9 @@
 package me.java.library.rpc.grpc.server;
 
+import io.grpc.ServerInterceptor;
 import org.springframework.stereotype.Service;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import io.grpc.ServerInterceptor;
+import java.lang.annotation.*;
 
 /**
  * User: Michael

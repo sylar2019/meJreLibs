@@ -18,11 +18,9 @@ public class ThriftConsulServerListLoadBalancer extends AbstractLoadBalancer {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     private ThriftConsulServerNodeList serverNodeList;
-    private IRule rule;
-
-    private volatile ServerListUpdater serverListUpdater;
-
     private final ServerListUpdater.UpdateAction updateAction = this::updateListOfServers;
+    private IRule rule;
+    private volatile ServerListUpdater serverListUpdater;
 
     public ThriftConsulServerListLoadBalancer(ThriftConsulServerNodeList serverNodeList, IRule rule) {
         this.serverNodeList = serverNodeList;
