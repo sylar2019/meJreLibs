@@ -48,3 +48,26 @@ artifacts {
     archives sourcesJar
 }
 /** ******************************************************************************************/
+
+configurations {
+    all*.exclude group: "org.slf4j", module: "log4j-over-slf4j"
+    all*.exclude group: "ch.qos.logback"
+    all*.exclude group: "log4j"
+}
+
+configurations.all {
+    //不使用缓存，使用仓库中最新的包
+    resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds' // 动态版本 x.x.+
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'//  变化版本 x.x.x
+    resolutionStrategy {
+        force "com.google.guava:guava:${guavaVersion}"
+        force "io.netty:netty-all:${nettyVersion}"
+    }
+
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.fasterxml.jackson.core') {
+            details.useVersion "${jacksonVersion}"
+        }
+    }
+}

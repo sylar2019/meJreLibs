@@ -1,5 +1,6 @@
 package me.java.library.rpc.thrift.client.scanner;
 
+import me.java.library.utils.base.PackageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,11 @@ public class ThriftClientBeanScanProcessor implements ApplicationContextAware, B
         beanScanner.setResourceLoader(applicationContext);
         beanScanner.setBeanNameGenerator(new AnnotationBeanNameGenerator());
         beanScanner.setScopedProxyMode(ScopedProxyMode.INTERFACES);
-        setScannedPackages(beanScanner, applicationContext.getEnvironment().getProperty(SPRING_THRIFT_CLIENT_PACKAGE_TO_SCAN));
+
+        String packageToScan = applicationContext.getEnvironment().getProperty(
+                SPRING_THRIFT_CLIENT_PACKAGE_TO_SCAN,
+                PackageUtils.getAppBasePackageName());
+        setScannedPackages(beanScanner, packageToScan);
     }
 
     private void setScannedPackages(ThriftClientBeanScanner beanScanner, String basePackages) {
@@ -57,7 +62,7 @@ public class ThriftClientBeanScanProcessor implements ApplicationContextAware, B
                 } while (tokenizer.hasMoreTokens());
             }
             List<String> packageToScanList = new ArrayList<>(packageToScanSet);
-            String[] packagesToScan = packageToScanList.toArray(new String[packageToScanList.size()]);
+            String[] packagesToScan = packageToScanList.toArray(new String[0]);
             beanScanner.scan(packagesToScan);
         } else {
             LOGGER.info("Base package {} is to be scanned by {}", basePackages, beanScanner);

@@ -1,5 +1,6 @@
 package me.java.library.rpc.thrift.client.properties;
 
+import me.java.library.utils.base.PackageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
@@ -15,8 +16,10 @@ public class ThriftClientPropertiesCondition extends SpringBootCondition {
 
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        String packageToScan = getEnvironment(context).getProperty(SPRING_THRIFT_CLIENT_PACKAGE_TO_SCAN);
-        String serviceModel = getEnvironment(context).getProperty(SPRING_THRIFT_CLIENT_SERVICE_MODEL);
+        String packageToScan = getEnvironment(context).getProperty(
+                SPRING_THRIFT_CLIENT_PACKAGE_TO_SCAN,
+                PackageUtils.getAppBasePackageName());
+        String serviceModel = getEnvironment(context).getProperty(SPRING_THRIFT_CLIENT_SERVICE_MODEL, TServiceModel.SERVICE_MODEL_DEFAULT);
         return new ConditionOutcome(StringUtils.isNotBlank(packageToScan)
                 , "Thrift server service model is " + serviceModel);
     }

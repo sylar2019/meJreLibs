@@ -84,10 +84,6 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
             String serviceName = catalogServiceEntry.getKey();
             List<String> tags = catalogServiceEntry.getValue();
 
-//            if (CollectionUtils.isEmpty(tags)) {
-//                continue;
-//            }
-
             List<HealthService> healthServices = getHealthServices(serviceName);
             List<ThriftConsulServerNode> serverNodes = Lists.newArrayList();
             filterAndCompoServerNodes(serverNodes, healthServices);
@@ -131,10 +127,6 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
             if (!serverNode.isHealth()) {
                 continue;
             }
-
-//            if (CollectionUtils.isEmpty(serverNode.getTags())) {
-//                continue;
-//            }
 
             serverNodeList.add(serverNode);
         }

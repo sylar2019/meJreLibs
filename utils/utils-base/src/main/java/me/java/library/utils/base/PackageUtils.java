@@ -37,7 +37,16 @@ public class PackageUtils {
         return Splitter.on(".").splitToList(packageName).get(0);
     }
 
-    public static String getPackageName(Class clazz) {
+    public static String getAppBasePackageName() {
+        Class<?> appEntryClass = deduceMainApplicationClass();
+        if (appEntryClass != null) {
+            return getPackageName(appEntryClass);
+        } else {
+            return null;
+        }
+    }
+
+    public static String getPackageName(Class<?> clazz) {
         return clazz.getPackage().getName();
     }
 
@@ -161,4 +170,22 @@ public class PackageUtils {
         return result;
     }
 
+    /**
+     * 查找main函数对应的类
+     *
+     * @return
+     */
+    private static Class<?> deduceMainApplicationClass() {
+        try {
+            StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
+            for (StackTraceElement stackTraceElement : stackTrace) {
+                if ("main".equals(stackTraceElement.getMethodName())) {
+                    return Class.forName(stackTraceElement.getClassName());
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            // Swallow and continue
+        }
+        return null;
+    }
 }

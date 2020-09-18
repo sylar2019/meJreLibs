@@ -1,18 +1,1 @@
 apply from: "../thrift.gradle"
-
-//apply from: gradlesPath + "springboot.gradle"
-//
-//dependencies {
-//    compile "org.apache.thrift:libthrift:${thriftVersion}"
-//
-////    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-////    compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
-////    compile ("com.orbitz.consul:consul-client:${consulVersion}"){
-////        exclude group:'com.squareup.okhttp3', module: 'okhttp'
-////        exclude group:'com.squareup.retrofit2', module: 'retrofit'
-////    }
-//
-//    compile "org.apache.commons:commons-pool2:${commonsPool2Version}"
-//    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
-//    compile "org.apache.commons:commons-collections4:${commonsCollections4Version}"
-//}

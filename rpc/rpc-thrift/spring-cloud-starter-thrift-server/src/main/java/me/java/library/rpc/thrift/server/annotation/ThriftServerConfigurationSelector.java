@@ -1,6 +1,7 @@
 package me.java.library.rpc.thrift.server.annotation;
 
 import com.google.common.collect.Sets;
+import me.java.library.rpc.thrift.server.properties.TServiceModel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,8 @@ public class ThriftServerConfigurationSelector extends SpringFactoryImportSelect
 
     @Override
     protected boolean isEnabled() {
-        String serviceId = getEnvironment().getProperty(SERVER_ID, String.class);
-        String serviceModel = getEnvironment().getProperty(SERVICE_MODEL, String.class);
+        String serviceId = getEnvironment().getProperty(SERVER_ID);
+        String serviceModel = getEnvironment().getProperty(SERVICE_MODEL, TServiceModel.SERVICE_MODEL_DEFAULT);
         Integer port = getEnvironment().getProperty(PORT, Integer.class);
         boolean enableAutoConfiguration = StringUtils.isNotBlank(serviceId) && SERVICE_MODEL_SET.contains(serviceModel) && port > 0;
         if (enableAutoConfiguration) {

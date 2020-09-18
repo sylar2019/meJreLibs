@@ -1,6 +1,7 @@
 package me.java.library.rpc.thrift.client.annotation;
 
 import com.google.common.collect.Sets;
+import me.java.library.rpc.thrift.client.properties.TServiceModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.commons.util.SpringFactoryImportSelector;
@@ -19,7 +20,7 @@ public class ThriftClientConfigurationSelector extends SpringFactoryImportSelect
     @Override
     protected boolean isEnabled() {
         Environment environment = getEnvironment();
-        String serviceModel = environment.getProperty(SERVICE_MODEL, String.class);
+        String serviceModel = environment.getProperty(SERVICE_MODEL, String.class, TServiceModel.SERVICE_MODEL_DEFAULT);
         boolean enableAutoConfiguration = SERVICE_MODEL_SET.contains(serviceModel);
         if (enableAutoConfiguration) {
             LOGGER.info("Enable thrift client auto configuration, service model {}", serviceModel);
