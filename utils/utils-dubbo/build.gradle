@@ -1,3 +1,5 @@
+apply from: gradlesPath + "java.gradle"
+
 /**
  * dubbo    说明参见:https://github.com/alibaba/dubbo
  * dubbox   说明参见:https://github.com/dangdangdotcom/dubbox

@@ -1,5 +1,10 @@
 apply from: gradlesPath + "springboot.gradle"
 
+/**
+ * ### 脚本说明 ###
+ * springBoot 应用（WEB服务）编译脚本
+ */
+
 configurations {
     all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
 }
@@ -12,3 +17,5 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jetty")
     compile("org.springframework.boot:spring-boot-starter-web")
 }
+
+/** ******************************************************************************************/

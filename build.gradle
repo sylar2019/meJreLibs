@@ -1,24 +1,18 @@
-apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/utils.gradle"
-
-ext {
-    gradlesPath = rootProject.rootDir.getAbsolutePath() + "/gradles/"
-}
-
 /** ******************************************************************************************/
 buildscript {
     apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/const.gradle"
-
     repositories {
         mavenLocal()
         maven { url REPO_ALIYUN_GRADLE_PLUGIN }
     }
-
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootPluginVersion}")
+        classpath "gradle.plugin.org.jruyi.gradle:thrift-gradle-plugin:${thriftPluginVersion}"
+        classpath "gradle.plugin.com.google.protobuf:protobuf-gradle-plugin:${gprcPluginVersion}"
     }
 }
-
 /** ******************************************************************************************/
+apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/align.gradle"
 
 allprojects {
     group rootProject.name
@@ -32,11 +26,14 @@ allprojects {
 }
 
 subprojects {
+    project.beforeEvaluate {
+        //在解析setting.gradle之后，开始解析build.gradle之前
+    }
 
+    project.afterEvaluate {
+        //在所有build.gradle解析完成后，开始执行task之前
+        alignVersion()
+    }
 }
 /** ******************************************************************************************/
-
-configure(getJavaProjects()) {
-    apply from: gradlesPath + "java.gradle"
-}
 

@@ -1,5 +1,10 @@
 apply plugin: 'maven'
 
+/**
+ * ### 脚本说明 ###
+ * maven私服上传
+ */
+
 Properties properties = new Properties()
 InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
 properties.load(inputStream)

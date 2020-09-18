@@ -1,10 +1,14 @@
-apply from: gradlesPath + "springcloud.gradle"
+apply from: gradlesPath + "springboot.gradle"
+apply from: gradlesPath + "lombok.gradle"
 
 dependencies {
-    compileOnly("org.springframework.cloud:spring-cloud-starter-sleuth")
-    compileOnly("org.springframework.cloud:spring-cloud-starter-consul-discovery")
-    compileOnly("org.springframework.cloud:spring-cloud-starter-eureka")
+    compile "com.ecwid.consul:consul-api:${consulVersion}"
+
     compile("io.grpc:grpc-netty:${grpcVersion}")
     compile("io.grpc:grpc-protobuf:${grpcVersion}")
     compile("io.grpc:grpc-stub:${grpcVersion}")
+
+    compileOnly("org.springframework.cloud:spring-cloud-starter-sleuth")
+    compileOnly("org.springframework.cloud:spring-cloud-starter-consul-discovery")
+    compileOnly("org.springframework.cloud:spring-cloud-starter-eureka")
 }

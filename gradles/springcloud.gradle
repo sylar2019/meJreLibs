@@ -1,21 +1,18 @@
 apply from: gradlesPath + "springboot-web.gradle"
 
+/**
+ * ### 脚本说明 ###
+ * springCloud 应用编译脚本
+ */
+
 dependencies {
     compile "org.springframework.cloud:spring-cloud-starter"
-    implementation("com.ecwid.consul:consul-api:${consulVersion}") {
-        force = true
-    }
 
     //使用consul作为注册中心
     compile("org.springframework.cloud:spring-cloud-starter-consul-discovery")
 
     //使用consul作为配置中心
     compile("org.springframework.cloud:spring-cloud-starter-consul-config")
-
-    //使用eureka作为注册中心
-//    compile("org.springframework.cloud:spring-cloud-starter-eureka")
-    //使用springcloud默认的配置中心
-//    compile("org.springframework.cloud:spring-cloud-starter-config")
 
 //    //路由代理
 //    compile("org.springframework.cloud:spring-cloud-starter-zuul")
@@ -26,3 +23,5 @@ dependencies {
 //    //断路器，服务降级
 //    compile("org.springframework.cloud:spring-cloud-starter-hystrix")
 }
+
+/** ******************************************************************************************/

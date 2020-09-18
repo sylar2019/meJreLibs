@@ -1,0 +1,32 @@
+apply from: gradlesPath + "const.gradle"
+
+ext {
+    alignVersion = this.&alignVersion
+}
+
+/**
+ * 强制统一依赖库版本
+ */
+void alignVersion() {
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.fasterxml.jackson.core') {
+                details.useVersion "${jacksonVersion}"
+            }
+            if (requested.group == 'io.netty') {
+                if (requested.name == 'netty' || requested.name == 'netty-tcnative-boringssl-static') {
+                    //dont change
+                } else {
+                    details.useVersion "${nettyVersion}"
+                }
+            }
+            if (requested.group == 'com.ecwid.consul') {
+                details.useVersion "${consulVersion}"
+            }
+            if (requested.group == 'com.google.guava' && requested.name == 'guava') {
+                details.useVersion "${guavaVersion}"
+            }
+        }
+    }
+}

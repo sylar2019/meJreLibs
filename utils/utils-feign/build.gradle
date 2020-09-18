@@ -1,3 +1,5 @@
+apply from: gradlesPath + "java.gradle"
+
 configurations {
     all*.exclude group: "org.springframework"
     all*.exclude group: "org.springframework.boot"

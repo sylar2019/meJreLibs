@@ -1,3 +1,5 @@
+apply from: gradlesPath + "java.gradle"
+
 dependencies {
     compile project(":io:io-store:io-store-lwm2m:io-store-lwm2m-common")
     compile("org.eclipse.leshan:leshan-client-cf:1.1.0")
