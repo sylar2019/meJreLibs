@@ -1,5 +1,18 @@
 apply plugin: 'maven'
 
+/**
+ * ### 脚本说明 ###
+ * maven私服上传
+ */
+
+Properties properties = new Properties()
+InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
+properties.load(inputStream)
+
+def NEXUS_USERNAME = properties.getProperty('NEXUS_USERNAME')
+def NEXUS_PASSWORD = properties.getProperty('NEXUS_PASSWORD')
+
+
 uploadArchives {
     repositories {
         mavenDeployer {
@@ -7,7 +20,7 @@ uploadArchives {
             pom.artifactId = "$project.name"
             pom.version = "$project.version"
 
-            def url = version.endsWith('SNAPSHOT') ? SNAPSHOT_REPOSITORY_URL : RELEASE_REPOSITORY_URL
+            def url = version.endsWith('SNAPSHOT') ? REPO_NEXUS_SNAPSHOT : REPO_NEXUS_RELEASE
             repository(url: url) {
                 authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
             }

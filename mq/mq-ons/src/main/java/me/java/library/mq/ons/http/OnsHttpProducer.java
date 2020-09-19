@@ -1,6 +1,12 @@
 package me.java.library.mq.ons.http;
 
+import com.aliyun.mq.http.MQClient;
+import com.aliyun.mq.http.MQProducer;
+import com.aliyun.mq.http.model.TopicMessage;
+import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
 import me.java.library.mq.base.Message;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.ons.AbstractOnsProducer;
 
 /**
@@ -8,10 +14,20 @@ import me.java.library.mq.ons.AbstractOnsProducer;
  */
 public class OnsHttpProducer extends AbstractOnsProducer {
 
+    /**
+     * Topic 所属实例 ID，默认实例为空
+     */
+    String instanceId;
+    MQClient mqClient;
 
-    @Override
-    public Object getNativeProducer() {
-        return null;
+    public OnsHttpProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
+        instanceId = mqProperties.getAttr("instanceId");
+
+        mqClient = new MQClient(
+                mqProperties.getBrokers(),
+                mqProperties.getAccessKey(),
+                mqProperties.getSecretKey());
     }
 
     @Override
@@ -20,28 +36,27 @@ public class OnsHttpProducer extends AbstractOnsProducer {
     }
 
     @Override
-    protected void onStop() {
-
+    protected void onStop() throws Exception {
+        mqClient.close();
     }
 
     @Override
-    public Object send(Message message) throws Exception {
-
-        HttpResult result = HttpUtil.sendMsg(
-                brokers,
-                getAccessKey(),
-                getSecretKey(),
-                groupId,
-                message.getTopic(),
-                message.getTags(),
-                message.getKeys(),
-                message.getContent());
-
-        if (result.getStatusCode() == HttpStatusCode.OK_WRITE) {
-            return result;
+    protected Object onSend(Message message) throws Exception {
+        final String topic = message.getTopic();
+        MQProducer producer;
+        if (Strings.isNullOrEmpty(instanceId)) {
+            producer = mqClient.getProducer(topic);
         } else {
-            throw new Exception(result.toString());
+            producer = mqClient.getProducer(instanceId, topic);
         }
+
+        byte[] body = message.getContent().getBytes(Charsets.UTF_8);
+        TopicMessage pubMsg = new TopicMessage(body, message.getTag());
+        if (message.getKey() != null) {
+            pubMsg.setMessageKey(message.getKey());
+        }
+
+        return producer.publishMessage(pubMsg);
     }
 
 }

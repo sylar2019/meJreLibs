@@ -1,5 +1,6 @@
+apply from: gradlesPath + "java.gradle"
+
 dependencies {
-    compile("com.google.guava:guava:${guavaVersion}")
     compile("com.github.rholder:guava-retrying:2.0.0")
     compile("joda-time:joda-time:${jodatimeVersion}")
 

@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -75,8 +76,8 @@ public class ApplicationTest {
     @Test
     public void findById() {
         String id = "5ae6cc3507efe62dd4f87276";
-        Foo foo = fooRepository.findOne(id);
-        System.out.println(foo == null ? "nothing" : foo);
+        Optional<Foo> foo = Optional.ofNullable(fooRepository.findOne(id));
+        System.out.println(foo.isPresent() ? foo : "NULL");
     }
 
     @Test
@@ -92,7 +93,7 @@ public class ApplicationTest {
         //模糊查询
         Criteria criteria = Criteria.where("name").regex(".*?" + "sylar" + ".*");
         query.addCriteria(criteria);
-        query.with(new Sort(Sort.Direction.DESC, "name"));
+        query.with(new Sort(new Sort.Order("name")));
 
         Page<Foo> page;
         page = fooRepository.find(query);

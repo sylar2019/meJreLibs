@@ -1,0 +1,7 @@
+apply from: gradlesPath + "springboot.gradle"
+
+dependencies {
+    compile project(":mq:mq-base")
+    compile project(":utils:utils-spring")
+    compile("org.springframework.boot:spring-boot-starter-amqp")
+}

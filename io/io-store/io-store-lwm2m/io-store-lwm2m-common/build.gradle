@@ -1,0 +1,7 @@
+apply from: gradlesPath + "java.gradle"
+
+dependencies {
+    compile project(":io:io-base")
+    compile("org.eclipse.leshan:leshan-core:1.1.0")
+    compile("commons-cli:commons-cli:+")
+}

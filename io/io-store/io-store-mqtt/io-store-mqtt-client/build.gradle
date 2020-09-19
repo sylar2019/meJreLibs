@@ -1,0 +1,6 @@
+apply from: gradlesPath + "java.gradle"
+
+dependencies {
+    compile project(":io:io-store:io-store-mqtt:io-store-mqtt-common")
+    compile("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+}

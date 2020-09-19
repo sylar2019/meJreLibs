@@ -1,7 +1,17 @@
 apply from: gradlesPath + "springboot.gradle"
 
 dependencies {
+    compile project(":common")
     compile project(":mq:mq-kafka")
     compile project(":mq:mq-ons")
     compile project(":mq:mq-rocketmq")
+    compile project(":mq:mq-rabbitmq")
+    compile project(":mq:mq-redis")
+    compile project(":mq:mq-local")
+
+    compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
 }
+
+compileJava.dependsOn(processResources)

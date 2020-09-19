@@ -1,4 +1,5 @@
 apply from: gradlesPath + "springboot-web.gradle"
+
 dependencies {
     compile("com.github.tobato:fastdfs-client:1.26.1-RELEASE")
 }

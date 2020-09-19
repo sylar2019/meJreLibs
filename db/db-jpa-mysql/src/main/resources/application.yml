@@ -10,7 +10,6 @@ spring.jpa:
 spring.datasource:
   #    driver-class-name: com.mysql.cj.jdbc.Driver #需要 8.0+的 mysql-connector-java
   driver-class-name: com.mysql.jdbc.Driver
-  #    url: jdbc:mysql://localhost:4000/test?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&useSSL=false&autoReconnect=true    # tidb
   url: jdbc:mysql://localhost:3306/test?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&useSSL=false&autoReconnect=true   # mysql
   username: root
   password: 123456

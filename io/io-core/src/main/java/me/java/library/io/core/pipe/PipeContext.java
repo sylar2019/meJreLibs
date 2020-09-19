@@ -1,19 +1,16 @@
 package me.java.library.io.core.pipe;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import io.netty.channel.Channel;
-import me.java.library.io.Terminal;
+import me.java.library.io.base.cmd.Terminal;
+import me.java.library.io.base.pipe.Pipe;
 
-import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
  * File Name             :  PipeContext
  *
  * @author :  sylar
- * Create                :  2019-11-14
+ * Create                :  2020/7/24
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -24,50 +21,31 @@ import java.util.Set;
  * CopyRight             : COPYRIGHT(c) allthings.vip  All Rights Reserved
  * *******************************************************************************************
  */
-public class PipeContext {
+public interface PipeContext {
 
-    private Pipe pipe;
+    Pipe getPipe();
 
-    private Map<Channel, Set<Terminal>> channelTerminals;
-    private Map<Terminal, TerminalState> terminalStateMap;
+    void initChannel(Channel channel);
 
-    public PipeContext(Pipe pipe) {
-        this.pipe = pipe;
+    void activeChannel(Channel channel);
 
-        channelTerminals = Maps.newConcurrentMap();
-        terminalStateMap = Maps.newConcurrentMap();
-    }
+    void inactiveChannel(Channel channel);
 
-    public Pipe getPipe() {
-        return pipe;
-    }
+    void addTerminal(Channel channel, Terminal terminal);
 
-    public Set<Terminal> getTerminals(Channel channel) {
-        if (!channelTerminals.containsKey(channel)) {
-            channelTerminals.put(channel, Sets.newConcurrentHashSet());
-        }
-        return channelTerminals.get(channel);
-    }
+    void removeTerminal(Terminal terminal);
 
-    public TerminalState getTerminalState(Terminal terminal) {
-        if (!terminalStateMap.containsKey(terminal)) {
-            terminalStateMap.put(terminal, new TerminalState(terminal));
-        }
-        return terminalStateMap.get(terminal);
-    }
+    boolean containsChannel(Channel channel);
 
-    @Override
-    public int hashCode() {
-        return pipe.hashCode();
-    }
+    boolean containsTerminal(Terminal terminal);
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof PipeContext) {
-            PipeContext other = (PipeContext) obj;
-            return Objects.equals(other.pipe, pipe);
-        }
+    Set<Channel> getChannels();
 
-        return false;
-    }
+    Set<Terminal> getTerminals();
+
+    Set<Terminal> getTerminalsByChannel(Channel channel);
+
+    Channel getChannel(Terminal terminal);
+
+    void dispose();
 }

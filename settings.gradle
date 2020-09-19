@@ -2,34 +2,8 @@ rootProject.name = "meJreLibs"
 
 include ":common"
 
-include ":component"
-include ":component:component-acl"
-include ":component:component-flowable"
-
-include ":db"
-include ":db:db-hbase"
-include ":db:db-jpa"
-include ":db:db-jpa-mysql"
-include ":db:db-jpa-oracle"
-include ":db:db-mongo"
-
-include ":io"
-include ":io:io-base"
-include ":io:io-core"
-include ":io:io-core-cloud"
-include ":io:io-core-edge"
-//include ":io:io-core-mqtt"
-//include ":io:io-gnu-io-rxtx"
-
-include ":mq"
-include ":mq:mq-base"
-include ":mq:mq-kafka"
-include ":mq:mq-ons"
-include ":mq:mq-rocketmq"
-include ":mq:mq-starter"
 
 include ":utils"
-include ":utils:utils-aoe"
 include ":utils:utils-base"
 include ":utils:utils-disruptor"
 include ":utils:utils-dubbo"
@@ -38,7 +12,66 @@ include ":utils:utils-fastdfs"
 include ":utils:utils-feign"
 include ":utils:utils-gps"
 include ":utils:utils-httpclient"
-include ":utils:utils-jetty"
 include ":utils:utils-redis"
+include ":utils:utils-rxtx"
+include ":utils:utils-spring"
 include ":utils:utils-task"
+
+
+include ":db"
+include ":db:db-hbase"
+include ":db:db-jpa"
+include ":db:db-jpa-mysql"
+include ":db:db-jpa-oracle"
+include ":db:db-mongo"
+
+include ":mq"
+include ":mq:mq-base"
+include ":mq:mq-kafka"
+include ":mq:mq-ons"
+include ":mq:mq-rabbitmq"
+include ":mq:mq-rocketmq"
+include ":mq:mq-redis"
+include ":mq:mq-local"
+include ":mq:mq-starter"
+
+include ":rpc"
+include ":rpc:rpc-grpc"
+include ":rpc:rpc-grpc:spring-cloud-starter-grpc-client"
+include ":rpc:rpc-grpc:spring-cloud-starter-grpc-server"
+
+include ":rpc:rpc-thrift"
+include ":rpc:rpc-thrift:spring-cloud-starter-thrift-client"
+include ":rpc:rpc-thrift:spring-cloud-starter-thrift-server"
+
+include ":io"
+include ":io:io-base"
+include ":io:io-core"
+include ":io:io-mq"
+
+include ":io:io-store"
+include ":io:io-store:io-store-socket"
+include ":io:io-store:io-store-websocket"
+
+include ":io:io-store:io-store-coap"
+
+include ":io:io-store:io-store-lwm2m"
+include ":io:io-store:io-store-lwm2m:io-store-lwm2m-common"
+include ":io:io-store:io-store-lwm2m:io-store-lwm2m-client"
+include ":io:io-store:io-store-lwm2m:io-store-lwm2m-server"
+include ":io:io-store:io-store-lwm2m:io-store-lwm2m-bsserver"
+
+include ":io:io-store:io-store-mqtt"
+include ":io:io-store:io-store-mqtt:io-store-mqtt-common"
+include ":io:io-store:io-store-mqtt:io-store-mqtt-client"
+include ":io:io-store:io-store-mqtt:io-store-mqtt-server"
+
+include ":io:io-store:io-store-rxtx"
+include ":io:io-store:io-store-modbus"
+include ":io:io-store:io-store-opc"
+
+
+include ":biz"
+include ":biz:biz-acl"
+
 

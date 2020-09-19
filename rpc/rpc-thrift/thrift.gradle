@@ -1,0 +1,12 @@
+apply from: gradlesPath + "springboot.gradle"
+
+dependencies {
+    compile project(":utils:utils-base")
+    compile "org.springframework.cloud:spring-cloud-commons"
+    compile "com.ecwid.consul:consul-api:${consulVersion}"
+    compile "org.apache.thrift:libthrift:${thriftVersion}"
+
+    compile "org.apache.commons:commons-pool2:${commonsPool2Version}"
+    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    compile "org.apache.commons:commons-collections4:${commonsCollections4Version}"
+}

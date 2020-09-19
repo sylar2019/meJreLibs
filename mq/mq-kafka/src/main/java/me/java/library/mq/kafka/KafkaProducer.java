@@ -1,11 +1,14 @@
 package me.java.library.mq.kafka;
 
+import com.google.common.base.Charsets;
 import me.java.library.mq.base.AbstractProducer;
 import me.java.library.mq.base.Message;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
+import me.java.library.mq.base.MqProperties;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
+
+import java.util.Properties;
 
 /**
  * @author :  sylar
@@ -25,36 +28,45 @@ public class KafkaProducer extends AbstractProducer {
 
     protected org.apache.kafka.clients.producer.KafkaProducer<String, String> producer;
 
-    @Override
-    public Object getNativeProducer() {
-        return producer;
+    public KafkaProducer(MqProperties mqProperties, String groupId, String clientId) {
+        super(mqProperties, groupId, clientId);
     }
+
 
     @Override
     protected void onStart() throws Exception {
-        this.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
-        //kafka producer 没有group概念，可省略
-        this.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        this.put(ProducerConfig.CLIENT_ID_CONFIG, clientId);
+        Properties properties = new Properties();
+        //序列化类型配置
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        //服务端地址
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, mqProperties.getBrokers());
+        //客户端ID
+        properties.put(ProducerConfig.CLIENT_ID_CONFIG, clientId);
+        //重试 0 为不启用重试机制
+        properties.put(ProducerConfig.RETRIES_CONFIG, 1);
+        //控制批处理大小，单位为字节
+        properties.put(ProducerConfig.BATCH_SIZE_CONFIG, 1024 * 16);
+        //批量发送，延迟为1毫秒，启用该功能能有效减少生产者发送消息次数，从而提高并发量
+        properties.put(ProducerConfig.LINGER_MS_CONFIG, 1);
 
-        this.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        this.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-        producer = new org.apache.kafka.clients.producer.KafkaProducer<>(this);
+        producer = new org.apache.kafka.clients.producer.KafkaProducer<>(properties);
     }
 
     @Override
-    protected void onStop() {
-        if (producer != null) {
-            producer.close();
-            producer = null;
+    protected void onStop() throws Exception {
+        producer.close();
+        producer = null;
+    }
+
+    @Override
+    protected Object onSend(Message message) throws Exception {
+        ProducerRecord<String, String> record = new ProducerRecord<>(message.getTopic(), message.getKey(), message.getContent());
+        if (message.getTag() != null) {
+            record.headers().add(KafkaConst.MESSAGE_TAG, message.getTag().getBytes(Charsets.UTF_8));
         }
-    }
-
-    @Override
-    public Object send(Message message) throws Exception {
-        checkOnSend(message);
-        return producer.send(new ProducerRecord<>(message.getTopic(), message.getContent()));
+        return producer.send(record);
     }
 
 }

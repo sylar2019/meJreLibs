@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * File Name             :  FastdfsAssistant
@@ -32,7 +31,11 @@ public class FastdfsAssistant {
     private FastFileStorageClient storageClient;
 
     public String uploadFile(MultipartFile file) throws IOException {
-        StorePath storePath = storageClient.uploadFile((InputStream) file.getInputStream(), file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()), null);
+        StorePath storePath = storageClient.uploadFile(
+                file.getInputStream(),
+                file.getSize(),
+                FilenameUtils.getExtension(file.getOriginalFilename()),
+                null);
         return getResAccessUrl(storePath);
     }
 
@@ -52,11 +55,9 @@ public class FastdfsAssistant {
         } catch (FdfsUnsupportStorePathException e) {
             e.printStackTrace();
         }
-
     }
 
-
     private String getResAccessUrl(StorePath storePath) {
-        return "http://10.0.0.12:8080" + "/" + storePath.getFullPath();
+        return "http://127.0.0.1:8080" + "/" + storePath.getFullPath();
     }
 }

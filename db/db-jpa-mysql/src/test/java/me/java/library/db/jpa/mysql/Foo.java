@@ -48,4 +48,5 @@ public class Foo extends AbstractJpaEntityWithAutoId {
         return this;
     }
 
+
 }

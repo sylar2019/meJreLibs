@@ -1,9 +1,6 @@
 package me.java.library.mq.base;
 
 import com.google.common.base.Preconditions;
-import me.java.library.utils.base.NetworkUtils;
-
-import java.util.Properties;
 
 /**
  * @author :  sylar
@@ -19,19 +16,23 @@ import java.util.Properties;
  * @CopyRight : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractClient extends Properties implements Client {
+public abstract class AbstractClient implements Client {
 
-    protected String brokers;
-    protected String groupId = "DEFAULT";
-    protected String clientId = NetworkUtils.getHostMac();
+    protected MqProperties mqProperties;
+    protected String groupId;
+    protected String clientId;
 
-    @Override
-    public String getBrokers() {
-        return brokers;
+    public AbstractClient(MqProperties mqProperties, String groupId, String clientId) {
+        this.mqProperties = mqProperties;
+        this.groupId = groupId;
+        this.clientId = clientId;
+
+        checkParameters();
     }
 
-    public void setBrokers(String brokers) {
-        this.brokers = brokers;
+    @Override
+    public MqProperties getMqProperties() {
+        return mqProperties;
     }
 
     @Override
@@ -39,28 +40,16 @@ public abstract class AbstractClient extends Properties implements Client {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
     @Override
     public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    @Override
-    public Properties getProperties() {
-        return this;
-    }
-
     public void checkParameters() {
-        Preconditions.checkNotNull(this.brokers, "brokers is null");
+        Preconditions.checkNotNull(this.mqProperties, "mqProperties is null");
+        Preconditions.checkNotNull(this.mqProperties.getProvider(), "provider is null");
+        Preconditions.checkNotNull(this.mqProperties.getBrokers(), "brokers is null");
         Preconditions.checkNotNull(this.groupId, "groupId is null");
         Preconditions.checkNotNull(this.clientId, "clientId is null");
     }
-
 }

@@ -30,7 +30,7 @@ public class LocalCacheService<K, V> implements Serviceable {
     public LocalCacheService(long maximumSize) {
         this(CacheBuilder
                 .newBuilder()
-                .maximumSize(1000000L)
+                .maximumSize(maximumSize)
                 .build());
     }
 

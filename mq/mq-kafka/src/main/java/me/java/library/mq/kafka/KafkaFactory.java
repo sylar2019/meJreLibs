@@ -2,6 +2,7 @@ package me.java.library.mq.kafka;
 
 import me.java.library.mq.base.AbstractFactory;
 import me.java.library.mq.base.Consumer;
+import me.java.library.mq.base.MqProperties;
 import me.java.library.mq.base.Producer;
 
 /**
@@ -19,18 +20,18 @@ import me.java.library.mq.base.Producer;
  * *******************************************************************************************
  */
 public class KafkaFactory extends AbstractFactory {
-
-    @Override
-    public Producer createProducer(String brokers, String groupId, String clientId) {
-        KafkaProducer producer = new KafkaProducer();
-        setClient(producer, brokers, groupId, clientId);
-        return producer;
+    public KafkaFactory(MqProperties mqProperties) {
+        super(mqProperties);
     }
 
     @Override
-    public Consumer createConsumer(String brokers, String groupId, String clientId) {
-        KafkaConsumer consumer = new KafkaConsumer();
-        setClient(consumer, brokers, groupId, clientId);
-        return consumer;
+    public Producer createProducer(String producerGroupId, String clientId) {
+        return new KafkaProducer(mqProperties, producerGroupId, clientId);
     }
+
+    @Override
+    public Consumer createConsumer(String consumerGroupId, String clientId) {
+        return new KafkaConsumer(mqProperties, consumerGroupId, clientId);
+    }
+
 }

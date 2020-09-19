@@ -1,0 +1,6 @@
+apply from: gradlesPath + "java.gradle"
+
+dependencies {
+    compile project(":utils:utils-rxtx")
+    compile project(":io:io-core")
+}

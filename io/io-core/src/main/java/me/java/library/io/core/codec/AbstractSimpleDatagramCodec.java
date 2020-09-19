@@ -1,8 +1,6 @@
 package me.java.library.io.core.codec;
 
-import io.netty.channel.ChannelHandler;
-
-import java.util.LinkedHashMap;
+import io.netty.channel.Channel;
 
 /**
  * File Name             : AbstractSimpleStreamCodec
@@ -26,14 +24,19 @@ public abstract class AbstractSimpleDatagramCodec extends AbstractSimpleCodec {
     }
 
     @Override
-    protected void putHandlers(LinkedHashMap<String, ChannelHandler> handlers) {
-        super.putHandlers(handlers);
+    public void initPipeLine(Channel channel) throws Exception {
+        super.initPipeLine(channel);
 
         //in
-        handlers.put(Codec.HANDLER_NAME_UDP_DECODER, new UdpDecoder(new SimpleDecoder(simpleCmdResolver)));
-        handlers.put(Codec.HANDLER_NAME_INBOUND_CMD, new InboundCmdHandler());
+        channel.pipeline().addLast(UdpDecoder.HANDLER_NAME, new UdpDecoder(new SimpleDecoder(simpleCmdResolver)));
+        channel.pipeline().addLast(InboundHandler.HANDLER_NAME, new InboundHandler());
 
         //out
-        handlers.put(Codec.HANDLER_NAME_UDP_ENCODER, new UdpEncoder(simpleCmdResolver));
+        channel.pipeline().addLast(UdpEncoder.HANDLER_NAME, new UdpEncoder(simpleCmdResolver));
+
+        //exception
+        channel.pipeline().addLast(ExceptionHandler.HANDLER_NAME, new ExceptionHandler());
     }
+
+
 }

@@ -1,0 +1,10 @@
+apply from: gradlesPath + "java.gradle"
+
+dependencies {
+    compile project(":io:io-base")
+
+    compile 'org.openscada.utgard:org.openscada.opc.lib:1.5.0'
+    compile 'org.openscada.utgard:org.openscada.opc.dcom:1.5.0'
+    compile 'org.bouncycastle:bcprov-jdk15on:1.66'
+    compile 'org.jinterop:j-interop:3.0.0'
+}

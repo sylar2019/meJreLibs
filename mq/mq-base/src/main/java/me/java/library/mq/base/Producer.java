@@ -15,32 +15,22 @@ package me.java.library.mq.base;
  * *******************************************************************************************
  */
 public interface Producer extends Client {
-
-    /**
-     * 获取内部原生的producer
-     *
-     * @return 原生的producer
-     */
-    Object getNativeProducer();
-
     /**
      * 发送消息前需要先启动
-     *
-     * @throws Exception
      */
-    void start() throws Exception;
+    void start();
+
+    /**
+     * 不再需要发消息时可以停用，以节省资源
+     */
+    void stop();
 
     /**
      * 发送消息
      *
      * @param message 待发送的消息
      * @return
-     * @throws Exception
      */
-    Object send(Message message) throws Exception;
+    Object send(Message message);
 
-    /**
-     * 不再需要发消息时可以停用，以节省资源
-     */
-    void stop();
 }

@@ -1,6 +1,6 @@
+apply from: gradlesPath + "java.gradle"
+
 dependencies {
     compile project(":mq:mq-base")
-    compile("org.apache.rocketmq:rocketmq-client:4.2.0")
-
-
+    compile("org.apache.rocketmq:rocketmq-client:4.7.1")
 }

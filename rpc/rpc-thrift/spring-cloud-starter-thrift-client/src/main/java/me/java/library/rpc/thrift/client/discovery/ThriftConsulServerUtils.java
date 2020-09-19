@@ -1,0 +1,91 @@
+package me.java.library.rpc.thrift.client.discovery;
+
+import com.ecwid.consul.v1.health.model.Check;
+import com.ecwid.consul.v1.health.model.HealthService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ThriftConsulServerUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ThriftConsulServerUtils.class);
+
+    private static final String CHECK_STATUS_PASSING = "passing";
+
+    private ThriftConsulServerUtils() {
+    }
+
+    public static String findHost(HealthService healthService) {
+        HealthService.Service service = healthService.getService();
+        HealthService.Node node = healthService.getNode();
+        if (StringUtils.hasText(service.getAddress())) {
+            return fixIPv6Address(service.getAddress());
+        } else {
+            return StringUtils.hasText(node.getAddress()) ? fixIPv6Address(node.getAddress()) : node.getNode();
+        }
+    }
+
+    private static String fixIPv6Address(String address) {
+        try {
+            InetAddress inetAddress = InetAddress.getByName(address);
+            return inetAddress instanceof Inet6Address ? "[" + inetAddress.getHostName() + "]" : address;
+        } catch (UnknownHostException var2) {
+            LOGGER.error("Not InetAddress: " + address + " , resolved as is.");
+            return address;
+        }
+    }
+
+    public static List<String> getTags(HealthService healthService) {
+        return healthService.getService().getTags();
+    }
+
+
+    public static boolean isPassingCheck(HealthService healthService) {
+        List<Check> healthChecks = healthService.getChecks();
+        for (Check healthCheck : healthChecks) {
+            if (healthCheck.getStatus() != Check.CheckStatus.PASSING) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public static Map<String, String> getMetadata(HealthService healthService) {
+        return getMetadata(healthService.getService().getTags());
+    }
+
+    private static Map<String, String> getMetadata(List<String> tags) {
+        LinkedHashMap<String, String> metadata = new LinkedHashMap<>();
+        if (tags != null) {
+
+            for (String tag : tags) {
+                String[] parts = StringUtils.delimitedListToStringArray(tag, "=");
+                switch (parts.length) {
+                    case 0:
+                        break;
+                    case 1:
+                        metadata.put(parts[0], parts[0]);
+                        break;
+                    case 2:
+                        metadata.put(parts[0], parts[1]);
+                        break;
+                    default:
+                        String[] end = Arrays.copyOfRange(parts, 1, parts.length);
+                        metadata.put(parts[0], StringUtils.arrayToDelimitedString(end, "="));
+                }
+            }
+        }
+
+        return metadata;
+    }
+
+}

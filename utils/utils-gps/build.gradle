@@ -1,2 +1,4 @@
+apply from: gradlesPath + "java.gradle"
+
 dependencies {
 }

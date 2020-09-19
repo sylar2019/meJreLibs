@@ -3,10 +3,7 @@ package me.java.library.io.core.codec;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.DatagramPacketDecoder;
-import me.java.library.io.Cmd;
-import me.java.library.io.core.pipe.PipeAssistant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import me.java.library.io.base.cmd.Cmd;
 
 import java.util.List;
 
@@ -25,7 +22,7 @@ import java.util.List;
  * *******************************************************************************************
  */
 public class UdpDecoder extends DatagramPacketDecoder {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    public final static String HANDLER_NAME = UdpDecoder.class.getSimpleName();
 
     public UdpDecoder(SimpleDecoder simpleDecoder) {
         super(simpleDecoder);
@@ -35,24 +32,13 @@ public class UdpDecoder extends DatagramPacketDecoder {
     protected void decode(ChannelHandlerContext ctx, DatagramPacket datagramPacket, List<Object> out) throws Exception {
         super.decode(ctx, datagramPacket, out);
 
-        try {
-            //记录每个udp client 的地址端口信息
-            for (Object obj : out) {
-                if (obj instanceof Cmd) {
-                    Cmd cmd = (Cmd) obj;
-                    cmd.getFrom().setInetSocketAddress(datagramPacket.sender());
-                    cmd.getTo().setInetSocketAddress(datagramPacket.recipient());
-
-                    PipeAssistant.getInstance()
-                            .getPipeContext(ctx.channel())
-                            .getTerminalState(cmd.getFrom())
-                            .setSocketAddress(datagramPacket.sender());
-                }
+        //记录每个udp client 的socket端口信息
+        for (Object obj : out) {
+            if (obj instanceof Cmd) {
+                Cmd cmd = (Cmd) obj;
+                cmd.getFrom().setInetSocketAddress(datagramPacket.sender());
+                cmd.getTo().setInetSocketAddress(datagramPacket.recipient());
             }
-        } catch (Exception e) {
-            logger.error("decode error:" + e.getMessage());
-            e.printStackTrace();
-            PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
         }
 
     }

@@ -1,0 +1,5 @@
+# AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+me.java.library.rpc.grpc.server.GrpcServerAutoConfiguration,\
+me.java.library.rpc.grpc.server.GrpcMetedataEurekaConfiguration,\
+me.java.library.rpc.grpc.server.GrpcMetedataConsulConfiguration

@@ -16,9 +16,14 @@ package me.java.library.mq.base;
  */
 public abstract class AbstractFactory implements Factory {
 
-    protected void setClient(AbstractClient client, String brokers, String groupId, String clientId) {
-        client.setBrokers(brokers);
-        client.setGroupId(groupId);
-        client.setClientId(clientId);
+    protected MqProperties mqProperties;
+
+    public AbstractFactory(MqProperties mqProperties) {
+        this.mqProperties = mqProperties;
+    }
+
+    @Override
+    public MqProperties getMqProperties() {
+        return mqProperties;
     }
 }

@@ -1,0 +1,5 @@
+apply from: "../grpc.gradle"
+
+dependencies {
+    compile("io.grpc:grpc-services:${grpcVersion}")
+}

@@ -3,6 +3,7 @@ package me.java.library.common.service;
 import com.github.rholder.retry.*;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
+import me.java.library.utils.base.ConcurrentUtils;
 
 import java.util.concurrent.*;
 
@@ -24,24 +25,9 @@ import java.util.concurrent.*;
 @SuppressWarnings({"UnstableApiUsage"})
 public class ConcurrentService implements Serviceable {
 
-    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
-    private static final int CORE_POOL_SIZE = CPU_COUNT + 1;
-    private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
-    private static final int KEEP_ALIVE = 1;
-    private static final TimeUnit KEEP_ALIVE_UNIT = TimeUnit.SECONDS;
-    private ThreadPoolExecutor executor = new ThreadPoolExecutor(
-            CORE_POOL_SIZE,
-            MAXIMUM_POOL_SIZE,
-            KEEP_ALIVE,
-            KEEP_ALIVE_UNIT,
-            new LinkedBlockingQueue<>(128),
-            new ThreadFactoryBuilder().setNameFormat("common-pool-%d").build(),
-            new ThreadPoolExecutor.AbortPolicy());
-    private ScheduledThreadPoolExecutor scheduledExecutor = new ScheduledThreadPoolExecutor(
-            CORE_POOL_SIZE,
-            new ThreadFactoryBuilder().setNameFormat("common-scheduled-pool-%d").build(),
-            new ThreadPoolExecutor.AbortPolicy()
-    );
+    private ThreadPoolExecutor executor = ConcurrentUtils.simpleThreadPool();
+    private ScheduledThreadPoolExecutor scheduledExecutor = ConcurrentUtils.simpleScheduledThreadPool();
+
     private ListeningExecutorService service = MoreExecutors.listeningDecorator(executor);
     private ListeningScheduledExecutorService scheduledService = MoreExecutors.listeningDecorator(scheduledExecutor);
 
@@ -124,7 +110,6 @@ public class ConcurrentService implements Serviceable {
 
     /**
      * 执行异步任务（有超时及重试机制），任务有返回值
-     * Retryer 参见 https://blog.csdn.net/noaman_wgs/article/details/85940207
      *
      * @param callable
      * @param timeout
@@ -139,8 +124,7 @@ public class ConcurrentService implements Serviceable {
         Preconditions.checkState(timeout > 0);
         Preconditions.checkState(tryTimes > 0);
 
-        Retryer<T> retryer = RetryerBuilder.
-                <T>newBuilder()
+        Retryer<T> retryer = RetryerBuilder.<T>newBuilder()
                 .retryIfException()
                 .withRetryListener(listener)
                 .withWaitStrategy(WaitStrategies.fixedWait(timeout, unit))
@@ -149,12 +133,7 @@ public class ConcurrentService implements Serviceable {
 
         ListenableFuture<T> future = null;
         try {
-            future = postCallable(new Callable<T>() {
-                @Override
-                public T call() throws Exception {
-                    return retryer.call(callable);
-                }
-            }, callback);
+            future = postCallable(() -> retryer.call(callable), callback);
         } catch (Exception e) {
             callback.onFailure(e);
         }

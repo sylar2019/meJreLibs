@@ -2,7 +2,7 @@ package me.java.library.io.core.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import me.java.library.io.Cmd;
+import me.java.library.io.base.cmd.Cmd;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public interface SimpleCmdResolver {
      * @param buf ByteBuf
      * @return Cmd
      */
-    List<Cmd> bufToCmd(ChannelHandlerContext ctx, ByteBuf buf);
+    List<Cmd> bufToCmd(ChannelHandlerContext ctx, ByteBuf buf) throws Exception;
 
     /**
      * Cmd 转换成 ByteBuffer
@@ -37,5 +37,5 @@ public interface SimpleCmdResolver {
      * @param cmd Cmd
      * @return ByteBuffer
      */
-    ByteBuf cmdToBuf(Cmd cmd);
+    ByteBuf cmdToBuf(Cmd cmd) throws Exception;
 }

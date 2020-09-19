@@ -1,0 +1,15 @@
+<div>
+    <div class="form-group" ng-show="writable()">
+        <label class="col-sm-4 control-label" for="value"
+               ng-style="{'font-weight':resource.def.mandatory ? 'bold':'normal'}">{{resource.def.name}}{{resource.def.mandatory
+            ? "*":""}}</label>
+        <div class="col-sm-8">
+            <input class="form-control" id="value" name="value" ng-disabled="resource.fileValue"
+                   ng-model="resource.stringValue" placeholder="{{resource.placeholder}}">
+        </div>
+        <div class="col-sm-4" ng-if="resource.def.type == 'opaque'"></div>
+        <div class="col-sm-8" ng-if="resource.def.type == 'opaque'" ng-submit="submit()">
+            <input file-model="resource.fileValue" id="writeInputFile" ng-disabled="resource.stringValue" type="file">
+        </div>
+    </div>
+</div>

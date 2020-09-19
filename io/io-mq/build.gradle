@@ -1,0 +1,6 @@
+apply from: gradlesPath + "springboot.gradle"
+
+dependencies {
+    compile project(":io:io-base")
+    compile project(":mq:mq-starter")
+}

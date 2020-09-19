@@ -2,7 +2,7 @@ package me.java.library.io.core.utils;
 
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
-import me.java.library.io.core.pipe.Pipe;
+import me.java.library.io.base.pipe.Pipe;
 
 /**
  * File Name             :  ChannelAttr

@@ -16,6 +16,7 @@ package me.java.library.utils.base;
  * *******************************************************************************************
  */
 public enum OS {
+    //@formatter:off
     Any("any"),
     Linux("Linux"),
     Mac_OS("Mac OS"),
@@ -35,6 +36,7 @@ public enum OS {
     OSF1("OSF1"),
     OpenVMS("OpenVMS"),
     Others("Others"),
+    //@formatter:on
     ;
 
     private String description;

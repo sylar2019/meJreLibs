@@ -22,6 +22,7 @@ import org.springframework.jmx.support.RegistrationPolicy;
  */
 @Configuration
 @Import(FdfsClientConfig.class)
-@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)  // 解决jmx重复注册bean的问题
+//解决jmx重复注册bean的问题
+@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 public class FastdfsConfig {
 }

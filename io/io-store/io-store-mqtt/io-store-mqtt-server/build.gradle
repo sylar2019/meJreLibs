@@ -1,0 +1,14 @@
+apply from: gradlesPath + "java.gradle"
+
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    //TODO 要求JDK 11 以上
+//    implementation 'com.github.hivemq.hivemq-community-edition:hivemq-community-edition-embedded:master-SNAPSHOT'
+}
+
+dependencies {
+    compile project(":io:io-store:io-store-mqtt:io-store-mqtt-common")
+}

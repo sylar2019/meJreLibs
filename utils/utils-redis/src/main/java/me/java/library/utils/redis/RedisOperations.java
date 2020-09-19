@@ -64,12 +64,12 @@ public class RedisOperations {
         return stringRedisTemplate.boundValueOps(key);
     }
 
-    public BoundHashOperations<String, String, String> opsMap(String key) {
-        return stringRedisTemplate.boundHashOps(key);
-    }
-
     public BoundListOperations<String, String> opsList(String key) {
         return stringRedisTemplate.boundListOps(key);
+    }
+
+    public BoundHashOperations<String, String, String> opsHash(String key) {
+        return stringRedisTemplate.boundHashOps(key);
     }
 
     public BoundSetOperations<String, String> opsSet(String key) {
@@ -83,5 +83,4 @@ public class RedisOperations {
     public BoundGeoOperations<String, String> opsGeo(String key) {
         return stringRedisTemplate.boundGeoOps(key);
     }
-
 }

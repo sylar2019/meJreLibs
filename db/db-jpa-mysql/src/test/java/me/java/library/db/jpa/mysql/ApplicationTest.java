@@ -74,8 +74,8 @@ public class ApplicationTest {
 
     @Test
     public void findById() {
-        Foo foo = fooJpaRepository.findOne(101L);
-        System.out.println(foo == null ? "nothing" : foo);
+        Foo foo = fooJpaRepository.getOne(101L);
+        System.out.println(foo);
     }
 
     @Test

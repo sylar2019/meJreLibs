@@ -1,3 +1,8 @@
+/**
+ * ### 脚本说明 ###
+ * 工具定义
+ */
+
 ext {
     isAndroidApp = this.&isAndroidApp
     isApp = this.&isApp

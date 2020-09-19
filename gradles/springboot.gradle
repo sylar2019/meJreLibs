@@ -1,15 +1,35 @@
+apply from: gradlesPath + "java.gradle"
+
+/**
+ * ### 脚本说明 ###
+ * springBoot 应用（无WEB服务）编译脚本
+ */
+
+/**
+ * org.springframework.boot 插件说明
+ * 除了可以规定使用的springboot的版本外,同时还增加了名为bootRun和bootJar的gradle任务,
+ * 当项目作为一个其他项目的依赖时,不应引入该插件, 否则会提示打包失败,找不到MainClass,
+ * 当项目是作为一个完整的项目时,引入此依赖,那么即规定了springboot的版本
+ */
 apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
 
 dependencies {
     //boot
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-
-    compile("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
-    compile("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
-    compile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+    compile "org.springframework.boot:spring-boot-starter"
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
     //test
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
+
+/** ******************************************************************************************/
+
 
 

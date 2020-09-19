@@ -1,15 +1,15 @@
 package me.java.library.io.core.codec;
 
+import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import me.java.library.io.Cmd;
-import me.java.library.io.core.pipe.PipeAssistant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import me.java.library.io.base.cmd.Cmd;
 
+import java.net.InetSocketAddress;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author :  sylar
@@ -27,30 +27,32 @@ import java.util.List;
  */
 @ChannelHandler.Sharable
 public class SimpleDecoder extends MessageToMessageDecoder<ByteBuf> {
+    public final static String HANDLER_NAME = SimpleDecoder.class.getSimpleName();
 
     protected SimpleCmdResolver simpleCmdResolver;
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public SimpleDecoder(SimpleCmdResolver simpleCmdResolver) {
-        super();
+        Preconditions.checkNotNull(simpleCmdResolver);
         this.simpleCmdResolver = simpleCmdResolver;
     }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) throws Exception {
-        if (simpleCmdResolver == null) {
-            return;
+        List<Cmd> msgList = simpleCmdResolver.bufToCmd(ctx, buf);
+        if (msgList != null && !msgList.isEmpty()) {
+            out.addAll(msgList);
         }
 
-        try {
-            List<Cmd> msgList = simpleCmdResolver.bufToCmd(ctx, buf);
-            if (msgList != null && !msgList.isEmpty()) {
-                out.addAll(msgList);
+        //设置发送端的socketAddress
+        assert msgList != null;
+        msgList.forEach(cmd -> {
+            if (cmd.getFrom().getInetSocketAddress().getPort() == 0) {
+                Optional.ofNullable(ctx.channel().remoteAddress()).ifPresent(v -> {
+                    if (v instanceof InetSocketAddress) {
+                        cmd.getFrom().setInetSocketAddress((InetSocketAddress) v);
+                    }
+                });
             }
-        } catch (Exception e) {
-            logger.error("decode error:" + e.getMessage());
-            e.printStackTrace();
-            PipeAssistant.getInstance().onThrowable(ctx.channel(), e);
-        }
+        });
     }
 }

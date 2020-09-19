@@ -1,0 +1,11 @@
+apply from: gradlesPath + "java.gradle"
+
+repositories {
+    maven { url "https://maven.mangoautomation.net/repository/ias-release/" }
+}
+
+dependencies {
+    compile project(":utils:utils-rxtx")
+    compile project(":io:io-base")
+    compile("com.infiniteautomation:modbus4j:3.0.3")
+}

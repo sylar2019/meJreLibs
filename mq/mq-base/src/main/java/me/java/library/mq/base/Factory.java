@@ -1,5 +1,7 @@
 package me.java.library.mq.base;
 
+import java.util.UUID;
+
 /**
  * @author :  sylar
  * @FileName :  Factory
@@ -17,22 +19,45 @@ package me.java.library.mq.base;
 public interface Factory {
 
     /**
+     * MQ配置参数
+     *
+     * @return
+     */
+    MqProperties getMqProperties();
+
+    /**
+     * 创建生产者,使用默认生产组
+     *
+     * @return
+     */
+    default Producer createProducer() {
+        return createProducer(MqProperties.DEFAULT_PRODUCER_GROUP, UUID.randomUUID().toString());
+    }
+
+    /**
      * 创建生产者
      *
-     * @param brokers  MQ服务器地址列表
-     * @param groupId  client端所属groups标识
-     * @param clientId client标识
+     * @param producerGroupId client端所属groups标识
+     * @param clientId        client标识
      * @return MQ消息生产者
      */
-    Producer createProducer(String brokers, String groupId, String clientId);
+    Producer createProducer(String producerGroupId, String clientId);
+
+    /**
+     * 创建消费者,使用默认消费组
+     *
+     * @return
+     */
+    default Consumer createConsumer() {
+        return createConsumer(MqProperties.DEFAULT_CONSUMER_GROUP, UUID.randomUUID().toString());
+    }
 
     /**
      * 创建消费者
      *
-     * @param brokers  MQ服务器地址列表
-     * @param groupId  client端所属groups标识
-     * @param clientId client标识
+     * @param consumerGroupId client端所属groups标识
+     * @param clientId        client标识
      * @return MQ消息消费者
      */
-    Consumer createConsumer(String brokers, String groupId, String clientId);
+    Consumer createConsumer(String consumerGroupId, String clientId);
 }

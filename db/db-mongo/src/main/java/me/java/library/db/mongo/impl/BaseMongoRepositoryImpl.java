@@ -78,7 +78,7 @@ public class BaseMongoRepositoryImpl<T, ID extends Serializable> extends SimpleM
     public T findOne(Query query) {
         query = query.limit(1);
         List<T> list = mongoTemplate.find(query, getEntityClass());
-        if (list != null && list.size() > 0) {
+        if (list.size() > 0) {
             return list.get(0);
         } else {
             return null;

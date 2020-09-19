@@ -4,19 +4,20 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.*;
-import me.java.library.common.service.ConcurrentService;
-import me.java.library.io.*;
-import me.java.library.io.core.bus.Bus;
+import io.netty.handler.timeout.IdleStateEvent;
+import me.java.library.io.base.cmd.Cmd;
+import me.java.library.io.base.cmd.Terminal;
+import me.java.library.io.base.pipe.BasePipe;
+import me.java.library.io.base.pipe.PipeParams;
 import me.java.library.io.core.codec.Codec;
-import me.java.library.io.core.utils.ChannelAttr;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import me.java.library.io.core.codec.ExceptionHandler;
+import me.java.library.io.core.codec.InboundHandler;
+import me.java.library.io.core.sync.SyncPairity;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * File Name             :  AbstractPipe
+ * File Name             :  BasePipe
  *
  * @author :  sylar
  * Create :  2019-10-05
@@ -30,224 +31,143 @@ import java.util.concurrent.TimeUnit;
  * CopyRight             : COPYRIGHT(c) me.iot.com   All Rights Reserved
  * *******************************************************************************************
  */
-public abstract class AbstractPipe<B extends Bus, C extends Codec> implements Pipe<B, C> {
-    protected Logger logger = LoggerFactory.getLogger(getClass());
+public abstract class AbstractPipe<Params extends PipeParams, C extends Codec>
+        extends BasePipe<Params> {
 
-    protected Host host;
-    protected B bus;
     protected C codec;
+    protected EventLoopGroup masterLoop;
+    protected SyncPairity syncPairity;
+    protected PipeContext pipeContext = new PipeContextImpl(this);
+    protected ChannelKeeper channelKeeper = new ChannelKeeper() {
+        @Override
+        public void onChannleActive(ChannelHandlerContext ctx) {
+            pipeContext.activeChannel(ctx.channel());
+        }
 
-    protected EventLoopGroup group;
-    protected ChannelFuture future;
-    protected Channel channel;
-    protected PipeWatcher watcher;
-    protected boolean isRunning;
-    protected long daemonSeconds = 5;
-    protected PipeAssistant pipeAssistant = PipeAssistant.getInstance();
+        @Override
+        public void onChannleInactive(ChannelHandlerContext ctx) {
+            pipeContext.getTerminalsByChannel(ctx.channel()).forEach(terminal -> {
+                AbstractPipe.this.onConnectionChanged(terminal, false);
+            });
 
-    public AbstractPipe(B bus, C codec) {
-        this("default", bus, codec);
-    }
+            pipeContext.inactiveChannel(ctx.channel());
+        }
 
-    public AbstractPipe(String hostCode, B bus, C codec) {
-        pipeAssistant.addPipe(this);
-        this.host = new HostNode(hostCode);
-        this.bus = bus;
+        @Override
+        public void onIdleStateEvent(ChannelHandlerContext ctx, IdleStateEvent event) {
+            System.out.println("### onChannelIdle: " + event);
+            //空闲时断开(可能是死连接),释放连接资源
+            ctx.close();
+        }
+
+        @Override
+        public void onReceived(ChannelHandlerContext ctx, Cmd cmd) {
+            Terminal terminal = cmd.getFrom();
+            boolean hasTerminal = pipeContext.containsTerminal(terminal);
+            pipeContext.addTerminal(ctx.channel(), terminal);
+            if (!hasTerminal) {
+                AbstractPipe.this.onConnectionChanged(terminal, true);
+            }
+
+            AbstractPipe.this.onReceived(cmd);
+        }
+
+        @Override
+        public void onException(ChannelHandlerContext ctx, Throwable cause, boolean isInbound) {
+            AbstractPipe.this.onException(cause);
+        }
+    };
+    protected ChannelInitializer<Channel> channelInitializer = new ChannelInitializer<Channel>() {
+        @Override
+        protected void initChannel(Channel channel) throws Exception {
+            pipeContext.initChannel(channel);
+            codec.initPipeLine(channel);
+
+            InboundHandler inboundHandler = (InboundHandler) channel.pipeline().get(InboundHandler.HANDLER_NAME);
+            if (inboundHandler != null) {
+                inboundHandler.setChannelKeeper(channelKeeper);
+            }
+
+            ExceptionHandler exceptionHandler = (ExceptionHandler) channel.pipeline().get(ExceptionHandler.HANDLER_NAME);
+            if (exceptionHandler != null) {
+                exceptionHandler.setChannelKeeper(channelKeeper);
+            }
+        }
+    };
+
+    public AbstractPipe(Params params, C codec) {
+        super(params);
         this.codec = codec;
+    }
 
-        onHostStateChanged(true);
-        registHook();
+    public SyncPairity getSyncPairity() {
+        return syncPairity;
+    }
+
+    public void setSyncPairity(SyncPairity syncPairity) {
+        this.syncPairity = syncPairity;
     }
 
     @Override
-    public Host getHost() {
-        return host;
+    protected void checkOnStart() {
+        super.checkOnStart();
+        Preconditions.checkNotNull(codec, "codec is null");
     }
 
     @Override
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-    @Override
-    public long getDaemonSeconds() {
-        return daemonSeconds;
-    }
-
-    @Override
-    public void setDaemonSeconds(long seconds) {
-        this.daemonSeconds = seconds;
-    }
-
-    @Override
-    public PipeWatcher getWatcher() {
-        return watcher;
-    }
-
-    @Override
-    public void setWatcher(PipeWatcher watcher) {
-        this.watcher = watcher;
-    }
-
-    @Override
-    public void start() {
-        if (isRunning) {
-            return;
+    protected boolean onStop() throws Exception {
+        if (masterLoop != null) {
+            masterLoop.shutdownGracefully().sync();
         }
+        return true;
+    }
+
+    @Override
+    protected Cmd onSyncSend(Cmd request, long timeout, TimeUnit unit) throws Exception {
+        SyncPairity syncPairity = getSyncPairity();
+        Preconditions.checkNotNull(syncPairity, "syncPairity can not be null");
 
         try {
-            Preconditions.checkNotNull(bus, "bus is null");
-            Preconditions.checkNotNull(codec, "codec is null");
-            future = onStart();
-            future.addListener(new ConnectionListener());
+            syncPairity.cacheRequest(request);
+            onSend(request);
+            return syncPairity.getResponse(request, timeout, unit);
         } catch (Exception e) {
-            onException(e);
-        }
-    }
-
-    protected abstract ChannelFuture onStart() throws Exception;
-
-    @Override
-    public void stop() {
-        if (!isRunning) {
-            return;
-        }
-
-        try {
-            onStop();
-        } catch (Exception e) {
-            onException(e);
+            e.printStackTrace();
+            throw e;
         } finally {
-            onPipeRunningChanged(false);
-        }
-    }
-
-    protected void onStop() throws Exception {
-        if (future != null && future.channel() != null) {
-            future.channel().close().sync();
-        }
-        if (group != null) {
-            group.shutdownGracefully();
+            syncPairity.cleanCache(request);
         }
     }
 
     @Override
-    public void restart() {
-        stop();
-        start();
+    protected boolean onSend(Cmd request) throws Exception {
+        //查找对应channel
+        Channel channel = pipeContext.getChannel(request.getTo());
+        Preconditions.checkNotNull(channel);
+        Preconditions.checkState(channel.isOpen(), "channel is not open");
+        Preconditions.checkState(channel.isActive(), "channel is not active");
+        Preconditions.checkState(channel.isWritable(), "channle is not writeable");
+        channel.writeAndFlush(request);
+        return true;
     }
 
     @Override
     public void dispose() {
-        stop();
-        pipeAssistant.remove(this);
+        super.dispose();
+        pipeContext.dispose();
     }
 
-    @Override
-    public void send(Cmd cmd) {
-        try {
-            Preconditions.checkNotNull(cmd);
-            Preconditions.checkState(CmdUtils.isValidCmd(cmd));
-
-            //查找对应channel
-            Channel channel = pipeAssistant.getChannel(this, cmd.getTo());
-            Preconditions.checkNotNull(channel);
-            Preconditions.checkState(channel.isActive());
-            channel.writeAndFlush(cmd);
-        } catch (Exception e) {
-            onException(e);
-        }
-    }
-
-    protected ChannelFuture bind(AbstractBootstrap b, String host, int port) throws InterruptedException {
+    protected ChannelFuture bind(AbstractBootstrap<?, ?> bootstrap, String host, int port) {
         ChannelFuture future;
         if (!Strings.isNullOrEmpty(host) && port >= 0) {
-            future = b.bind(host, port);
+            future = bootstrap.bind(host, port);
         } else if (port >= 0) {
-            future = b.bind(port);
+            future = bootstrap.bind(port);
         } else {
-            future = b.bind(0);
+            future = bootstrap.bind(0);
         }
 
         return future;
-    }
-
-    protected ChannelInitializer<Channel> getChannelInitializer() {
-        return new ChannelInitializer<Channel>() {
-            @Override
-            protected void initChannel(Channel channel) throws Exception {
-                AbstractPipe.this.channel = channel;
-                ChannelAttr.set(channel, ChannelAttr.ATTR_PIPE, AbstractPipe.this);
-
-                //add channelHanders from codec
-                //codec.getChannelHandlers().forEach((k, v) -> channel.pipeline().addLast(k, v)); //android 不支持
-                for (Map.Entry<String, ChannelHandler> entry : codec.getChannelHandlers().entrySet()) {
-                    channel.pipeline().addLast(entry.getKey(), entry.getValue());
-                }
-            }
-        };
-    }
-
-    private void registHook() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            onHostStateChanged(false);
-        }));
-    }
-
-    protected void onHostStateChanged(boolean isRunning) {
-        if (watcher != null) {
-            ConcurrentService.getInstance().postRunnable(() -> watcher.onHostStateChanged(AbstractPipe.this.host, isRunning));
-        }
-    }
-
-    protected void onPipeRunningChanged(boolean isRunning) {
-        if (this.isRunning == isRunning) {
-            return;
-        }
-
-        this.isRunning = isRunning;
-        if (watcher != null) {
-            ConcurrentService.getInstance().postRunnable(() -> watcher.onPipeRunningChanged(AbstractPipe.this, isRunning));
-        }
-    }
-
-    protected void onConnectionChanged(Terminal terminal, boolean isConnected) {
-        if (watcher != null) {
-            ConcurrentService.getInstance().postRunnable(() -> watcher.onConnectionChanged(AbstractPipe.this, terminal, isConnected));
-        }
-    }
-
-    protected void onReceived(Cmd cmd) {
-        interceptReceivedCmd(cmd);
-        if (watcher != null) {
-            ConcurrentService.getInstance().postRunnable(() -> watcher.onReceived(AbstractPipe.this, cmd));
-        }
-    }
-
-    protected void onException(Throwable t) {
-        if (watcher != null) {
-            ConcurrentService.getInstance().postRunnable(() -> watcher.onException(AbstractPipe.this, t));
-        }
-    }
-
-    /**
-     * 拦截收到的指令
-     *
-     * @param cmd
-     */
-    protected void interceptReceivedCmd(Cmd cmd) {
-    }
-
-    class ConnectionListener implements ChannelFutureListener {
-        @Override
-        public void operationComplete(final ChannelFuture future) throws Exception {
-            if (future.isSuccess()) {
-                onPipeRunningChanged(true);
-            } else if (daemonSeconds > 0) {
-                final EventLoop loop = future.channel().eventLoop();
-                loop.schedule(AbstractPipe.this::start, daemonSeconds, TimeUnit.SECONDS);
-            }
-        }
     }
 
 }

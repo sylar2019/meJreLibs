@@ -1,0 +1,27 @@
+apply from: gradlesPath + "springboot-web.gradle"
+
+/**
+ * ### 脚本说明 ###
+ * springCloud 应用编译脚本
+ */
+
+dependencies {
+    compile "org.springframework.cloud:spring-cloud-starter"
+
+    //使用consul作为注册中心
+    compile("org.springframework.cloud:spring-cloud-starter-consul-discovery")
+
+    //使用consul作为配置中心
+    compile("org.springframework.cloud:spring-cloud-starter-consul-config")
+
+//    //路由代理
+//    compile("org.springframework.cloud:spring-cloud-starter-zuul")
+//    //客户端负载均衡
+//    compile("org.springframework.cloud:spring-cloud-starter-ribbon")
+//    //http client template
+//    compile("org.springframework.cloud:spring-cloud-starter-feign")
+//    //断路器，服务降级
+//    compile("org.springframework.cloud:spring-cloud-starter-hystrix")
+}
+
+/** ******************************************************************************************/
