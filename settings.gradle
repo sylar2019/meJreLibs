@@ -37,8 +37,8 @@ include ":mq:mq-starter"
 
 include ":rpc"
 include ":rpc:rpc-grpc"
-include ":rpc:rpc-grpc:spring-cloud-starter-grpc-client"
-include ":rpc:rpc-grpc:spring-cloud-starter-grpc-server"
+//include ":rpc:rpc-grpc:spring-cloud-starter-grpc-client"
+//include ":rpc:rpc-grpc:spring-cloud-starter-grpc-server"
 
 include ":rpc:rpc-thrift"
 include ":rpc:rpc-thrift:spring-cloud-starter-thrift-client"
@@ -52,7 +52,9 @@ include ":io:io-mq"
 include ":io:io-store"
 include ":io:io-store:io-store-socket"
 include ":io:io-store:io-store-websocket"
-
+include ":io:io-store:io-store-rxtx"
+include ":io:io-store:io-store-modbus"
+include ":io:io-store:io-store-opc"
 include ":io:io-store:io-store-coap"
 
 include ":io:io-store:io-store-lwm2m"
@@ -65,11 +67,6 @@ include ":io:io-store:io-store-mqtt"
 include ":io:io-store:io-store-mqtt:io-store-mqtt-common"
 include ":io:io-store:io-store-mqtt:io-store-mqtt-client"
 include ":io:io-store:io-store-mqtt:io-store-mqtt-server"
-
-include ":io:io-store:io-store-rxtx"
-include ":io:io-store:io-store-modbus"
-include ":io:io-store:io-store-opc"
-
 
 include ":biz"
 include ":biz:biz-acl"
