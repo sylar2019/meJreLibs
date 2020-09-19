@@ -1,7 +1,8 @@
+apply from: gradlesPath + "java.gradle"
+
 ext {
     jettyVersion = "9.4.26.v20200117"
 }
-
 
 dependencies {
     compile project(":io:io-store:io-store-lwm2m:io-store-lwm2m-common")

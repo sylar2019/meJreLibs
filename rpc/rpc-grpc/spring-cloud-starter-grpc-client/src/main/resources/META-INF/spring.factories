@@ -1,0 +1,3 @@
+# AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+me.java.library.rpc.grpc.client.GrpcClientAutoConfiguration

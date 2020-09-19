@@ -1,3 +1,5 @@
+apply from: gradlesPath + "java.gradle"
+
 dependencies {
     compile project(":io:io-base")
 

@@ -22,16 +22,16 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 @SuppressWarnings("deprecation")
 public enum PasswordAlgorithm {
     //@formatter:off
-    bcrypt  ("bcrypt", new BCryptPasswordEncoder()),
-    ldap    ("ldap", new LdapShaPasswordEncoder()),
-    MD4     ("MD4", new Md4PasswordEncoder()),
-    MD5     ("MD5", new MessageDigestPasswordEncoder("MD5")),
-    noop    ("noop", NoOpPasswordEncoder.getInstance()),
-    pbkdf2  ("pbkdf2", new Pbkdf2PasswordEncoder()),
-    scrypt  ("scrypt", new SCryptPasswordEncoder()),
-    SHA1    ("SHA-1", new MessageDigestPasswordEncoder("SHA-1")),
-    SHA256  ("SHA-256", new MessageDigestPasswordEncoder("SHA-256")),
-    sha256  ("sha256", new StandardPasswordEncoder()),
+    bcrypt("bcrypt", new BCryptPasswordEncoder()),
+    ldap("ldap", new LdapShaPasswordEncoder()),
+    MD4("MD4", new Md4PasswordEncoder()),
+    MD5("MD5", new MessageDigestPasswordEncoder("MD5")),
+    noop("noop", NoOpPasswordEncoder.getInstance()),
+    pbkdf2("pbkdf2", new Pbkdf2PasswordEncoder()),
+    scrypt("scrypt", new SCryptPasswordEncoder()),
+    SHA1("SHA-1", new MessageDigestPasswordEncoder("SHA-1")),
+    SHA256("SHA-256", new MessageDigestPasswordEncoder("SHA-256")),
+    sha256("sha256", new StandardPasswordEncoder()),
     //@formatter:on
     ;
 

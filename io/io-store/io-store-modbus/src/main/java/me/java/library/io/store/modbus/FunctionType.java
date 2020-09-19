@@ -28,17 +28,17 @@ import com.serotonin.modbus4j.code.FunctionCode;
  */
 public enum FunctionType {
     //@formatter:off
-    READ_COILS                  (FunctionCode.READ_COILS),
-    READ_DISCRETE_INPUTS        (FunctionCode.READ_DISCRETE_INPUTS),
-    READ_HOLDING_REGISTERS      (FunctionCode.READ_HOLDING_REGISTERS),
-    READ_INPUT_REGISTERS        (FunctionCode.READ_INPUT_REGISTERS),
-    WRITE_COIL                  (FunctionCode.WRITE_COIL),
-    WRITE_REGISTER              (FunctionCode.WRITE_REGISTER),
-    READ_EXCEPTION_STATUS       (FunctionCode.READ_EXCEPTION_STATUS),
-    WRITE_COILS                 (FunctionCode.WRITE_COILS),
-    WRITE_REGISTERS             (FunctionCode.WRITE_REGISTERS),
-    REPORT_SLAVE_ID             (FunctionCode.REPORT_SLAVE_ID),
-    WRITE_MASK_REGISTER         (FunctionCode.WRITE_MASK_REGISTER),
+    READ_COILS(FunctionCode.READ_COILS),
+    READ_DISCRETE_INPUTS(FunctionCode.READ_DISCRETE_INPUTS),
+    READ_HOLDING_REGISTERS(FunctionCode.READ_HOLDING_REGISTERS),
+    READ_INPUT_REGISTERS(FunctionCode.READ_INPUT_REGISTERS),
+    WRITE_COIL(FunctionCode.WRITE_COIL),
+    WRITE_REGISTER(FunctionCode.WRITE_REGISTER),
+    READ_EXCEPTION_STATUS(FunctionCode.READ_EXCEPTION_STATUS),
+    WRITE_COILS(FunctionCode.WRITE_COILS),
+    WRITE_REGISTERS(FunctionCode.WRITE_REGISTERS),
+    REPORT_SLAVE_ID(FunctionCode.REPORT_SLAVE_ID),
+    WRITE_MASK_REGISTER(FunctionCode.WRITE_MASK_REGISTER),
     //@formatter:on
     ;
 

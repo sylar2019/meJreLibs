@@ -1,0 +1,16 @@
+apply from: gradlesPath + "java.gradle"
+apply plugin: 'org.jruyi.thrift'
+
+/**
+ * ### 脚本说明 ###
+ * thrift-api 编译脚本
+ */
+
+dependencies {
+    compile "org.apache.thrift:libthrift:${thriftVersion}"
+}
+
+compileThrift {
+}
+
+/** ******************************************************************************************/

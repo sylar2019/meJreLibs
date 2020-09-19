@@ -20,9 +20,9 @@ import me.java.library.common.model.po.BaseEnum;
 public enum AclMode implements BaseEnum {
 
     //@formatter:off
-    None        (0, "无认证模式","无需认证"),
-    ByLogin     (1, "认证模式","仅认证登录"),
-    ByRole      (2, "角色模式","以角色授权"),
+    None(0, "无认证模式", "无需认证"),
+    ByLogin(1, "认证模式", "仅认证登录"),
+    ByRole(2, "角色模式", "以角色授权"),
     ;
     //@formatter:on
 

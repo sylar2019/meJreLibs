@@ -1,0 +1,14 @@
+apply from: gradlesPath + "const.gradle"
+
+/**
+ * ### 脚本说明 ###
+ * 支持lombok
+ */
+
+dependencies {
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+}

@@ -1,25 +1,16 @@
-apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/utils.gradle"
-
-ext {
-    gradlesPath = rootProject.rootDir.getAbsolutePath() + "/gradles/"
-}
-
 /** ******************************************************************************************/
 buildscript {
     apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/const.gradle"
-
     repositories {
-        maven { url "https://maven.aliyun.com/repository/public/" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
         mavenLocal()
-        mavenCentral()
+        maven { url REPO_ALIYUN_GRADLE_PLUGIN }
     }
-
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootPluginVersion}")
+        classpath "gradle.plugin.org.jruyi.gradle:thrift-gradle-plugin:${thriftPluginVersion}"
+        classpath "gradle.plugin.com.google.protobuf:protobuf-gradle-plugin:${gprcPluginVersion}"
     }
 }
-
 /** ******************************************************************************************/
 
 allprojects {
@@ -27,36 +18,45 @@ allprojects {
     version "2.0.0"
 
     repositories {
-        maven { url "https://maven.aliyun.com/repository/public/" }
         mavenLocal()
-        mavenCentral()
+        maven { url REPO_ALIYUN_PUBLIC }
+        maven { url REPO_NEXUS_PUBLIC }
     }
 }
 
 subprojects {
-    configurations {
-        all*.exclude group: "org.slf4j", module: "log4j-over-slf4j"
-        all*.exclude group: "ch.qos.logback"
-        all*.exclude group: "log4j"
+    project.beforeEvaluate {
+        //在解析setting.gradle之后，开始解析build.gradle之前
+        println("### beforeEvaluate: " + project.name)
     }
 
-    configurations.all {
-        //不使用缓存，使用仓库中最新的包
-        resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds' // 动态版本 x.x.+
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'//  变化版本 x.x.x
-        resolutionStrategy {
-            force "com.google.guava:guava:${guavaVersion}"
-            force "io.netty:netty-all:${nettyVersion}"
+        configurations.all {
+            resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+                def requested = details.requested
+                def fullName = String.format("%s:%s:%s", requested.group, requested.name, requested.version)
+                println("requested: " + fullName)
 
-            force("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
-            force("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
-            force("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+                if (requested.group == 'com.fasterxml.jackson.core') {
+                    details.useVersion "${jacksonVersion}"
+                    println("force version")
+                }
+                if (requested.group == 'io.netty') {
+                    if (requested.name != 'netty'
+                            && requested.name != 'netty-tcnative-boringssl-static') {
+                        details.useVersion "${nettyVersion}"
+                        println("force version")
+                    }
+                }
+                if (requested.group == 'com.ecwid.consul') {
+                    details.useVersion "${consulVersion}"
+                    println("force version")
+                }
+                if (requested.group == 'com.google.guava' && requested.name == 'guava') {
+                    details.useVersion "${guavaVersion}"
+                    println("force version")
+                }
+            }
         }
     }
-}
-
-configure(getJavaProjects()) {
-    apply from: gradlesPath + "java.gradle"
-}
-
 /** ******************************************************************************************/
+

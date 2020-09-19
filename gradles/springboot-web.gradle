@@ -1,9 +1,21 @@
+apply from: gradlesPath + "springboot.gradle"
+
+/**
+ * ### 脚本说明 ###
+ * springBoot 应用（WEB服务）编译脚本
+ */
+
 configurations {
     all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
 }
 
 dependencies {
+    //应用监控与健康检查
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+
     //替换web容器
-    compile("org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    compile("org.springframework.boot:spring-boot-starter-web")
 }
+
+/** ******************************************************************************************/

@@ -154,7 +154,7 @@ public abstract class AbstractCrudService<
     }
 
     protected void onDelete(ID id) {
-        getRepository().deleteById(id);
+        getRepository().delete(id);
     }
 
     protected void afterDelete(ID id) {
@@ -199,7 +199,7 @@ public abstract class AbstractCrudService<
      */
     protected void checkExisted(ID id) {
         checkNullId(id);
-        Preconditions.checkState(getRepository().existsById(id), "not found id:" + id);
+        Preconditions.checkState(getRepository().exists(id), "not found id:" + id);
     }
 
     protected void checkNullId(ID id) {

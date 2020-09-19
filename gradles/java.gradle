@@ -2,7 +2,11 @@ apply from: gradlesPath + "const.gradle"
 apply from: gradlesPath + "utils.gradle"
 apply from: gradlesPath + "maven.gradle"
 
+apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply plugin: 'java-library'
+
+/** ******************************************************************************************/
 
 //JVM 版本号要求
 sourceCompatibility = 1.8
@@ -15,22 +19,17 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
+/** ******************************************************************************************/
+compileJava.dependsOn(processResources)
 dependencies {
     //支持jar包以文件形式引入
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    //支持 guava logging
     compile("com.google.guava:guava:${guavaVersion}")
+    compile "javax.annotation:javax.annotation-api:${annotationApiVersion}"
     compile("org.springframework.boot:spring-boot-starter-logging:${springBootVersion}")
 
     //支持 junit
     testCompile("junit:junit:${junitVersion}")
-
-    //支持 lombok
-//    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-//    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-//    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-//    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
 /** ******************************************************************************************/
@@ -43,4 +42,9 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 artifacts {
     archives sourcesJar
 }
+
+clean {
+    delete 'out'
+}
+
 /** ******************************************************************************************/

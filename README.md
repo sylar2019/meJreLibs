@@ -3,6 +3,13 @@
 - springCloud     Hoxton.SR7
 
 ### 项目库结构
+
+使用tree命令显示项目结构
+
+```
+tree -d -L 2
+```
+
 ```
 
 ├── common
@@ -31,6 +38,9 @@
 │   ├── mq-ons
 │   ├── mq-rocketmq
 │   └── mq-starter
+├── rpc
+│   ├── rpc-grpc
+│   └── rpc-thrift
 └── utils
     ├── utils-base
     ├── utils-disruptor

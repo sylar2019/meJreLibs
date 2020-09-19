@@ -20,8 +20,8 @@ import me.java.library.common.model.po.BaseEnum;
 public enum AclResourceType implements BaseEnum {
 
     //@formatter:off
-    Menu     (1, "菜单"),
-    Func     (2, "功能"),
+    Menu(1, "菜单"),
+    Func(2, "功能"),
     ;
     //@formatter:on
 

@@ -116,11 +116,6 @@ public abstract class AbstractPipe<Params extends PipeParams, C extends Codec>
 
     @Override
     protected boolean onStop() throws Exception {
-        Channel channel = pipeContext.getChannel(null);
-        if (channel != null) {
-            channel.close().sync();
-        }
-
         if (masterLoop != null) {
             masterLoop.shutdownGracefully().sync();
         }
