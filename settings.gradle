@@ -71,7 +71,7 @@ include ":io:io-store:io-store-modbus"
 include ":io:io-store:io-store-opc"
 
 
-include ":bix"
+include ":biz"
 include ":biz:biz-acl"
 
 

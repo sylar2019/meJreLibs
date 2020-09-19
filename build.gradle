@@ -12,7 +12,6 @@ buildscript {
     }
 }
 /** ******************************************************************************************/
-apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/align.gradle"
 
 allprojects {
     group rootProject.name
@@ -28,11 +27,40 @@ allprojects {
 subprojects {
     project.beforeEvaluate {
         //在解析setting.gradle之后，开始解析build.gradle之前
+        println("### beforeEvaluate: " + project.name)
     }
 
     project.afterEvaluate {
         //在所有build.gradle解析完成后，开始执行task之前
-        alignVersion()
+        println("### afterEvaluate: " + project.name)
+
+        configurations.all {
+            resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+                def requested = details.requested
+                def fullName = String.format("%s:%s:%s", requested.group, requested.name, requested.version)
+                println("requested: " + fullName)
+
+                if (requested.group == 'com.fasterxml.jackson.core') {
+                    details.useVersion "${jacksonVersion}"
+                    println("force version")
+                }
+                if (requested.group == 'io.netty') {
+                    if (requested.name != 'netty'
+                            && requested.name != 'netty-tcnative-boringssl-static') {
+                        details.useVersion "${nettyVersion}"
+                        println("force version")
+                    }
+                }
+                if (requested.group == 'com.ecwid.consul') {
+                    details.useVersion "${consulVersion}"
+                    println("force version")
+                }
+                if (requested.group == 'com.google.guava' && requested.name == 'guava') {
+                    details.useVersion "${guavaVersion}"
+                    println("force version")
+                }
+            }
+        }
     }
 }
 /** ******************************************************************************************/
