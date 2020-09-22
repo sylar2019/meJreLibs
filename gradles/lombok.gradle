@@ -1,5 +1,3 @@
-apply from: gradlesPath + "const.gradle"
-
 /**
  * ### 脚本说明 ###
  * 支持lombok

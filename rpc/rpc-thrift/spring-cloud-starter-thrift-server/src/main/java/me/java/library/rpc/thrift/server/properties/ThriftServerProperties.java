@@ -1,6 +1,7 @@
 package me.java.library.rpc.thrift.server.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.SocketUtils;
 
 @ConfigurationProperties(prefix = "spring.thrift.server")
 public class ThriftServerProperties {
@@ -13,7 +14,7 @@ public class ThriftServerProperties {
     /**
      * 服务端口号
      */
-    private int port = 25000;
+    private int port = 0;
 
     /**
      * 服务注册信息（默认不开启）
@@ -52,6 +53,9 @@ public class ThriftServerProperties {
     }
 
     public int getPort() {
+        if (this.port == 0) {
+            this.port = SocketUtils.findAvailableTcpPort();
+        }
         return port;
     }
 

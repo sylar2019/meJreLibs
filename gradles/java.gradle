@@ -1,4 +1,3 @@
-apply from: gradlesPath + "const.gradle"
 apply from: gradlesPath + "utils.gradle"
 apply from: gradlesPath + "maven.gradle"
 
