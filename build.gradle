@@ -1,12 +1,10 @@
 /** ******************************************************************************************/
 buildscript {
-    apply from: rootProject.rootDir.getAbsolutePath() + "/gradles/const.gradle"
     repositories {
-        mavenLocal()
         maven { url REPO_ALIYUN_GRADLE_PLUGIN }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootPluginVersion}")
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootPluginVersion}"
         classpath "gradle.plugin.org.jruyi.gradle:thrift-gradle-plugin:${thriftPluginVersion}"
         classpath "gradle.plugin.com.google.protobuf:protobuf-gradle-plugin:${gprcPluginVersion}"
     }
@@ -25,6 +23,11 @@ allprojects {
 }
 
 subprojects {
+    ext{
+        rootPath = rootProject.rootDir.getAbsolutePath()
+        gradlesPath = "${rootPath}/gradles/"
+    }
+
     project.beforeEvaluate {
         //在解析setting.gradle之后，开始解析build.gradle之前
         println("### beforeEvaluate: " + project.name)
@@ -37,31 +40,34 @@ subprojects {
         configurations.all {
             resolutionStrategy.eachDependency { DependencyResolveDetails details ->
                 def requested = details.requested
-                def fullName = String.format("%s:%s:%s", requested.group, requested.name, requested.version)
-                println("requested: " + fullName)
-
-                if (requested.group == 'com.fasterxml.jackson.core') {
+                if (requested.group == 'com.fasterxml.jackson.core' && requested.version != "${jacksonVersion}") {
                     details.useVersion "${jacksonVersion}"
-                    println("force version")
+                    printVersion(details, "${jacksonVersion}")
                 }
-                if (requested.group == 'io.netty') {
+                if (requested.group == 'io.netty' && requested.version != "${nettyVersion}") {
                     if (requested.name != 'netty'
                             && requested.name != 'netty-tcnative-boringssl-static') {
                         details.useVersion "${nettyVersion}"
-                        println("force version")
+                        printVersion(details, "${nettyVersion}")
                     }
                 }
-                if (requested.group == 'com.ecwid.consul') {
+                if (requested.group == 'com.ecwid.consul' && requested.version != "${consulVersion}") {
                     details.useVersion "${consulVersion}"
-                    println("force version")
+                    printVersion(details, "${consulVersion}")
                 }
-                if (requested.group == 'com.google.guava' && requested.name == 'guava') {
+                if (requested.group == 'com.google.guava' && requested.name == 'guava' && requested.version != "${guavaVersion}") {
                     details.useVersion "${guavaVersion}"
-                    println("force version")
+                    printVersion(details, "${guavaVersion}")
                 }
             }
         }
     }
+}
+
+def printVersion(DependencyResolveDetails details, String version) {
+    def requested = details.requested
+    def forced = String.format("%s:%s:%s", requested.group, requested.name, version)
+    println("### force version:" + forced)
 }
 /** ******************************************************************************************/
 
