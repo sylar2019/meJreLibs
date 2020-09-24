@@ -27,7 +27,7 @@ public class ThriftServerDiscoveryConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ThriftServerRegister thriftServerRØegister(ConsulClient consulClient, ThriftServerProperties thriftServerProperties) throws UnknownHostException {
+    public ThriftServerRegister thriftServerRegister(ConsulClient consulClient, ThriftServerProperties thriftServerProperties) throws UnknownHostException {
         return new ThriftServerRegister(consulClient, thriftServerProperties);
     }
 
