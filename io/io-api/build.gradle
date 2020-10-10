@@ -1,0 +1,5 @@
+apply from: gradlesPath + "rpc-thrift-api.gradle"
+
+dependencies {
+    compile project(":common")
+}

@@ -24,7 +24,7 @@ public class LocalCacheService<K, V> implements Serviceable {
     private Cache<K, V> cache;
 
     public LocalCacheService() {
-        this(1000000L);
+        this(1024*1024);
     }
 
     public LocalCacheService(long maximumSize) {

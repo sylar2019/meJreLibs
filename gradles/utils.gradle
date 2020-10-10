@@ -4,7 +4,7 @@
  */
 
 ext{
-    appParh = buildDir.getParentFile().getAbsolutePath()
+    appPath = buildDir.getParentFile().getAbsolutePath()
     appJar = String.format("%s-%s.jar", project.name, project.version)
 }
 

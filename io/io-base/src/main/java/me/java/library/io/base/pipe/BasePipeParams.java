@@ -13,15 +13,18 @@ import java.time.Duration;
  * *******************************************************************************************
  */
 public class BasePipeParams implements PipeParams {
+    public static String ANY_IPV4 = "0.0.0.0";
+    public static int ANY_PORT = 0;
+
     protected Host host = Host.LOCAL;
     protected boolean isDaemon = true;
     protected Duration daemonDuration = Duration.ofSeconds(5);
     protected boolean isEventEnabled = true;
 
-    protected String localHost = "0.0.0.0";
-    protected Integer localPort = 0;
-    protected String remoteHost = "0.0.0.0";
-    protected Integer remotePort = 0;
+    protected String localHost = ANY_IPV4;
+    protected Integer localPort = ANY_PORT;
+    protected String remoteHost = ANY_IPV4;
+    protected Integer remotePort = ANY_PORT;
 
     @Override
     public Host getHost() {
