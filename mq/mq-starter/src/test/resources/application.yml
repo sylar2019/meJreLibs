@@ -39,7 +39,7 @@ mq:
 ##ons.mqtt
 #mq:
 #  provider: ons.mqtt
-#  brokers: [据实填写]
+#  brokers:
 #  accessKey: [据实填写]
 #  secretKey: [据实填写]
 

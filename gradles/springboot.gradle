@@ -11,8 +11,8 @@ apply from: gradlesPath + "java.gradle"
  * 当项目作为一个其他项目的依赖时,不应引入该插件, 否则会提示打包失败,找不到MainClass,
  * 当项目是作为一个完整的项目时,引入此依赖,那么即规定了springboot的版本
  */
-apply plugin: "org.springframework.boot"
-apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 dependencyManagement {
     imports {

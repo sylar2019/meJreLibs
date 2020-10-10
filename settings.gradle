@@ -2,7 +2,6 @@ rootProject.name = "meJreLibs"
 
 include ":common"
 
-
 include ":utils"
 include ":utils:utils-base"
 include ":utils:utils-disruptor"
@@ -16,7 +15,6 @@ include ":utils:utils-redis"
 include ":utils:utils-rxtx"
 include ":utils:utils-spring"
 include ":utils:utils-task"
-
 
 include ":db"
 include ":db:db-hbase"
@@ -45,6 +43,7 @@ include ":rpc:rpc-thrift:spring-cloud-starter-thrift-client"
 include ":rpc:rpc-thrift:spring-cloud-starter-thrift-server"
 
 include ":io"
+include ":io:io-api"
 include ":io:io-base"
 include ":io:io-core"
 include ":io:io-mq"
