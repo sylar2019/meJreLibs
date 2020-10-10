@@ -43,6 +43,7 @@ include ":rpc:rpc-thrift:spring-cloud-starter-thrift-client"
 include ":rpc:rpc-thrift:spring-cloud-starter-thrift-server"
 
 include ":io"
+include ":io:io-api"
 include ":io:io-base"
 include ":io:io-core"
 include ":io:io-mq"

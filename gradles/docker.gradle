@@ -24,7 +24,7 @@ assemble.doLast {
 
 def copyDockerfile() {
     println("### appJar:${appJar}")
-    println("### appParh:${appParh}")
+    println("### appPath:${appPath}")
     mkdir('build/docker/')
     copyDocker()
     copyJar()
@@ -32,15 +32,15 @@ def copyDockerfile() {
 
 def copyDocker() {
     copy {
-        from("${appParh}/src/docker")
-        into("${appParh}/build/docker")
+        from("${appPath}/src/docker")
+        into("${appPath}/build/docker")
     }
 }
 
 def copyJar() {
     copy {
-        from("${appParh}/build/libs")
-        into("${appParh}/build/docker")
+        from("${appPath}/build/libs")
+        into("${appPath}/build/docker")
         include "${appJar}"
         rename("${appJar}", 'app.jar')
     }
@@ -49,8 +49,8 @@ def copyJar() {
 
 // Use task types
 task buildOwnDockerImage(type: com.bmuschko.gradle.docker.tasks.image.DockerBuildImage, dependsOn: assemble) {
-    dockerFile = file("${appParh}/build/docker/Dockerfile")
-    inputDir = file("${appParh}/build/docker/")
+    dockerFile = file("${appPath}/build/docker/Dockerfile")
+    inputDir = file("${appPath}/build/docker/")
     images.add("${project.name}:latest")
 }
 
