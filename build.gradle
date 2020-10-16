@@ -33,34 +33,46 @@ subprojects {
         println("### beforeEvaluate: " + project.name)
     }
 
+    configurations.all {
+        resolutionStrategy {
+            force "com.google.guava:guava:${guavaVersion}"
+            force "io.netty:netty-all:${nettyVersion}"
+            force "com.ecwid.consul:consul-api:${consulVersion}"
+
+            force("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
+            force("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
+            force("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+        }
+    }
+
     project.afterEvaluate {
         //在所有build.gradle解析完成后，开始执行task之前
         println("### afterEvaluate: " + project.name)
 
-        configurations.all {
-            resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-                def requested = details.requested
-                if (requested.group == 'com.fasterxml.jackson.core' && requested.version != "${jacksonVersion}") {
-                    details.useVersion "${jacksonVersion}"
-                    printVersion(details, "${jacksonVersion}")
-                }
-                if (requested.group == 'io.netty' && requested.version != "${nettyVersion}") {
-                    if (requested.name != 'netty'
-                            && requested.name != 'netty-tcnative-boringssl-static') {
-                        details.useVersion "${nettyVersion}"
-                        printVersion(details, "${nettyVersion}")
-                    }
-                }
-                if (requested.group == 'com.ecwid.consul' && requested.version != "${consulVersion}") {
-                    details.useVersion "${consulVersion}"
-                    printVersion(details, "${consulVersion}")
-                }
-                if (requested.group == 'com.google.guava' && requested.name == 'guava' && requested.version != "${guavaVersion}") {
-                    details.useVersion "${guavaVersion}"
-                    printVersion(details, "${guavaVersion}")
-                }
-            }
-        }
+//        configurations.all {
+//            resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+//                def requested = details.requested
+//                if (requested.group == 'com.fasterxml.jackson.core' && requested.version != "${jacksonVersion}") {
+//                    details.useVersion "${jacksonVersion}"
+//                    printVersion(details, "${jacksonVersion}")
+//                }
+//                if (requested.group == 'io.netty' && requested.version != "${nettyVersion}") {
+//                    if (requested.name != 'netty'
+//                            && requested.name != 'netty-tcnative-boringssl-static') {
+//                        details.useVersion "${nettyVersion}"
+//                        printVersion(details, "${nettyVersion}")
+//                    }
+//                }
+//                if (requested.group == 'com.ecwid.consul' && requested.version != "${consulVersion}") {
+//                    details.useVersion "${consulVersion}"
+//                    printVersion(details, "${consulVersion}")
+//                }
+//                if (requested.group == 'com.google.guava' && requested.name == 'guava' && requested.version != "${guavaVersion}") {
+//                    details.useVersion "${guavaVersion}"
+//                    printVersion(details, "${guavaVersion}")
+//                }
+//            }
+//        }
     }
 }
 
