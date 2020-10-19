@@ -4,6 +4,11 @@ dependencies {
     compile("com.github.rholder:guava-retrying:2.0.0")
     compile("joda-time:joda-time:${jodatimeVersion}")
 
+    compile "commons-io:commons-io:${commonsIoVersion}"
+    compile "org.apache.commons:commons-pool2:${commonsPool2Version}"
+    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    compile "org.apache.commons:commons-collections4:${commonsCollections4Version}"
+
     compile("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     compile("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
     compile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")

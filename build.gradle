@@ -1,4 +1,9 @@
 /** ******************************************************************************************/
+ext{
+    rootPath = rootProject.rootDir.getAbsolutePath()
+    gradlesPath = "${rootPath}/gradles/"
+}
+/** ******************************************************************************************/
 buildscript {
     repositories {
         maven { url REPO_ALIYUN_GRADLE_PLUGIN }
@@ -23,14 +28,9 @@ allprojects {
 }
 
 subprojects {
-    ext{
-        rootPath = rootProject.rootDir.getAbsolutePath()
-        gradlesPath = "${rootPath}/gradles/"
-    }
-
-    project.beforeEvaluate {
-        //在解析setting.gradle之后，开始解析build.gradle之前
-        println("### beforeEvaluate: " + project.name)
+    configurations {
+        all*.exclude group: "org.slf4j" , module: "log4j-over-slf4j"
+        all*.exclude group: "log4j" , module: "log4j"
     }
 
     configurations.all {
@@ -39,10 +39,19 @@ subprojects {
             force "io.netty:netty-all:${nettyVersion}"
             force "com.ecwid.consul:consul-api:${consulVersion}"
 
-            force("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
-            force("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
-            force("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+            force "org.apache.commons:commons-pool2:${commonsPool2Version}"
+            force "org.apache.commons:commons-lang3:${commonsLang3Version}"
+            force "org.apache.commons:commons-collections4:${commonsCollections4Version}"
+
+            force "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+            force "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+            force "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
         }
+    }
+
+    project.beforeEvaluate {
+        //在解析setting.gradle之后，开始解析build.gradle之前
+        println("### beforeEvaluate: " + project.name)
     }
 
     project.afterEvaluate {
