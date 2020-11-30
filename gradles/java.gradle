@@ -25,9 +25,6 @@ compileJava.dependsOn(processResources)
 dependencies {
     //支持jar包以文件形式引入
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile("com.google.guava:guava:${guavaVersion}")
-//    compile ("javax.annotation:javax.annotation-api:${annotationApiVersion}")
-//    compile("org.springframework.boot:spring-boot-starter-logging:${springBootVersion}")
 
     testCompile("junit:junit:${junitVersion}")
 }

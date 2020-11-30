@@ -21,12 +21,11 @@ import me.java.library.db.mybatis.injector.ExtSqlMethod;
 
 /**
  * 插入一条数据（选择字段插入）插入如果中已经存在相同的记录，则忽略当前新数据
- *
  */
 public class InsertIgnoreBatch extends AbstractInsertBatch {
-	private static final String SQL_METHOD = "insertIgnoreBatch";
+    private static final String SQL_METHOD = "insertIgnoreBatch";
 
-	public InsertIgnoreBatch() {
-		super(ExtSqlMethod.INSERT_IGNORE_ONE.getSql(), SQL_METHOD);
-	}
+    public InsertIgnoreBatch() {
+        super(ExtSqlMethod.INSERT_IGNORE_ONE.getSql(), SQL_METHOD);
+    }
 }

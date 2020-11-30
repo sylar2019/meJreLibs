@@ -32,38 +32,37 @@ import org.apache.ibatis.mapping.SqlSource;
 
 /**
  * 抽象的 插入一条数据（选择字段插入）
- *
  */
 @RequiredArgsConstructor
 public class AbstractInsertMethod extends AbstractMethod {
-	private final ExtSqlMethod sqlMethod;
+    private final ExtSqlMethod sqlMethod;
 
-	@Override
-	public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-		KeyGenerator keyGenerator = new NoKeyGenerator();
-		String columnScript = SqlScriptUtils.convertTrim(tableInfo.getAllInsertSqlColumnMaybeIf(null),
-			LEFT_BRACKET, RIGHT_BRACKET, null, COMMA);
-		String valuesScript = SqlScriptUtils.convertTrim(tableInfo.getAllInsertSqlPropertyMaybeIf(null),
-			LEFT_BRACKET, RIGHT_BRACKET, null, COMMA);
-		String keyProperty = null;
-		String keyColumn = null;
-		// 表包含主键处理逻辑,如果不包含主键当普通字段处理
-		if (StringUtils.isNotBlank(tableInfo.getKeyProperty())) {
-			if (tableInfo.getIdType() == IdType.AUTO) {
-				// 自增主键
-				keyGenerator = new Jdbc3KeyGenerator();
-				keyProperty = tableInfo.getKeyProperty();
-				keyColumn = tableInfo.getKeyColumn();
-			} else {
-				if (null != tableInfo.getKeySequence()) {
-					keyGenerator = TableInfoHelper.genKeyGenerator(sqlMethod.getMethod(), tableInfo, builderAssistant);
-					keyProperty = tableInfo.getKeyProperty();
-					keyColumn = tableInfo.getKeyColumn();
-				}
-			}
-		}
-		String sql = String.format(sqlMethod.getSql(), tableInfo.getTableName(), columnScript, valuesScript);
-		SqlSource sqlSource = languageDriver.createSqlSource(configuration, sql, modelClass);
-		return this.addInsertMappedStatement(mapperClass, modelClass, sqlMethod.getMethod(), sqlSource, keyGenerator, keyProperty, keyColumn);
-	}
+    @Override
+    public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
+        KeyGenerator keyGenerator = new NoKeyGenerator();
+        String columnScript = SqlScriptUtils.convertTrim(tableInfo.getAllInsertSqlColumnMaybeIf(null),
+                LEFT_BRACKET, RIGHT_BRACKET, null, COMMA);
+        String valuesScript = SqlScriptUtils.convertTrim(tableInfo.getAllInsertSqlPropertyMaybeIf(null),
+                LEFT_BRACKET, RIGHT_BRACKET, null, COMMA);
+        String keyProperty = null;
+        String keyColumn = null;
+        // 表包含主键处理逻辑,如果不包含主键当普通字段处理
+        if (StringUtils.isNotBlank(tableInfo.getKeyProperty())) {
+            if (tableInfo.getIdType() == IdType.AUTO) {
+                // 自增主键
+                keyGenerator = new Jdbc3KeyGenerator();
+                keyProperty = tableInfo.getKeyProperty();
+                keyColumn = tableInfo.getKeyColumn();
+            } else {
+                if (null != tableInfo.getKeySequence()) {
+                    keyGenerator = TableInfoHelper.genKeyGenerator(sqlMethod.getMethod(), tableInfo, builderAssistant);
+                    keyProperty = tableInfo.getKeyProperty();
+                    keyColumn = tableInfo.getKeyColumn();
+                }
+            }
+        }
+        String sql = String.format(sqlMethod.getSql(), tableInfo.getTableName(), columnScript, valuesScript);
+        SqlSource sqlSource = languageDriver.createSqlSource(configuration, sql, modelClass);
+        return this.addInsertMappedStatement(mapperClass, modelClass, sqlMethod.getMethod(), sqlSource, keyGenerator, keyProperty, keyColumn);
+    }
 }

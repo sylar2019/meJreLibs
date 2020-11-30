@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerIntercept
 import lombok.AllArgsConstructor;
 import me.java.library.db.mybatis.handler.AutoMetaObjectHandler;
 import me.java.library.db.mybatis.injector.ExtSqlInjector;
-import me.java.library.db.mybatis.logger.SqlLogFilter;
 import me.java.library.db.mybatis.logger.SqlLogInterceptor;
 import me.java.library.db.mybatis.logger.SqlLogProperties;
 import me.java.library.db.mybatis.tenant.TenantProperties;

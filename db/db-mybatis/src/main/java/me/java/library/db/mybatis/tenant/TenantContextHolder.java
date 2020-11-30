@@ -14,6 +14,7 @@ public class TenantContextHolder {
     /**
      * TTL 设置租户ID<br/>
      * <b>谨慎使用此方法,避免嵌套调用。尽量使用 {@code TenantBroker} </b>
+     *
      * @param tenantId 租户ID
      */
     public void setTenantId(String tenantId) {
@@ -22,6 +23,7 @@ public class TenantContextHolder {
 
     /**
      * 获取TTL中的租户ID
+     *
      * @return String
      */
     public String getTenantId() {

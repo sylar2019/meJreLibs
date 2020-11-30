@@ -32,8 +32,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @RefreshScope
 @ConfigurationProperties(prefix = Constants.MYBATIS_PLUS + ".log")
 public class SqlLogProperties {
-	/**
-	 * 是否打印可执行 sql
-	 */
-	private boolean sql = true;
+    /**
+     * 是否打印可执行 sql
+     */
+    private boolean sql = true;
 }

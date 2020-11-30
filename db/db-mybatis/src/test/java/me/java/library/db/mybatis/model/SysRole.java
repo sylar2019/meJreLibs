@@ -9,7 +9,6 @@ import java.util.Date;
 
 /**
  * 角色信息
- *
  **/
 @Data
 public class SysRole implements Serializable {

@@ -5,7 +5,6 @@ import me.java.library.db.mybatis.model.SysRole;
 
 /**
  * 角色信息
- *
  **/
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 }

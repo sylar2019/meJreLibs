@@ -26,19 +26,18 @@ import java.util.List;
 
 /**
  * 自定义的 sql 注入
- *
  */
 public class ExtSqlInjector extends DefaultSqlInjector {
 
-	@Override
-	public List<AbstractMethod> getMethodList(Class<?> mapperClass) {
-		List<AbstractMethod> methodList = new ArrayList<>();
-		methodList.add(new InsertBatch());
-		methodList.add(new InsertIgnore());
-		methodList.add(new InsertIgnoreBatch());
-		methodList.add(new Replace());
-		methodList.add(new ReplaceBatch());
-		methodList.addAll(super.getMethodList(mapperClass));
-		return Collections.unmodifiableList(methodList);
-	}
+    @Override
+    public List<AbstractMethod> getMethodList(Class<?> mapperClass) {
+        List<AbstractMethod> methodList = new ArrayList<>();
+        methodList.add(new InsertBatch());
+        methodList.add(new InsertIgnore());
+        methodList.add(new InsertIgnoreBatch());
+        methodList.add(new Replace());
+        methodList.add(new ReplaceBatch());
+        methodList.addAll(super.getMethodList(mapperClass));
+        return Collections.unmodifiableList(methodList);
+    }
 }

@@ -13,23 +13,6 @@ dependencyManagement {
 
 dependencies {
     compile "org.springframework.cloud:spring-cloud-starter"
-
-    //使用consul或eureka作为注册中心，只能二选一
-//    compile("org.springframework.cloud:spring-cloud-starter-consul-discovery")
-//    compile("org.springframework.cloud:spring-cloud-starter-eureka")
-
-    //使用consul或eureka作为配置中心，只能二选一
-//    compile("org.springframework.cloud:spring-cloud-starter-consul-config")
-//    compile("org.springframework.cloud:spring-cloud-starter-config")
-
-//    //路由代理
-//    compile("org.springframework.cloud:spring-cloud-starter-zuul")
-//    //客户端负载均衡
-//    compile("org.springframework.cloud:spring-cloud-starter-ribbon")
-//    //http client template
-//    compile("org.springframework.cloud:spring-cloud-starter-feign")
-//    //断路器，服务降级
-//    compile("org.springframework.cloud:spring-cloud-starter-hystrix")
 }
 
 /** ******************************************************************************************/
