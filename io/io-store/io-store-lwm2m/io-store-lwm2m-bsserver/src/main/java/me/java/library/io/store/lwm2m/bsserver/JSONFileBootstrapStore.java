@@ -19,13 +19,12 @@ package me.java.library.io.store.lwm2m.bsserver;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.leshan.core.util.Validate;
 import org.eclipse.leshan.server.bootstrap.BootstrapConfig;
 import org.eclipse.leshan.server.bootstrap.EditableBootstrapConfigStore;
 import org.eclipse.leshan.server.bootstrap.InMemoryBootstrapConfigStore;
 import org.eclipse.leshan.server.bootstrap.InvalidConfigurationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -37,11 +36,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * A {@link EditableBootstrapConfigStore} which persist configuration in a file using json format.
  */
+@Slf4j
 public class JSONFileBootstrapStore extends InMemoryBootstrapConfigStore {
 
     // default location for persistence
     public static final String DEFAULT_FILE = "data/bootstrap.json";
-    private static final Logger LOG = LoggerFactory.getLogger(JSONFileBootstrapStore.class);
     // lock for the two maps
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private final Lock readLock = readWriteLock.readLock();
@@ -119,7 +118,7 @@ public class JSONFileBootstrapStore extends InMemoryBootstrapConfigStore {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Could not load bootstrap infos from file", e);
+            log.error("Could not load bootstrap infos from file", e);
         }
     }
 
@@ -140,7 +139,7 @@ public class JSONFileBootstrapStore extends InMemoryBootstrapConfigStore {
                 out.write(gson.toJson(getAll(), gsonType));
             }
         } catch (Exception e) {
-            LOG.error("Could not save bootstrap infos to file", e);
+            log.error("Could not save bootstrap infos to file", e);
         }
     }
 }

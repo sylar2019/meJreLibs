@@ -18,6 +18,7 @@ package me.java.library.io.store.lwm2m.server.servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.io.store.lwm2m.server.servlet.json.LwM2mNodeSerializer;
 import me.java.library.io.store.lwm2m.server.servlet.json.RegistrationSerializer;
 import me.java.library.io.store.lwm2m.server.servlet.log.CoapMessage;
@@ -35,8 +36,6 @@ import org.eclipse.leshan.server.queue.PresenceListener;
 import org.eclipse.leshan.server.registration.Registration;
 import org.eclipse.leshan.server.registration.RegistrationListener;
 import org.eclipse.leshan.server.registration.RegistrationUpdate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -45,6 +44,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public class EventServlet extends EventSourceServlet {
 
     private static final String EVENT_DEREGISTRATION = "DEREGISTRATION";
@@ -59,13 +59,11 @@ public class EventServlet extends EventSourceServlet {
 
     private static final String EVENT_NOTIFICATION = "NOTIFICATION";
 
-    private static final String EVENT_COAP_LOG = "COAPLOG";
+    private static final String EVENT_COAP_log = "COAPlog";
 
     private static final String QUERY_PARAM_ENDPOINT = "ep";
 
     private static final long serialVersionUID = 1L;
-
-    private static final Logger LOG = LoggerFactory.getLogger(EventServlet.class);
 
     private final Gson gson;
 
@@ -126,8 +124,8 @@ public class EventServlet extends EventSourceServlet {
 
         @Override
         public void onResponse(Observation observation, Registration registration, ObserveResponse response) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Received notification from [{}] containing value [{}]", observation.getPath(),
+            if (log.isDebugEnabled()) {
+                log.debug("Received notification from [{}] containing value [{}]", observation.getPath(),
                         response.getContent().toString());
             }
 
@@ -142,8 +140,8 @@ public class EventServlet extends EventSourceServlet {
 
         @Override
         public void onError(Observation observation, Registration registration, Exception error) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn(String.format("Unable to handle notification of [%s:%s]", observation.getRegistrationId(),
+            if (log.isWarnEnabled()) {
+                log.warn(String.format("Unable to handle notification of [%s:%s]", observation.getRegistrationId(),
                         observation.getPath()), error);
             }
         }
@@ -173,8 +171,8 @@ public class EventServlet extends EventSourceServlet {
     }
 
     private synchronized void sendEvent(String event, String data, String endpoint) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Dispatching {} event from endpoint {}", event, endpoint);
+        if (log.isDebugEnabled()) {
+            log.debug("Dispatching {} event from endpoint {}", event, endpoint);
         }
 
         for (LeshanEventSource eventSource : eventSources) {
@@ -210,10 +208,10 @@ public class EventServlet extends EventSourceServlet {
 
         @Override
         public void trace(CoapMessage message) {
-            JsonElement coapLog = EventServlet.this.gson.toJsonTree(message);
-            coapLog.getAsJsonObject().addProperty("ep", this.endpoint);
-            String coapLogWithEndPoint = EventServlet.this.gson.toJson(coapLog);
-            sendEvent(EVENT_COAP_LOG, coapLogWithEndPoint, endpoint);
+            JsonElement coaplog = EventServlet.this.gson.toJsonTree(message);
+            coaplog.getAsJsonObject().addProperty("ep", this.endpoint);
+            String coaplogWithEndPoint = EventServlet.this.gson.toJson(coaplog);
+            sendEvent(EVENT_COAP_log, coaplogWithEndPoint, endpoint);
         }
 
     }

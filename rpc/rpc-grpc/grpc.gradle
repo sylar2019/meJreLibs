@@ -1,5 +1,4 @@
-apply from: gradlesPath + "springboot.gradle"
-apply from: gradlesPath + "lombok.gradle"
+apply from: gradlesPath + "springcloud.gradle"
 
 dependencies {
     compile "com.ecwid.consul:consul-api:${consulVersion}"

@@ -19,6 +19,7 @@ import com.eclipsesource.json.JsonObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.io.store.lwm2m.server.servlet.json.PublicKeySerDes;
 import me.java.library.io.store.lwm2m.server.servlet.json.SecurityDeserializer;
 import me.java.library.io.store.lwm2m.server.servlet.json.SecuritySerializer;
@@ -27,8 +28,6 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.leshan.server.security.EditableSecurityStore;
 import org.eclipse.leshan.server.security.NonUniqueSecurityInfoException;
 import org.eclipse.leshan.server.security.SecurityInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -44,9 +43,8 @@ import java.util.Collection;
 /**
  * Service HTTP REST API calls for security information.
  */
+@Slf4j
 public class SecurityServlet extends HttpServlet {
-
-    private static final Logger LOG = LoggerFactory.getLogger(SecurityServlet.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -99,22 +97,22 @@ public class SecurityServlet extends HttpServlet {
 
         try {
             SecurityInfo info = gsonDes.fromJson(new InputStreamReader(req.getInputStream()), SecurityInfo.class);
-            LOG.debug("New security info for end-point {}: {}", info.getEndpoint(), info);
+            log.debug("New security info for end-point {}: {}", info.getEndpoint(), info);
 
             store.add(info);
 
             resp.setStatus(HttpServletResponse.SC_OK);
 
         } catch (NonUniqueSecurityInfoException e) {
-            LOG.warn("Non unique security info: " + e.getMessage());
+            log.warn("Non unique security info: " + e.getMessage());
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().append(e.getMessage()).flush();
         } catch (JsonParseException e) {
-            LOG.warn("Could not parse request body", e);
+            log.warn("Could not parse request body", e);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().append("Invalid request body").flush();
         } catch (RuntimeException e) {
-            LOG.warn("unexpected error for request " + req.getPathInfo(), e);
+            log.warn("unexpected error for request " + req.getPathInfo(), e);
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
@@ -168,7 +166,7 @@ public class SecurityServlet extends HttpServlet {
             return;
         }
 
-        LOG.debug("Removing security info for end-point {}", endpoint);
+        log.debug("Removing security info for end-point {}", endpoint);
         if (this.store.remove(endpoint, true) != null) {
             resp.sendError(HttpServletResponse.SC_OK);
         } else {

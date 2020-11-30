@@ -22,6 +22,7 @@ include ":db:db-jpa"
 include ":db:db-jpa-mysql"
 include ":db:db-jpa-oracle"
 include ":db:db-mongo"
+include ":db:db-mybatis"
 
 include ":mq"
 include ":mq:mq-base"
@@ -66,8 +67,3 @@ include ":io:io-store:io-store-mqtt"
 include ":io:io-store:io-store-mqtt:io-store-mqtt-common"
 include ":io:io-store:io-store-mqtt:io-store-mqtt-client"
 include ":io:io-store:io-store-mqtt:io-store-mqtt-server"
-
-include ":biz"
-include ":biz:biz-acl"
-
-

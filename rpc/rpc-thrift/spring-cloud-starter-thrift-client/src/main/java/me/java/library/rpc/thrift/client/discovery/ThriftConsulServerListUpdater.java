@@ -1,8 +1,7 @@
 package me.java.library.rpc.thrift.client.discovery;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -10,9 +9,9 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@Slf4j
 public class ThriftConsulServerListUpdater implements ServerListUpdater {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ThriftConsulServerListUpdater.class);
 
     private final AtomicBoolean isActive = new AtomicBoolean(false);
     private final long initialDelayMs;
@@ -50,7 +49,7 @@ public class ThriftConsulServerListUpdater implements ServerListUpdater {
                 try {
                     updateAction.doUpdate();
                 } catch (Exception e) {
-                    LOGGER.warn("Failed one do update action", e);
+                    log.warn("Failed one do update action", e);
                 }
 
             };
@@ -62,7 +61,7 @@ public class ThriftConsulServerListUpdater implements ServerListUpdater {
                     TimeUnit.MILLISECONDS
             );
         } else {
-            LOGGER.info("Already active, no other operation");
+            log.info("Already active, no other operation");
         }
     }
 
@@ -73,7 +72,7 @@ public class ThriftConsulServerListUpdater implements ServerListUpdater {
                 scheduledFuture.cancel(true);
             }
         } else {
-            LOGGER.info("Not active, no other operation");
+            log.info("Not active, no other operation");
         }
     }
 
@@ -91,7 +90,7 @@ public class ThriftConsulServerListUpdater implements ServerListUpdater {
             serverListRefreshExecutor = new ScheduledThreadPoolExecutor(CORE_THREAD, factory);
 
             shutdownThread = new Thread(() -> {
-                LOGGER.info("Shutting down the Executor Pool for ThriftConsulServerListUpdater");
+                log.info("Shutting down the Executor Pool for ThriftConsulServerListUpdater");
                 shutdownExecutorPool();
             });
 
@@ -106,7 +105,7 @@ public class ThriftConsulServerListUpdater implements ServerListUpdater {
                     try {
                         Runtime.getRuntime().removeShutdownHook(shutdownThread);
                     } catch (IllegalStateException e) {
-                        LOGGER.error("Failed to shutdown the Executor Pool for ThriftConsulServerListUpdater", e);
+                        log.error("Failed to shutdown the Executor Pool for ThriftConsulServerListUpdater", e);
                     }
                 }
 

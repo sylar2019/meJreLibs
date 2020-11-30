@@ -5,6 +5,12 @@ apply from: gradlesPath + "springboot-web.gradle"
  * springCloud 应用编译脚本
  */
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 dependencies {
     compile "org.springframework.cloud:spring-cloud-starter"
 

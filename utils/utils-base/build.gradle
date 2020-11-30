@@ -1,8 +1,11 @@
 apply from: gradlesPath + "java.gradle"
 
 dependencies {
-    compile("com.github.rholder:guava-retrying:2.0.0")
+    compile("javax.annotation:javax.annotation-api:${annotationApiVersion}")
     compile("joda-time:joda-time:${jodatimeVersion}")
+
+    compile("com.google.guava:guava:${guavaVersion}")
+    compile("com.github.rholder:guava-retrying:2.0.0")
 
     compile "commons-io:commons-io:${commonsIoVersion}"
     compile "org.apache.commons:commons-pool2:${commonsPool2Version}"

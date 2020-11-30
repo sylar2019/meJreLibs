@@ -1,5 +1,6 @@
 package me.java.library.rpc.thrift.server;
 
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.rpc.thrift.server.annotation.ThriftService;
 import me.java.library.rpc.thrift.server.context.AbstractThriftServerContext;
 import me.java.library.rpc.thrift.server.context.ThriftServerContext;
@@ -9,8 +10,6 @@ import me.java.library.rpc.thrift.server.properties.ThriftServerProperties;
 import me.java.library.rpc.thrift.server.wrapper.ThriftServiceWrapper;
 import me.java.library.rpc.thrift.server.wrapper.ThriftServiceWrapperFactory;
 import org.apache.thrift.transport.TTransportException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.Advised;
 import org.springframework.beans.BeansException;
@@ -28,13 +27,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Configuration
 @ConditionalOnProperty(value = "spring.thrift.server.service-id", matchIfMissing = false)
 @EnableConfigurationProperties(ThriftServerProperties.class)
 public class ThriftServerAutoConfiguration implements ApplicationContextAware {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ThriftServerAutoConfiguration.class);
-
     private ApplicationContext applicationContext;
 
     @Override
@@ -47,7 +44,7 @@ public class ThriftServerAutoConfiguration implements ApplicationContextAware {
     public ThriftServerGroup thriftServerGroup(ThriftServerProperties properties) throws TTransportException, IOException {
         String[] beanNames = applicationContext.getBeanNamesForAnnotation(ThriftService.class);
         if (beanNames.length == 0) {
-            LOGGER.error("Can't search any thrift service annotated with @ThriftService");
+            log.error("Can't search any thrift service annotated with @ThriftService");
             throw new ThriftServerException("Can not found any thrift service");
         }
 
@@ -60,8 +57,8 @@ public class ThriftServerAutoConfiguration implements ApplicationContextAware {
             if (target instanceof Advised) {
                 final Object targetBean = target;
                 TargetSource targetSource = ((Advised) target).getTargetSource();
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Target object {} uses cglib proxy");
+                if (log.isDebugEnabled()) {
+                    log.debug("Target object {} uses cglib proxy");
                 }
 
                 try {

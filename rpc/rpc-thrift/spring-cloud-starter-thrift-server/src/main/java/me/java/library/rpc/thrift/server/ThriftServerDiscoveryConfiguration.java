@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
 
 @Configuration
 @AutoConfigureAfter(ThriftServerAutoConfiguration.class)
-@ConditionalOnProperty(name = "spring.thrift.server.discovery.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "spring.thrift.server.discovery.enabled", matchIfMissing = true)
 @Import(ThriftServerAutoConfiguration.class)
 public class ThriftServerDiscoveryConfiguration {
 

@@ -2,6 +2,7 @@ package me.java.library.mq.kafka.loop;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Predicate;
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.mq.base.Message;
 import me.java.library.mq.base.MessageListener;
 import me.java.library.mq.kafka.KafkaConst;
@@ -10,8 +11,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.header.Header;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -35,8 +34,8 @@ import java.util.stream.Stream;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
+@Slf4j
 public class PullLoop implements Runnable {
-    private static final Logger LOG = LoggerFactory.getLogger(PullLoop.class);
 
     KafkaConsumer<String, String> consumer;
     MessageListener listener;
@@ -98,7 +97,7 @@ public class PullLoop implements Runnable {
                 //同步确认
                 consumer.commitSync();
             } catch (Exception e) {
-                LOG.error("【kafka】消息同步确认异常。", e);
+                log.error("【kafka】消息同步确认异常。", e);
             } finally {
                 consumer.close();
                 shutdownLatch.countDown();
@@ -122,7 +121,7 @@ public class PullLoop implements Runnable {
             listener.onSuccess(message);
         } else {
             //收到的消息，与订阅的tag不匹配
-            LOG.warn(String.format("【kakfa】订阅的tag不匹配。 订阅的tags: %s , 收到的tag: %s", Arrays.toString(tags), tag));
+            log.warn(String.format("【kakfa】订阅的tag不匹配。 订阅的tags: %s , 收到的tag: %s", Arrays.toString(tags), tag));
         }
     }
 

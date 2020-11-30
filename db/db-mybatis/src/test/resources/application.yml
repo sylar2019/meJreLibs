@@ -1,0 +1,9 @@
+spring.profiles.active: druid
+
+server.port: 9999
+
+spring.datasource:
+  url: jdbc:mysql://localhost:3306/test
+  username: root
+  password: 1223456
+  driver-class-name: com.mysql.cj.jdbc.Driver

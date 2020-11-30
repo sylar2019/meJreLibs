@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-me.java.library.db.hbase.boot.HbaseAutoConfiguration
+me.java.library.db.hbase.HbaseAutoConfiguration

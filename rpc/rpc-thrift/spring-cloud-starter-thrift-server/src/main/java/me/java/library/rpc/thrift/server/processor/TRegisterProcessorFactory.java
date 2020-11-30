@@ -1,11 +1,10 @@
 package me.java.library.rpc.thrift.server.processor;
 
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.rpc.thrift.server.exception.ThriftServerInstantiateException;
 import me.java.library.rpc.thrift.server.wrapper.ThriftServiceWrapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.thrift.TProcessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.ClassUtils;
 
@@ -15,9 +14,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+@Slf4j
 public class TRegisterProcessorFactory {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TRegisterProcessorFactory.class);
 
     static TRegisterProcessor getRegisterProcessor() {
         return TRegisterProcessorHolder.REGISTER_PROCESSOR;
@@ -32,7 +30,7 @@ public class TRegisterProcessorFactory {
         TRegisterProcessor registerProcessor = getRegisterProcessor();
         registerProcessor.setProcessorMap(new HashMap<>(serviceWrappers.size()));
         register(serviceWrappers, registerProcessor);
-        LOGGER.info("Multiplexed processor totally owns {} service processors", registerProcessor.processorMetaMap.size());
+        log.info("Multiplexed processor totally owns {} service processors", registerProcessor.processorMetaMap.size());
 
         return registerProcessor;
     }
@@ -63,9 +61,9 @@ public class TRegisterProcessorFactory {
             String serviceSignature = serviceWrapper.getThriftServiceSignature();
 
             registerProcessor.processorMetaMap.putIfAbsent(serviceSignature, serviceWrapper);
-            LOGGER.info("Processor bean {} with signature [{}] is instantiated", singleProcessor, serviceSignature);
+            log.info("Processor bean {} with signature [{}] is instantiated", singleProcessor, serviceSignature);
             registerProcessor.registerProcessor(serviceSignature, singleProcessor);
-            LOGGER.info("Single processor {} register onto multiplexed processor with signature [{}]", singleProcessor, serviceSignature);
+            log.info("Single processor {} register onto multiplexed processor with signature [{}]", singleProcessor, serviceSignature);
         }
     }
 

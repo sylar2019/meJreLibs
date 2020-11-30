@@ -22,6 +22,7 @@ import java.util.List;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
+@SuppressWarnings("unchecked")
 public class ReflectUtils {
 
     static public <T> List<Field> getAllField(Class<T> clazz) {
@@ -45,6 +46,30 @@ public class ReflectUtils {
             tempClass = tempClass.getSuperclass();
         }
         return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    static public <T> T getFieldValue(Object obj, String fieldName) {
+        assert obj != null;
+        Class<?> clazz = obj.getClass();
+        try {
+            return (T) clazz.getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static public void setFieldValue(Object obj, String fieldName, Object fieldValue) {
+        assert obj != null;
+        assert fieldName != null;
+        Class<?> clazz = obj.getClass();
+        try {
+            Field field = clazz.getDeclaredField(fieldName);
+            field.set(obj, fieldValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings("unchecked")

@@ -3,7 +3,7 @@
  * 工具定义
  */
 
-ext{
+ext {
     appPath = buildDir.getParentFile().getAbsolutePath()
     appJar = String.format("%s-%s.jar", project.name, project.version)
 }

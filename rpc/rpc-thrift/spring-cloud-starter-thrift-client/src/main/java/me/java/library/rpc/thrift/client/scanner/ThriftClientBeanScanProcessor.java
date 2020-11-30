@@ -1,9 +1,8 @@
 package me.java.library.rpc.thrift.client.scanner;
 
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.utils.base.PackageUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -15,9 +14,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 
 import java.util.*;
 
+@Slf4j
 public class ThriftClientBeanScanProcessor implements ApplicationContextAware, BeanFactoryPostProcessor {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ThriftClientBeanScanProcessor.class);
 
     private static final String SPRING_THRIFT_CLIENT_PACKAGE_TO_SCAN = "spring.thrift.client.package-to-scan";
 
@@ -58,14 +56,14 @@ public class ThriftClientBeanScanProcessor implements ApplicationContextAware, B
                 do {
                     String subPackage = tokenizer.nextToken();
                     packageToScanSet.add(subPackage);
-                    LOGGER.info("Subpackage {} is to be scanned by {}", subPackage, beanScanner);
+                    log.info("Subpackage {} is to be scanned by {}", subPackage, beanScanner);
                 } while (tokenizer.hasMoreTokens());
             }
             List<String> packageToScanList = new ArrayList<>(packageToScanSet);
             String[] packagesToScan = packageToScanList.toArray(new String[0]);
             beanScanner.scan(packagesToScan);
         } else {
-            LOGGER.info("Base package {} is to be scanned by {}", basePackages, beanScanner);
+            log.info("Base package {} is to be scanned by {}", basePackages, beanScanner);
             beanScanner.scan(basePackages);
         }
     }

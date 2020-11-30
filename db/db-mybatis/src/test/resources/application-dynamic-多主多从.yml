@@ -1,0 +1,10 @@
+# 多主多从
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        master_1:
+        master_2:
+        slave_1:
+        slave_2:
+        slave_3:

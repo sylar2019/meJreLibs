@@ -1,21 +1,19 @@
 package me.java.library.rpc.thrift.client.loadbalancer;
 
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.rpc.thrift.client.common.ThriftServerNode;
 import me.java.library.rpc.thrift.client.discovery.ServerListUpdater;
 import me.java.library.rpc.thrift.client.discovery.ThriftConsulServerListUpdater;
 import me.java.library.rpc.thrift.client.discovery.ThriftConsulServerNode;
 import me.java.library.rpc.thrift.client.discovery.ThriftConsulServerNodeList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class ThriftConsulServerListLoadBalancer extends AbstractLoadBalancer {
-
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     private ThriftConsulServerNodeList serverNodeList;
     private final ServerListUpdater.UpdateAction updateAction = this::updateListOfServers;

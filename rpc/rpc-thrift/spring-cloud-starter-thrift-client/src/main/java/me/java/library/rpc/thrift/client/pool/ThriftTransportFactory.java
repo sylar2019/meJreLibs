@@ -1,19 +1,16 @@
 package me.java.library.rpc.thrift.client.pool;
 
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.rpc.thrift.client.common.ThriftServerNode;
 import me.java.library.rpc.thrift.client.exception.ThriftClientConfigException;
 import me.java.library.rpc.thrift.client.properties.TServiceModel;
 import org.apache.thrift.transport.TFastFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
+@Slf4j
 public class ThriftTransportFactory {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ThriftTransportFactory.class);
-
     private static final int CONNECT_TIMEOUT = 10;
 
     public static TTransport determineTTranport(String serviceModel, ThriftServerNode serverNode, int connectTimeout) {
@@ -45,14 +42,14 @@ public class ThriftTransportFactory {
     private static TTransport createTSocket(String serviceModel, ThriftServerNode serverNode, int connectTimeout) {
         TTransport transport = new TSocket(serverNode.getHost(), serverNode.getPort(),
                 connectTimeout > 0 ? connectTimeout : CONNECT_TIMEOUT);
-        LOGGER.info("Established a new socket transport, service model is {}", serviceModel);
+        log.info("Established a new socket transport, service model is {}", serviceModel);
         return transport;
     }
 
     private static TTransport createTFramedTransport(String serviceModel, ThriftServerNode serverNode, int connectTimeout) {
         TTransport transport = new TFastFramedTransport(new TSocket(serverNode.getHost(), serverNode.getPort(),
                 connectTimeout > 0 ? connectTimeout : CONNECT_TIMEOUT));
-        LOGGER.info("Established a new framed transport, service model is {}", serviceModel);
+        log.info("Established a new framed transport, service model is {}", serviceModel);
         return transport;
     }
 

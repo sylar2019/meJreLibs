@@ -1,8 +1,7 @@
-apply from: gradlesPath + "springboot.gradle"
+apply from: gradlesPath + "springcloud.gradle"
 
 dependencies {
     compile project(":utils:utils-base")
-    compile "org.springframework.cloud:spring-cloud-commons"
     compile "com.ecwid.consul:consul-api:${consulVersion}"
     compile "org.apache.thrift:libthrift:${thriftVersion}"
 }

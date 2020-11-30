@@ -1,5 +1,6 @@
 package me.java.library.io.store.lwm2m.bsserver;
 
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.io.store.lwm2m.bsserver.servlet.BootstrapServlet;
@@ -37,6 +38,7 @@ import java.util.concurrent.TimeUnit;
  * @copyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
  * *******************************************************************************************
  */
+@Slf4j
 public class Lwm2mBSServerPipe extends BasePipe<Lwm2mBSServerParams> {
 
     LeshanBootstrapServer bsServer;
@@ -135,7 +137,7 @@ public class Lwm2mBSServerPipe extends BasePipe<Lwm2mBSServerParams> {
                 builder.setPrivateKey(embeddedPrivateKey);
                 builder.setCertificateChain(new X509Certificate[]{serverCertificate});
             } catch (Exception e) {
-                logger.error("Unable to load embedded X.509 certificate.", e);
+                log.error("Unable to load embedded X.509 certificate.", e);
                 System.exit(-1);
             }
         }
@@ -203,6 +205,6 @@ public class Lwm2mBSServerPipe extends BasePipe<Lwm2mBSServerParams> {
         server.setHandler(root);
 
         server.start();
-        logger.info("Web server started at {}.", server.getURI());
+        log.info("Web server started at {}.", server.getURI());
     }
 }

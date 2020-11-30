@@ -3,14 +3,13 @@ package me.java.library.db.jpa;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.utils.base.ExceptionUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.persister.walking.spi.AttributeDefinition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,9 +36,9 @@ import java.util.Map;
  * CopyRight             : COPYRIGHT(c) xxx.com   All Rights Reserved
  * *******************************************************************************************
  */
+@Slf4j
 @Component("foreignKeyService")
 public class ForeignKeyServiceImpl implements ForeignKeyService {
-    private final static Logger log = LoggerFactory.getLogger(ForeignKeyServiceImpl.class);
 
     @Autowired
     private EntityManager entityManager;

@@ -18,6 +18,7 @@ package me.java.library.io.store.lwm2m.server.servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.io.store.lwm2m.server.servlet.json.LwM2mNodeDeserializer;
 import me.java.library.io.store.lwm2m.server.servlet.json.LwM2mNodeSerializer;
 import me.java.library.io.store.lwm2m.server.servlet.json.RegistrationSerializer;
@@ -35,8 +36,6 @@ import org.eclipse.leshan.core.request.exception.*;
 import org.eclipse.leshan.core.response.*;
 import org.eclipse.leshan.server.californium.LeshanServer;
 import org.eclipse.leshan.server.registration.Registration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -51,13 +50,12 @@ import java.util.Iterator;
 /**
  * Service HTTP REST API calls.
  */
+@Slf4j
 public class ClientServlet extends HttpServlet {
 
     private static final String FORMAT_PARAM = "format";
     private static final String TIMEOUT_PARAM = "timeout";
     private static final String REPLACE_PARAM = "replace";
-
-    private static final Logger LOG = LoggerFactory.getLogger(ClientServlet.class);
 
     private static final long DEFAULT_TIMEOUT = 5000; // ms
 
@@ -169,27 +167,27 @@ public class ClientServlet extends HttpServlet {
     private void handleException(Exception e, HttpServletResponse resp) throws IOException {
         if (e instanceof InvalidRequestException || e instanceof CodecException
                 || e instanceof ClientSleepingException) {
-            LOG.warn("Invalid request", e);
+            log.warn("Invalid request", e);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().append("Invalid request:").append(e.getMessage()).flush();
         } else if (e instanceof RequestRejectedException) {
-            LOG.warn("Request rejected", e);
+            log.warn("Request rejected", e);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().append("Request rejected:").append(e.getMessage()).flush();
         } else if (e instanceof RequestCanceledException) {
-            LOG.warn("Request cancelled", e);
+            log.warn("Request cancelled", e);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().append("Request cancelled:").append(e.getMessage()).flush();
         } else if (e instanceof InvalidResponseException) {
-            LOG.warn("Invalid response", e);
+            log.warn("Invalid response", e);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().append("Invalid Response:").append(e.getMessage()).flush();
         } else if (e instanceof InterruptedException) {
-            LOG.warn("Thread Interrupted", e);
+            log.warn("Thread Interrupted", e);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().append("Thread Interrupted:").append(e.getMessage()).flush();
         } else {
-            LOG.warn("Unexpected exception", e);
+            log.warn("Unexpected exception", e);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().append("Unexpected exception:").append(e.getMessage()).flush();
         }
@@ -388,7 +386,7 @@ public class ClientServlet extends HttpServlet {
     private void processDeviceResponse(HttpServletRequest req, HttpServletResponse resp, LwM2mResponse cResponse)
             throws IOException {
         if (cResponse == null) {
-            LOG.warn(String.format("Request %s%s timed out.", req.getServletPath(), req.getPathInfo()));
+            log.warn(String.format("Request %s%s timed out.", req.getServletPath(), req.getPathInfo()));
             resp.setStatus(HttpServletResponse.SC_GATEWAY_TIMEOUT);
             resp.getWriter().append("Request timeout").flush();
         } else {

@@ -15,10 +15,9 @@
  *******************************************************************************/
 package me.java.library.io.store.lwm2m.server.model;
 
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.leshan.core.model.InvalidDDFFileException;
 import org.eclipse.leshan.core.util.json.JsonException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -41,9 +40,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class DdfList2JsonGenerator {
-
-    private static final Logger LOG = LoggerFactory.getLogger(DdfList2JsonGenerator.class);
 
     private final DocumentBuilderFactory factory;
 
@@ -73,7 +71,7 @@ public class DdfList2JsonGenerator {
 
         new DdfList2JsonGenerator().processDdfList(ddfListUrl, ddfFilesPath);
 
-        LOG.error("DDF list {} processed to {}, proceeding with JSON generation in {}", ddfListUrl, ddfFilesPath,
+        log.error("DDF list {} processed to {}, proceeding with JSON generation in {}", ddfListUrl, ddfFilesPath,
                 outputPath);
 
         // generate object spec file
@@ -92,7 +90,7 @@ public class DdfList2JsonGenerator {
 
     private void processDdfList(String url, String ddfFilesPath) throws IOException {
 
-        LOG.debug("Processing DDF list file {}", url);
+        log.debug("Processing DDF list file {}", url);
 
         List<String> ddfUrls = new ArrayList<>();
 
@@ -120,7 +118,7 @@ public class DdfList2JsonGenerator {
             try {
                 parsedUrl = new URL(ddfUrl);
             } catch (MalformedURLException e) {
-                LOG.error("Skipping malformed URL {}", ddfUrl);
+                log.error("Skipping malformed URL {}", ddfUrl);
                 continue;
             }
 
@@ -129,7 +127,7 @@ public class DdfList2JsonGenerator {
 
             Path outPath = Paths.get(ddfFilesPath, filename);
 
-            LOG.debug("Downloading DDF file {} to {}", ddfUrl, outPath);
+            log.debug("Downloading DDF file {} to {}", ddfUrl, outPath);
 
             try (InputStream in = openConnection(parsedUrl).getInputStream()) {
                 Files.copy(in, outPath);

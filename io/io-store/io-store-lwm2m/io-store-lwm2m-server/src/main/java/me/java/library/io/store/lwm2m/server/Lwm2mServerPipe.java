@@ -1,5 +1,6 @@
 package me.java.library.io.store.lwm2m.server;
 
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.io.store.lwm2m.common.LeshanUtils;
@@ -61,6 +62,7 @@ import java.util.concurrent.TimeUnit;
  * @copyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
  * *******************************************************************************************
  */
+@Slf4j
 public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
     Server jettyServer;
     LeshanServer lwServer;
@@ -210,7 +212,7 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
             builder.setPublicKey(publicKey);
             builder.setPrivateKey(privateKey);
         } else if (keyStorePath != null) {
-            logger.warn(
+            log.warn(
                     "Keystore way [-ks, -ksp, -kst, -ksa, -ksap] is DEPRECATED for leshan demo and will probably be removed soon, please use [-cert, -prik, -truststore] options");
 
             // Deprecated way : Set up X.509 mode (+ RPK)
@@ -227,13 +229,13 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
                             List<X509Certificate> x509CertificateChain = new ArrayList<>();
                             Certificate[] certificateChain = keyStore.getCertificateChain(alias);
                             if (certificateChain == null || certificateChain.length == 0) {
-                                logger.error("Keystore alias must have a non-empty chain of X509Certificates.");
+                                log.error("Keystore alias must have a non-empty chain of X509Certificates.");
                                 System.exit(-1);
                             }
 
                             for (Certificate cert : certificateChain) {
                                 if (!(cert instanceof X509Certificate)) {
-                                    logger.error("Non-X.509 certificate in alias chain is not supported: {}", cert);
+                                    log.error("Non-X.509 certificate in alias chain is not supported: {}", cert);
                                     System.exit(-1);
                                 }
                                 x509CertificateChain.add((X509Certificate) cert);
@@ -242,7 +244,7 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
                             Key key = keyStore.getKey(alias,
                                     keyStoreAliasPass == null ? new char[0] : keyStoreAliasPass.toCharArray());
                             if (!(key instanceof PrivateKey)) {
-                                logger.error("Keystore alias must have a PrivateKey entry, was {}",
+                                log.error("Keystore alias must have a PrivateKey entry, was {}",
                                         key == null ? null : key.getClass().getName());
                                 System.exit(-1);
                             }
@@ -256,7 +258,7 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
                             trustedCertificates.toArray(new Certificate[trustedCertificates.size()]));
                 }
             } catch (KeyStoreException | IOException e) {
-                logger.error("Unable to initialize X.509.", e);
+                log.error("Unable to initialize X.509.", e);
                 System.exit(-1);
             }
         }
@@ -271,7 +273,7 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
                 builder.setPrivateKey(embeddedPrivateKey);
                 builder.setCertificateChain(new X509Certificate[]{serverCertificate});
             } catch (Exception e) {
-                logger.error("Unable to load embedded X.509 certificate.", e);
+                log.error("Unable to load embedded X.509 certificate.", e);
                 System.exit(-1);
             }
         }
@@ -373,7 +375,7 @@ public class Lwm2mServerPipe extends BasePipe<Lwm2mServerParams> {
         // Start Jetty & Leshan
         lwServer.start();
         jettyServer.start();
-        logger.info("Web server started at {}.", jettyServer.getURI());
+        log.info("Web server started at {}.", jettyServer.getURI());
 
     }
 }

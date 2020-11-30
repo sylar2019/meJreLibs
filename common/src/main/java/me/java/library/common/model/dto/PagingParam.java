@@ -1,8 +1,6 @@
 package me.java.library.common.model.dto;
 
 
-import me.java.library.common.model.pojo.AbstractPojo;
-
 /**
  * @author :  sylar
  * @FileName :
@@ -17,7 +15,7 @@ import me.java.library.common.model.pojo.AbstractPojo;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
-public class PagingParam extends AbstractPojo {
+public class PagingParam extends AbstractDTO {
     /**
      * 请求的分页索引
      */

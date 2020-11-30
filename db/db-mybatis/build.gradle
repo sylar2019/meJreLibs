@@ -1,0 +1,22 @@
+apply from: gradlesPath + "springcloud.gradle"
+
+dependencies {
+    compile project(":common")
+    compile project(":utils:utils-spring")
+
+    compile("org.springframework:spring-tx")
+    compile("com.alibaba:transmittable-thread-local:2.9.0")
+
+    //mysql
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("mysql:mysql-connector-java:${mysql8Version}")
+
+    //druid连接池监控
+    compile("com.alibaba:druid-spring-boot-starter:${druidVersion}")
+
+    //mybatisPlus
+    compile("com.baomidou:mybatis-plus-boot-starter:${mybatisPlusVersion}")
+
+    //动态数据源支持
+    compile("com.baomidou:dynamic-datasource-spring-boot-starter:${dynamicDataSourceVersion}")
+}

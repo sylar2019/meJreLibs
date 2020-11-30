@@ -15,6 +15,7 @@
  *******************************************************************************/
 package me.java.library.io.store.lwm2m.bsserver;
 
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.leshan.core.SecurityMode;
 import org.eclipse.leshan.core.util.SecurityUtil;
 import org.eclipse.leshan.server.bootstrap.BootstrapConfig;
@@ -23,8 +24,6 @@ import org.eclipse.leshan.server.bootstrap.BootstrapConfigStore;
 import org.eclipse.leshan.server.bootstrap.EditableBootstrapConfigStore;
 import org.eclipse.leshan.server.security.BootstrapSecurityStore;
 import org.eclipse.leshan.server.security.SecurityInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -48,9 +47,8 @@ import java.util.Map;
  * <p>
  * <strong>WARNING : This store is not production ready.</strong>
  */
+@Slf4j
 public class BootstrapConfigSecurityStore implements BootstrapSecurityStore {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BootstrapConfigSecurityStore.class);
 
     private final EditableBootstrapConfigStore bootstrapConfigStore;
 
@@ -109,7 +107,7 @@ public class BootstrapConfigSecurityStore implements BootstrapSecurityStore {
                             SecurityUtil.publicKey.decode(value.publicKeyOrId));
                     return Collections.singletonList(securityInfo);
                 } catch (IOException | GeneralSecurityException e) {
-                    LOG.error("Unable to decode Client public key for {}", endpoint, e);
+                    log.error("Unable to decode Client public key for {}", endpoint, e);
                     return null;
                 }
             }

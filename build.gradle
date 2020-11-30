@@ -1,5 +1,5 @@
 /** ******************************************************************************************/
-ext{
+ext {
     rootPath = rootProject.rootDir.getAbsolutePath()
     gradlesPath = "${rootPath}/gradles/"
 }
@@ -29,8 +29,8 @@ allprojects {
 
 subprojects {
     configurations {
-        all*.exclude group: "org.slf4j" , module: "log4j-over-slf4j"
-        all*.exclude group: "log4j" , module: "log4j"
+        all*.exclude group: "org.slf4j", module: "log4j-over-slf4j"
+        all*.exclude group: "log4j", module: "log4j"
     }
 
     configurations.all {

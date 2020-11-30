@@ -1,5 +1,6 @@
 package me.java.library.utils.httpclient.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -12,8 +13,6 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -32,6 +31,7 @@ import java.util.Map.Entry;
  * @author arron
  * @version 1.0
  */
+@Slf4j
 public class Utils {
 
     //传入参数特定类型
@@ -43,7 +43,6 @@ public class Utils {
     public static final String ENTITY_SERIALIZABLE = "$ENTITY_SERIALIZABLE$";
     public static final String ENTITY_MULTIPART = "$ENTITY_MULTIPART$";
     private static final List<String> SPECIAL_ENTITIY = Arrays.asList(ENTITY_STRING, ENTITY_JSON, ENTITY_BYTES, ENTITY_FILE, ENTITY_INPUTSTREAM, ENTITY_SERIALIZABLE, ENTITY_MULTIPART);
-    private static final Logger logger = LoggerFactory.getLogger(Utils.class);
     /**
      * 是否开启debug，
      */
@@ -249,7 +248,7 @@ public class Utils {
      */
     public static void info(String msg) {
         if (debug) {
-            logger.info(msg);
+            log.info(msg);
         }
     }
 
@@ -261,7 +260,7 @@ public class Utils {
      */
     public static void infoException(String msg, Throwable t) {
         if (debug) {
-            logger.info(msg, t);
+            log.info(msg, t);
         }
     }
 
@@ -271,7 +270,7 @@ public class Utils {
      * @param msg 异常消息
      */
     public static void error(String msg) {
-        logger.error(msg);
+        log.error(msg);
     }
 
     /**
@@ -281,7 +280,7 @@ public class Utils {
      * @param t   异常
      */
     public static void errorException(String msg, Throwable t) {
-        logger.error(msg, t);
+        log.error(msg, t);
     }
 
     /**
@@ -290,7 +289,7 @@ public class Utils {
      * @param t 异常
      */
     public static void exception(Throwable t) {
-        logger.error("", t);
+        log.error("", t);
     }
 
     /**

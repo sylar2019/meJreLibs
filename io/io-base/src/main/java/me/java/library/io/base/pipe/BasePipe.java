@@ -9,8 +9,6 @@ import me.java.library.io.base.cmd.Terminal;
 import me.java.library.io.base.event.*;
 import me.java.library.utils.base.guava.AsyncEventUtils;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,8 +28,6 @@ import java.util.concurrent.TimeUnit;
  * *******************************************************************************************
  */
 public abstract class BasePipe<Params extends PipeParams> implements Pipe {
-
-    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected Params params;
     protected PipeWatcher watcher;
@@ -245,7 +241,6 @@ public abstract class BasePipe<Params extends PipeParams> implements Pipe {
     }
 
     protected void onException(Throwable t) {
-        logger.warn(t.getMessage(), t);
         postEvent(new PipeExceptionEvent(this, t));
         if (watcher != null) {
             ConcurrentService.getInstance().postRunnable(() -> watcher.onException(BasePipe.this, t));

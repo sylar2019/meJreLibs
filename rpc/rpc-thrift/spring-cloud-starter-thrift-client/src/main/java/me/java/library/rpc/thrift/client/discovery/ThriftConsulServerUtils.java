@@ -2,8 +2,7 @@ package me.java.library.rpc.thrift.client.discovery;
 
 import com.ecwid.consul.v1.health.model.Check;
 import com.ecwid.consul.v1.health.model.HealthService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.net.Inet6Address;
@@ -14,9 +13,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class ThriftConsulServerUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ThriftConsulServerUtils.class);
 
     private static final String CHECK_STATUS_PASSING = "passing";
 
@@ -38,7 +37,7 @@ public class ThriftConsulServerUtils {
             InetAddress inetAddress = InetAddress.getByName(address);
             return inetAddress instanceof Inet6Address ? "[" + inetAddress.getHostName() + "]" : address;
         } catch (UnknownHostException var2) {
-            LOGGER.error("Not InetAddress: " + address + " , resolved as is.");
+            log.error("Not InetAddress: " + address + " , resolved as is.");
             return address;
         }
     }

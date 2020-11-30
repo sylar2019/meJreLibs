@@ -1,0 +1,10 @@
+# 纯粹多库（记得设置primary）
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        db1:
+        db2:
+        db3:
+        db4:
+        db5:

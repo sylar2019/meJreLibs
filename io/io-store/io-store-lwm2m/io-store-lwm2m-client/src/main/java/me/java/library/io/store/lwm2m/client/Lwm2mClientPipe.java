@@ -1,6 +1,7 @@
 package me.java.library.io.store.lwm2m.client;
 
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.io.base.cmd.Cmd;
 import me.java.library.io.base.pipe.BasePipe;
 import me.java.library.io.store.lwm2m.common.LeshanUtils;
@@ -51,6 +52,7 @@ import static org.eclipse.leshan.core.LwM2mId.SERVER;
  * @copyRight : COPYRIGHT(c) me.iot.com All Rights Reserved
  * *******************************************************************************************
  */
+@Slf4j
 public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2mClient {
 
     LeshanClient client;
@@ -124,10 +126,10 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
         }
 
         if (client.getObjectTree().getObjectEnabler(objectId) != null) {
-            logger.info("Object {} already enabled.", objectId);
+            log.info("Object {} already enabled.", objectId);
         }
         if (model.getObjectModel(objectId) == null) {
-            logger.info("Unable to enable Object {} : there no model for this.", objectId);
+            log.info("Unable to enable Object {} : there no model for this.", objectId);
         } else {
             ObjectsInitializer objectsInitializer = new ObjectsInitializer(model);
             objectsInitializer.setDummyInstancesForObject(objectId);
@@ -143,9 +145,9 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
         }
 
         if (objectId == 0 || objectId == 3) {
-            logger.info("Object {} can not be disabled.", objectId);
+            log.info("Object {} can not be disabled.", objectId);
         } else if (client.getObjectTree().getObjectEnabler(objectId) == null) {
-            logger.info("Object {} is not enabled.", objectId);
+            log.info("Object {} is not enabled.", objectId);
         } else {
             client.getObjectTree().removeObjectEnabler(objectId);
         }
@@ -263,13 +265,13 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
                             @Override
                             public void handshakeStarted(Handshaker handshaker) throws HandshakeException {
                                 if (handshaker instanceof ResumingServerHandshaker) {
-                                    logger.info("DTLS abbreviated Handshake initiated by server : STARTED ...");
+                                    log.info("DTLS abbreviated Handshake initiated by server : STARTED ...");
                                 } else if (handshaker instanceof ServerHandshaker) {
-                                    logger.info("DTLS Full Handshake initiated by server : STARTED ...");
+                                    log.info("DTLS Full Handshake initiated by server : STARTED ...");
                                 } else if (handshaker instanceof ResumingClientHandshaker) {
-                                    logger.info("DTLS abbreviated Handshake initiated by client : STARTED ...");
+                                    log.info("DTLS abbreviated Handshake initiated by client : STARTED ...");
                                 } else if (handshaker instanceof ClientHandshaker) {
-                                    logger.info("DTLS Full Handshake initiated by client : STARTED ...");
+                                    log.info("DTLS Full Handshake initiated by client : STARTED ...");
                                 }
                             }
 
@@ -277,13 +279,13 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
                             public void sessionEstablished(Handshaker handshaker, DTLSSession establishedSession)
                                     throws HandshakeException {
                                 if (handshaker instanceof ResumingServerHandshaker) {
-                                    logger.info("DTLS abbreviated Handshake initiated by server : SUCCEED");
+                                    log.info("DTLS abbreviated Handshake initiated by server : SUCCEED");
                                 } else if (handshaker instanceof ServerHandshaker) {
-                                    logger.info("DTLS Full Handshake initiated by server : SUCCEED");
+                                    log.info("DTLS Full Handshake initiated by server : SUCCEED");
                                 } else if (handshaker instanceof ResumingClientHandshaker) {
-                                    logger.info("DTLS abbreviated Handshake initiated by client : SUCCEED");
+                                    log.info("DTLS abbreviated Handshake initiated by client : SUCCEED");
                                 } else if (handshaker instanceof ClientHandshaker) {
-                                    logger.info("DTLS Full Handshake initiated by client : SUCCEED");
+                                    log.info("DTLS Full Handshake initiated by client : SUCCEED");
                                 }
                             }
 
@@ -302,13 +304,13 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
                                 }
 
                                 if (handshaker instanceof ServerHandshaker) {
-                                    logger.info("DTLS Full Handshake initiated by server : FAILED ({})", cause);
+                                    log.info("DTLS Full Handshake initiated by server : FAILED ({})", cause);
                                 } else if (handshaker instanceof ResumingServerHandshaker) {
-                                    logger.info("DTLS abbreviated Handshake initiated by server : FAILED ({})", cause);
+                                    log.info("DTLS abbreviated Handshake initiated by server : FAILED ({})", cause);
                                 } else if (handshaker instanceof ClientHandshaker) {
-                                    logger.info("DTLS Full Handshake initiated by client : FAILED ({})", cause);
+                                    log.info("DTLS Full Handshake initiated by client : FAILED ({})", cause);
                                 } else if (handshaker instanceof ResumingClientHandshaker) {
-                                    logger.info("DTLS abbreviated Handshake initiated by client : FAILED ({})", cause);
+                                    log.info("DTLS abbreviated Handshake initiated by client : FAILED ({})", cause);
                                 }
                             }
                         });
@@ -336,12 +338,12 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
         client.getObjectTree().addListener(new ObjectsListenerAdapter() {
             @Override
             public void objectRemoved(LwM2mObjectEnabler object) {
-                logger.info("Object {} disabled.", object.getId());
+                log.info("Object {} disabled.", object.getId());
             }
 
             @Override
             public void objectAdded(LwM2mObjectEnabler object) {
-                logger.info("Object {} enabled.", object.getId());
+                log.info("Object {} enabled.", object.getId());
             }
         });
 
@@ -365,7 +367,7 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
                 // Get Curves params
                 String params = ecPublicKey.getParams().toString();
 
-                logger.info(
+                log.info(
                         "Client uses RPK : \n Elliptic Curve parameters  : {} \n Public x coord : {} \n Public y coord : {} \n Public Key (Hex): {} \n Private Key (Hex): {}",
                         params, Hex.encodeHexString(x), Hex.encodeHexString(y),
                         Hex.encodeHexString(rawPublicKey.getEncoded()),
@@ -378,7 +380,7 @@ public class Lwm2mClientPipe extends BasePipe<Lwm2mClientParams> implements Lwm2
 
         // Display X509 credentials to easily at it in demo servers.
         if (clientCertificate != null) {
-            logger.info("Client uses X509 : \n X509 Certificate (Hex): {} \n Private Key (Hex): {}",
+            log.info("Client uses X509 : \n X509 Certificate (Hex): {} \n Private Key (Hex): {}",
                     Hex.encodeHexString(clientCertificate.getEncoded()),
                     Hex.encodeHexString(clientPrivateKey.getEncoded()));
         }

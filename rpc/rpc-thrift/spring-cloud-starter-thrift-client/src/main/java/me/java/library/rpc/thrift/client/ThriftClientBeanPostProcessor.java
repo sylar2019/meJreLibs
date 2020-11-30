@@ -1,12 +1,11 @@
 package me.java.library.rpc.thrift.client;
 
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.rpc.thrift.client.annotation.ThriftRefer;
 import me.java.library.rpc.thrift.client.common.ThriftClientAware;
 import me.java.library.rpc.thrift.client.exception.ThriftClientInstantiateException;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
@@ -22,10 +21,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 public class ThriftClientBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ThriftClientBeanPostProcessor.class);
-
     private ApplicationContext applicationContext;
 
     @Override
@@ -38,8 +35,8 @@ public class ThriftClientBeanPostProcessor implements BeanPostProcessor, Applica
         Object target = bean;
         if (AopUtils.isJdkDynamicProxy(target)) {
             TargetSource targetSource = ((Advised) target).getTargetSource();
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Target object {} uses jdk dynamic proxy");
+            if (log.isDebugEnabled()) {
+                log.debug("Target object {} uses jdk dynamic proxy");
             }
 
             try {
@@ -51,8 +48,8 @@ public class ThriftClientBeanPostProcessor implements BeanPostProcessor, Applica
 
         if (AopUtils.isCglibProxy(target)) {
             TargetSource targetSource = ((Advised) target).getTargetSource();
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Target object {} uses cglib proxy");
+            if (log.isDebugEnabled()) {
+                log.debug("Target object {} uses cglib proxy");
             }
 
             try {
@@ -100,8 +97,8 @@ public class ThriftClientBeanPostProcessor implements BeanPostProcessor, Applica
                 ReflectionUtils.setField(field, targetBean, injectedBean);
             }
 
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Bean {} is injected into target bean {}, field {}", injectedBean, targetBean, field.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Bean {} is injected into target bean {}, field {}", injectedBean, targetBean, field.getName());
             }
 
         }, field -> (AnnotationUtils.getAnnotation(field, ThriftRefer.class) != null));

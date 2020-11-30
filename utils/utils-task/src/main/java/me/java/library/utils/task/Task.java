@@ -1,10 +1,7 @@
 package me.java.library.utils.task;
 
-
 import me.java.library.common.service.ConcurrentService;
 import me.java.library.utils.base.JsonUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * File Name             :  Task
@@ -23,7 +20,6 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class Task<T> {
 
-    protected Logger logger = LoggerFactory.getLogger(getClass());
     protected TaskContext<T> context;
     protected Object[] args;
 
@@ -111,7 +107,7 @@ public abstract class Task<T> {
 
     protected void print(Object obj) {
         if (obj != null) {
-            logger.info(obj.toString());
+            System.out.println(obj.toString());
         }
     }
 

@@ -31,6 +31,7 @@ public abstract class TServiceClient {
     protected TProtocol iprot_;
     protected TProtocol oprot_;
     protected int seqid_;
+
     public TServiceClient(TProtocol prot) {
         this(prot, prot);
     }

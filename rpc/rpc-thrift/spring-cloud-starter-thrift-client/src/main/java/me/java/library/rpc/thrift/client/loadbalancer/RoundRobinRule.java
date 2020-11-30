@@ -1,20 +1,19 @@
 package me.java.library.rpc.thrift.client.loadbalancer;
 
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.rpc.thrift.client.common.ThriftServerNode;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 public class RoundRobinRule extends AbstractLoadBalancerRule {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoundRobinRule.class);
     private AtomicInteger nextServerCyclicCounter;
 
     public RoundRobinRule() {
@@ -34,7 +33,7 @@ public class RoundRobinRule extends AbstractLoadBalancerRule {
     @SuppressWarnings("unchecked")
     private ThriftServerNode choose(ILoadBalancer lb, String key) {
         if (lb == null) {
-            LOGGER.warn("No specified load balancer");
+            log.warn("No specified load balancer");
             return null;
         }
 
@@ -48,13 +47,13 @@ public class RoundRobinRule extends AbstractLoadBalancerRule {
                 Map<String, LinkedHashSet<ThriftServerNode>> serverNodesMap = lb.getAllServerNodes();
 
                 if (MapUtils.isEmpty(serverNodesMap) || !serverNodesMap.containsKey(key)) {
-                    LOGGER.warn("No up servers of key {}, available from load balancer: " + lb, key);
+                    log.warn("No up servers of key {}, available from load balancer: " + lb, key);
                     return null;
                 }
 
                 LinkedHashSet<ThriftServerNode> thriftServerNodes = serverNodesMap.get(key);
                 if (CollectionUtils.isEmpty(thriftServerNodes)) {
-                    LOGGER.warn("No up servers of key {}, available from load balancer: " + lb, key);
+                    log.warn("No up servers of key {}, available from load balancer: " + lb, key);
                     return null;
                 }
 
@@ -70,7 +69,7 @@ public class RoundRobinRule extends AbstractLoadBalancerRule {
         }
 
         if (count >= 10) {
-            LOGGER.warn("No available alive server nodes after 10 tries from load balancer: "
+            log.warn("No available alive server nodes after 10 tries from load balancer: "
                     + lb);
         }
 

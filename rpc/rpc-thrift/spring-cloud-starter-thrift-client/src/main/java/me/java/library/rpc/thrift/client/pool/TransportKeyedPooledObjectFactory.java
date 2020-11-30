@@ -1,5 +1,6 @@
 package me.java.library.rpc.thrift.client.pool;
 
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.rpc.thrift.client.common.ThriftServerNode;
 import me.java.library.rpc.thrift.client.exception.ThriftClientConfigException;
 import me.java.library.rpc.thrift.client.exception.ThriftClientOpenException;
@@ -11,14 +12,11 @@ import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
+@Slf4j
 public class TransportKeyedPooledObjectFactory extends BaseKeyedPooledObjectFactory<ThriftServerNode, TTransport> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransportKeyedPooledObjectFactory.class);
 
     private ThriftClientProperties properties;
 
@@ -53,7 +51,7 @@ public class TransportKeyedPooledObjectFactory extends BaseKeyedPooledObjectFact
 
         try {
             transport.open();
-            LOGGER.info("Open a new transport {}", transport);
+            log.info("Open a new transport {}", transport);
         } catch (TTransportException e) {
             throw new ThriftClientOpenException("Connect to " + key.getHost() + ":" + key.getPort() + " failed", e);
         }
@@ -69,20 +67,20 @@ public class TransportKeyedPooledObjectFactory extends BaseKeyedPooledObjectFact
     @Override
     public boolean validateObject(ThriftServerNode key, PooledObject<TTransport> value) {
         if (Objects.isNull(value)) {
-            LOGGER.warn("PooledObject is already null");
+            log.warn("PooledObject is already null");
             return false;
         }
 
         TTransport transport = value.getObject();
         if (Objects.isNull(transport)) {
-            LOGGER.warn("Pooled transport is already null");
+            log.warn("Pooled transport is already null");
             return false;
         }
 
         try {
             return transport.isOpen();
         } catch (Exception e) {
-            LOGGER.error(e.getCause().getMessage());
+            log.error(e.getCause().getMessage());
             return false;
         }
     }

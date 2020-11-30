@@ -1,18 +1,16 @@
 package me.java.library.rpc.thrift.server.context;
 
+import lombok.extern.slf4j.Slf4j;
 import me.java.library.rpc.thrift.server.properties.ThriftServerProperties;
 import me.java.library.rpc.thrift.server.wrapper.ThriftServiceWrapper;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TTransportException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 public class ThriftServerContext extends AbstractThriftServerContext {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ThriftServerContext.class);
 
     private TSimpleServerContext simpleServerContext;
     private TNonBlockingServerContext nonBlockingServerContext;
@@ -36,31 +34,31 @@ public class ThriftServerContext extends AbstractThriftServerContext {
 
     @Override
     protected TServer buildTSimpleServer() throws TTransportException, IOException {
-        LOGGER.info("Build thrift server from SimpleServerContext");
+        log.info("Build thrift server from SimpleServerContext");
         return simpleServerContext.buildThriftServer(properties, serviceWrappers);
     }
 
     @Override
     protected TServer buildTNonBlockingServer() throws TTransportException, IOException {
-        LOGGER.info("Build thrift server from NonBlockingServerContext");
+        log.info("Build thrift server from NonBlockingServerContext");
         return nonBlockingServerContext.buildThriftServer(properties, serviceWrappers);
     }
 
     @Override
     protected TServer buildTThreadPoolServer() throws TTransportException, IOException {
-        LOGGER.info("Build thrift server from ThreadedPoolServerContext");
+        log.info("Build thrift server from ThreadedPoolServerContext");
         return threadedPoolServerContext.buildThriftServer(properties, serviceWrappers);
     }
 
     @Override
     protected TServer buildTHsHaServer() throws TTransportException, IOException {
-        LOGGER.info("Build thrift server from HsHaServerContext");
+        log.info("Build thrift server from HsHaServerContext");
         return hsHaServerContext.buildThriftServer(properties, serviceWrappers);
     }
 
     @Override
     protected TServer buildTThreadedSelectorServer() throws TTransportException, IOException {
-        LOGGER.debug("Build thrift server from ThreadedSelectorServerContext");
+        log.debug("Build thrift server from ThreadedSelectorServerContext");
         return threadedSelectorServerContext.buildThriftServer(properties, serviceWrappers);
     }
 

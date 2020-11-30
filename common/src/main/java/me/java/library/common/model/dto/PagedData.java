@@ -1,8 +1,6 @@
 package me.java.library.common.model.dto;
 
 
-import me.java.library.common.model.pojo.AbstractPojo;
-
 import java.util.List;
 
 /**
@@ -19,7 +17,7 @@ import java.util.List;
  * @CopyRight : COPYRIGHT(c) xxx.com All Rights Reserved
  * *******************************************************************************************
  */
-public class PagedData<T> extends AbstractPojo {
+public class PagedData<T> extends AbstractDTO {
 
     private long count;
     private List<T> items;
