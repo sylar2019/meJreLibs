@@ -4,7 +4,8 @@ apply plugin: 'org.jruyi.thrift'
 /**
  * ### 脚本说明 ###
  * thrift-api 编译脚本
- * 需要开发机安装  thrift
+ * ### 需要开发机安装thrift  ###
+ * ### macOS : brew intstall thrift
  */
 
 dependencies {
