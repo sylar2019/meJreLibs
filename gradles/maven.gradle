@@ -6,12 +6,14 @@ apply plugin: 'maven'
  */
 
 Properties properties = new Properties()
-InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
-properties.load(inputStream)
+File file = project.rootProject.file('local.properties')
+if(file.exists()){
+    InputStream inputStream = file.newDataInputStream()
+    properties.load(inputStream)
+}
 
-def NEXUS_USERNAME = properties.getProperty('NEXUS_USERNAME')
-def NEXUS_PASSWORD = properties.getProperty('NEXUS_PASSWORD')
-
+def NEXUS_USERNAME = properties.getProperty('NEXUS_USERNAME','admin')
+def NEXUS_PASSWORD = properties.getProperty('NEXUS_PASSWORD','admin123')
 
 uploadArchives {
     repositories {
