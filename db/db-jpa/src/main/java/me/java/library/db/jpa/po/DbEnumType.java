@@ -84,8 +84,6 @@ public class DbEnumType implements UserType, DynamicParameterizedType {
             }
         }
         throw new RuntimeException(String.format("Unknown name value [%s] for enum class [%s]", value, enumClass.getName()));
-
-
     }
 
     @Override
