@@ -14,5 +14,6 @@ dependencies {
 
     //oracle jdbc
     //ojdbc6 jar 须先手动安装到本地maven库
+    // ./libs/mvninstall.sh
     compile("com.oracle:ojdbc6:${oracleJdbc6Version}")
 }
