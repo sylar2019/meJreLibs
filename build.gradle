@@ -18,7 +18,7 @@ allprojects {
     repositories {
         mavenLocal()
         maven { url REPO_ALIYUN_PUBLIC }
-        maven { url REPO_NEXUS_PUBLIC }
+//        maven { url REPO_NEXUS_PUBLIC }
     }
 }
 

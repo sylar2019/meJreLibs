@@ -21,7 +21,7 @@ import java.util.List;
  * File Name             :  AbstractCrudService
  *
  * @author :  sylar
- * @create :  2018/10/7
+ * create :  2018/10/7
  * Description           :
  * Reviewed By           :
  * Reviewed On           :
@@ -64,7 +64,6 @@ public abstract class AbstractCrudService<
     /**
      * CustomJpaRepository
      *
-     * @return
      */
     protected abstract CustomJpaRepository<PO, ID> getRepository();
 
@@ -82,9 +81,10 @@ public abstract class AbstractCrudService<
         Preconditions.checkNotNull(id, "id is null");
         checkExisted(id);
         if (IdName.class.isAssignableFrom(classPO)) {
-            return ((IdName) getRepository().getOne(id)).getName();
+            PO po = getRepository().getById(id);
+            return ((IdName) po).getName();
         }
-        return null;
+        return id.toString();
     }
 
     @ReadTransactional
@@ -154,7 +154,7 @@ public abstract class AbstractCrudService<
     }
 
     protected void onDelete(ID id) {
-        getRepository().delete(id);
+        getRepository().deleteById(id);
     }
 
     protected void afterDelete(ID id) {
@@ -199,7 +199,7 @@ public abstract class AbstractCrudService<
      */
     protected void checkExisted(ID id) {
         checkNullId(id);
-        Preconditions.checkState(getRepository().exists(id), "not found id:" + id);
+        Preconditions.checkState(getRepository().existsById(id), "not found id:" + id);
     }
 
     protected void checkNullId(ID id) {
